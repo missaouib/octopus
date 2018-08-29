@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/", produces= MediaType.TEXT_HTML_VALUE)
+@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class HelloWorld {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

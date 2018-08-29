@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notes")
+@RequestMapping("octopus/notes")
 public class NoteController {
     private final ServiceFactory serviceFactory;
     private final NoteService noteService;
