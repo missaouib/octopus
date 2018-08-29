@@ -5,14 +5,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DaoFactoryImpl implements DaoFactory{
-    private final NoteDao noteDao;
+    private final NoteRepository noteRepository;
 
     @Autowired
-    public DaoFactoryImpl(NoteDao noteDao) {
-        this.noteDao = noteDao;
+    public DaoFactoryImpl(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
     }
 
-    public NoteDao getNoteDao(){
-        return this.noteDao;
+
+    @Override
+    public NoteRepository getNoteRepository() {
+        return noteRepository;
     }
 }

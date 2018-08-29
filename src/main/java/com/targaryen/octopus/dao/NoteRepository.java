@@ -1,4 +1,4 @@
-package com.targaryen.octopus.repository;
+package com.targaryen.octopus.dao;
 
 import com.targaryen.octopus.vo.NoteVo;
 import org.springframework.data.jpa.repository.JpaRepository;
