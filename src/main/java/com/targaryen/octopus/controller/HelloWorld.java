@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/helloWorld", produces= MediaType.TEXT_HTML_VALUE)
+@RequestMapping(value = "/", produces= MediaType.TEXT_HTML_VALUE)
 public class HelloWorld {
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     String sayHello() {
         return "Hello World!";
     }
+
 }
