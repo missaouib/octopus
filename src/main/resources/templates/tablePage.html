@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>餐厅员工信息管理</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}" />
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/js/jquery.validate.min.js}"></script>
+    <script th:src="@{/js/jquery.timepicker.js}"></script>
+    <script th:src="@{/js/bootstrap-select.min.js}"></script>
+
+    <style>
+        .btn-default {
+            background-color: #FFF;
+            color: rgb(103,106,108);
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight" style="height: 100%;">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1>职务班次管理</h1>
+                </div>
+                <div class="ibox-content">
+                    <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" style="width:100%;">
+                        <button type="button" class="btn btn-outline btn-default"
+                                data-toggle="modal" data-target="#add">
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                            可批量增加班次
+                        </button>
+                        <button type="button" class="btn btn-w-m btn-info"
+                                data-toggle="modal" onclick="location.href='view';" style="margin-left: 10px;border-radius: 3px;">
+                            图表视图
+                        </button>
+                        <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="搜索表格..."
+                               style="width:25%;float:right;"/>
+                    </div>
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="9"
+                           data-filter="#filter">
+                        <thead>
+                        <tr class="footable even">
+                            <th>职务名称</th>
+                            <th>星期X</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                            <th:block th:each="shift : ${shiftList}">
+                                <tr>
+                                    <td th:text="${shift.roleName}"></td>
+                                    <td th:if="${shift.shiftDay} eq 1">一</td>
+                                    <td th:if="${shift.shiftDay} eq 2">二</td>
+                                    <td th:if="${shift.shiftDay} eq 3">三</td>
+                                    <td th:if="${shift.shiftDay} eq 4">四</td>
+                                    <td th:if="${shift.shiftDay} eq 5">五</td>
+                                    <td th:if="${shift.shiftDay} eq 6">六</td>
+                                    <td th:if="${shift.shiftDay} eq 7">日</td>
+                                    <td th:text="${shift.shiftStart}"></td>
+                                    <td th:text="${shift.shiftEnd}"></td>
+                                    <td>
+                                        <button type="button"
+                                                th:onclick="${'deleteLoad(''' + shift.shiftId + ''');'}"
+                                                class="btn btn-outline btn-default">
+                                            <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button"
+                                                th:onclick="${'editLoad(''' + shift.shiftId + ''');'}"
+                                                class="btn btn-outline btn-default" data-toggle="modal"
+                                                data-target="#edit">
+                                            <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </th:block>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <ul class="pagination pull-right"></ul>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- 新增职务班次信息 弹窗 -->
+                    <div class="modal inmodal" id="add" tabindex="-1"
+                         role="dialog" aria-hidden="true" style="display:none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated flipInY">
+                                <div class="modal-header" style="padding:10px;">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                                    </button>
+                                    <h2 style="text-align:center;">新增职务班次信息</h2>
+                                </div>
+
+                                <form class="form-horizontal m-t" id="addForm" name="addForm" method="POST"
+                                      action="add" onsubmit="return false;">
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">职务名称：</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control m-b" id="roleIdAdd" name="roleId">
+                                                    <th:block th:each="role : ${roleList}">
+                                                        <option th:value="${role.roleId}" th:text="${role.roleName}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="margin-bottom: 5%;">
+                                            <label class="col-sm-3 control-label">星期X：</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control m-b selectpicker" id="shiftDayAdd" name="shiftDay"
+                                                        multiple="multiple" title="可多选" required="required">
+                                                    <option th:value="1" th:text="一"></option>
+                                                    <option th:value="2" th:text="二"></option>
+                                                    <option th:value="3" th:text="三"></option>
+                                                    <option th:value="4" th:text="四"></option>
+                                                    <option th:value="5" th:text="五"></option>
+                                                    <option th:value="6" th:text="六"></option>
+                                                    <option th:value="7" th:text="日"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">开始时间：</label>
+                                            <div class="col-sm-8">
+                                                <input style="background-color: #FFF;" id="shiftStartAdd" name="shiftStart" type="text" class="form-control" required="required" readonly="true" placeholder="请点击选择" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">结束时间：</label>
+                                            <div class="col-sm-8">
+                                                <input style="background-color: #FFF;" id="shiftEndAdd" name="shiftEnd" type="text" class="form-control" required="required" readonly="true" placeholder="请点击选择" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="display:none;">
+                                            <label class="col-sm-3 control-label">需要人数：</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control m-b" id="shiftCountAdd" name="shiftCount">
+                                                    <option th:value="1" th:text="1"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">确认新增
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 编辑职务班次信息 弹窗 -->
+                    <div class="modal inmodal" id="edit" tabindex="-1"
+                         role="dialog" aria-hidden="true" style="display:none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated flipInY">
+                                <div class="modal-header" style="padding:10px;">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                                    </button>
+                                    <h2 style="text-align:center;">编辑职务班次信息</h2>
+                                </div>
+
+                                <form class="form-horizontal m-t" id="editForm" name="editForm" method="POST"
+                                      action="edit">
+                                    <div class="modal-body">
+                                        <input id="shiftId" name="shiftId" type="hidden" />
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">职务名称：</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control m-b" id="roleId" name="roleId">
+                                                    <th:block th:each="role : ${roleList}">
+                                                        <option th:value="${role.roleId}" th:text="${role.roleName}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">星期X：</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control m-b" id="shiftDay" name="shiftDay">
+                                                    <option th:value="1" th:text="一"></option>
+                                                    <option th:value="2" th:text="二"></option>
+                                                    <option th:value="3" th:text="三"></option>
+                                                    <option th:value="4" th:text="四"></option>
+                                                    <option th:value="5" th:text="五"></option>
+                                                    <option th:value="6" th:text="六"></option>
+                                                    <option th:value="7" th:text="日"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">开始时间：</label>
+                                            <div class="col-sm-8">
+                                                <input style="background-color: #FFF;" id="shiftStartEdit" name="shiftStart" type="text" class="form-control" required="required" readonly="true" placeholder="请点击选择" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">结束时间：</label>
+                                            <div class="col-sm-8">
+                                                <input style="background-color: #FFF;" id="shiftEndEdit" name="shiftEnd" type="text" class="form-control" required="required" readonly="true" placeholder="请点击选择" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="display:none;">
+                                            <label class="col-sm-3 control-label">需要人数：</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control m-b" id="shiftCount" name="shiftCount">
+                                                    <option th:value="1" th:text="1"></option>
+                                                    <option th:value="2" th:text="2"></option>
+                                                    <option th:value="3" th:text="3"></option>
+                                                    <option th:value="4" th:text="4"></option>
+                                                    <option th:value="5" th:text="5"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">确认修改
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:inline="javascript">
+    // Table plugin
+    $(document).ready(function () {
+        $(".footable").footable();
+        var setObj = { 'timeFormat': 'HH:mm', 'showDuration': true};
+        $('#shiftStartAdd').timepicker(setObj);
+        $('#shiftEndAdd').timepicker(setObj);
+        $('#shiftStartEdit').timepicker(setObj);
+        $('#shiftEndEdit').timepicker(setObj);
+    });
+
+    function addFormSubmit() {
+        var shiftDays = $(".selectpicker").val().toString();
+        shiftDays = shiftDays.split(",");
+
+        // Define the callback function.
+        function postData(value, index, ar) {
+            var newShift = {};
+            newShift.roleId = $("#roleIdAdd").val();
+            newShift.shiftStart = $("#shiftStartAdd").val();
+            newShift.shiftEnd = $("#shiftEndAdd").val();
+            newShift.shiftCount = $("#shiftCountAdd").val();
+            newShift.shiftDay = value;
+            $.ajax({
+                async: false,
+                url : "add",
+                type : "post",
+                data: newShift,
+                success:function(data){
+
+                }
+            });
+        }
+
+        shiftDays.forEach(postData);
+    }
+
+    // Edit pre-load
+    function editLoad(shiftId) {
+        $.ajax({
+            url : shiftId,
+            type : "post",
+            success:function(shiftVo){
+                $("#shiftId").attr("value", shiftVo.shiftId);
+                $("#roleId").val(shiftVo.roleId);
+                $("#shiftDay").val(shiftVo.shiftDay);
+                $('#shiftStartEdit').attr("value", shiftVo.shiftStart);
+                $('#shiftEndEdit').attr("value", shiftVo.shiftEnd);
+                $("#shiftCount").val(shiftVo.shiftCount);
+            }
+        });
+    }
+
+    // Delete msgbox
+    function deleteLoad(shiftId) {
+        swal({
+            title : "您确定要删除这条记录吗",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "是的，我要删除！",
+            cancelButtonText : "让我再考虑一下…",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url : "delete/" + shiftId,
+                    type : "post",
+                    success : function(data) {
+                        swal({
+                                title:"删除成功！",
+                                text:"您已经永久删除了这条记录。",
+                                type:"success"
+                            },
+                            function(){
+                                document.location.reload();
+                            });
+                    }
+                });
+
+            } else {
+                swal("已取消", "您取消了删除操作！", "error");
+            }
+        });
+    }
+
+    // Form validation
+    $().ready(function() {
+        jQuery.validator.addMethod("isLaterAdd", function(value,element) {
+            var datetimeStart = Date.parse('20 Aug 2000 ' + $('#shiftStartAdd').val());
+            var datetimeEnd = Date.parse('20 Aug 2000 ' + $('#shiftEndAdd').val());
+            /*<![CDATA[*/
+            return (datetimeStart < datetimeEnd);
+            /*]]>*/
+        }, "结束时间应晚于开始时间");
+
+        jQuery.validator.addMethod("isLaterEdit", function(value,element) {
+            var datetimeStart = Date.parse('20 Aug 2000 ' + $('#shiftStartEdit').val());
+            var datetimeEnd = Date.parse('20 Aug 2000 ' + $('#shiftEndEdit').val());
+            /*<![CDATA[*/
+            return (datetimeStart < datetimeEnd);
+            /*]]>*/
+        }, "结束时间应晚于开始时间");
+
+        var valConfigAdd = {
+            rules: {
+                shiftEnd:{
+                    required: true,
+                    isLaterAdd: true
+                }
+            },
+            submitHandler: function(form) {
+                // do other things for a valid form
+                addFormSubmit();
+                document.location.reload()
+            }
+        };
+
+        var valConfigEdit = {
+            rules: {
+                shiftEnd:{
+                    required: true,
+                    isLaterEdit: true
+                }
+            }
+        };
+
+        $("#addForm").validate(valConfigAdd);
+        $("#editForm").validate(valConfigEdit);
+    });
+</script>
+
+</body>
+
+</html>
