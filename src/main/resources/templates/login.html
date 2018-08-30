@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>导航</title>
+
+    <link th:href="@{/css/bootstrap.min14ed.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/animate.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/login.min.css}" rel="stylesheet" />
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+</head>
+
+<body class="gray-bg" th:background="@{/img/1.jpg}" style="background-size:cover;overflow:-Scroll;overflow-y:hidden">
+    <div class="signinpanel text-center loginscreen">
+        <div class="row">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-md-6">
+                <form method="post" action="side/bar/index">
+                    <div>
+                        <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
+                    </div>
+
+                    <h2>Octopus</h2>
+                    <h3 class="no-margins">请选择您需要进入的页面与身份</h3>
+                    <h4 class="no-margins">（为便于演示，跳过了密码环节）</h4>
+
+                    <select id="type" name="type" class="form-control">
+                        <option value="1">管理员</option>
+                        <option value="2">店长</option>
+                        <option value="3">员工</option>
+                    </select>
+
+                    <button class="btn btn-success btn-block">进入</button>
+                    <a class="btn btn-warning btn-block" onclick="showOpenSource();">开源软件声明</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showOpenSource() {
+            swal({
+                title: "Open Source Components",
+                text: "schedule-template/CodyHouse@Github (BSD)\n\nspring-boot/spring-projects@Github (Apache)",
+                type: "success",
+            });
+        }
+    </script>
+</body>
+</html>
