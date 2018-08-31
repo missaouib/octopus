@@ -1,0 +1,77 @@
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+# define stages for your project
+stages:
+  - build
+  - test
+  - build_image
+  - push_image
+  - deploy_image
+
+# save these data in the environment, mvn repository is for test
+# target is to save the *.jar package, which will be used in build_image
+cache:
+  paths:
+    - .m2/repository
+    - target
+
+build:
+  stage: build
+  script:
+    - echo "Building project with maven"
+    - 'mvn %MAVEN_OPTS% test-compile'
+# choose runner with shell tag
+  tags:
+    - shell
+
+test:
+  stage: test
+  script:
+    - echo "Testing project with maven"
+    - 'mvn %MAVEN_CLI_OPTS% verify'
+# choose runner with shell tag
+  tags:
+    - shell
+
+build_image:
+  stage: build_image
+  script:
+    - mvn package
+    - 'docker build -t octopus .'
+  tags:
+    - shell
+  # only master branch will execute this process
+  only:
+    - master
+
+push_image:
+  stage: push_image
+  script:
+    - 'docker tag octopus registry.paas.workslan/octopus/octopus'
+    - 'docker login registry.paas.workslan -u %Username% -p %Password%'
+    - 'docker push registry.paas.workslan/octopus/octopus'
+  # choose runner with shell tag
+  tags:
+    - shell
+  # only master branch will execute this process
+  only:
+    - master
+
+deploy_image:
+  stage: deploy_image
+  script:
+    - 'yosolo login --username %Username% --password %Password%'
+    - 'yosolo deploy update -a octopus -e sh-stm'
+    - 'yosolo restart -a octopus -e sh-stm'
+    #- 'yosolo app create octopus'
+    #- 'echo Y | yosolo deploy delete -a octopus -e sh-stm'
+    #- 'yosolo deploy create -a octopus -e sh-stm -p 8080 --image registry.paas.workslan/octopus/octopus --requests-memory 1Gi'
+  # choose runner with shell tag
+  tags:
+    - shell
+  # only master branch will execute this process
+  only:
+    - master
+
