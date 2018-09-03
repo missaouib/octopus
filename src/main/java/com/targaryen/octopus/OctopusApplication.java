@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class OctopusApplication {
 
-	public static void main(String[] args) {
+	public static void main(Sring[] args) {
 		SpringApplication.run(OctopusApplication.class, args);
 	}
 }

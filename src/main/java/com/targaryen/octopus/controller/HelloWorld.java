@@ -17,10 +17,14 @@ import java.util.List;
 public class HelloWorld {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
+    public ModelAndView index(ModelAndView mv){
+        mv.setViewName("/index");
+        return mv;
+    }
+    /*@ResponseBody
     String sayHello() {
         return "Hello World!";
-    }
+    }*/
 
     @RequestMapping(value = "/thymeleaf")
     public ModelAndView test(ModelAndView mv) {
@@ -29,10 +33,7 @@ public class HelloWorld {
         return mv;
     }
 
-    @RequestMapping(value = "/login")
-    public String login() {
-        return "login";
-    }
+
 
     @RequestMapping(value = "/side/bar/index")
     public String sideBarIndex() {
