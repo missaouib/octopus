@@ -44,7 +44,7 @@
                         </div>
 
                         <div>
-                            <input type="text" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control">
+                            <input type="text" th:value="${post.postName}" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control">
                         </div>
 
                     </div>
@@ -60,9 +60,7 @@
                         </div>
 
                         <div class="ibox-content">
-                            <textarea id="postDescription" name="postDescription" data-provide="markdown" rows="10">
-                                [[${title}]]
-                            </textarea>
+                            <textarea id="postDescription" name="postDescription" data-provide="markdown" rows="10">[[${post.postDescription}]]</textarea>
                         </div>
 
                     </div>
@@ -78,7 +76,7 @@
                         </div>
 
                         <div class="ibox-content">
-                            <textarea id="postRequirement" name="postRequirement" data-provide="markdown" rows="10"></textarea>
+                            <textarea id="postRequirement" name="postRequirement" data-provide="markdown" rows="10">[[${post.postRequirement}]]</textarea>
                         </div>
 
                     </div>

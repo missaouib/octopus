@@ -10,7 +10,7 @@ public class PostVo {
 
     private final String postDescription;
 
-    private final String requirement;
+    private final String postRequirement;
 
     private final int status;
 
@@ -18,7 +18,7 @@ public class PostVo {
         private int postId;
         private String postName;
         private String postDescription;
-        private String requirement;
+        private String postRequirement;
         private int status;
 
         public Builder postId(int postId) {
@@ -36,8 +36,8 @@ public class PostVo {
             return this;
         }
 
-        public Builder requirement(String requirement) {
-            this.requirement = requirement;
+        public Builder postRequirement(String requirement) {
+            this.postRequirement = requirement;
             return this;
         }
 
@@ -55,7 +55,7 @@ public class PostVo {
         this.postId = builder.postId;
         this.postName = builder.postName;
         this.postDescription = builder.postDescription;
-        this.requirement = builder.requirement;
+        this.postRequirement = builder.postRequirement;
         this.status = builder.status;
     }
 }

@@ -35,7 +35,7 @@ public class DptManagerServiceImpl implements DptManagerService {
                             .postId(n.getPostId())
                             .postName(n.getPostName())
                             .postDescription(n.getPostDescription())
-                            .requirement(n.getRequirement())
+                            .postRequirement(n.getRequirement())
                             .status(n.getStatus())
                             .build())
                     .collect(Collectors.toList());
@@ -52,7 +52,7 @@ public class DptManagerServiceImpl implements DptManagerService {
                     .postId(postDto.getPostId())
                     .postName(postDto.getPostName())
                     .postDescription(postDto.getPostDescription())
-                    .requirement(postDto.getRequirement())
+                    .postRequirement(postDto.getRequirement())
                     .status(postDto.getStatus())
                     .build();
         }

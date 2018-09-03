@@ -29,6 +29,7 @@ public class DptManagerController {
     @RequestMapping(value = "/dpt/post/add", method = RequestMethod.GET)
     public String postAddGet(ModelMap map) {
         map.addAttribute("title", "Add new post need");
+        map.addAttribute("post", dptManagerService.findPostById(1));
         return "dptPostDetail";
     }
 
@@ -46,7 +47,7 @@ public class DptManagerController {
     @RequestMapping("/dpt/post/detail")
     public String postDetail(ModelMap map) {
         map.addAttribute("title", "Post need detail");
-        // map.addAttribute("postDetail", dptManagerService.)
+        map.addAttribute("post", dptManagerService.findPostById(1));
         return "dptPostDetail";
     }
 }
