@@ -16,8 +16,9 @@ import java.io.Serializable;
 @Data
 public class UserDto implements Serializable {
     @Id
-    @GeneratedValue
     @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_user_seq")
+    @SequenceGenerator(name = "t_user_seq", sequenceName = "t_user_seq", allocationSize = 1)
     private int userId;
 
     @Column(name = "user_name", unique = true)

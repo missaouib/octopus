@@ -17,18 +17,25 @@ import java.util.Date;
 @Data
 public class InterviewDto implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_interview_seq")
+    @SequenceGenerator(name = "t_interview_seq", sequenceName = "t_interview_seq", allocationSize = 1)
     private int interviewId;
-
-    @NotBlank
-    private int applicationId;
-    private int interviewerId;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
+
     private String interviewPlace;
 
     @NotBlank
     private int interviewerStatus;
+
     private String interviewComment;
+
+    @JoinColumn(name = "application_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private ApplicationDto application;
+
+    @JoinColumn(name = "interviewer_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private InterviewerDto interviewer;
 }
