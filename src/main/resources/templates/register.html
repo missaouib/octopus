@@ -44,6 +44,14 @@
                                id="username" type="text" th:field="*{userName}" maxlength="20" autocomplete="off" required="required" autofocus />
                     </div>
                     <div class="form-group">
+                        <select style="width: 298px; height: 34px;" id="userRole" th:field="*{userRole}">
+                            <option value="ROLE_HR">ROLE_HR</option>
+                            <option value="ROLE_DPT">ROLE_DPT</option>
+                            <option value="ROLE_APPLICANT">ROLE_APPLICANT</option>
+                            <option value="ROLE_INTERVIEWER">ROLE_INTERVIEWER</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <input class="form-control" placeholder="Password"
                                id="password" type="password" th:field="*{userPassword}" maxlength="20" required="required" />
                     </div>

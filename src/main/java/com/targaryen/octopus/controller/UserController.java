@@ -1,18 +1,23 @@
 package com.targaryen.octopus.controller;
 
-import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
+import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,6 +34,12 @@ public class UserController {
         this.serviceFactory = serviceFactory;
     }
 
+    @RequestMapping(value = "")
+    public ModelAndView index(){
+        ModelAndView result = new ModelAndView("default");
+        return result;
+    }
+
     @RequestMapping(value = "/login")
     public ModelAndView login() {
         ModelAndView result = new ModelAndView("login");
@@ -37,13 +48,64 @@ public class UserController {
 
     @RequestMapping(value="/loginCheck")
     ModelAndView userLoginSuccess(UserVo user){
-        ModelAndView result = new ModelAndView("index");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)auth.getPrincipal();
+        Collection<? extends GrantedAuthority> grantedAuthorityList = userDetails.getAuthorities();
+        List<String> tmp = new ArrayList<String>();
+        for (GrantedAuthority grantedAuthority : grantedAuthorityList) {
+            tmp.add(grantedAuthority.getAuthority());
+        }
+        ModelAndView result = null;
+        if(tmp.size() != 1){
+            result = new ModelAndView("error");
+
+        }else {
+            if(tmp.get(0).equals(Role.APPLICANT)){
+                result = new ModelAndView("redirect:/octopus/applicant/index");
+            }else if(tmp.get(0).equals(Role.DPT)){
+                result = new ModelAndView("redirect:/octopus/dpt/index");
+            }else if(tmp.get(0).equals(Role.HR)){
+                result = new ModelAndView("redirect:/octopus/hr/index");
+            }else if(tmp.get(0).equals(Role.INTERVIEWER)){
+                result = new ModelAndView("redirect:/octopus/interviewer/index");
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping(value="/applicant/index")
+    ModelAndView applicantLogin(UserVo user){
+        ModelAndView result = new ModelAndView("applicant-index");
+
+        return result;
+    }
+
+    @RequestMapping(value="/dpt/index")
+    ModelAndView dptLogin(UserVo user){
+        ModelAndView result = new ModelAndView("dpt-index");
+
+        return result;
+    }
+
+    @RequestMapping(value="/hr/index")
+    ModelAndView hrLogin(UserVo user){
+        ModelAndView result = new ModelAndView("hr-index");
+
+        return result;
+    }
+
+    @RequestMapping(value="/interviewer/index")
+    ModelAndView interviewerLogin(UserVo user){
+        ModelAndView result = new ModelAndView("interviewer-index");
+
         return result;
     }
 
     @RequestMapping(value="/loginError")
     ModelAndView userLoginError(UserVo user){
         ModelAndView result = new ModelAndView("error");
+
         return result;
     }
 
@@ -61,22 +123,5 @@ public class UserController {
         serviceFactory.getUserService().saveUser(user);
         ModelAndView result = new ModelAndView("login");
         return result;
-        /*if(userService.userRegister(user)){
-            ModelAndView res1 = new ModelAndView("default", "user", user);
-            List<String> departments = workshopService.getAllDepartment();
-            res1.getModel().put("departments", departments);
-            return res1;
-        }else {
-            ModelAndView res2 = new ModelAndView("register");
-            res2.getModel().put("istrue", true);
-            res2.getModel().put("user", new UserEntity());
-            return res2;
-        }*/
-    }
-
-    @RequestMapping("fd")
-    @ResponseBody
-    public String test(){
-        return "fda";
     }
 }
