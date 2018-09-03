@@ -7,6 +7,7 @@ import com.targaryen.octopus.dto.RoleDto;
 import com.targaryen.octopus.dto.UserDto;
 import com.targaryen.octopus.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,9 +29,10 @@ public class UserServiceImpl implements UserService {
     public void saveUser(UserVo userVo) {
         UserDto userDto = new UserDto();
         RoleDto roleDto = new RoleDto();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         userDto.setUserName(userVo.getUserName());
-        userDto.setUserPassword(userVo.getUserPassword());
+        userDto.setUserPassword(encoder.encode(userVo.getUserPassword()));
         userDtoRepository.save(userDto);
 
         roleDto.setRole("ROLE_USER");

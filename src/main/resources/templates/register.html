@@ -33,7 +33,7 @@
         <div class="col-sm-3">
         </div>
         <div class="panel-body col-md-6">
-            <form role="form" method="post" action="#">
+            <form role="form" method="post" th:action="@{/octopus/userRegister}" th:object="${user}">
                 <div>
                     <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
                 </div>
@@ -41,11 +41,11 @@
                 <fieldset>
                     <div class="form-group">
                         <input class="form-control" placeholder="Username"
-                               id="username" name="username" type="text" maxlength="20" autocomplete="off" required="required" autofocus />
+                               id="username" type="text" th:field="*{userName}" maxlength="20" autocomplete="off" required="required" autofocus />
                     </div>
                     <div class="form-group">
                         <input class="form-control" placeholder="Password"
-                               id="password" name="password" type="password" maxlength="20" required="required" />
+                               id="password" type="password" th:field="*{userPassword}" maxlength="20" required="required" />
                     </div>
 
                     <button type="submit" class="btn btn-lg btn-success btn-block">Sign

@@ -22,14 +22,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/css/**", "/index").permitAll()
-                .antMatchers("/applicant/**").hasRole("APPLICANT")
-                .antMatchers("/hr/**").hasRole("HR")
-                .antMatchers("/interviewer/**").hasRole("INTERVIEWER")
-                .antMatchers("/dpt/**").hasRole("DPT")
+                .antMatchers("/css/**", "/index", "/octopus/register", "/octopus/userRegister").permitAll()
+                .antMatchers("/octopus/applicant/**").hasRole("APPLICANT")
+                .antMatchers("/octopus/hr/**").hasRole("HR")
+                .antMatchers("/octopus/interviewer/**").hasRole("INTERVIEWER")
+                .antMatchers("/octopus/dpt/**").hasRole("DPT")
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/loginCheck").failureUrl("/login-error")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
+                .and().formLogin().loginPage("/octopus/login").permitAll().defaultSuccessUrl("/octopus/loginCheck").failureUrl("/octopus/loginError")
+                .and().logout().logoutUrl("/octopus/logout").logoutSuccessUrl("/octopus/login");
     }
 
     @Override
