@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author He Junfeng
+ */
 @Service
 public class DptManagerServiceImpl implements DptManagerService {
     private DptManagerDtoRepository dptManagerDtoRepository;
@@ -64,8 +67,14 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public void updatePost(PostDto post) {
-        postDtoRepository.save(post);
+    public void updatePost(PostDto updatePost) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
+        if(post != null) {
+            post.setPostName(updatePost.getPostName());
+            post.setPostDescription(updatePost.getPostDescription());
+            post.setPostRequirement(updatePost.getPostRequirement());
+            postDtoRepository.save(post);
+        }
     }
 
     @Override

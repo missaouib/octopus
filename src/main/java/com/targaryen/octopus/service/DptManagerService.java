@@ -32,7 +32,7 @@ public interface DptManagerService {
      * update post
      *
      */
-    void updatePost(PostDto post);
+    void updatePost(PostDto updatePost);
 
     /**
      * delete post
