@@ -14,7 +14,8 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 public class HRDto {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_hr_seq")
+    @SequenceGenerator(name = "t_hr_seq", sequenceName = "t_hr_seq", allocationSize = 1)
     private int hrId;
 
     @JoinColumn(name = "user_id")

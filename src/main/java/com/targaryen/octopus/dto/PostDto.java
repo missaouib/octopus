@@ -17,7 +17,8 @@ import java.util.List;
 @Data
 public class PostDto implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_post_seq")
+    @SequenceGenerator(name = "t_post_seq", sequenceName = "t_post_seq", allocationSize = 1)
     private int postId;
 
     @NotBlank

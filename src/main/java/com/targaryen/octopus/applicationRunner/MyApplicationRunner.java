@@ -28,7 +28,7 @@ public class MyApplicationRunner implements ApplicationRunner {
         post.setPostId(1);
         post.setPostName("test name");
         post.setPostDescription("test description");
-        post.setRequirement("test requirement");
+        post.setPostRequirement("test requirement");
         post.setStatus(1);
         post.setDptManager(dptManager);
         dptManagerService.createNewPost(post);

@@ -17,7 +17,8 @@ import java.util.List;
 @Data
 public class InterviewerDto implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_interviewer_seq")
+    @SequenceGenerator(name = "t_interviewer_seq", sequenceName = "t_interviewer_seq", allocationSize = 1)
     private int interviewerId;
 
     @NotBlank

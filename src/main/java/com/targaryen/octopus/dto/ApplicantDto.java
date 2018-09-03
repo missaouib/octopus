@@ -17,7 +17,8 @@ import java.util.List;
 @Data
 public class ApplicantDto implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_applicant_seq")
+    @SequenceGenerator(name = "t_applicant_seq", sequenceName = "t_applicant_seq", allocationSize = 1)
     private int applicantId;
 
     @JoinColumn(name = "user_id")

@@ -17,7 +17,8 @@ import java.util.Date;
 @Data
 public class InterviewDto implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_interview_seq")
+    @SequenceGenerator(name = "t_interview_seq", sequenceName = "t_interview_seq", allocationSize = 1)
     private int interviewId;
 
     @Temporal(TemporalType.TIMESTAMP)

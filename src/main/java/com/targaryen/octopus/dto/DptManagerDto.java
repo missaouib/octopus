@@ -13,7 +13,8 @@ import java.util.List;
 @Table(name = "t_dpt_manager")
 public class DptManagerDto {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_dpt_manager_seq")
+    @SequenceGenerator(name = "t_dpt_manager_seq", sequenceName = "t_dpt_manager_seq", allocationSize = 1)
     private int dptManagerId;
 
     @JoinColumn(name = "user_id")

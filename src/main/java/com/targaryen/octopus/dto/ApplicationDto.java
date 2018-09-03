@@ -18,7 +18,8 @@ import java.util.List;
 @Data
 public class ApplicationDto implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_application_seq")
+    @SequenceGenerator(name = "t_application_seq", sequenceName = "t_application_seq", allocationSize = 1)
     private int applicationId;
 
     @NotBlank
