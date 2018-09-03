@@ -25,7 +25,7 @@ public class PostDto implements Serializable {
 
     private String postDescription;
 
-    private String requirement;
+    private String postRequirement;
 
     private int status;
 
