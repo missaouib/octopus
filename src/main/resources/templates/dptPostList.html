@@ -29,7 +29,7 @@
                         <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" style="width:100%;">
 
                             <button type="button" class="btn btn-outline btn-default"
-                                    data-toggle="modal" data-target="#add">
+                                    onclick="{location.href='add'}">
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                 Add new
                             </button>
@@ -49,11 +49,11 @@
                             </thead>
 
                             <tbody>
-                                <th>
+                                <th:block th:each="post : ${postList}">
                                     <tr>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>test</td>
+                                        <td th:text="${post.postName}"></td>
+                                        <td th:text="${post.postDescription}"></td>
+                                        <td th:text="${post.postRequirement}"></td>
                                         <td>
                                             <button type="button"
                                                     onclick=""
@@ -62,7 +62,7 @@
                                                 Revoke
                                             </button>
                                             <button type="button"
-                                                    onclick="{location.href='detail'}"
+                                                    th:onclick="@{"{location.href='detail/' + }"}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
                                                 Show detail
