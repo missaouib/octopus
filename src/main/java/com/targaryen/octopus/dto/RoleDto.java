@@ -17,11 +17,13 @@ import java.io.Serializable;
 public class RoleDto implements Serializable {
     @Id
     @GeneratedValue
+    @Column(name = "role_id")
     private int roleId;
 
-    @NotBlank
-    private int userId;
+    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.MERGE)
+    private UserDto user;
 
-    @NotBlank
+    @Column(name = "role")
     private String role;
 }

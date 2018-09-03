@@ -13,16 +13,19 @@ import java.io.Serializable;
  * */
 @Entity
 @Table(name = "t_user")
-@EntityListeners(AuditingEntityListener.class)
 @Data
 public class UserDto implements Serializable {
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private int userId;
 
-    @NotBlank
+    @Column(name = "user_name", unique = true)
     private String userName;
 
-    @NotBlank
+    @Column(name = "user_password")
     private String userPassword;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private RoleDto role;
 }
