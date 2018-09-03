@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -25,10 +26,15 @@ public class DptManagerController {
         this.dptManagerService = serviceFactory.getDptManagerService();
     }
 
-    @RequestMapping("/dpt/post/add")
-    public String postAdd(ModelMap map) {
+    @RequestMapping(value = "/dpt/post/add", method = RequestMethod.GET)
+    public String postAddGet(ModelMap map) {
         map.addAttribute("title", "Add new post need");
         return "dptPostDetail";
+    }
+
+    @RequestMapping(value = "/dpt/post/add", method = RequestMethod.POST)
+    public String postAddPost(PostDto postDto) {
+        return "";
     }
 
     @RequestMapping("/dpt/post/list")

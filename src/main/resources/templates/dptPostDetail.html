@@ -44,7 +44,7 @@
                         </div>
 
                         <div>
-                            <input type="text" name="postName" placeholder="e.g. Java Developer" class="form-control">
+                            <input type="text" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control">
                         </div>
 
                     </div>
@@ -60,7 +60,9 @@
                         </div>
 
                         <div class="ibox-content">
-                            <textarea name="postDescription" data-provide="markdown" rows="10"></textarea>
+                            <textarea id="postDescription" name="postDescription" data-provide="markdown" rows="10">
+                                [[${title}]]
+                            </textarea>
                         </div>
 
                     </div>
@@ -76,7 +78,7 @@
                         </div>
 
                         <div class="ibox-content">
-                            <textarea name="postRequirement" data-provide="markdown" rows="10"></textarea>
+                            <textarea id="postRequirement" name="postRequirement" data-provide="markdown" rows="10"></textarea>
                         </div>
 
                     </div>
