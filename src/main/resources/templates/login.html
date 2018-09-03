@@ -1,3 +1,4 @@
+<!--fileName: login.html-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -27,34 +28,77 @@
 </head>
 
 <body class="gray-bg" th:background="@{/img/1.jpg}" style="background-size:cover;overflow:-Scroll;overflow-y:hidden">
-    <div class="signinpanel text-center loginscreen">
-        <div class="row">
-            <div class="col-sm-3">
-            </div>
-            <div class="col-md-6">
-                <form method="post" action="side/bar/index">
-                    <div>
-                        <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
+<div class="signinpanel text-center loginscreen">
+    <div class="row">
+        <div class="col-sm-3">
+        </div>
+        <div class="panel-body col-md-6">
+            <form role="form" method="post" action="#">
+                <div>
+                    <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
+                </div>
+
+                <h2>Octopus</h2>
+                <fieldset>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Username"
+                               id="username" name="username" type="text" maxlength="20" autocomplete="off" required="required" autofocus />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Password"
+                               id="password" name="password" type="password" maxlength="20" required="required" />
                     </div>
 
-                    <h2>Octopus</h2>
-                    <h3 class="no-margins">请选择您需要进入的页面与身份</h3>
-                    <h4 class="no-margins">（为便于演示，跳过了密码环节）</h4>
+                    <button type="submit" class="btn btn-lg btn-success btn-block">Sign
+                        In</button>
+                    <a th:href="@{/octopus/register}" class="btn btn-lg btn-warning btn-block"
+                       target="_blank">Sign Up</a>
+                </fieldset>
+            </form>
+            <!--<form role="form" method="post" th:action="@{/userLogin}" th:object="${user}">
+                <div>
+                    <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
+                </div>
 
-                    <select id="type" name="type" class="form-control">
-                        <option value="1">管理员</option>
-                        <option value="2">店长</option>
-                        <option value="3">员工</option>
-                    </select>
+                <h2>Octopus</h2>
+                <h3 class="no-margins">请选择您需要进入的页面与身份</h3>
+                <h4 class="no-margins">（为便于演示，跳过了密码环节）</h4>
+                <fieldset>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Username"
+                               id="username" name="username" type="text" th:field="*{name}" maxlength="20" required="required" autofocus />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Password"
+                               id="password" name="password" type="password" th:field="*{password}" maxlength="20" required="required" />
+                    </div>
+                    <div class="checkbox">
+                        <label> <input name="remember" type="checkbox"
+                                       value="Remember Me">Remember Me
+                        </label>
+                    </div>
 
-                    <button class="btn btn-success btn-block">进入</button>
-                    <a class="btn btn-warning btn-block" onclick="showOpenSource();">开源软件声明</a>
-                </form>
-            </div>
+                    <button type="submit" class="btn btn-lg btn-success btn-block">Sign
+                        In</button>
+                    <a href="/register" class="btn btn-lg btn-success btn-block"
+                       target="_blank">Sign Up</a>
+                </fieldset>
+
+
+                &lt;!&ndash;<select id="type" name="type" class="form-control">
+                    <option value="1">管理员</option>
+                    <option value="2">店长</option>
+                    <option value="3">员工</option>
+                </select>&ndash;&gt;
+
+                <button class="btn btn-success btn-block">进入</button>
+                <a class="btn btn-warning btn-block" onclick="showOpenSource();">开源软件声明</a>
+            </form>-->
         </div>
     </div>
+</div>
 
-    <script>
+<script>
         function showOpenSource() {
             swal({
                 title: "Open Source Components",
