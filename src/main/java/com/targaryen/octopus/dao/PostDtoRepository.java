@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostDtoRepository extends JpaRepository<PostDto, Integer> {
     public void deletePostDtoByPostId(Integer id);
+
+    public PostDto findPostDtoByPostId(Integer id);
 }

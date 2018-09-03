@@ -17,6 +17,12 @@ public interface DptManagerService {
     List<PostVo> findPostsByDptManagerId(int dptManagerId);
 
     /**
+     * find posts by Id
+     *
+     */
+    PostVo findPostById(int postId);
+
+    /**
      * create new post
      *
      */
@@ -39,5 +45,6 @@ public interface DptManagerService {
      *
      */
     void saveDptManager(DptManagerDto dptManager);
+
 
 }

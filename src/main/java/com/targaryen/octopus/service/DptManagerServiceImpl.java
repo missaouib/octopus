@@ -38,6 +38,18 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
+    public PostVo findPostById(int postId) {
+        PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+        return new PostVo.Builder()
+                .postId(postDto.getPostId())
+                .postName(postDto.getPostName())
+                .postDescription(postDto.getPostDescription())
+                .requirement(postDto.getRequirement())
+                .status(postDto.getStatus())
+                .build();
+    }
+
+    @Override
     public void createNewPost(PostDto newPost) {
         postDtoRepository.save(newPost);
     }
