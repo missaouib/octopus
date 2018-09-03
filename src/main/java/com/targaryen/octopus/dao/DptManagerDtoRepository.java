@@ -1,4 +1,11 @@
 package com.targaryen.octopus.dao;
 
-public interface DepartmentManagerDtorepository {
+import com.targaryen.octopus.dto.DptManagerDto;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ *  @author He Junfeng
+ * */
+public interface DptManagerDtoRepository extends JpaRepository<DptManagerDto, Integer> {
+    public DptManagerDto findDptManagerDtoByDptManagerId(Integer id);
 }

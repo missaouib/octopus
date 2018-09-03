@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  *  @author Liu Mengyang
  * */
 @Repository
-public interface CandidateDtoRepository extends JpaRepository<ApplicantDto, Integer> {
+public interface ApplicantDtoRepository extends JpaRepository<ApplicantDto, Integer> {
 }

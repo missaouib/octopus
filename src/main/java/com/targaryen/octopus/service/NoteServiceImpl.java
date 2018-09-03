@@ -10,12 +10,10 @@ import java.util.List;
 
 @Component
 public class NoteServiceImpl implements NoteService {
-    private final DaoFactory daoFactory;
     private final NoteRepository noteRepository;
 
     @Autowired
     public NoteServiceImpl(DaoFactory daoFactory) {
-        this.daoFactory = daoFactory;
         this.noteRepository = daoFactory.getNoteRepository();
     }
 

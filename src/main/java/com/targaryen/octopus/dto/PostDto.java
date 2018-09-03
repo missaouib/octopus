@@ -3,27 +3,36 @@ package com.targaryen.octopus.dto;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.naming.Name;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *  @author Liu Mengyang
  * */
 @Entity
-@Table(name = "t_job")
+@Table(name = "t_post")
 @EntityListeners(AuditingEntityListener.class)
 @Data
-public class JobDto implements Serializable {
+public class PostDto implements Serializable {
     @Id
     @GeneratedValue
-    private int jobId;
+    private int postId;
 
     @NotBlank
-    private String jobName;
+    private String postName;
 
-    private String jobDescription;
+    private String postDescription;
 
-    private String Requirement;
+    private String requirement;
+
+    private int status;
+
+    @JoinColumn(name = "dpt_manager_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private DptManagerDto dptManager;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<ApplicationDto> applications;
 }

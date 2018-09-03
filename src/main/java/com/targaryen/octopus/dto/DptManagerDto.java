@@ -10,16 +10,16 @@ import java.util.List;
  * */
 @Data
 @Entity
-@Table(name = "t_department_manager")
-public class DepartmentManagerDto {
+@Table(name = "t_dpt_manager")
+public class DptManagerDto {
     @Id
     @GeneratedValue
-    private int departmentManagerId;
+    private int dptManagerId;
 
     @JoinColumn(name = "user_id")
     @OneToOne(cascade = CascadeType.MERGE)
     private UserDto user;
 
-    @OneToMany(mappedBy = "departmentManager", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "dptManager", cascade = CascadeType.REMOVE)
     private List<PostDto> posts;
 }

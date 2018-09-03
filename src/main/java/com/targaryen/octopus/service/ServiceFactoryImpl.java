@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServiceFactoryImpl implements ServiceFactory{
     private final NoteService noteService;
+    @Autowired
+    private DptManagerService dptManagerService;
 
     @Autowired
     public ServiceFactoryImpl(NoteService noteService) {
@@ -16,4 +18,10 @@ public class ServiceFactoryImpl implements ServiceFactory{
     public NoteService getNoteService() {
         return this.noteService;
     }
+
+    @Override
+    public DptManagerService getDptManagerService() {
+        return dptManagerService;
+    }
+
 }

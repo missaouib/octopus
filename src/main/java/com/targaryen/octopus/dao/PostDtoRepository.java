@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
  *  @author Liu Mengyang
  * */
 @Repository
-public interface JobDtoRepository extends JpaRepository<PostDto, Integer> {
+public interface PostDtoRepository extends JpaRepository<PostDto, Integer> {
+    public void deletePostDtoByPostId(Integer id);
 }

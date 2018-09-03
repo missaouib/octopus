@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 /**
 *  @author Liu Mengyang
@@ -21,11 +22,16 @@ public class ApplicationDto implements Serializable {
     private int applicationId;
 
     @NotBlank
-    private int candidateId;
-
-    @NotBlank
-    private int jobId;
-
-    @NotBlank
     private int status;
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.REMOVE)
+    private List<InterviewDto> interviews;
+
+    @JoinColumn(name = "applicant_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private ApplicantDto applicant;
+
+    @JoinColumn(name = "post_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private PostDto post;
 }
