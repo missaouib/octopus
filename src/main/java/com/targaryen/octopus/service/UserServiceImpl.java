@@ -1,24 +1,34 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.dao.DaoFactory;
-import com.targaryen.octopus.dao.RoleDtoRepository;
-import com.targaryen.octopus.dao.UserDtoRepository;
-import com.targaryen.octopus.dto.RoleDto;
-import com.targaryen.octopus.dto.UserDto;
+import com.targaryen.octopus.dao.*;
+import com.targaryen.octopus.dto.*;
+import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Created by Liu Mengyang on 2018/09/03
+ */
+
 @Service
 public class UserServiceImpl implements UserService {
     private UserDtoRepository userDtoRepository;
     private RoleDtoRepository roleDtoRepository;
+    private ApplicantDtoRepository applicantDtoRepository;
+    private InterviewerDtoRepository interviewerDtoRepository;
+    private HRDtoRepository hrDtoRepository;
+    private DptManagerDtoRepository dptManagerDtoRepository;
 
     @Autowired
     public UserServiceImpl(DaoFactory daoFactory) {
         this.userDtoRepository = daoFactory.getUserDtoRepository();
         this.roleDtoRepository = daoFactory.getRoleDtoRepository();
+        this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
+        this.interviewerDtoRepository = daoFactory.getInterviewerDtoRepository();
+        this.hrDtoRepository = daoFactory.getHRDtoRepository();
+        this.dptManagerDtoRepository = daoFactory.getDptManagerDtoRepository();
     }
 
     /**
@@ -38,6 +48,32 @@ public class UserServiceImpl implements UserService {
         roleDto.setRole(userVo.getUserRole());
         roleDto.setUser(userDto);
         roleDtoRepository.save(roleDto);
+
+        switch (roleDto.getRole()) {
+            case Role.APPLICANT:
+                ApplicantDto applicantDto = new ApplicantDto();
+                applicantDto.setUser(userDto);
+                applicantDtoRepository.save(applicantDto);
+                break;
+            case Role.DPT:
+                DptManagerDto dptManagerDto = new DptManagerDto();
+                dptManagerDto.setUser(userDto);
+                dptManagerDtoRepository.save(dptManagerDto);
+                break;
+            case Role.HR:
+                HRDto hrDto = new HRDto();
+                hrDto.setUser(userDto);
+                hrDtoRepository.save(hrDto);
+                break;
+            case Role.INTERVIEWER:
+                InterviewerDto interviewerDto = new InterviewerDto();
+                interviewerDto.setUser(userDto);
+                interviewerDtoRepository.save(interviewerDto);
+                break;
+            default:
+                return;
+
+        }
     }
 
     public UserVo getUserByUserName(String userName) {
