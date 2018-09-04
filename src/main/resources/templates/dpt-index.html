@@ -31,14 +31,15 @@
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear">
                                 <span class="block m-t-xs">
-                                    <strong class="font-bold">Role</strong>
+                                    <strong class="font-bold">[[${userName}]]</strong>
                                 </span>
-                                <span class="text-muted text-xs block">Name<b class="caret"></b></span>
+                                <span class="text-muted text-xs block">[[${roleName}]]<b class="caret"></b></span>
                             </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li>
-                                <a href="/octopus/logout">Log out</a>
+                                <a onclick="document.getElementById('logOut').submit();">Log out</a>
+                                <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
                             </li>
                         </ul>
                     </div>
