@@ -20,17 +20,17 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        DptManagerDto dptManager = new DptManagerDto();
-        dptManager.setDptManagerId(1);
-        dptManagerService.saveDptManager(dptManager);
-
-        PostDto post = new PostDto();
-        post.setPostId(1);
-        post.setPostName("test name");
-        post.setPostDescription("test description");
-        post.setPostRequirement("test requirement");
-        post.setStatus(1);
-        post.setDptManager(dptManager);
-        dptManagerService.createNewPost(post);
+//        DptManagerDto dptManager = new DptManagerDto();
+//        dptManager.setDptManagerId(1);
+//        dptManagerService.saveDptManager(dptManager);
+//
+//        PostDto post = new PostDto();
+//        post.setPostId(1);
+//        post.setPostName("test name");
+//        post.setPostDescription("test description");
+//        post.setPostRequirement("test requirement");
+//        post.setStatus(1);
+//        post.setDptManager(dptManager);
+//        dptManagerService.createNewPost(post);
     }
 }
