@@ -58,15 +58,7 @@
           text-decoration: none;
         }
     </style>
-    <script type="text/javascript">
-        window.onload = function() {
-            document.getElementById('viewDetail').onclick =function() {
-                alert("jump to new page");
-            }
-        }
-    </script>
 </head>
-
 <body>
 
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;">
@@ -124,8 +116,8 @@
                             <td th:text="${ps.postType}"></td>
                             <td th:text="${ps.postLocale}"></td>
                             <td>
-                                <button id="viewDetail" type="button" class="btn btn-warning">
-                                    <i class="fa fa-file-text"> View Detail</i></a>
+                                <button type="button" class="btn btn-warning">
+                                    <a th:href="@{'/octopus/postDetail/' + ${ps.postId}}" style="color: #eee;"><i class="fa fa-file-text"> View Detail</i></a>
                                 </button>
                             </td>
                         </tr>
