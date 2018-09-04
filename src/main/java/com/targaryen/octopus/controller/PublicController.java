@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class PublicController {
     @RequestMapping(value = "")
     public ModelAndView index(){
         ModelAndView result = new ModelAndView("default");
-        List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.POSTED);
+        List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED);
         /*for(PostVo tmp : posts){
             System.out.println("[msg]: " + tmp.getPostName());
         }*/
