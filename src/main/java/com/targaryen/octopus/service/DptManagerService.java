@@ -45,6 +45,4 @@ public interface DptManagerService {
      *
      */
     int revokePost(int postId);
-
-
 }

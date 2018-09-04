@@ -42,6 +42,7 @@ public interface HRService {
      */
     int updatePost(PostVo updatePost);
 
+
     /**
      * find applications by postId
      *
