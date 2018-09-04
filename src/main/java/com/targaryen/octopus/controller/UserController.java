@@ -3,6 +3,7 @@ package com.targaryen.octopus.controller;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.vo.UserVo;
+import org.apache.maven.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -82,9 +84,10 @@ public class UserController {
     }
 
     @RequestMapping(value="/dpt/index")
-    ModelAndView dptLogin(UserVo user){
+    ModelAndView dptLogin(UserVo user, ModelMap map){
         ModelAndView result = new ModelAndView("dpt-index");
-
+        map.addAttribute("roleName", Role.getRoleNameByAuthority(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
+        map.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         return result;
     }
 
