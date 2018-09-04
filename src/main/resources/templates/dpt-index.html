@@ -18,12 +18,13 @@
     <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
 </head>
 
-<body class="fixed-sidebar full-height-layout gray-bg">
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
 <div id="wrapper">
+    <!-- Left Bar Start -->
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="nav-close"><i class="fa fa-times-circle"></i>
         </div>
-        <div>
+        <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element">
@@ -42,6 +43,11 @@
                                 <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
                             </li>
                         </ul>
+
+                    </div>
+
+                    <!-- Beautiful logo -->
+                    <div class="logo-element">Dpt
                     </div>
                 </li>
 
@@ -57,17 +63,32 @@
                         </li>
                     </ul>
                 </li>
-
             </ul>
         </div>
     </nav>
+    <!-- Left Bar End -->
 
-    <!-- Default page -->
+    <!-- Top Bar Start -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Default Page -->
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/octopus/dpt/post/list}" frameborder="0"></iframe>
         </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="pull-right">House Targaryen / octopus
+            </div>
+        </div>
     </div>
+    <!-- Top Bar End -->
 
 </div>
 
