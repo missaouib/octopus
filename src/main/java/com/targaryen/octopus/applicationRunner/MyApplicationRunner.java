@@ -26,9 +26,11 @@ public class MyApplicationRunner implements ApplicationRunner {
 
         PostDto post = new PostDto();
         post.setPostId(1);
-        post.setPostName("test name");
-        post.setPostDescription("test description");
-        post.setPostRequirement("test requirement");
+        post.setPostName("Java Developer");
+        post.setPostType("Engineer");
+        post.setPostLocale("Tokyo");
+        post.setPostDescription("Are you passionate about technology in its many forms? Are you excited by interacting with people throughout the day, in person, on the phone, via email, and chat?");
+        post.setPostRequirement("Unfortunately you are not.");
         post.setStatus(1);
         post.setDptManager(dptManager);
         dptManagerService.createNewPost(post);
