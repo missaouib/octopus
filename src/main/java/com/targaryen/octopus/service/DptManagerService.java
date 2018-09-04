@@ -41,6 +41,12 @@ public interface DptManagerService {
     void deletePost(int postId);
 
     /**
+     * revoke post by postId
+     *
+     */
+    void revokePost(int postId);
+
+    /**
      * save DptManager
      *
      */

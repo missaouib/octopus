@@ -4,4 +4,5 @@ public interface ServiceFactory {
     NoteService getNoteService();
     UserService getUserService();
     DptManagerService getDptManagerService();
+    HRService getHRService();
 }

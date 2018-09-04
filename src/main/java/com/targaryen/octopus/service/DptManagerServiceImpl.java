@@ -37,6 +37,8 @@ public class DptManagerServiceImpl implements DptManagerService {
                     .map(n -> new PostVo.Builder()
                             .postId(n.getPostId())
                             .postName(n.getPostName())
+                            .postType(n.getPostType())
+                            .postLocale(n.getPostLocale())
                             .postDescription(n.getPostDescription())
                             .postRequirement(n.getPostRequirement())
                             .status(n.getStatus())
@@ -54,6 +56,8 @@ public class DptManagerServiceImpl implements DptManagerService {
             return new PostVo.Builder()
                     .postId(postDto.getPostId())
                     .postName(postDto.getPostName())
+                    .postType(postDto.getPostType())
+                    .postLocale(postDto.getPostLocale())
                     .postDescription(postDto.getPostDescription())
                     .postRequirement(postDto.getPostRequirement())
                     .status(postDto.getStatus())
@@ -71,6 +75,8 @@ public class DptManagerServiceImpl implements DptManagerService {
         PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
         if(post != null) {
             post.setPostName(updatePost.getPostName());
+            post.setPostType(updatePost.getPostType());
+            post.setPostLocale(updatePost.getPostLocale());
             post.setPostDescription(updatePost.getPostDescription());
             post.setPostRequirement(updatePost.getPostRequirement());
             postDtoRepository.save(post);
@@ -80,6 +86,15 @@ public class DptManagerServiceImpl implements DptManagerService {
     @Override
     public void deletePost(int postId) {
         postDtoRepository.deletePostDtoByPostId(postId);
+    }
+
+    @Override
+    public void revokePost(int postId) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        if(post != null) {
+            post.setStatus(-1);
+            postDtoRepository.save(post);
+        }
     }
 
     @Override

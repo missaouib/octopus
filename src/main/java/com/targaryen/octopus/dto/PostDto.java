@@ -24,6 +24,10 @@ public class PostDto implements Serializable {
     @NotBlank
     private String postName;
 
+    private String postType;
+
+    private String postLocale;
+
     private String postDescription;
 
     private String postRequirement;

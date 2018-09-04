@@ -20,7 +20,7 @@ public interface HRService {
      * find post by postId
      *
      */
-    PostVo findPostById();
+    PostVo findPostById(int postId);
 
     /**
      * Publish post by postId
