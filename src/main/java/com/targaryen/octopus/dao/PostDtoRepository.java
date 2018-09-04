@@ -16,9 +16,11 @@ public interface PostDtoRepository extends JpaRepository<PostDto, Integer> {
 
     public PostDto findPostDtoByPostId(Integer id);
 
+    public List<PostDto> findPostDtoByStatus(Integer status);
+
     @Query("select t from PostDto t where t.status = 1")
     public List<PostDto> findPublishPosts();
 
     @Query("select t from PostDto t where t.status > -1")
-    public List<PostDto> findUnrevokePosts();
+    public List<PostDto> findUnrevokedPosts();
 }
