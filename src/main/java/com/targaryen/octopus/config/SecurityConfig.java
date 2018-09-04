@@ -30,6 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/octopus/login").permitAll().defaultSuccessUrl("/octopus/loginCheck").failureUrl("/octopus/loginError")
                 .and().logout().logoutUrl("/octopus/logout").logoutSuccessUrl("/octopus/login");
+
+        /* Zhao: Read this if you need help */
+        /* https://docs.spring.io/spring-security/site/docs/current/reference/html/headers.html#headers-frame-options */
+        http
+                .headers()
+                .frameOptions()
+                .sameOrigin();
     }
 
     @Override
