@@ -6,10 +6,12 @@ import com.targaryen.octopus.dao.PostDtoRepository;
 import com.targaryen.octopus.dto.ApplicantDto;
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.dto.ResumeDto;
+import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -71,32 +73,48 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public void publishPostById(int postId) {
-        PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
-        postDto.setStatus(1);
-        postDto.setPublishTime(Calendar.getInstance().getTime());
-        postDtoRepository.save(postDto);
+    public int publishPostById(int postId) {
+        try {
+            PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+            postDto.setStatus(1);
+            postDto.setPublishTime(Calendar.getInstance().getTime());
+            postDtoRepository.save(postDto);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
     }
 
     @Override
-    public void closePostById(int postId) {
-        PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
-        postDto.setStatus(0);
-        postDtoRepository.save(postDto);
+    public int closePostById(int postId) {
+        try {
+            PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+            postDto.setStatus(0);
+            postDtoRepository.save(postDto);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
     }
 
     @Override
-    public void updatePost(PostDto updatePost) {
-        PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
-        if(post != null) {
-            post.setPostName(updatePost.getPostName());
-            post.setPostType(updatePost.getPostType());
-            post.setPostLocale(updatePost.getPostLocale());
-            post.setPostDescription(updatePost.getPostDescription());
-            post.setPostRequirement(updatePost.getPostRequirement());
-            post.setRecruitNum(updatePost.getRecruitNum());
-            post.setRecruitDpt(updatePost.getRecruitDpt());
-            postDtoRepository.save(post);
+    public int updatePost(PostDto updatePost) {
+        try {
+            PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
+            if(post != null) {
+                post.setPostName(updatePost.getPostName());
+                post.setPostType(updatePost.getPostType());
+                post.setPostLocale(updatePost.getPostLocale());
+                post.setPostDescription(updatePost.getPostDescription());
+                post.setPostRequirement(updatePost.getPostRequirement());
+                post.setRecruitNum(updatePost.getRecruitNum());
+                post.setRecruitDpt(updatePost.getRecruitDpt());
+                postDtoRepository.save(post);
+            }
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
         }
     }
 
