@@ -15,7 +15,6 @@ public class ServiceFactoryImpl implements ServiceFactory{
     @Autowired
     private PublicService publicService;
 
-
     @Override
     public UserService getUserService() {
         return userService;
