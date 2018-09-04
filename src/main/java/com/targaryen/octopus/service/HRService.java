@@ -1,8 +1,9 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.dto.PostDto;
-import com.targaryen.octopus.vo.ApplicationHRVo;
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
+import com.targaryen.octopus.vo.ResumeVo;
 
 import java.util.List;
 
@@ -44,7 +45,11 @@ public interface HRService {
      * find applications by postId
      *
      */
-    List<ApplicationHRVo> findApplicationsByPostId(int postId);
+    List<ApplicationVo> findApplicationsByPostId(int postId);
 
-
+    /**
+     * find resume by applicantId
+     *
+     */
+    ResumeVo findResumeByApplicantId(int applicantId);
 }

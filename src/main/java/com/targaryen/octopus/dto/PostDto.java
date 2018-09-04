@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +32,13 @@ public class PostDto implements Serializable {
     private String postDescription;
 
     private String postRequirement;
+
+    private int recruitNum;
+
+    private String recruitDpt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date publishTime;
 
     private int status;
 

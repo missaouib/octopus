@@ -1,7 +1,6 @@
 package com.targaryen.octopus.dao;
 
 public interface DaoFactory {
-    NoteRepository getNoteRepository();
     ApplicationDtoRepository getApplicationDtoRepository();
     ApplicantDtoRepository getApplicantDtoRepository();
     DptManagerDtoRepository getDptManagerDtoRepository();

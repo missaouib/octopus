@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class DaoFactoryImpl implements DaoFactory{
     @Autowired
-    private NoteRepository noteRepository;
-    @Autowired
     private ApplicationDtoRepository applicationDtoRepository;
     @Autowired
     private ApplicantDtoRepository applicantDtoRepository;
@@ -28,11 +26,6 @@ public class DaoFactoryImpl implements DaoFactory{
     @Autowired
     private ResumeDtoRepository resumeDtoRepository;
 
-
-    @Override
-    public NoteRepository getNoteRepository() {
-        return noteRepository;
-    }
 
     @Override
     public ApplicationDtoRepository getApplicationDtoRepository() {

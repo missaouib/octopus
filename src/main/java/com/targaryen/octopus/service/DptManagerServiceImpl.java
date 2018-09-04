@@ -41,6 +41,9 @@ public class DptManagerServiceImpl implements DptManagerService {
                             .postLocale(n.getPostLocale())
                             .postDescription(n.getPostDescription())
                             .postRequirement(n.getPostRequirement())
+                            .recruitNum(n.getRecruitNum())
+                            .recruitDpt(n.getRecruitDpt())
+                            .publishTime(n.getPublishTime())
                             .status(n.getStatus())
                             .build())
                     .collect(Collectors.toList());
@@ -60,6 +63,9 @@ public class DptManagerServiceImpl implements DptManagerService {
                     .postLocale(postDto.getPostLocale())
                     .postDescription(postDto.getPostDescription())
                     .postRequirement(postDto.getPostRequirement())
+                    .recruitNum(postDto.getRecruitNum())
+                    .recruitDpt(postDto.getRecruitDpt())
+                    .publishTime(postDto.getPublishTime())
                     .status(postDto.getStatus())
                     .build();
         }
@@ -79,6 +85,8 @@ public class DptManagerServiceImpl implements DptManagerService {
             post.setPostLocale(updatePost.getPostLocale());
             post.setPostDescription(updatePost.getPostDescription());
             post.setPostRequirement(updatePost.getPostRequirement());
+            post.setRecruitNum(updatePost.getRecruitNum());
+            post.setRecruitDpt(updatePost.getRecruitDpt());
             postDtoRepository.save(post);
         }
     }

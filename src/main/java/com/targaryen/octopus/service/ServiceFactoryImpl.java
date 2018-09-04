@@ -9,16 +9,9 @@ public class ServiceFactoryImpl implements ServiceFactory{
     @Autowired
     private DptManagerService dptManagerService;
     @Autowired
-    private NoteService noteService;
-    @Autowired
     private UserService userService;
     @Autowired
     private HRService hrService;
-
-    @Override
-    public NoteService getNoteService() {
-        return this.noteService;
-    }
 
     @Override
     public UserService getUserService() {

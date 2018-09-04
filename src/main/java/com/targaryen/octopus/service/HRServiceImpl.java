@@ -1,11 +1,14 @@
 package com.targaryen.octopus.service;
 
+import com.targaryen.octopus.dao.ApplicantDtoRepository;
 import com.targaryen.octopus.dao.DaoFactory;
 import com.targaryen.octopus.dao.PostDtoRepository;
-import com.targaryen.octopus.dto.ApplicationDto;
+import com.targaryen.octopus.dto.ApplicantDto;
 import com.targaryen.octopus.dto.PostDto;
-import com.targaryen.octopus.vo.ApplicationHRVo;
+import com.targaryen.octopus.dto.ResumeDto;
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
+import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +22,11 @@ import java.util.stream.Collectors;
 @Service
 public class HRServiceImpl implements HRService {
     private PostDtoRepository postDtoRepository;
+    private ApplicantDtoRepository applicantDtoRepository;
 
     @Autowired
     public HRServiceImpl(DaoFactory daoFactory) {
+        this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
     }
 
@@ -35,6 +40,9 @@ public class HRServiceImpl implements HRService {
                         .postLocale(n.getPostLocale())
                         .postDescription(n.getPostDescription())
                         .postRequirement(n.getPostRequirement())
+                        .recruitNum(n.getRecruitNum())
+                        .recruitDpt(n.getRecruitDpt())
+                        .publishTime(n.getPublishTime())
                         .status(n.getStatus())
                         .build())
                 .collect(Collectors.toList());
@@ -53,6 +61,9 @@ public class HRServiceImpl implements HRService {
                     .postLocale(postDto.getPostLocale())
                     .postDescription(postDto.getPostDescription())
                     .postRequirement(postDto.getPostRequirement())
+                    .recruitNum(postDto.getRecruitNum())
+                    .recruitDpt(postDto.getRecruitDpt())
+                    .publishTime(postDto.getPublishTime())
                     .status(postDto.getStatus())
                     .build();
         }
@@ -81,23 +92,55 @@ public class HRServiceImpl implements HRService {
             post.setPostLocale(updatePost.getPostLocale());
             post.setPostDescription(updatePost.getPostDescription());
             post.setPostRequirement(updatePost.getPostRequirement());
+            post.setRecruitNum(updatePost.getRecruitNum());
+            post.setRecruitDpt(updatePost.getRecruitDpt());
             postDtoRepository.save(post);
         }
     }
 
     @Override
-    public List<ApplicationHRVo> findApplicationsByPostId(int postId) {
+    public List<ApplicationVo> findApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
-                    .map(n -> new ApplicationHRVo.Builder()
+                    .map(n -> new ApplicationVo.Builder()
                             .applicationId(n.getApplicationId())
                             .status(n.getStatus())
                             .applicantId(n.getApplicant().getApplicantId())
                             .postId(n.getPost().getPostId()).build())
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<ApplicationHRVo>();
+            return new ArrayList<ApplicationVo>();
         }
+    }
+
+    @Override
+    public ResumeVo findResumeByApplicantId(int applicantId) {
+        ApplicantDto applicant = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+        ResumeDto resumeDto;
+        if(applicant != null) {
+           resumeDto = applicant.getResume();
+        } else {
+            resumeDto = new ResumeDto();
+        }
+        ResumeVo resumeVo;
+        if(resumeDto != null) {
+            resumeVo = new ResumeVo.Builder()
+                    .resumeId(resumeDto.getResumeId())
+                    .applicantName(resumeDto.getApplicantName())
+                    .applicantSex(resumeDto.getApplicantSex())
+                    .applicantAge(resumeDto.getApplicantAge())
+                    .applicantSchool(resumeDto.getApplicantSchool())
+                    .applicantDegree(resumeDto.getApplicantDegree())
+                    .applicantMajor(resumeDto.getApplicantMajor())
+                    .applicantCity(resumeDto.getApplicantCity())
+                    .applicantEmail(resumeDto.getApplicantEmail())
+                    .applicantPhone(resumeDto.getApplicantPhone())
+                    .applicantCV(resumeDto.getApplicantCV())
+                    .build();
+        } else {
+            resumeVo = new ResumeVo.Builder().build();
+        }
+        return resumeVo;
     }
 }

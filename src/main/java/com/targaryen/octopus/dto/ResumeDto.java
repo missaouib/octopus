@@ -33,6 +33,7 @@ public class ResumeDto {
     private String applicantCV;
 
     @JoinColumn(name = "applicant_id")
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE)
     private ApplicantDto applicant;
+
 }

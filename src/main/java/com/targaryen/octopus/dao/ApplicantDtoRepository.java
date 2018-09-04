@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 public interface ApplicantDtoRepository extends JpaRepository<ApplicantDto, Integer> {
+    public ApplicantDto findApplicantDtoByApplicantId(Integer applicantId);
 }
