@@ -1,6 +1,7 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.vo.PostVo;
+import javafx.geometry.Pos;
 
 import java.util.List;
 
@@ -9,4 +10,5 @@ import java.util.List;
  */
 public interface PublicService {
     List<PostVo> listPostsByStatus(int status);
+    PostVo findPostById(int id);
 }
