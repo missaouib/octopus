@@ -42,8 +42,8 @@
                             <thead>
                             <tr class="footable even">
                                 <th>Post Name</th>
-                                <th>Post Description</th>
-                                <th>Post Requirement</th>
+                                <th>Post Type</th>
+                                <th>Post Locale</th>
                                 <th>Operation</th>
                             </tr>
                             </thead>
@@ -52,8 +52,8 @@
                                 <th:block th:each="post : ${postList}">
                                     <tr>
                                         <td th:text="${post.postName}"></td>
-                                        <td th:text="${post.postDescription}"></td>
-                                        <td th:text="${post.postRequirement}"></td>
+                                        <td th:text="${post.postType}"></td>
+                                        <td th:text="${post.postLocale}"></td>
                                         <td>
                                             <button type="button"
                                                     onclick=""
