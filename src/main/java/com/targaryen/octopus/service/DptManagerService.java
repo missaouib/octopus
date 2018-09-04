@@ -1,7 +1,5 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.dto.DptManagerDto;
-import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.vo.PostVo;
 
 import java.util.List;

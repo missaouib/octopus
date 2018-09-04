@@ -1,6 +1,5 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.InterviewerVo;
 import com.targaryen.octopus.vo.PostVo;
