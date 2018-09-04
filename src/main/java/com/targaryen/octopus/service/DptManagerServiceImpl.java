@@ -78,17 +78,7 @@ public class DptManagerServiceImpl implements DptManagerService {
 
     @Override
     public void updatePost(PostDto updatePost) {
-        PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
-        if(post != null) {
-            post.setPostName(updatePost.getPostName());
-            post.setPostType(updatePost.getPostType());
-            post.setPostLocale(updatePost.getPostLocale());
-            post.setPostDescription(updatePost.getPostDescription());
-            post.setPostRequirement(updatePost.getPostRequirement());
-            post.setRecruitNum(updatePost.getRecruitNum());
-            post.setRecruitDpt(updatePost.getRecruitDpt());
-            postDtoRepository.save(post);
-        }
+        postDtoRepository.save(updatePost);
     }
 
     @Override

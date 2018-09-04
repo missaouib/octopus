@@ -1,6 +1,7 @@
 package com.targaryen.octopus.util;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collection;
 
@@ -14,7 +15,8 @@ public class Role {
     final static public String INTERVIEWER = "ROLE_INTERVIEWER";
 
     /* Zhao */
-    public static String getRoleNameByAuthority(Collection<? extends GrantedAuthority> authorities) {
+    public static String getRoleNameByAuthority() {
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         switch (authorities.toArray()[0].toString()) {
             case "ROLE_HR":
                 return "HR";
