@@ -40,7 +40,7 @@ public interface HRService {
      * update post
      *
      */
-    int updatePost(PostDto updatePost);
+    int updatePost(PostVo updatePost);
 
     /**
      * find applications by postId

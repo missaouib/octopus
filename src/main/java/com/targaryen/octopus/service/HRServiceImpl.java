@@ -82,7 +82,7 @@ public class HRServiceImpl implements HRService {
     public int publishPostById(int postId) {
         try {
             PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
-            postDto.setStatus(PostStatus.POSTED);
+            postDto.setStatus(PostStatus.PUBLISHED);
             postDto.setPublishTime(Calendar.getInstance().getTime());
             postDtoRepository.save(postDto);
             return StatusCode.SUCCESS;
@@ -105,7 +105,7 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public int updatePost(PostDto updatePost) {
+    public int updatePost(PostVo updatePost) {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {

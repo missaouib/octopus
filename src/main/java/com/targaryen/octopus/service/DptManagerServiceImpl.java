@@ -75,9 +75,21 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public int createNewPost(PostDto newPost) {
+    public int createNewPost(PostVo newPost, int dptManagerId) {
         try {
-            postDtoRepository.save(newPost);
+            DptManagerDto dptManager = dptManagerDtoRepository.findDptManagerDtoByDptManagerId(dptManagerId);
+            PostDto postDto = new PostDto();
+            postDto.setPostId(newPost.getPostId());
+            postDto.setPostName(newPost.getPostName());
+            postDto.setPostType(newPost.getPostType());
+            postDto.setPostLocale(newPost.getPostLocale());
+            postDto.setPostDescription(newPost.getPostDescription());
+            postDto.setPostRequirement(newPost.getPostRequirement());
+            postDto.setRecruitNum(newPost.getRecruitNum());
+            postDto.setRecruitDpt(newPost.getRecruitDpt());
+            postDto.setStatus(newPost.getStatus());
+            postDto.setDptManager(dptManager);
+            postDtoRepository.save(postDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -85,7 +97,7 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public int updatePost(PostDto updatePost) {
+    public int updatePost(PostVo updatePost) {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {
@@ -122,16 +134,6 @@ public class DptManagerServiceImpl implements DptManagerService {
                 post.setStatus(PostStatus.REVOKED);
                 postDtoRepository.save(post);
             }
-            return StatusCode.SUCCESS;
-        } catch (DataAccessException e) {
-            return StatusCode.FAILURE;
-        }
-    }
-
-    @Override
-    public int saveDptManager(DptManagerDto dptManager) {
-        try {
-            dptManagerDtoRepository.save(dptManager);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;

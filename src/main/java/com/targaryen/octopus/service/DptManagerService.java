@@ -26,13 +26,13 @@ public interface DptManagerService {
      * create new post
      *
      */
-    int createNewPost(PostDto newPost);
+    int createNewPost(PostVo newPost, int dptManagerId);
 
     /**
      * update post
      *
      */
-    int updatePost(PostDto updatePost);
+    int updatePost(PostVo updatePost);
 
     /**
      * delete post
@@ -45,12 +45,6 @@ public interface DptManagerService {
      *
      */
     int revokePost(int postId);
-
-    /**
-     * save DptManager
-     *
-     */
-    int saveDptManager(DptManagerDto dptManager);
 
 
 }
