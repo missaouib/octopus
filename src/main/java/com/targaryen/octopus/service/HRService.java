@@ -52,4 +52,6 @@ public interface HRService {
      *
      */
     ResumeVo findResumeByApplicantId(int applicantId);
+
+
 }
