@@ -6,6 +6,7 @@ import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -89,8 +90,16 @@ public class UserServiceImpl implements UserService {
 
     public UserVo getUserByUserName(String userName) {
         UserVo userVo = new UserVo();
-        UserDto userDto = userDtoRepository.findUserDtoByUserName(userName);
-        RoleDto roleDto = userDto.getRole();
+        UserDto userDto;
+        RoleDto roleDto;
+
+        try {
+            userDto = userDtoRepository.findUserDtoByUserName(userName);
+        } catch (DataAccessException e) {
+            return null;
+        }
+
+        roleDto = userDto.getRole();
         userVo.setUserId(userDto.getUserId());
         userVo.setUserName(userDto.getUserName());
         userVo.setUserPassword(userDto.getUserPassword());
