@@ -36,4 +36,18 @@ public class PublicServiceImpl implements PublicService {
                 .postDescription(x.getPostDescription())
                 .status(x.getStatus()).build()).collect(Collectors.toList());
     }
+
+    @Override
+    public PostVo findPostById(int id) {
+        PostDto postDto = postDtoRepository.findPostDtoByPostId(id);
+
+        return new PostVo.Builder()
+                .postId(postDto.getPostId())
+                .postLocale(postDto.getPostLocale())
+                .postName(postDto.getPostName())
+                .postRequirement(postDto.getPostRequirement())
+                .postType(postDto.getPostType())
+                .postDescription(postDto.getPostDescription())
+                .status(postDto.getStatus()).build();
+    }
 }
