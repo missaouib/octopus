@@ -5,4 +5,6 @@ public interface ServiceFactory {
     UserService getUserService();
     DptManagerService getDptManagerService();
     HRService getHRService();
+    PublicService getPulicService();
+
 }
