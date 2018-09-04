@@ -119,42 +119,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr >
-                            <td>Java Programmer</td>
-                            <td>Engineer</td>
-                            <td>Shanghai</td>
+                        <tr th:each="ps: ${posts}">
+                            <td th:text="${ps.postName}"></td>
+                            <td th:text="${ps.postType}"></td>
+                            <td th:text="${ps.postLocale}"></td>
                             <td>
                                 <button id="viewDetail" type="button" class="btn btn-warning">
-                                    <i class="fa fa-file-text"> View Detail</i></a>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>C++ Programmer</td>
-                            <td>Engineer</td>
-                            <td>Beijing</td>
-                            <td>
-                                <button type="button" class="btn btn-warning">
-                                    <i class="fa fa-file-text"> View Detail</i></a>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>C++ Programmer</td>
-                            <td>Engineer</td>
-                            <td>Beijing</td>
-                            <td>
-                                <button type="button" class="btn btn-warning">
-                                    <i class="fa fa-file-text"> View Detail</i></a>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>C++ Programmer</td>
-                            <td>Engineer</td>
-                            <td>Beijing</td>
-                            <td>
-                                <button type="button" class="btn btn-warning">
                                     <i class="fa fa-file-text"> View Detail</i></a>
                                 </button>
                             </td>

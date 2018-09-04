@@ -34,12 +34,6 @@ public class UserController {
         this.serviceFactory = serviceFactory;
     }
 
-    @RequestMapping(value = "")
-    public ModelAndView index(){
-        ModelAndView result = new ModelAndView("default");
-        return result;
-    }
-
     @RequestMapping(value = "/login")
     public ModelAndView login() {
         ModelAndView result = new ModelAndView("login");
