@@ -5,8 +5,11 @@ import com.targaryen.octopus.dao.DptManagerDtoRepository;
 import com.targaryen.octopus.dao.PostDtoRepository;
 import com.targaryen.octopus.dto.DptManagerDto;
 import com.targaryen.octopus.dto.PostDto;
+import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,41 +75,66 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public void createNewPost(PostDto newPost) {
-        postDtoRepository.save(newPost);
-    }
-
-    @Override
-    public void updatePost(PostDto updatePost) {
-        PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
-        if(post != null) {
-            post.setPostName(updatePost.getPostName());
-            post.setPostType(updatePost.getPostType());
-            post.setPostLocale(updatePost.getPostLocale());
-            post.setPostDescription(updatePost.getPostDescription());
-            post.setPostRequirement(updatePost.getPostRequirement());
-            post.setRecruitNum(updatePost.getRecruitNum());
-            post.setRecruitDpt(updatePost.getRecruitDpt());
-            postDtoRepository.save(post);
+    public int createNewPost(PostDto newPost) {
+        try {
+            postDtoRepository.save(newPost);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
         }
     }
 
     @Override
-    public void deletePost(int postId) {
-        postDtoRepository.deletePostDtoByPostId(postId);
-    }
-
-    @Override
-    public void revokePost(int postId) {
-        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
-        if(post != null) {
-            post.setStatus(-1);
-            postDtoRepository.save(post);
+    public int updatePost(PostDto updatePost) {
+        try {
+            PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
+            if(post != null) {
+                post.setPostName(updatePost.getPostName());
+                post.setPostType(updatePost.getPostType());
+                post.setPostLocale(updatePost.getPostLocale());
+                post.setPostDescription(updatePost.getPostDescription());
+                post.setPostRequirement(updatePost.getPostRequirement());
+                post.setRecruitNum(updatePost.getRecruitNum());
+                post.setRecruitDpt(updatePost.getRecruitDpt());
+                postDtoRepository.save(post);
+            }
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
         }
     }
 
     @Override
-    public void saveDptManager(DptManagerDto dptManager) {
-        dptManagerDtoRepository.save(dptManager);
+    public int deletePost(int postId) {
+        try {
+            postDtoRepository.deletePostDtoByPostId(postId);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int revokePost(int postId) {
+        try {
+            PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+            if(post != null) {
+                post.setStatus(PostStatus.REVOKED);
+                postDtoRepository.save(post);
+            }
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int saveDptManager(DptManagerDto dptManager) {
+        try {
+            dptManagerDtoRepository.save(dptManager);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
     }
 }

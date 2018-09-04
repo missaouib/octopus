@@ -27,19 +27,19 @@ public interface HRService {
      * Publish post by postId
      *
      */
-    void publishPostById(int postId);
+    int publishPostById(int postId);
 
     /**
      * Close post by postId
      *
      */
-    void closePostById(int postId);
+    int closePostById(int postId);
 
     /**
      * update post
      *
      */
-    void updatePost(PostDto updatePost);
+    int updatePost(PostDto updatePost);
 
     /**
      * find applications by postId
