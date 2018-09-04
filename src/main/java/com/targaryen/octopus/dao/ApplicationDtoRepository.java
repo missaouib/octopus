@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 public interface ApplicationDtoRepository extends JpaRepository<ApplicationDto, Integer> {
+
+    public ApplicationDto findApplicationDtoByApplicationId(Integer id);
 }

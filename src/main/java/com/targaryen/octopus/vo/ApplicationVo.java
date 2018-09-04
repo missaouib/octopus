@@ -2,6 +2,9 @@ package com.targaryen.octopus.vo;
 
 import lombok.Getter;
 
+/**
+ * @author He Junfeng
+ */
 @Getter
 public class ApplicationVo {
     private final int applicationId;
