@@ -1,5 +1,6 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.entity.UserEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/loginCheck")
-    ModelAndView userLoginSuccess(UserVo user){
+    ModelAndView userLoginSuccess(UserEntity user){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails)auth.getPrincipal();
@@ -110,15 +111,16 @@ public class UserController {
     @RequestMapping(value = "/register")
     public ModelAndView register() {
         ModelAndView result = new ModelAndView("register");
-        result.getModel().put("user", new UserVo());
+        result.getModel().put("user", new UserEntity());
         return result;
     }
 
     @PostMapping("/userRegister")
-    ModelAndView userRegister(UserVo user){
+    ModelAndView userRegister(UserEntity user){
 
         //System.out.println("[msg]: " + user.getUserName() + ", " + user.getUserPassword());
-        serviceFactory.getUserService().saveUser(user);
+        UserVo userVo = new UserVo.Builder().userName(user.getUserName()).userPassword(user.getUserPassword()).userRole(user.getUserRole()).build();
+        serviceFactory.getUserService().saveUser(userVo);
         ModelAndView result = new ModelAndView("login");
         return result;
     }
