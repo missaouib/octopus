@@ -33,36 +33,47 @@
                         <div class="ibox-title">
                             <h1 th:text="${title}"></h1>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
+                        <div class="ibox-content form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Post Name:</label>
 
-                        <div class="ibox-title">
-                            <h5>Post Name:</h5>
-                        </div>
+                                <div class="col-sm-8">
+                                    <input type="text" th:value="${post.postName}" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control">
+                                </div>
+                            </div>
 
-                        <div>
-                            <input type="text" th:value="${post.postName}" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control">
-                        </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Post Type:</label>
 
-                        <div class="ibox-title">
-                            <h5>Post Type:</h5>
-                        </div>
+                                <div class="col-sm-8">
+                                    <input type="text" th:value="${post.postType}" id="postType" name="postType" placeholder="e.g. Engineer" class="form-control">
+                                </div>
+                            </div>
 
-                        <div>
-                            <input type="text" th:value="${post.postType}" id="postType" name="postType" placeholder="e.g. Engineer" class="form-control">
-                        </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Post Locale:</label>
 
-                        <div class="ibox-title">
-                            <h5>Post Locale:</h5>
-                        </div>
+                                <div class="col-sm-8">
+                                    <input type="text" th:value="${post.postLocale}" id="postLocale" name="postLocale" placeholder="e.g. Melbourne" class="form-control">
+                                </div>
+                            </div>
 
-                        <div>
-                            <input type="text" th:value="${post.postLocale}" id="postLocale" name="postLocale" placeholder="e.g. Melbourne" class="form-control">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Post Recruit Number:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" th:value="${post.recruitNum}" id="recruitNum" name="recruitNum" placeholder="e.g. 5" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Post Recruit Department:</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" th:value="${post.recruitDpt}" id="recruitDpt" name="recruitDpt" placeholder="e.g. HUE development" class="form-control">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
