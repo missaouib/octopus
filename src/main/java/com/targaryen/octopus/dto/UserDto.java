@@ -34,7 +34,7 @@ public class UserDto implements Serializable {
     private HRDto hr;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private ApplicationDto application;
+    private ApplicantDto applicant;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private InterviewerDto interviewer;
