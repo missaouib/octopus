@@ -1,10 +1,10 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.dao.DaoFactory;
-import com.targaryen.octopus.dao.DptManagerDtoRepository;
 import com.targaryen.octopus.dao.PostDtoRepository;
-import com.targaryen.octopus.dto.DptManagerDto;
+import com.targaryen.octopus.dto.ApplicationDto;
 import com.targaryen.octopus.dto.PostDto;
+import com.targaryen.octopus.vo.ApplicationHRVo;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,34 +17,27 @@ import java.util.stream.Collectors;
  * @author He Junfeng
  */
 @Service
-public class DptManagerServiceImpl implements DptManagerService {
-    private DptManagerDtoRepository dptManagerDtoRepository;
+public class HRServiceImpl implements HRService {
     private PostDtoRepository postDtoRepository;
 
     @Autowired
-    public DptManagerServiceImpl(DaoFactory daoFactory) {
-        this.dptManagerDtoRepository = daoFactory.getDptManagerDtoRepository();
+    public HRServiceImpl(DaoFactory daoFactory) {
         this.postDtoRepository = daoFactory.getPostDtoRepository();
     }
 
     @Override
-    public List<PostVo> findPostsByDptManagerId(int dptManagerId) {
-        DptManagerDto dptManager = dptManagerDtoRepository.findDptManagerDtoByDptManagerId(dptManagerId);
-        if(dptManager == null) {
-            return new ArrayList<PostVo>();
-        } else {
-            return dptManager.getPosts().stream()
-                    .map(n -> new PostVo.Builder()
-                            .postId(n.getPostId())
-                            .postName(n.getPostName())
-                            .postType(n.getPostType())
-                            .postLocale(n.getPostLocale())
-                            .postDescription(n.getPostDescription())
-                            .postRequirement(n.getPostRequirement())
-                            .status(n.getStatus())
-                            .build())
-                    .collect(Collectors.toList());
-        }
+    public List<PostVo> listPosts() {
+        return postDtoRepository.findUnrevokePosts().stream()
+                .map(n -> new PostVo.Builder()
+                        .postId(n.getPostId())
+                        .postName(n.getPostName())
+                        .postType(n.getPostType())
+                        .postLocale(n.getPostLocale())
+                        .postDescription(n.getPostDescription())
+                        .postRequirement(n.getPostRequirement())
+                        .status(n.getStatus())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -66,8 +59,17 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public void createNewPost(PostDto newPost) {
-        postDtoRepository.save(newPost);
+    public void publishPostById(int postId) {
+        PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+        postDto.setStatus(1);
+        postDtoRepository.save(postDto);
+    }
+
+    @Override
+    public void closePostById(int postId) {
+        PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+        postDto.setStatus(0);
+        postDtoRepository.save(postDto);
     }
 
     @Override
@@ -84,21 +86,18 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public void deletePost(int postId) {
-        postDtoRepository.deletePostDtoByPostId(postId);
-    }
-
-    @Override
-    public void revokePost(int postId) {
+    public List<ApplicationHRVo> findApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
-            post.setStatus(-1);
-            postDtoRepository.save(post);
+            return post.getApplications().stream()
+                    .map(n -> new ApplicationHRVo.Builder()
+                            .applicationId(n.getApplicationId())
+                            .status(n.getStatus())
+                            .applicantId(n.getApplicant().getApplicantId())
+                            .postId(n.getPost().getPostId()).build())
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<ApplicationHRVo>();
         }
-    }
-
-    @Override
-    public void saveDptManager(DptManagerDto dptManager) {
-        dptManagerDtoRepository.save(dptManager);
     }
 }

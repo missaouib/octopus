@@ -8,6 +8,10 @@ public class PostVo {
 
     private final String postName;
 
+    private final String postType;
+
+    private final String postLocale;
+
     private final String postDescription;
 
     private final String postRequirement;
@@ -17,6 +21,8 @@ public class PostVo {
     public static class Builder {
         private int postId;
         private String postName;
+        private String postType;
+        private String postLocale;
         private String postDescription;
         private String postRequirement;
         private int status;
@@ -28,6 +34,16 @@ public class PostVo {
 
         public Builder postName(String postName) {
             this.postName = postName;
+            return this;
+        }
+
+        public Builder postType(String postType) {
+            this.postType = postType;
+            return this;
+        }
+
+        public Builder postLocale(String postLocale) {
+            this.postLocale = postLocale;
             return this;
         }
 
@@ -54,6 +70,8 @@ public class PostVo {
     private PostVo(Builder builder) {
         this.postId = builder.postId;
         this.postName = builder.postName;
+        this.postType = builder.postType;
+        this.postLocale = builder.postLocale;
         this.postDescription = builder.postDescription;
         this.postRequirement = builder.postRequirement;
         this.status = builder.status;

@@ -32,13 +32,19 @@ public interface DptManagerService {
      * update post
      *
      */
-    void updatePost(PostDto post);
+    void updatePost(PostDto updatePost);
 
     /**
      * delete post
      *
      */
     void deletePost(int postId);
+
+    /**
+     * revoke post by postId
+     *
+     */
+    void revokePost(int postId);
 
     /**
      * save DptManager
