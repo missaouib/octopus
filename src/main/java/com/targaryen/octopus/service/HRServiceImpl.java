@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,7 @@ public class HRServiceImpl implements HRService {
     public void publishPostById(int postId) {
         PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
         postDto.setStatus(1);
+        postDto.setPublishTime(Calendar.getInstance().getTime());
         postDtoRepository.save(postDto);
     }
 

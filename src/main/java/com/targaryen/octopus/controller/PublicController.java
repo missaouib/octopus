@@ -6,6 +6,7 @@ import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,10 +31,21 @@ public class PublicController {
     public ModelAndView index(){
         ModelAndView result = new ModelAndView("default");
         List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.POSTED);
-        for(PostVo tmp : posts){
+        /*for(PostVo tmp : posts){
             System.out.println("[msg]: " + tmp.getPostName());
-        }
+        }*/
         result.addObject("posts", posts);
+        return result;
+    }
+
+    @RequestMapping(value = "/postDetail/{postId}")
+    public ModelAndView postDetail(@PathVariable("postId") String postId){
+        ModelAndView result = new ModelAndView("pub-postDetail");
+        PostVo getPost = serviceFactory.getPulicService().findPostById(Integer.parseInt(postId));
+        if(getPost != null){
+
+            result.getModel().put("post", getPost);
+        }
         return result;
     }
 
