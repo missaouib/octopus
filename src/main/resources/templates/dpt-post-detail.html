@@ -22,7 +22,9 @@
 
 <body class="gray-bg">
 
-    <form method="post" action="">
+    <form id="myForm" method="post" th:action="${action}">
+
+        <input type="hidden" name="postId" th:value="${post.postId}" />
 
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
@@ -103,11 +105,11 @@
                     <div class="ibox float-e-margins">
 
                         <div class="ibox-content">
-                            <button type="button" class="btn btn-w-m btn-primary">
+                            <button type="button" class="btn btn-w-m btn-primary" onclick="submitAndAlert();">
                                 Save
                             </button>
 
-                            <button type="button" class="btn btn-w-m btn-info" onclick="{location.href='list'}">
+                            <button type="button" class="btn btn-w-m btn-info" th:onclick="${'location.href=''' + returnUrl + ''''}">
                                 Return to post list
                             </button>
                         </div>
@@ -117,5 +119,32 @@
         </div>
 
     </form>
+
+    <script th:inline="javascript">
+        function submitAndAlert() {
+            $.ajax({
+                type: "post",
+                url: [[${action}]],
+                data: $('#myForm').serialize(),
+                async: false,
+                success: function(data) {
+                    swal({
+                        title:"Success",
+                        text: [[${swalTextSuccess}]],
+                        type:"success"
+                    }, function(isConfirm) {
+                        location.href=[[${returnUrl}]];
+                    });
+                },
+                error: function(data) {
+                    swal({
+                        title:"Failure",
+                        text: [[${swalTextFailure}]],
+                        type: "error"
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
