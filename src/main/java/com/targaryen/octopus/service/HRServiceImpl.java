@@ -1,15 +1,21 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.dao.ApplicantDtoRepository;
+import com.targaryen.octopus.dao.ApplicationDtoRepository;
 import com.targaryen.octopus.dao.DaoFactory;
 import com.targaryen.octopus.dao.PostDtoRepository;
 import com.targaryen.octopus.dto.ApplicantDto;
+import com.targaryen.octopus.dto.ApplicationDto;
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.dto.ResumeDto;
+import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.ApplicationVo;
+import com.targaryen.octopus.vo.InterviewerVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,11 +30,13 @@ import java.util.stream.Collectors;
 public class HRServiceImpl implements HRService {
     private PostDtoRepository postDtoRepository;
     private ApplicantDtoRepository applicantDtoRepository;
+    private ApplicationDtoRepository applicationDtoRepository;
 
     @Autowired
     public HRServiceImpl(DaoFactory daoFactory) {
         this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
+        this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
     }
 
     @Override
@@ -71,32 +79,48 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public void publishPostById(int postId) {
-        PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
-        postDto.setStatus(1);
-        postDto.setPublishTime(Calendar.getInstance().getTime());
-        postDtoRepository.save(postDto);
+    public int publishPostById(int postId) {
+        try {
+            PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+            postDto.setStatus(PostStatus.PUBLISHED);
+            postDto.setPublishTime(Calendar.getInstance().getTime());
+            postDtoRepository.save(postDto);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
     }
 
     @Override
-    public void closePostById(int postId) {
-        PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
-        postDto.setStatus(0);
-        postDtoRepository.save(postDto);
+    public int closePostById(int postId) {
+        try {
+            PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+            postDto.setStatus(PostStatus.INIT);
+            postDtoRepository.save(postDto);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
     }
 
     @Override
-    public void updatePost(PostDto updatePost) {
-        PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
-        if(post != null) {
-            post.setPostName(updatePost.getPostName());
-            post.setPostType(updatePost.getPostType());
-            post.setPostLocale(updatePost.getPostLocale());
-            post.setPostDescription(updatePost.getPostDescription());
-            post.setPostRequirement(updatePost.getPostRequirement());
-            post.setRecruitNum(updatePost.getRecruitNum());
-            post.setRecruitDpt(updatePost.getRecruitDpt());
-            postDtoRepository.save(post);
+    public int updatePost(PostVo updatePost) {
+        try {
+            PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
+            if(post != null) {
+                post.setPostName(updatePost.getPostName());
+                post.setPostType(updatePost.getPostType());
+                post.setPostLocale(updatePost.getPostLocale());
+                post.setPostDescription(updatePost.getPostDescription());
+                post.setPostRequirement(updatePost.getPostRequirement());
+                post.setRecruitNum(updatePost.getRecruitNum());
+                post.setRecruitDpt(updatePost.getRecruitDpt());
+                postDtoRepository.save(post);
+            }
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
         }
     }
 
@@ -144,5 +168,25 @@ public class HRServiceImpl implements HRService {
             resumeVo = new ResumeVo.Builder().build();
         }
         return resumeVo;
+    }
+
+    @Override
+    public int filterApplicationById(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        } catch (DataAccessException e) {
+
+        }
+        return 0;
+    }
+
+    @Override
+    public List<InterviewerVo> listInterviewers() {
+        return null;
+    }
+
+    @Override
+    public int createInterview(int applicationId, int interviewerId) {
+        return 0;
     }
 }

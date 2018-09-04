@@ -1,7 +1,5 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.dto.DptManagerDto;
-import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.vo.PostVo;
 
 import java.util.List;
@@ -26,31 +24,23 @@ public interface DptManagerService {
      * create new post
      *
      */
-    void createNewPost(PostDto newPost);
+    int createNewPost(PostVo newPost, int dptManagerId);
 
     /**
      * update post
      *
      */
-    void updatePost(PostDto updatePost);
+    int updatePost(PostVo updatePost);
 
     /**
      * delete post
      *
      */
-    void deletePost(int postId);
+    int deletePost(int postId);
 
     /**
      * revoke post by postId
      *
      */
-    void revokePost(int postId);
-
-    /**
-     * save DptManager
-     *
-     */
-    void saveDptManager(DptManagerDto dptManager);
-
-
+    int revokePost(int postId);
 }

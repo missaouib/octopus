@@ -1,7 +1,7 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.vo.ApplicationVo;
+import com.targaryen.octopus.vo.InterviewerVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeVo;
 
@@ -27,19 +27,20 @@ public interface HRService {
      * Publish post by postId
      *
      */
-    void publishPostById(int postId);
+    int publishPostById(int postId);
 
     /**
      * Close post by postId
      *
      */
-    void closePostById(int postId);
+    int closePostById(int postId);
 
     /**
      * update post
      *
      */
-    void updatePost(PostDto updatePost);
+    int updatePost(PostVo updatePost);
+
 
     /**
      * find applications by postId
@@ -53,5 +54,21 @@ public interface HRService {
      */
     ResumeVo findResumeByApplicantId(int applicantId);
 
+    /**
+     * filter application by applicantId
+     *
+     */
+    int filterApplicationById(int applicationId);
 
+    /**
+     * list interviewer
+     *
+     */
+    List<InterviewerVo> listInterviewers();
+
+    /**
+     * create an interview
+     *
+     */
+    int createInterview(int applicationId, int interviewerId);
 }

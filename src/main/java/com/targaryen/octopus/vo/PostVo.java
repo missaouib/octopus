@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author He Junfeng
+ */
 @Data
 public class PostVo {
     private final int postId;
