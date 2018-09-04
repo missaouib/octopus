@@ -62,7 +62,7 @@
                                                 Revoke
                                             </button>
                                             <button type="button"
-                                                    onclick="{location.href='detail'}"
+                                                    th:onclick="${'location.href=''detail/' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
                                                 Show detail

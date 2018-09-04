@@ -1,5 +1,6 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.vo.UserVo;
@@ -80,8 +81,8 @@ public class UserController {
     @RequestMapping(value="/dpt/index")
     ModelAndView dptLogin(UserVo user, ModelMap map){
         ModelAndView result = new ModelAndView("dpt-index");
-        map.addAttribute("roleName", Role.getRoleNameByAuthority(SecurityContextHolder.getContext().getAuthentication().getAuthorities()));
-        map.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
         return result;
     }
 
