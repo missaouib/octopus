@@ -105,6 +105,7 @@ public interface HRService {
      */
     int deleteInterviewById(int interviewId);
 
+
     /**
      * find interview by applicationId
      *
