@@ -58,7 +58,11 @@ public interface HRService {
     ResumeVo findResumeByApplicationId(int applicationId);
 
     /**
+<<<<<<< HEAD
      * filter pass application by applicantId
+=======
+     * filter application by applicationId
+>>>>>>> ref:#24 Added interview manage service method
      *
      */
     int filterPassApplicationById(int applicationId);
@@ -92,6 +96,18 @@ public interface HRService {
      *
      */
     int createInterview(InterviewVo interviewVo);
+
+    /**
+     * find interview by interviewId
+     *
+     */
+    InterviewVo findInterviewById(int interviewId);
+
+    /**
+     * cancel interview by interviewId
+     *
+     */
+    int cancelInterviewById(int interviewId);
 
     /**
      * find interview by applicationId
