@@ -1,13 +1,15 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.dao.*;
-import com.targaryen.octopus.dto.DptManagerDto;
-import com.targaryen.octopus.dto.PostDto;
+
 import com.targaryen.octopus.util.DataTransferUtil;
+import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
+import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -121,10 +123,50 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public List<ApplicationVo> findPassedApplicationsUserId() {
-
-        return null;
+    public List<ApplicationVo> findPassedApplicationsByPostId(int postId) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        List<ApplicationDto> applicationDtos = post.getApplications().stream()
+                .filter(n -> ApplicationStatus.INTERVIEW_PASS.equals(n.getStatus()))
+                .collect(Collectors.toList());
+        return applicationDtos.stream()
+                .map(n -> new ApplicationVo.Builder()
+                        .applicationId(n.getApplicationId())
+                        .status(n.getStatus())
+                        .applicantId(n.getApplicant().getApplicantId())
+                        .postId(n.getPost().getPostId())
+                        .build())
+                .collect(Collectors.toList());
     }
 
+    @Override
+    public ResumeVo findResumeByApplicationId(int applicationId) {
+        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ApplicantDto applicant = application.getApplicant();
+        ResumeDto resumeDto;
+        if(applicant != null) {
+            resumeDto = applicant.getResume();
+        } else {
+            resumeDto = null;
+        }
+        ResumeVo resumeVo;
+        if(resumeDto != null) {
+            resumeVo = new ResumeVo.Builder()
+                    .resumeId(resumeDto.getResumeId())
+                    .applicantName(resumeDto.getApplicantName())
+                    .applicantSex(resumeDto.getApplicantSex())
+                    .applicantAge(resumeDto.getApplicantAge())
+                    .applicantSchool(resumeDto.getApplicantSchool())
+                    .applicantDegree(resumeDto.getApplicantDegree())
+                    .applicantMajor(resumeDto.getApplicantMajor())
+                    .applicantCity(resumeDto.getApplicantCity())
+                    .applicantEmail(resumeDto.getApplicantEmail())
+                    .applicantPhone(resumeDto.getApplicantPhone())
+                    .applicantCV(resumeDto.getApplicantCV())
+                    .build();
+        } else {
+            resumeVo = null;
+        }
+        return resumeVo;
+    }
 
 }
