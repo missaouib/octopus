@@ -4,10 +4,7 @@ import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.*;
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.InterviewerVo;
-import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -227,4 +224,26 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Override
+    public List<InterviewVo> findInterviewByApplicationId(int applicationId) {
+        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        if(application != null) {
+            return application.getInterviews().stream()
+                    .map(n -> new InterviewVo.Builder()
+                            .interviewId(n.getInterviewId())
+                            .startTime(n.getStartTime())
+                            .interviewPlace(n.getInterviewPlace())
+                            .applicantStatus(n.getApplicantStatus())
+                            .applicantComment(n.getApplicantComment())
+                            .interviewerStatus(n.getInterviewerStatus())
+                            .interviewerComment(n.getInterviewerComment())
+                            .interviewStatus(n.getInterviewStatus())
+                            .interviewResultStatus(n.getInterviewResultStatus())
+                            .interviewResultComment(n.getInterviewResultComment())
+                            .build())
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
 }
