@@ -2,6 +2,7 @@ package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.dto.ResumeDto;
+import com.targaryen.octopus.entity.UserEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
@@ -31,7 +32,7 @@ public class ApplicantController {
 
 
     @RequestMapping(value="/applicant/index")
-    ModelAndView applicantLogin(UserVo user, ModelMap map){
+    ModelAndView applicantLogin(UserEntity user, ModelMap map){
         // judge here, non-existed jump to applicant-index fill the information, existed jump to applicant-resume-magn to update the information
 
         ModelAndView result = new ModelAndView("applicant-index");
