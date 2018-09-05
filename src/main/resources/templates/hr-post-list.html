@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Department Manager - Post List</title>
+    <title>HR - Post List</title>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
     <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
@@ -44,6 +44,9 @@
                                 <th>Post Name</th>
                                 <th>Post Type</th>
                                 <th>Post Locale</th>
+                                <th>Recruit Department</th>
+                                <th>Publish Time</th>
+                                <th>Status</th>
                                 <th>Operation</th>
                             </tr>
                             </thead>
@@ -54,7 +57,18 @@
                                         <td th:text="${post.postName}"></td>
                                         <td th:text="${post.postType}"></td>
                                         <td th:text="${post.postLocale}"></td>
+                                        <td th:text="${post.recruitDpt}"></td>
+                                        <td th:text="${post.publishTime}"></td>
+                                        <td th:if="${post.status} eq 0"><i class="fa fa-bookmark text-success">To be checked</i></td>
+                                        <td th:if="${post.status} eq -1"><i class="fa fa-ban text-danger">Revoked</i></td>
+                                        <td th:if="${post.status} eq 1"><i class="fa fa-check text-navy">Published</i></td>
                                         <td>
+                                            <button type="button"
+                                                    th:onclick="${'location.href=''publish/' + post.postId + ''''}"
+                                                    class="btn btn-outline btn-default">
+                                                <i class="glyphicon glyphicon-new-window" aria-hidden="true"></i>
+                                                Publish
+                                            </button>
                                             <button type="button"
                                                     onclick=""
                                                     class="btn btn-outline btn-default">
@@ -75,7 +89,7 @@
 
                             <tfoot>
                             <tr>
-                                <td colspan="4">
+                                <td colspan="6">
                                     <ul class="pagination pull-right"></ul>
                                 </td>
                             </tr>
