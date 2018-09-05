@@ -2,6 +2,7 @@ package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.dto.ResumeDto;
+import com.targaryen.octopus.entity.ApplicationEntity;
 import com.targaryen.octopus.entity.ResumeEntity;
 import com.targaryen.octopus.entity.UserEntity;
 import com.targaryen.octopus.security.AuthInfo;
@@ -62,6 +63,9 @@ public class ApplicantController {
 
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
+
+        map.addAttribute("application", new ApplicationEntity());
+
         PostVo getPost = serviceFactory.getPulicService().findPostById(Integer.parseInt(postId));
         if(getPost != null){
             result.getModel().put("post", getPost);
