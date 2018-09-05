@@ -18,6 +18,7 @@ public class ResumeVo {
     private final String applicantEmail;
     private final String applicantPhone;
     private final String applicantCV;
+    private final int applicantId;
 
     public static class Builder {
         private int resumeId;
@@ -31,6 +32,7 @@ public class ResumeVo {
         private String applicantEmail;
         private String applicantPhone;
         private String applicantCV;
+        private int applicantId;
 
         public Builder resumeId(int resumeId) {
             this.resumeId = resumeId;
@@ -87,6 +89,11 @@ public class ResumeVo {
             return this;
         }
 
+        public Builder applicantId(int applicantId) {
+            this.applicantId = applicantId;
+            return this;
+        }
+
         public ResumeVo build() {
             return new ResumeVo(this);
         }
@@ -104,5 +111,6 @@ public class ResumeVo {
         this.applicantEmail = builder.applicantEmail;
         this.applicantPhone = builder.applicantPhone;
         this.applicantCV = builder.applicantCV;
+        this.applicantId = builder.applicantId;
     }
 }
