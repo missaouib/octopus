@@ -111,4 +111,16 @@ public interface HRService {
      *
      */
     List<InterviewVo> findInterviewByApplicationId(int applicationId);
+
+    /**
+     * pass application by applicationId
+     *
+     */
+    int passApplicationById(int applicationId);
+
+    /**
+     * fail application by applicationId
+     *
+     */
+    int failApplicationById(int applicationId);
 }

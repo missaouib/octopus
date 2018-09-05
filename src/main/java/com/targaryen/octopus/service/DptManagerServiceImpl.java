@@ -1,14 +1,12 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.dao.DaoFactory;
-import com.targaryen.octopus.dao.DptManagerDtoRepository;
-import com.targaryen.octopus.dao.PostDtoRepository;
-import com.targaryen.octopus.dao.UserDtoRepository;
+import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.DptManagerDto;
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.PostStatus;
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -23,13 +21,13 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DptManagerServiceImpl implements DptManagerService {
-    private DptManagerDtoRepository dptManagerDtoRepository;
     private PostDtoRepository postDtoRepository;
     private UserDtoRepository userDtoRepository;
+    private ApplicationDtoRepository applicationDtoRepository;
 
     @Autowired
     public DptManagerServiceImpl(DaoFactory daoFactory) {
-        this.dptManagerDtoRepository = daoFactory.getDptManagerDtoRepository();
+        this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
         this.userDtoRepository = daoFactory.getUserDtoRepository();
     }
@@ -121,4 +119,12 @@ public class DptManagerServiceImpl implements DptManagerService {
             return StatusCode.FAILURE;
         }
     }
+
+    @Override
+    public List<ApplicationVo> findPassedApplicationsUserId() {
+
+        return null;
+    }
+
+
 }

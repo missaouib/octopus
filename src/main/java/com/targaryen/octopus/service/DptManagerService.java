@@ -1,5 +1,6 @@
 package com.targaryen.octopus.service;
 
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
 
 import java.util.List;
@@ -43,4 +44,10 @@ public interface DptManagerService {
      *
      */
     int revokePost(int postId);
+
+    /**
+     * find passed applications by userId
+     *
+     */
+    List<ApplicationVo> findPassedApplicationsUserId();
 }
