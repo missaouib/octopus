@@ -27,9 +27,22 @@ public class InterviewDto implements Serializable {
     private String interviewPlace;
 
     @NotBlank
+    private int applicantStatus;
+
+    private String applicantComment;
+
+    @NotBlank
     private int interviewerStatus;
 
-    private String interviewComment;
+    private String interviewerComment;
+
+    @NotBlank
+    private int interviewStatus;
+
+    @NotBlank
+    private int interviewResultStatus;
+
+    private String interviewResultComment;
 
     @JoinColumn(name = "application_id")
     @ManyToOne(cascade = CascadeType.MERGE)
