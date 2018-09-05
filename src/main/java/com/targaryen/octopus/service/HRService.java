@@ -5,6 +5,7 @@ import com.targaryen.octopus.vo.InterviewerVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeVo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,6 +62,12 @@ public interface HRService {
     int filterApplicationById(int applicationId);
 
     /**
+     * revoke filter application by applicantId
+     *
+     */
+    int revokeFilterApplicationById(int applicationId);
+
+    /**
      * list interviewer
      *
      */
@@ -70,5 +77,7 @@ public interface HRService {
      * create an interview
      *
      */
-    int createInterview(int applicationId, int interviewerId);
+    int createInterview(int applicationId, int interviewerId, Date startTime, String interviewPlace);
+
+
 }
