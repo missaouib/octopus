@@ -31,7 +31,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         this.resumeDtoRepository = daoFactory.getResumeDtoRepository();
     }
 
-    public int CreateResume(int userId) {
+    public int CreateResume(int userId, String applicantName) {
         UserDto userDto;
         ApplicantDto applicantDto;
         ResumeDto resumeDto = new ResumeDto();
@@ -39,6 +39,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             userDto = userDtoRepository.findUserDtoByUserId(userId);
             applicantDto = userDto.getApplicant();
             resumeDto.setApplicant(applicantDto);
+            resumeDto.setApplicantName(applicantName);
             resumeDtoRepository.save(resumeDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -51,7 +52,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         UserDto userDto;
 
         if(findResumeByUserId(userId) == null) {
-            if(CreateResume(userId) != StatusCode.SUCCESS)
+            if(CreateResume(userId, resumeVo.getApplicantName()) != StatusCode.SUCCESS)
                 return StatusCode.FAILURE;
         }
 
