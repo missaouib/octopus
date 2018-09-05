@@ -58,6 +58,7 @@ public class DptManagerController {
                 .build();
 
         dptManagerService.createNewPost(postVo, AuthInfo.getUserId());
+
         return "OK";
     }
 

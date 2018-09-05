@@ -71,13 +71,14 @@ public class UserController {
         }
         return result;
     }
-
+/*
     @RequestMapping(value="/applicant/index")
     ModelAndView applicantIndex(){
         ModelAndView result = new ModelAndView("applicant-index");
-
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
         return result;
-    }
+    }*/
 
     @RequestMapping(value="/dpt/index")
     ModelAndView dptIndex(ModelMap map){

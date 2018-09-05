@@ -99,11 +99,8 @@ public class UserServiceImpl implements UserService {
         }
 
         roleDto = userDto.getRole();
-        UserVo userVo = new UserVo.Builder()
-                .userId(userDto.getUserId())
-                .userName(userDto.getUserName())
-                .userPassword(userDto.getUserPassword())
-                .userRole(roleDto.getRole()).build();
+
+        UserVo userVo = new UserVo.Builder().userId(userDto.getUserId()).userName(userDto.getUserName()).userPassword(userDto.getUserPassword()).userRole(userDto.getRole().getRole()).build();
 
         return userVo;
     }
