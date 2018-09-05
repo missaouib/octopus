@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 public interface InterviewDtoRepository extends JpaRepository<InterviewDto, Integer> {
+    InterviewDto findInterviewDtoByInterviewId(int interviewId);
 }
