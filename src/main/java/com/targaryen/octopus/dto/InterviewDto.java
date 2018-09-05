@@ -21,9 +21,11 @@ public class InterviewDto implements Serializable {
     @SequenceGenerator(name = "t_interview_seq", sequenceName = "t_interview_seq", allocationSize = 1)
     private int interviewId;
 
+    @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
 
+    @NotBlank
     private String interviewPlace;
 
     @NotBlank

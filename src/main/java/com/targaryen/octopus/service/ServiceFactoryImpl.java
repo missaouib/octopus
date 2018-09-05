@@ -13,6 +13,8 @@ public class ServiceFactoryImpl implements ServiceFactory{
     private HRService hrService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private ApplicantService applicantService;
 
     @Override
     public UserService getUserService() {
@@ -34,5 +36,8 @@ public class ServiceFactoryImpl implements ServiceFactory{
         return publicService;
     }
 
-
+    @Override
+    public ApplicantService getApplicantService() {
+        return applicantService;
+    }
 }

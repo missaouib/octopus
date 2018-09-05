@@ -1,6 +1,7 @@
 package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.entity.UserEntity;
+import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.vo.UserVo;
@@ -11,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -70,6 +72,29 @@ public class UserController {
                 result = new ModelAndView("redirect:/octopus/interviewer/index");
             }
         }
+        return result;
+    }
+
+
+    @RequestMapping(value="/dpt/index")
+    ModelAndView dptIndex(ModelMap map){
+        ModelAndView result = new ModelAndView("dpt-index");
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+        return result;
+    }
+
+    @RequestMapping(value="/hr/index")
+    ModelAndView hrIndex(){
+        ModelAndView result = new ModelAndView("hr-index");
+
+        return result;
+    }
+
+    @RequestMapping(value="/interviewer/index")
+    ModelAndView interviewerIndex(){
+        ModelAndView result = new ModelAndView("interviewer-index");
+
         return result;
     }
 

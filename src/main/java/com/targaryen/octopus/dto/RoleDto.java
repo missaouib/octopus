@@ -25,6 +25,7 @@ public class RoleDto implements Serializable {
     @OneToOne(cascade = CascadeType.MERGE)
     private UserDto user;
 
+    @NotBlank
     @Column(name = "role")
     private String role;
 }
