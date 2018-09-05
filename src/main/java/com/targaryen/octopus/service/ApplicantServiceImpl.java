@@ -5,13 +5,18 @@ import com.targaryen.octopus.dao.DaoFactory;
 import com.targaryen.octopus.dao.ResumeDtoRepository;
 import com.targaryen.octopus.dao.UserDtoRepository;
 import com.targaryen.octopus.dto.ApplicantDto;
+import com.targaryen.octopus.dto.ApplicationDto;
 import com.targaryen.octopus.dto.ResumeDto;
 import com.targaryen.octopus.dto.UserDto;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ApplicantServiceImpl implements ApplicantService {
@@ -100,6 +105,36 @@ public class ApplicantServiceImpl implements ApplicantService {
                 .applicantSchool(resumeDto.getApplicantSchool())
                 .applicantSex(resumeDto.getApplicantSex())
                 .resumeId(resumeDto.getResumeId()).build();
+    }
+
+    public List<ApplicationVo> findApplicationsByUserId(int userId) {
+        UserDto userDto;
+        ApplicantDto applicantDto;
+        List<ApplicationDto> applicationDtos;
+        List<ApplicationVo> applicationVos = new ArrayList<>();
+
+        try {
+            userDto = userDtoRepository.findUserDtoByUserId(userId);
+            if(userDto == null)
+                return new ArrayList<>();
+            applicantDto = userDto.getApplicant();
+            if(applicantDto == null)
+                return new ArrayList<>();
+            applicationDtos = applicantDto.getApplications();
+            for(ApplicationDto a: applicationDtos) {
+                applicationVos.add(
+                        new ApplicationVo.Builder()
+                        .applicantId(a.getApplicationId())
+                        .applicationId(a.getApplicationId())
+                        .postId(a.getApplicationId())
+                        .status(a.getStatus()).build()
+                );
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return applicationVos;
     }
 
 
