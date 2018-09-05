@@ -75,29 +75,6 @@ public class UserController {
         return result;
     }
 
-
-    @RequestMapping(value="/dpt/index")
-    ModelAndView dptIndex(ModelMap map){
-        ModelAndView result = new ModelAndView("dpt-index");
-        map.addAttribute("roleName", Role.getRoleNameByAuthority());
-        map.addAttribute("userName", AuthInfo.getUserName());
-        return result;
-    }
-
-    @RequestMapping(value="/hr/index")
-    ModelAndView hrIndex(){
-        ModelAndView result = new ModelAndView("hr-index");
-
-        return result;
-    }
-
-    @RequestMapping(value="/interviewer/index")
-    ModelAndView interviewerIndex(){
-        ModelAndView result = new ModelAndView("interviewer-index");
-
-        return result;
-    }
-
     @RequestMapping(value="/loginError")
     public ModelAndView userLoginError(){
         ModelAndView result = new ModelAndView("error");
