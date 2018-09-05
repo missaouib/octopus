@@ -1,14 +1,9 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.dao.ApplicantDtoRepository;
-import com.targaryen.octopus.dao.DaoFactory;
-import com.targaryen.octopus.dao.ResumeDtoRepository;
-import com.targaryen.octopus.dao.UserDtoRepository;
-import com.targaryen.octopus.dto.ApplicantDto;
-import com.targaryen.octopus.dto.ApplicationDto;
-import com.targaryen.octopus.dto.ResumeDto;
-import com.targaryen.octopus.dto.UserDto;
+import com.targaryen.octopus.dao.*;
+import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +13,24 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Created by Liu Mengyang on 2018/09/05
+ */
 @Service
 public class ApplicantServiceImpl implements ApplicantService {
     private ApplicantDtoRepository applicantDtoRepository;
     private UserDtoRepository userDtoRepository;
     private ResumeDtoRepository resumeDtoRepository;
+    private PostDtoRepository postDtoRepository;
+    private ApplicationDtoRepository applicationDtoRepository;
 
     @Autowired
     public ApplicantServiceImpl(DaoFactory daoFactory) {
         this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
         this.userDtoRepository = daoFactory.getUserDtoRepository();
         this.resumeDtoRepository = daoFactory.getResumeDtoRepository();
+        this.postDtoRepository = daoFactory.getPostDtoRepository();
+        this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
     }
 
     public int CreateResume(int userId, String applicantName) {
@@ -106,6 +108,26 @@ public class ApplicantServiceImpl implements ApplicantService {
                 .applicantSchool(resumeDto.getApplicantSchool())
                 .applicantSex(resumeDto.getApplicantSex())
                 .resumeId(resumeDto.getResumeId()).build();
+    }
+
+    public int CreateNewApplication(ApplicationVo applicationVo) {
+        ApplicationDto applicationDto = new ApplicationDto();
+        PostDto postDto;
+        ApplicantDto applicantDto;
+
+        applicationDto.setStatus(ApplicationStatus.INIT);
+
+        try {
+            postDto = postDtoRepository.findPostDtoByPostId(applicationVo.getPostId());
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicationVo.getApplicantId());
+            applicationDto.setApplicant(applicantDto);
+            applicationDto.setPost(postDto);
+            applicationDtoRepository.save(applicationDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
     }
 
     public List<ApplicationVo> findApplicationsByUserId(int userId) {
