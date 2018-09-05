@@ -240,6 +240,8 @@ public class HRServiceImpl implements HRService {
                             .interviewStatus(n.getInterviewStatus())
                             .interviewResultStatus(n.getInterviewResultStatus())
                             .interviewResultComment(n.getInterviewResultComment())
+                            .applicationId(n.getApplication().getApplicationId())
+                            .interviewerId(n.getInterviewer().getInterviewerId())
                             .build())
                     .collect(Collectors.toList());
         } else {
