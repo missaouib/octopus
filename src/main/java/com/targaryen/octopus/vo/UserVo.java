@@ -1,10 +1,8 @@
 package com.targaryen.octopus.vo;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 public class UserVo {
     final private int userId;
     final private String userName;

@@ -4,17 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>导航</title>
+    <title>Public page</title>
 
-    <link th:href="@{/css/bootstrap.min14ed.css}" rel="stylesheet" />
-    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
-    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
 
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
-    <link th:href="@{/css/animate.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/style.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/login.min.css}" rel="stylesheet" />
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/css/font-awesome.min93e3.css}"  rel="stylesheet" />
 
     <!-- DataTables CSS -->
     <link th:href="@{/js/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet">
@@ -26,6 +28,11 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
     <!-- DataTables JavaScript -->
     <script th:src="@{/js/datatables/js/jquery.dataTables.min.js}"></script>
     <script th:src="@{/js/datatables-plugins/dataTables.bootstrap.min.js}"></script>
@@ -35,35 +42,13 @@
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
 
-    <style type="text/css">
-        .navbar {
-            position: relative;
-            min-height: 50px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
-        }
-        .navbar-default {
-            background-color: #f8f8f8;
-            border-color: #e7e7e7;
-        }
-        .navbar-brand {
-          float: left;
-          height: 50px;
-          padding: 15px 15px;
-          font-size: 18px;
-          line-height: 20px;
-        }
-        .navbar-brand:hover,
-        .navbar-brand:focus {
-          text-decoration: none;
-        }
-    </style>
+
 </head>
 <body>
 
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;">
     <div class="navbar-header">
-        <a class="navbar-brand" href="/login">Octopus Recruiting System</a>
+        <a class="navbar-brand" th:href="@{/octopus}">Octopus Recruiting System</a>
     </div>
     <div class="nav navbar-top-links navbar-right">
         <a class="navbar-brand" th:href="@{/octopus/login}" style="font-size: 17px; margin-right: 15px;">Sign In/Sign Up</a>

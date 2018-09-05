@@ -21,15 +21,30 @@ public class InterviewDto implements Serializable {
     @SequenceGenerator(name = "t_interview_seq", sequenceName = "t_interview_seq", allocationSize = 1)
     private int interviewId;
 
+    @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
 
+    @NotBlank
     private String interviewPlace;
+
+    @NotBlank
+    private int applicantStatus;
+
+    private String applicantComment;
 
     @NotBlank
     private int interviewerStatus;
 
-    private String interviewComment;
+    private String interviewerComment;
+
+    @NotBlank
+    private int interviewStatus;
+
+    @NotBlank
+    private int interviewResultStatus;
+
+    private String interviewResultComment;
 
     @JoinColumn(name = "application_id")
     @ManyToOne(cascade = CascadeType.MERGE)

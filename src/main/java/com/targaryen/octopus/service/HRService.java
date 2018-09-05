@@ -1,10 +1,8 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.InterviewerVo;
-import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,16 +47,22 @@ public interface HRService {
     List<ApplicationVo> findApplicationsByPostId(int postId);
 
     /**
-     * find resume by applicantId
+     * find resume by applicationId
      *
      */
-    ResumeVo findResumeByApplicantId(int applicantId);
+    ResumeVo findResumeByApplicationId(int applicationId);
 
     /**
      * filter application by applicantId
      *
      */
     int filterApplicationById(int applicationId);
+
+    /**
+     * revoke filter application by applicantId
+     *
+     */
+    int revokeFilterApplicationById(int applicationId);
 
     /**
      * list interviewer
@@ -70,5 +74,11 @@ public interface HRService {
      * create an interview
      *
      */
-    int createInterview(int applicationId, int interviewerId);
+    int createInterview(int applicationId, int interviewerId, Date startTime, String interviewPlace);
+
+    /**
+     * find interview by applicationId
+     *
+     */
+    List<InterviewVo> findInterviewByApplicationId(int applicationId);
 }

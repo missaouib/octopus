@@ -9,10 +9,10 @@ import java.util.List;
  */
 public interface DptManagerService {
     /**
-     * find posts by DptManagerId
+     * find posts by userId
      *
      */
-    List<PostVo> findPostsByDptManagerId(int dptManagerId);
+    List<PostVo> findPostsByUserId(int userId);
 
     /**
      * find posts by Id
@@ -24,7 +24,7 @@ public interface DptManagerService {
      * create new post
      *
      */
-    int createNewPost(PostVo newPost, int dptManagerId);
+    int createNewPost(PostVo newPost, int userId);
 
     /**
      * update post

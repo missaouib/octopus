@@ -3,6 +3,7 @@ package com.targaryen.octopus.service;
 import com.targaryen.octopus.dao.DaoFactory;
 import com.targaryen.octopus.dao.DptManagerDtoRepository;
 import com.targaryen.octopus.dao.PostDtoRepository;
+import com.targaryen.octopus.dao.UserDtoRepository;
 import com.targaryen.octopus.dto.DptManagerDto;
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.util.StatusCode;
@@ -23,16 +24,18 @@ import java.util.stream.Collectors;
 public class DptManagerServiceImpl implements DptManagerService {
     private DptManagerDtoRepository dptManagerDtoRepository;
     private PostDtoRepository postDtoRepository;
+    private UserDtoRepository userDtoRepository;
 
     @Autowired
     public DptManagerServiceImpl(DaoFactory daoFactory) {
         this.dptManagerDtoRepository = daoFactory.getDptManagerDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
+        this.userDtoRepository = daoFactory.getUserDtoRepository();
     }
 
     @Override
-    public List<PostVo> findPostsByDptManagerId(int dptManagerId) {
-        DptManagerDto dptManager = dptManagerDtoRepository.findDptManagerDtoByDptManagerId(dptManagerId);
+    public List<PostVo> findPostsByUserId(int userId) {
+        DptManagerDto dptManager = userDtoRepository.findUserDtoByUserId(userId).getDptManager();
         if(dptManager == null) {
             return new ArrayList<PostVo>();
         } else {
@@ -75,9 +78,9 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public int createNewPost(PostVo newPost, int dptManagerId) {
+    public int createNewPost(PostVo newPost, int userId) {
         try {
-            DptManagerDto dptManager = dptManagerDtoRepository.findDptManagerDtoByDptManagerId(dptManagerId);
+            DptManagerDto dptManager = userDtoRepository.findUserDtoByUserId(userId).getDptManager();
             PostDto postDto = new PostDto();
             postDto.setPostId(newPost.getPostId());
             postDto.setPostName(newPost.getPostName());

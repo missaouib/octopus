@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserVo getUserByUserName(String userName) {
-        UserVo userVo = new UserVo();
         UserDto userDto;
         RoleDto roleDto;
 
@@ -100,10 +99,8 @@ public class UserServiceImpl implements UserService {
         }
 
         roleDto = userDto.getRole();
-        userVo.setUserId(userDto.getUserId());
-        userVo.setUserName(userDto.getUserName());
-        userVo.setUserPassword(userDto.getUserPassword());
-        userVo.setUserRole(roleDto.getRole());
+
+        UserVo userVo = new UserVo.Builder().userId(userDto.getUserId()).userName(userDto.getUserName()).userPassword(userDto.getUserPassword()).userRole(userDto.getRole().getRole()).build();
 
         return userVo;
     }

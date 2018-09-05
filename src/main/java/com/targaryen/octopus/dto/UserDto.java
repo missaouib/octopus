@@ -21,9 +21,11 @@ public class UserDto implements Serializable {
     @SequenceGenerator(name = "t_user_seq", sequenceName = "t_user_seq", allocationSize = 1)
     private int userId;
 
+    @NotBlank
     @Column(name = "user_name", unique = true)
     private String userName;
 
+    @NotBlank
     @Column(name = "user_password")
     private String userPassword;
 
