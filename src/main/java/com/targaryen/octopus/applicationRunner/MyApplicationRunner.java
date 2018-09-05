@@ -20,6 +20,7 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        /*
         DptManagerDto dptManager = new DptManagerDto();
         dptManager.setDptManagerId(1);
         dptManagerService.saveDptManager(dptManager);
@@ -34,5 +35,6 @@ public class MyApplicationRunner implements ApplicationRunner {
         post.setStatus(1);
         post.setDptManager(dptManager);
         dptManagerService.createNewPost(post);
+        */
     }
 }

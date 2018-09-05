@@ -73,14 +73,14 @@ public class UserController {
     }
 
     @RequestMapping(value="/applicant/index")
-    ModelAndView applicantLogin(UserVo user){
+    ModelAndView applicantIndex(){
         ModelAndView result = new ModelAndView("applicant-index");
 
         return result;
     }
 
     @RequestMapping(value="/dpt/index")
-    ModelAndView dptLogin(UserVo user, ModelMap map){
+    ModelAndView dptIndex(ModelMap map){
         ModelAndView result = new ModelAndView("dpt-index");
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
@@ -88,21 +88,21 @@ public class UserController {
     }
 
     @RequestMapping(value="/hr/index")
-    ModelAndView hrLogin(UserVo user){
+    ModelAndView hrIndex(){
         ModelAndView result = new ModelAndView("hr-index");
 
         return result;
     }
 
     @RequestMapping(value="/interviewer/index")
-    ModelAndView interviewerLogin(UserVo user){
+    ModelAndView interviewerIndex(){
         ModelAndView result = new ModelAndView("interviewer-index");
 
         return result;
     }
 
     @RequestMapping(value="/loginError")
-    ModelAndView userLoginError(UserVo user){
+    ModelAndView userLoginError(){
         ModelAndView result = new ModelAndView("error");
 
         return result;

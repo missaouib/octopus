@@ -2,6 +2,7 @@ package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.dto.DptManagerDto;
 import com.targaryen.octopus.dto.PostDto;
+import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.DptManagerService;
 import com.targaryen.octopus.service.ServiceFactory;
@@ -42,12 +43,21 @@ public class DptManagerController {
 
     @RequestMapping(value = "/dpt/post/add", method = RequestMethod.POST)
     @ResponseBody
-    public String postAddPost(PostDto postDto) {
-        DptManagerDto dptManagerDto = new DptManagerDto();
-        dptManagerDto.setDptManagerId(AuthInfo.getUserId());
-        postDto.setDptManager(dptManagerDto);
+    public String postAddPost(PostEntity postEntity) {
+        PostVo postVo = new PostVo.Builder()
+                .postId(postEntity.getPostId())
+                .postName(postEntity.getPostName())
+                .postType(postEntity.getPostType())
+                .postLocale(postEntity.getPostLocale())
+                .postDescription(postEntity.getPostDescription())
+                .postRequirement(postEntity.getPostRequirement())
+                .recruitNum(postEntity.getRecruitNum())
+                .recruitDpt(postEntity.getRecruitDpt())
+                .publishTime(postEntity.getPublishTime())
+                .status(postEntity.getStatus())
+                .build();
 
-        dptManagerService.createNewPost(postDto);
+        dptManagerService.createNewPost(postVo, AuthInfo.getUserId());
         return "OK";
     }
 
@@ -72,12 +82,21 @@ public class DptManagerController {
 
     @RequestMapping(value = "/dpt/post/edit", method = RequestMethod.POST)
     @ResponseBody
-    public String postEditPost(PostDto postDto) {
-        DptManagerDto dptManagerDto = new DptManagerDto();
-        dptManagerDto.setDptManagerId(AuthInfo.getUserId());
-        postDto.setDptManager(dptManagerDto);
+    public String postEditPost(PostEntity postEntity) {
+        PostVo postVo = new PostVo.Builder()
+                .postId(postEntity.getPostId())
+                .postName(postEntity.getPostName())
+                .postType(postEntity.getPostType())
+                .postLocale(postEntity.getPostLocale())
+                .postDescription(postEntity.getPostDescription())
+                .postRequirement(postEntity.getPostRequirement())
+                .recruitNum(postEntity.getRecruitNum())
+                .recruitDpt(postEntity.getRecruitDpt())
+                .publishTime(postEntity.getPublishTime())
+                .status(postEntity.getStatus())
+                .build();
         
-        dptManagerService.updatePost(postDto);
+        int result = dptManagerService.updatePost(postVo);
         return "OK";
     }
 }
