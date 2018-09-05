@@ -34,7 +34,7 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
-    public List<PostVo> findPostsByDptManagerId(int userId) {
+    public List<PostVo> findPostsByUserId(int userId) {
         DptManagerDto dptManager = userDtoRepository.findUserDtoByUserId(userId).getDptManager();
         if(dptManager == null) {
             return new ArrayList<PostVo>();

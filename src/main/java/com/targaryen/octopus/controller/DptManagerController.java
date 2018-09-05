@@ -1,6 +1,5 @@
 package com.targaryen.octopus.controller;
 
-import com.targaryen.octopus.dto.DptManagerDto;
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.security.AuthInfo;
@@ -8,15 +7,10 @@ import com.targaryen.octopus.service.DptManagerService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
@@ -63,7 +57,7 @@ public class DptManagerController {
 
     @RequestMapping("/dpt/post/list")
     public String postList(ModelMap map) {
-        map.addAttribute("postList", dptManagerService.findPostsByDptManagerId(AuthInfo.getUserId()));
+        map.addAttribute("postList", dptManagerService.findPostsByUserId(AuthInfo.getUserId()));
         return "dpt-post-list";
     }
 

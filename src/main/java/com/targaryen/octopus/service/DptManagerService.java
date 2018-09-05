@@ -12,7 +12,7 @@ public interface DptManagerService {
      * find posts by userId
      *
      */
-    List<PostVo> findPostsByDptManagerId(int userId);
+    List<PostVo> findPostsByUserId(int userId);
 
     /**
      * find posts by Id
