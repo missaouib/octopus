@@ -137,8 +137,9 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public ResumeVo findResumeByApplicantId(int applicantId) {
-        ApplicantDto applicant = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+    public ResumeVo findResumeByApplicationId(int applicationId) {
+        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ApplicantDto applicant = application.getApplicant();
         ResumeDto resumeDto;
         if(applicant != null) {
             resumeDto = applicant.getResume();
