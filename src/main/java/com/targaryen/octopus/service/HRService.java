@@ -104,10 +104,10 @@ public interface HRService {
     InterviewVo findInterviewById(int interviewId);
 
     /**
-     * cancel interview by interviewId
+     * delete interview by interviewId
      *
      */
-    int cancelInterviewById(int interviewId);
+    int deleteInterviewById(int interviewId);
 
     /**
      * find interview by applicationId

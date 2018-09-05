@@ -242,11 +242,9 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public int cancelInterviewById(int interviewId) {
+    public int deleteInterviewById(int interviewId) {
         try {
-            InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
-            interviewDto.setInterviewStatus(InterviewStatus.FAIL);
-            interviewDtoRepository.save(interviewDto);
+            interviewDtoRepository.deleteInterviewDtoByInterviewId(interviewId);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
