@@ -6,7 +6,6 @@ import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.DptManagerService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
-import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -43,7 +42,7 @@ public class DptManagerController {
         map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");
 
         map.addAttribute("post", new PostDto());
-        return "dpt-post-detail";
+        return "dpt-hr-post-detail";
     }
 
     @RequestMapping(value = "/dpt/post/add", method = RequestMethod.POST)
@@ -82,7 +81,7 @@ public class DptManagerController {
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
         map.addAttribute("post", dptManagerService.findPostById(postId));
-        return "dpt-post-detail";
+        return "dpt-hr-post-detail";
     }
 
     @RequestMapping(value = "/dpt/post/edit", method = RequestMethod.POST)
@@ -101,11 +100,6 @@ public class DptManagerController {
                 .status(postEntity.getStatus())
                 .build();
         
-        int result = dptManagerService.updatePost(postVo);
-        if (result == StatusCode.SUCCESS) {
-            return "OK";
-        } else {
-            return "Fail";
-        }
+        return String.valueOf(dptManagerService.updatePost(postVo));
     }
 }

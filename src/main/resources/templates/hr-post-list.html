@@ -58,24 +58,25 @@
                                         <td th:text="${post.postType}"></td>
                                         <td th:text="${post.postLocale}"></td>
                                         <td th:text="${post.recruitDpt}"></td>
-                                        <td th:text="${post.publishTime}"></td>
+                                        <td th:if="${post.status} eq 1" th:text="${#strings.substring(post.publishTime, 0, 16)}"></td>
+                                        <td th:if="${post.status} ne 1">Not published</td>
                                         <td th:if="${post.status} eq 0"><i class="fa fa-bookmark text-success">To be checked</i></td>
-                                        <td th:if="${post.status} eq -1"><i class="fa fa-ban text-danger">Revoked</i></td>
+                                        <td th:if="${post.status} eq -1"><i class="fa fa-ban text-danger">Revoked by manager</i></td>
                                         <td th:if="${post.status} eq 1"><i class="fa fa-check text-navy">Published</i></td>
                                         <td>
-                                            <button type="button"
-                                                    th:onclick="${'location.href=''publish/' + post.postId + ''''}"
+                                            <button th:if="${post.status} eq 0" type="button"
+                                                    th:onclick="${'publishPost(''' + post.postId + ''', ''' + post.postName + ''')'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-new-window" aria-hidden="true"></i>
                                                 Publish
                                             </button>
-                                            <button type="button"
-                                                    onclick=""
+                                            <button th:if="${post.status} eq 1" type="button"
+                                                    th:onclick="${'closePost(''' + post.postId + ''', ''' + post.postName + ''')'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
-                                                Revoke
+                                                Close
                                             </button>
-                                            <button type="button"
+                                            <button th:if="${post.status} eq 0" type="button"
                                                     th:onclick="${'location.href=''detail/' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
@@ -101,8 +102,89 @@
         </div>
     </div>
 
-<script>
+<script th:inline="javascript">
     $(".footable").footable();
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    function publishPost(postId, postName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to publish this post need: " + postName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            $.ajax({
+                type: "post",
+                url: 'publish/' + postId,
+                data: csrfData,
+                async: false,
+                success: function(data) {
+                    swal({
+                        title:"Success",
+                        text: "You have successfully published this post need.",
+                        type:"success"
+                    }, function(isConfirm) {
+                        document.location.reload();
+                    });
+                },
+                error: function(data) {
+                    swal({
+                        title:"Failure",
+                        text: "You have not successfully published this post need.",
+                        type: "error"
+                    });
+                }
+            });
+        });
+    }
+
+    function closePost(postId, postName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to close this post need: " + postName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            $.ajax({
+                type: "post",
+                url: 'close/' + postId,
+                data: csrfData,
+                async: false,
+                success: function(data) {
+                    swal({
+                        title:"Success",
+                        text: "You have successfully closed this post need.",
+                        type:"success"
+                    }, function(isConfirm) {
+                        document.location.reload();
+                    });
+                },
+                error: function(data) {
+                    swal({
+                        title:"Failure",
+                        text: "You have not successfully closed this post need.",
+                        type: "error"
+                    });
+                }
+            });
+        });
+    }
 </script>
 
 </body>
