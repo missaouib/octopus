@@ -64,7 +64,7 @@
                                         <td th:if="${post.status} eq 1"><i class="fa fa-check text-navy">Published</i></td>
                                         <td>
                                             <button type="button"
-                                                    onclick=""
+                                                    th:onclick="${'location.href=''publish/' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-new-window" aria-hidden="true"></i>
                                                 Publish

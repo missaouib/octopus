@@ -49,4 +49,10 @@ public class HRController {
         map.addAttribute("post", hrService.findPostById(postId));
         return "hr-post-detail";
     }
+
+    @RequestMapping(value = "/hr/post/publish/{postId}", method = RequestMethod.GET)
+    public String hrPostPublish(@PathVariable("postId") int postId) {
+        hrService.publishPostById(postId);
+        return "redirect:../list";
+    }
 }
