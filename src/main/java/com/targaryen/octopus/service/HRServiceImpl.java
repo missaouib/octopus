@@ -171,7 +171,7 @@ public class HRServiceImpl implements HRService {
     public int filterApplicationById(int applicationId) {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
-            application.setStatus(ApplicationStatus.FILTED);
+            application.setStatus(ApplicationStatus.FILTER_PASS);
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
