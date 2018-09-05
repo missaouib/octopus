@@ -37,7 +37,7 @@ public class HRServiceImpl implements HRService {
 
     @Override
     public List<PostVo> listPosts() {
-        return postDtoRepository.findUnrevokedPosts().stream()
+        return postDtoRepository.findAllByStatusNotOrderByPostIdDesc(PostStatus.REVOKED).stream()
                 .map(n -> new PostVo.Builder()
                         .postId(n.getPostId())
                         .postName(n.getPostName())
