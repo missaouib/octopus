@@ -25,7 +25,7 @@ public class PublicServiceImpl implements PublicService {
 
     @Override
     public List<PostVo> listPostsByStatus(int status) {
-        List<PostDto> postList = postDtoRepository.findPostDtoByStatus(PostStatus.PUBLISHED);
+        List<PostDto> postList = postDtoRepository.findAllByStatusOrderByPostIdDesc(PostStatus.PUBLISHED);
 
         return postList.stream().map( x -> new PostVo.Builder()
                 .postId(x.getPostId())
