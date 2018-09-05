@@ -22,5 +22,6 @@ public class DptManagerDto {
     private UserDto user;
 
     @OneToMany(mappedBy = "dptManager", cascade = CascadeType.REMOVE)
+    @OrderBy("post_id DESC")
     private List<PostDto> posts;
 }

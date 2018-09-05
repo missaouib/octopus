@@ -4,10 +4,7 @@ import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.*;
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.InterviewerVo;
-import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -40,7 +37,7 @@ public class HRServiceImpl implements HRService {
 
     @Override
     public List<PostVo> listPosts() {
-        return postDtoRepository.findUnrevokedPosts().stream()
+        return postDtoRepository.findAllByStatusNotOrderByPostIdDesc(PostStatus.REVOKED).stream()
                 .map(n -> new PostVo.Builder()
                         .postId(n.getPostId())
                         .postName(n.getPostName())
@@ -140,8 +137,9 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public ResumeVo findResumeByApplicantId(int applicantId) {
-        ApplicantDto applicant = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+    public ResumeVo findResumeByApplicationId(int applicationId) {
+        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ApplicantDto applicant = application.getApplicant();
         ResumeDto resumeDto;
         if(applicant != null) {
             resumeDto = applicant.getResume();
@@ -173,7 +171,7 @@ public class HRServiceImpl implements HRService {
     public int filterApplicationById(int applicationId) {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
-            application.setStatus(ApplicationStatus.FILTED);
+            application.setStatus(ApplicationStatus.FILTER_PASS);
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -227,4 +225,28 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Override
+    public List<InterviewVo> findInterviewByApplicationId(int applicationId) {
+        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        if(application != null) {
+            return application.getInterviews().stream()
+                    .map(n -> new InterviewVo.Builder()
+                            .interviewId(n.getInterviewId())
+                            .startTime(n.getStartTime())
+                            .interviewPlace(n.getInterviewPlace())
+                            .applicantStatus(n.getApplicantStatus())
+                            .applicantComment(n.getApplicantComment())
+                            .interviewerStatus(n.getInterviewerStatus())
+                            .interviewerComment(n.getInterviewerComment())
+                            .interviewStatus(n.getInterviewStatus())
+                            .interviewResultStatus(n.getInterviewResultStatus())
+                            .interviewResultComment(n.getInterviewResultComment())
+                            .applicationId(n.getApplication().getApplicationId())
+                            .interviewerId(n.getInterviewer().getInterviewerId())
+                            .build())
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
 }

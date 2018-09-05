@@ -12,6 +12,7 @@ public class InterviewerVo {
     private final String interviewerPosition;
     private final int interviewerAge;
     private final String interviewerDepartment;
+    private final int userId;
 
     public static class Builder {
         private int interviewerId;
@@ -19,6 +20,7 @@ public class InterviewerVo {
         private String interviewerPosition;
         private int interviewerAge;
         private String interviewerDepartment;
+        private int userId;
 
         public Builder interviewerId(int interviewerId) {
             this.interviewerId = interviewerId;
@@ -45,6 +47,11 @@ public class InterviewerVo {
             return this;
         }
 
+        public Builder userId(int userId) {
+            this.userId = userId;
+            return this;
+        }
+
         public InterviewerVo build() {
             return new InterviewerVo(this);
         }
@@ -56,5 +63,6 @@ public class InterviewerVo {
         this.interviewerAge = builder.interviewerAge;
         this.interviewerPosition = builder.interviewerPosition;
         this.interviewerDepartment = builder.interviewerDepartment;
+        this.userId = builder.userId;
     }
 }

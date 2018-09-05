@@ -18,6 +18,7 @@
     <script th:src="@{/js/plugins/markdown/markdown.js}"></script>
     <script th:src="@{/js/plugins/markdown/to-markdown.js}"></script>
     <script th:src="@{/js/plugins/markdown/bootstrap-markdown.js}"></script>
+    <script th:src="@{/js/jquery.validate.min.js}"></script>
 </head>
 
 <body class="gray-bg">
@@ -31,7 +32,7 @@
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h1 th:text="${title}"></h1>
+                            <h1 th:text="${title}">Check/Edit post need detail</h1>
                         </div>
 
                         <div class="ibox-content form-horizontal">
@@ -39,7 +40,7 @@
                                 <label class="col-sm-3 control-label">Post Name:</label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" th:value="${post.postName}" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control">
+                                    <input type="text" th:value="${post.postName}" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control" required="required" >
                                 </div>
                             </div>
 
@@ -60,7 +61,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Post Recruit Number:</label>
+                                <label class="col-sm-3 control-label">Post Head Count:</label>
 
                                 <div class="col-sm-8">
                                     <input type="text" th:value="${post.recruitNum}" id="recruitNum" name="recruitNum" placeholder="e.g. 5" class="form-control">
@@ -116,7 +117,7 @@
                     <div class="ibox float-e-margins">
 
                         <div class="ibox-content">
-                            <button type="button" class="btn btn-w-m btn-primary" onclick="submitAndAlert();">
+                            <button type="submit" class="btn btn-w-m btn-primary">
                                 Save
                             </button>
 
@@ -132,30 +133,35 @@
     </form>
 
     <script th:inline="javascript">
-        function submitAndAlert() {
-            $.ajax({
-                type: "post",
-                url: [[${action}]],
-                data: $('#myForm').serialize(),
-                async: false,
-                success: function(data) {
-                    swal({
-                        title:"Success",
-                        text: [[${swalTextSuccess}]],
-                        type:"success"
-                    }, function(isConfirm) {
-                        location.href=[[${returnUrl}]];
-                    });
-                },
-                error: function(data) {
-                    swal({
-                        title:"Failure",
-                        text: [[${swalTextFailure}]],
-                        type: "error"
-                    });
-                }
-            });
-        }
+        var validationConfig = {
+            // submitHandler executes after the form PASSED the validation
+            submitHandler: function(form) {
+                $.ajax({
+                    type: "post",
+                    url: [[${action}]],
+                    data: $('#myForm').serialize(),
+                    async: false,
+                    success: function(data) {
+                        swal({
+                            title:"Success",
+                            text: [[${swalTextSuccess}]],
+                            type:"success"
+                        }, function(isConfirm) {
+                            location.href=[[${returnUrl}]];
+                        });
+                    },
+                    error: function(data) {
+                        swal({
+                            title:"Failure",
+                            text: [[${swalTextFailure}]],
+                            type: "error"
+                        });
+                    }
+                });
+            }
+        };
+
+        $("#myForm").validate(validationConfig);
     </script>
 </body>
 </html>
