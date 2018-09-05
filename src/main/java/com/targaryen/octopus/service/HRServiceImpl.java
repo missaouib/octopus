@@ -267,7 +267,7 @@ public class HRServiceImpl implements HRService {
     public int passApplicationById(int applicationId) {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
-            application.setStatus(ApplicationStatus.PASSED);
+            application.setStatus(ApplicationStatus.INTERVIEW_PASS);
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -279,7 +279,7 @@ public class HRServiceImpl implements HRService {
     public int failApplicationById(int applicationId) {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
-            application.setStatus(ApplicationStatus.FAILED);
+            application.setStatus(ApplicationStatus.INTERVIEW_FAIL);
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
