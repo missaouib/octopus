@@ -10,24 +10,16 @@ import java.util.Date;
 @Data
 public class PostVo {
     private final int postId;
-
     private final String postName;
-
     private final String postType;
-
     private final String postLocale;
-
     private final String postDescription;
-
     private final String postRequirement;
-
     private final int recruitNum;
-
     private final String recruitDpt;
-
     private final Date publishTime;
-
     private final int status;
+    private final int dptManagerId;
 
     public static class Builder {
         private int postId;
@@ -40,6 +32,7 @@ public class PostVo {
         private String recruitDpt;
         private Date publishTime;
         private int status;
+        private int dptManagerId;
 
         public Builder postId(int postId) {
             this.postId = postId;
@@ -91,6 +84,11 @@ public class PostVo {
             return this;
         }
 
+        public Builder dptManagerId(int dptManagerId) {
+            this.dptManagerId = dptManagerId;
+            return this;
+        }
+
         public PostVo build() {
             return new PostVo(this);
         }
@@ -107,5 +105,6 @@ public class PostVo {
         this.recruitDpt = builder.recruitDpt;
         this.publishTime = builder.publishTime;
         this.status = builder.status;
+        this.dptManagerId = builder.dptManagerId;
     }
 }
