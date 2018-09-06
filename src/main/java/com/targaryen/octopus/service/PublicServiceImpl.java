@@ -3,6 +3,7 @@ package com.targaryen.octopus.service;
 import com.targaryen.octopus.dao.DaoFactory;
 import com.targaryen.octopus.dao.PostDtoRepository;
 import com.targaryen.octopus.dto.PostDto;
+import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,6 @@ public class PublicServiceImpl implements PublicService {
     public PostVo findPostById(int id) {
         PostDto postDto = postDtoRepository.findPostDtoByPostId(id);
 
-        return new PostVo.Builder()
-                .postId(postDto.getPostId())
-                .postLocale(postDto.getPostLocale())
-                .postName(postDto.getPostName())
-                .postRequirement(postDto.getPostRequirement())
-                .postType(postDto.getPostType())
-                .postDescription(postDto.getPostDescription())
-                .status(postDto.getStatus()).build();
+        return DataTransferUtil.PostDtoToVo(postDto);
     }
 }

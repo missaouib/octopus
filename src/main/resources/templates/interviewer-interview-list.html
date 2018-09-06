@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Department Manager - Post List</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h1>Post needs</h1>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" style="width:100%;">
+
+                            <button type="button" class="btn btn-outline btn-default"
+                                    onclick="{location.href='add'}">
+                                <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                                Add new
+                            </button>
+
+                            <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
+                                   style="width:25%;float:right;"/>
+                        </div>
+                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="9"
+                               data-filter="#filter">
+                            <thead>
+                            <tr class="footable even">
+                                <th>Post Name</th>
+                                <th>Post Type</th>
+                                <th>Post Locale</th>
+                                <th>Operation</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                                <th:block th:each="post : ${postList}">
+                                    <tr>
+                                        <td th:text="${post.postName}"></td>
+                                        <td th:text="${post.postType}"></td>
+                                        <td th:text="${post.postLocale}"></td>
+                                        <td>
+                                            <button type="button"
+                                                    onclick=""
+                                                    class="btn btn-outline btn-default">
+                                                <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
+                                                Revoke
+                                            </button>
+                                            <button type="button"
+                                                    th:onclick="${'location.href=''detail/' + post.postId + ''''}"
+                                                    class="btn btn-outline btn-default">
+                                                <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
+                                                Check/Edit Detail
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </th:block>
+                            </tbody>
+
+                            <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <ul class="pagination pull-right"></ul>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(".footable").footable();
+</script>
+
+</body>
+</html>

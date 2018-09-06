@@ -1,75 +1,107 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Department Manager - Index</title>
 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Applicant - Index</title>
+
+    <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
-    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}" />
-    <link rel="stylesheet" th:href="@{/css/animate.min.css}" />
-    <link rel="stylesheet" th:href="@{/css/style.min862f.css}" />
 
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
-    <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
-    <script th:src="@{/js/hplus.min.js}"></script>
-    <script th:src="@{/js/contabs.min.js}"></script>
-    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+
+
 </head>
 
-<body class="fixed-sidebar full-height-layout gray-bg">
+<body>
+
 <div id="wrapper">
-    <nav class="navbar-default navbar-static-side" role="navigation">
-        <div class="nav-close"><i class="fa fa-times-circle"></i>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation"
+         style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand"  th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
         </div>
-        <div>
-            <ul class="nav" id="side-menu">
-                <li class="nav-header">
-                    <div class="dropdown profile-element">
 
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear">
-                                <span class="block m-t-xs">
-                                    <strong class="font-bold">[[${userName}]]</strong>
-                                </span>
-                                <span class="text-muted text-xs block">[[${roleName}]]<b class="caret"></b></span>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li>
-                                <a onclick="document.getElementById('logOut').submit();">Log out</a>
-                                <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+            <!-- /.dropdown -->
+            <li class="dropdown"><a class="dropdown-toggle"
+                                    data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
+                <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i> </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a th:href="@{/octopus/applicant/index}"> <i
+                            class="fa fa-user fa-fw"></i>HomePage
+                    </a></li>
+                    <li class="divider"></li>
+                    <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
+                        Logout</a></li>
+                </ul> <!-- /.dropdown-user --></li>
+        </ul>
+        <!-- /.navbar-top-links -->
 
-                <li>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-user"></i>
-                        <span class="nav-label">Personal Information</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-record"></i>
-                        <span class="nav-label">Interview Process</span>
-                    </a>
-                </li>
-
-            </ul>
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li><a th:href="@{/octopus/applicant/post/apply}"><i
+                            class="fa fa-dashboard fa-fw"></i> Apply For Post </a></li>
+                    <li><a th:href="@{/octopus/applicant/application/list}"><i
+                            class="fa fa-table fa-fw"></i> Application Information </a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
+                        Resume Management <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a th:href="@{/octopus/applicant/resume/magm}"> Personal Info</a></li>
+                            <li><a href="#"> For Future <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li><a th:href="@{/octopus/applicant/interview/magm}"> NumberOne </a></li>
+                                    <li><a href="#"> Number Two </a></li>
+                                </ul></li>
+                        </ul> <!-- /.nav-second-level --></li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
         </div>
+        <!-- /.navbar-static-side -->
     </nav>
 
-    <!-- Default page -->
+    <!-- Page Content -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="row J_mainContent" id="content-main">
-            <!--<iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/octopus/dpt/post/list}" frameborder="0"></iframe>-->
+        <div class="col-lg-12">
+            <h1 class="page-header">Notifications</h1>
         </div>
-    </div>
+        <div class="J_mainContent" id="content-main">
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/octopus/applicant/interview/detail}" frameborder="0"></iframe>
+        </div>
+        <!-- /.col-lg-12 -->
 
+    </div>
 </div>
+<!-- /#page-wrapper -->
+
+<!-- jQuery -->
+<script th:src="@{/js/jquery.min.js}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
 
 </body>
+
 </html>

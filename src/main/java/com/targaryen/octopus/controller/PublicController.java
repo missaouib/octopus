@@ -43,6 +43,7 @@ public class PublicController {
         if(getPost != null){
 
             result.getModel().put("post", getPost);
+            System.out.println("[msg]: " + getPost.getRecruitDpt() + ", " + getPost.getPublishTime());
         }
         return result;
     }
