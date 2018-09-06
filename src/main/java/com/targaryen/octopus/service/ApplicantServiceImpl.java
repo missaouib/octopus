@@ -70,6 +70,13 @@ public class ApplicantServiceImpl implements ApplicantService {
         try {
             userDto = userDtoRepository.findUserDtoByUserId(userId);
 //            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(1);
+            applicantDto = userDto.getApplicant();
+            int applicantId = applicantDto.getApplicantId();
+            System.out.println("[msg]： " + applicantId);
+             resumeDto = applicantDto.getResume();
+            int resumeId = resumeDto.getResumeId();
+            System.out.println("[msg]： " + resumeId);
+
             resumeDto = userDto.getApplicant().getResume();
             resumeDto.setApplicantAge(resumeVo.getApplicantAge());
             resumeDto.setApplicantCity(resumeVo.getApplicantCity());
