@@ -219,6 +219,39 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    public InterviewVo findInterviewById(int interviewId) {
+        try {
+            InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
+            return new InterviewVo.Builder()
+                    .interviewId(interviewDto.getInterviewId())
+                    .startTime(interviewDto.getStartTime())
+                    .interviewPlace(interviewDto.getInterviewPlace())
+                    .applicantStatus(interviewDto.getApplicantStatus())
+                    .applicantComment(interviewDto.getApplicantComment())
+                    .interviewerStatus(interviewDto.getInterviewerStatus())
+                    .interviewerComment(interviewDto.getInterviewerComment())
+                    .interviewStatus(interviewDto.getInterviewStatus())
+                    .interviewResultStatus(interviewDto.getInterviewResultStatus())
+                    .interviewResultComment(interviewDto.getInterviewResultComment())
+                    .applicationId(interviewDto.getApplication().getApplicationId())
+                    .interviewerId(interviewDto.getInterviewer().getInterviewerId())
+                    .build();
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public int deleteInterviewById(int interviewId) {
+        try {
+            interviewDtoRepository.deleteInterviewDtoByInterviewId(interviewId);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
     public List<InterviewVo> findInterviewByApplicationId(int applicationId) {
         ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
         if(application != null) {
@@ -226,7 +259,7 @@ public class HRServiceImpl implements HRService {
                     .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                     .collect(Collectors.toList());
         } else {
-            return null;
+            return new ArrayList<InterviewVo>();
         }
     }
 }

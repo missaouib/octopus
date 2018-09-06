@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 public interface InterviewDtoRepository extends JpaRepository<InterviewDto, Integer> {
+    public InterviewDto findInterviewDtoByInterviewId(Integer id);
+
+    public void deleteInterviewDtoByInterviewId(Integer id);
 }

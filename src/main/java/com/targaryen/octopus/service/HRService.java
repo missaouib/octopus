@@ -94,6 +94,18 @@ public interface HRService {
     int createInterview(InterviewVo interviewVo);
 
     /**
+     * find interview by interviewId
+     *
+     */
+    InterviewVo findInterviewById(int interviewId);
+
+    /**
+     * delete interview by interviewId
+     *
+     */
+    int deleteInterviewById(int interviewId);
+
+    /**
      * find interview by applicationId
      *
      */
