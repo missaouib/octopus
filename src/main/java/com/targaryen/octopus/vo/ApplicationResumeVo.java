@@ -1,5 +1,11 @@
 package com.targaryen.octopus.vo;
 
+import lombok.Getter;
+
+/**
+ * @author He Junfeng
+ */
+@Getter
 public class ApplicationResumeVo {
     private final int applicationId;
     private final int status;
