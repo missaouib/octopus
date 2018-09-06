@@ -2,7 +2,6 @@ package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.vo.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +33,12 @@ public interface HRService {
     int closePostById(int postId);
 
     /**
+     * Finish post by postId
+     *
+     */
+    int finishPostById(int postId);
+
+    /**
      * update post
      *
      */
@@ -44,7 +49,7 @@ public interface HRService {
      * find applications by postId
      *
      */
-    List<ApplicationHRVo> findApplicationsByPostId(int postId);
+    List<ApplicationResumeVo> findApplicationsByPostId(int postId);
 
     /**
      * find resume by applicationId
@@ -74,7 +79,7 @@ public interface HRService {
      * find filter pass application by postId
      *
      */
-    List<ApplicationHRVo> findFilterPassApplicationsByPostId(int postId);
+    List<ApplicationResumeVo> findFilterPassApplicationsByPostId(int postId);
 
     /**
      * list interviewer

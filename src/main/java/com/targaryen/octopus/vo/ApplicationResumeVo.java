@@ -1,6 +1,6 @@
 package com.targaryen.octopus.vo;
 
-public class ApplicationHRVo {
+public class ApplicationResumeVo {
     private final int applicationId;
     private final int status;
     private final int applicantId;
@@ -103,12 +103,12 @@ public class ApplicationHRVo {
             return this;
         }
 
-        public ApplicationHRVo build() {
-            return new ApplicationHRVo(this);
+        public ApplicationResumeVo build() {
+            return new ApplicationResumeVo(this);
         }
     }
 
-    private ApplicationHRVo(Builder builder) {
+    private ApplicationResumeVo(Builder builder) {
         this.applicationId = builder.applicationId;
         this.status = builder.status;
         this.applicantId = builder.applicantId;

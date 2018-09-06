@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,6 +79,18 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    public int finishPostById(int postId) {
+        try {
+            PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+            postDto.setStatus(PostStatus.FINISHED);
+            postDtoRepository.save(postDto);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
     public int updatePost(PostVo updatePost) {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
@@ -100,14 +111,14 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<ApplicationHRVo> findApplicationsByPostId(int postId) {
+    public List<ApplicationResumeVo> findApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
                     .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<ApplicationHRVo>();
+            return new ArrayList<ApplicationResumeVo>();
         }
     }
 
@@ -167,7 +178,7 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<ApplicationHRVo> findFilterPassApplicationsByPostId(int postId) {
+    public List<ApplicationResumeVo> findFilterPassApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
@@ -175,7 +186,7 @@ public class HRServiceImpl implements HRService {
                     .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<ApplicationHRVo>();
+            return new ArrayList<ApplicationResumeVo>();
         }
     }
 
