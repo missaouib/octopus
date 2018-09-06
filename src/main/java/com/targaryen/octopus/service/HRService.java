@@ -44,7 +44,6 @@ public interface HRService {
      */
     int updatePost(PostVo updatePost);
 
-
     /**
      * find applications by postId
      *
@@ -105,7 +104,6 @@ public interface HRService {
      */
     int deleteInterviewById(int interviewId);
 
-
     /**
      * find interview by applicationId
      *
@@ -113,22 +111,16 @@ public interface HRService {
     List<InterviewVo> findInterviewByApplicationId(int applicationId);
 
     /**
-     * pass application by applicationId
+     * interview pass application by applicationId
      *
      */
-    int passApplicationById(int applicationId);
+    int interviewPassApplicationById(int applicationId);
 
     /**
-     * fail application by applicationId
+     * interview fail application by applicationId
      *
      */
-    int failApplicationById(int applicationId);
-
-    /**
-     * find dpt accepted applications by postId
-     *
-     */
-    List<ApplicationHRVo> findDptAcceptedApplicationsByPostId(int postId);
+    int interviewFailApplicationById(int applicationId);
 
     /**
      * send offer by applicationId
