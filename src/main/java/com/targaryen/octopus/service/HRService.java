@@ -123,4 +123,16 @@ public interface HRService {
      *
      */
     int failApplicationById(int applicationId);
+
+    /**
+     * find dpt accepted applications by postId
+     *
+     */
+    List<ApplicationHRVo> findDptAcceptedApplicationsByPostId(int postId);
+
+    /**
+     * send offer by applicationId
+     *
+     */
+    int sendOfferByApplicationId(int applicationId);
 }

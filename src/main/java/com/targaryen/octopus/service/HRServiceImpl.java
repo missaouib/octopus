@@ -286,4 +286,29 @@ public class HRServiceImpl implements HRService {
             return StatusCode.FAILURE;
         }
     }
+
+    @Override
+    public List<ApplicationHRVo> findDptAcceptedApplicationsByPostId(int postId) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        if(post != null) {
+            return post.getApplications().stream()
+                    .filter(n -> ApplicationStatus.APPLICANT_ACCEPT.equals(n.getStatus()))
+                    .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<ApplicationHRVo>();
+        }
+    }
+
+    @Override
+    public int sendOfferByApplicationId(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.OFFER);
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
 }
