@@ -65,6 +65,8 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         map.addAttribute("application", new ApplicationEntity());
+        map.addAttribute("postId", postId);
+        map.addAttribute("applicantId", serviceFactory.getIDService().userIdToApplicantId(AuthInfo.getUserId()));
 
         PostVo getPost = serviceFactory.getPulicService().findPostById(Integer.parseInt(postId));
         if(getPost != null){
@@ -74,15 +76,28 @@ public class ApplicantController {
     }
 
     @RequestMapping(value = "/applicant/application/list")
-    public ModelAndView applicationList(ModelMap map){
-        ModelAndView result = new ModelAndView("applicant-application-list");
+    public ModelAndView applicationList(ApplicationEntity applicationEntity, ModelMap map){
+
+        if(Math.random()%2 == 0){
+            map.addAttribute("resume", new ResumeEntity());
+            ModelAndView result = new ModelAndView("applicant-resume-add");
+            return result;
+        }
+
+        //product application record
+
+        // get the relative application record
 
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
 
+
+        ModelAndView result = new ModelAndView("applicant-application-list");
+        System.out.println("[msg]: " + applicationEntity.getPostId() + ", " + applicationEntity.getApplicantId());
         List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED);
         result.addObject("posts", posts);
         return result;
+
     }
 
 
@@ -115,6 +130,18 @@ public class ApplicantController {
         map.addAttribute("postList", serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED));
 
         return "applicant-post-list";
+    }
+
+    @RequestMapping(value = "/applicant/interview/magm", method = RequestMethod.GET)
+    public String interviewMagm(ModelMap map){
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+        return "applicant-interview-magm";
+    }
+
+    @RequestMapping(value = "/applicant/interview/detail", method = RequestMethod.GET)
+    public String interviewDetail(ModelMap map){
+        return "applicant-interview-detail";
     }
 
 }

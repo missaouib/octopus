@@ -27,73 +27,134 @@
 
 <body>
 
-    <div id="wrapper">
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation"
-             style="margin-bottom: 0">
-            <div class="navbar-header">
-                <a class="navbar-brand"  th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation"
+         style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand"  th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
+        </div>
+
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+            <!-- /.dropdown -->
+            <li class="dropdown"><a class="dropdown-toggle"
+                                    data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
+                <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i> </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="#"> <i
+                            class="fa fa-user fa-fw"></i> User Profile
+                    </a></li>
+                    <li class="divider"></li>
+                    <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
+                        Logout</a></li>
+                </ul> <!-- /.dropdown-user --></li>
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li><a th:href="@{/octopus/applicant/post/apply}"><i
+                            class="fa fa-dashboard fa-fw"></i> Apply For Post </a></li>
+                    <li><a href="#"><i
+                            class="fa fa-table fa-fw"></i> Application Information </a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
+                        Resume Management <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#"> Personal Info</a></li>
+                            <li><a href="#"> For Future <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li><a th:href="@{/octopus/applicant/interview/magm}"> NumberOne </a></li>
+                                    <li><a th:href="@{/octopus/applicant/interview/detail}"> Number Two </a></li>
+                                </ul></li>
+                        </ul> <!-- /.nav-second-level --></li>
+                </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
 
-            <!-- /.navbar-header -->
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown"><a class="dropdown-toggle"
-                                        data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
-                    <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i> </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"> <i
-                                class="fa fa-user fa-fw"></i> User Profile
-                        </a></li>
-                        <li class="divider"></li>
-                        <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
-                            Logout</a></li>
-                    </ul> <!-- /.dropdown-user --></li>
-            </ul>
-            <!-- /.navbar-top-links -->
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Notifications</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Pending Issues</div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            Employee C12 is requesting for time off.
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li><a th:href="@{/octopus/applicant/post/apply/}"><i
-                                class="fa fa-dashboard fa-fw"></i> Apply For Post </a></li>
-                        <li><a href="#"><i
-                                class="fa fa-table fa-fw"></i> Application Information </a></li>
-                        <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
-                            Resume Management <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li><a href="#"> Personal Info</a></li>
-                                <li><a href="#"> For Future <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li><a href="#"> NumberOne </a></li>
-                                        <li><a href="#"> Number Two </a></li>
-                                    </ul></li>
-                            </ul> <!-- /.nav-second-level --></li>
-                    </ul>
+                        </div>
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            Employee C12 is requesting for resignation.
+
+                        </div>
+                        <div class="alert alert-warning alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            Employee C14 is requesting for time off.
+
+                        </div>
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            Employee C12 is requesting for transfer.
+
+                        </div>
+                    </div>
+                    <!-- .panel-body -->
                 </div>
-                <!-- /.sidebar-collapse -->
+                <!-- /.panel -->
             </div>
-            <!-- /.navbar-static-side -->
-        </nav>
-
-        <!-- Page Content -->
-        <div id="page-wrapper">
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Appointments</div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="alert alert-success">Meet with the manager on
+                            Aug 8.</div>
+                        <div class="alert alert-info">Upload the operation report
+                            about workshop this month.</div>
+                        <div class="alert alert-warning">Call a meeting with all
+                            workers in workshop.</div>
+                    </div>
+                    <!-- .panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-6 -->
 
         </div>
-        <!-- /#page-wrapper -->
-
     </div>
-    <!-- jQuery -->
-    <script th:src="@{/js/jquery.min.js}"></script>
+</div>
+<!-- /#page-wrapper -->
 
-    <!-- Bootstrap Core JavaScript -->
-    <script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- jQuery -->
+<script th:src="@{/js/jquery.min.js}"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
 
 </body>
 
