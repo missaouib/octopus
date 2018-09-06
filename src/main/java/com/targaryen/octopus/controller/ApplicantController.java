@@ -2,17 +2,17 @@ package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.dto.ResumeDto;
+import com.targaryen.octopus.entity.ApplicantCommentEntity;
 import com.targaryen.octopus.entity.ApplicationEntity;
 import com.targaryen.octopus.entity.ResumeEntity;
 import com.targaryen.octopus.entity.UserEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
+import com.targaryen.octopus.util.status.ApplicantStatus;
+import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.PostStatus;
-import com.targaryen.octopus.vo.ApplicantApplicationVo;
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -46,6 +47,53 @@ public class ApplicantController {
         ModelAndView result = new ModelAndView("applicant-index");
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
+
+        int userId = AuthInfo.getUserId();
+        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewByUserId(userId);
+        map.addAttribute("unreplyMsg", interviewVos);
+        map.addAttribute("acceptedMsg", interviewVosAccpted);
+        return result;
+    }
+
+    @RequestMapping(value = "/applicant/agree/{interviewId}")
+    ModelAndView applicantAgree(@PathVariable("interviewId") String interviewId, ModelMap map){
+
+        //Change interview status
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
+
+        ModelAndView result = new ModelAndView("applicant-index");
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+
+        int userId = AuthInfo.getUserId();
+        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewByUserId(userId);
+
+        InterviewVo interviewVo = new InterviewVo.Builder().interviewPlace("Shanghai").interviewStartTime(Calendar.getInstance().getTime()).build();
+        interviewVos.add(interviewVo);
+        interviewVosAccpted.add(interviewVo);
+
+        map.addAttribute("unreplyMsg", interviewVos);
+        map.addAttribute("acceptedMsg", interviewVosAccpted);
+        return result;
+    }
+
+    @RequestMapping(value = "/applicant/refuse")
+    ModelAndView applicantRefuse(ApplicantCommentEntity applicantCommentEntity, ModelMap map){
+
+        //Change interview status
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantCommentEntity.getInterviewId(), ApplicantStatus.REJECTED, applicantCommentEntity.getApplicantComment());
+
+        ModelAndView result = new ModelAndView("applicant-index");
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+
+        int userId = AuthInfo.getUserId();
+        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewByUserId(userId);
+        map.addAttribute("unreplyMsg", interviewVos);
+        map.addAttribute("acceptedMsg", interviewVosAccpted);
         return result;
     }
 
@@ -204,5 +252,6 @@ public class ApplicantController {
     public String interviewDetail(ModelMap map){
         return "applicant-interview-detail";
     }
+
 
 }

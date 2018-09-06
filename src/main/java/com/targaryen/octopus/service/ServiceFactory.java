@@ -7,4 +7,5 @@ public interface ServiceFactory {
     PublicService getPulicService();
     ApplicantService getApplicantService();
     IDService getIDService();
+    InterviewerService getInterviewerService();
 }
