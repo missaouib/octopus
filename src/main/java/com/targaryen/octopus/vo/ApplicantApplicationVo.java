@@ -1,8 +1,10 @@
 package com.targaryen.octopus.vo;
 
 
-import java.util.Date;
+import lombok.Getter;
 
+import java.util.Date;
+@Getter
 public class ApplicantApplicationVo {
     private final int applicationId;
     private final int status;

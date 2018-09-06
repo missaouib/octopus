@@ -9,6 +9,7 @@ import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.status.PostStatus;
+import com.targaryen.octopus.vo.ApplicantApplicationVo;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeVo;
@@ -105,8 +106,8 @@ public class ApplicantController {
         }
         result = new ModelAndView("applicant-application-list");
 
-        List<ApplicationVo> applicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
-        result.addObject("applicationVos", applicationVos);
+        List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
+        result.addObject("applicationVos", applicantApplicationVos);
         return result;
 
     }
@@ -140,8 +141,8 @@ public class ApplicantController {
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
 
-        List<ApplicationVo> applicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
-        map.addAttribute("applicationVos", applicationVos);
+        List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
+        map.addAttribute("applicationVos", applicantApplicationVos);
 
         return "applicant-application-list";
 }
