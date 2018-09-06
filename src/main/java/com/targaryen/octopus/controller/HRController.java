@@ -1,5 +1,6 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.entity.InterviewEntity;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.HRService;
@@ -7,6 +8,7 @@ import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicationStatus;
+import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,6 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
@@ -117,9 +123,31 @@ public class HRController {
         return String.valueOf(overAllStatus);
     }
 
-    @RequestMapping(value = "/hr/application/timeline", method = RequestMethod.GET)
-    public String hrApplicationTimeline(ModelMap map) {
+    @RequestMapping(value = "/hr/application/timeline/{appliId}", method = RequestMethod.GET)
+    public String hrApplicationTimeline(@PathVariable("appliId") int applicationId, ModelMap map) {
+        map.addAttribute("applicationId", applicationId);
+        map.addAttribute("interviewerList", hrService.listInterviewers());
+        map.addAttribute("interviewList", hrService.findInterviewByApplicationId(applicationId));
         return "hr-application-timeline";
     }
 
+    @RequestMapping(value = "/hr/application/timeline/interview/new", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationTimeline(InterviewEntity interviewEntity) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
+        Date startTime = null;
+        try {
+            startTime = dateFormat.parse(interviewEntity.getInterviewStartTime());
+            InterviewVo interviewVo = new InterviewVo.Builder()
+                    .applicationId(interviewEntity.getApplicationId())
+                    .interviewerId(interviewEntity.getInterviewerId())
+                    .interviewStartTime(startTime)
+                    .interviewPlace(interviewEntity.getInterviewPlace())
+                    .build();
+            return String.valueOf(hrService.createInterview(interviewVo));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(StatusCode.FAILURE);
+    }
 }
