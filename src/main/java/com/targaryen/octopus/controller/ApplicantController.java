@@ -98,10 +98,12 @@ public class ApplicantController {
             return result;
         }
         // get the relative application record
+        if(applicationEntity.getPostId() != 0){
 
+            ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicationEntity.getApplicantId()).postId(applicationEntity.getPostId()).build();
+            serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
+        }
         result = new ModelAndView("applicant-application-list");
-        ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicationEntity.getApplicantId()).postId(applicationEntity.getPostId()).build();
-        serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
 
         List<ApplicationVo> applicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
         result.addObject("applicationVos", applicationVos);
@@ -111,7 +113,7 @@ public class ApplicantController {
 
 
     @RequestMapping(value = "/applicant/resume/add", method = RequestMethod.POST)
-    public String resumeAddGet(ResumeEntity resumeEntity, ModelMap map) {
+    public String resumeAdd(ResumeEntity resumeEntity, ModelMap map) {
         /* UI Settings *//*
         map.addAttribute("title", "Add new post need");
         map.addAttribute("action", "add");
@@ -121,33 +123,38 @@ public class ApplicantController {
 
         System.out.println("[msg]: " + "applicant addd");
         System.out.println("[msg]: " + resumeEntity.getApplicantName() + ", " + resumeEntity.getApplicantPhone());
+
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(AuthInfo.getUserId());
-        ResumeVo resumeVo = new ResumeVo.Builder().applicantId(applicantId)
-                                                  .applicantName(resumeEntity.getApplicantName())
-                                                  .applicantSex(resumeEntity.getApplicantSex())
-                                                  .applicantAge(resumeEntity.getApplicantAge())
-                                                  .applicantSchool(resumeEntity.getApplicantSchool())
-                                                  .applicantDegree(resumeEntity.getApplicantDegree())
-                                                  .applicantMajor(resumeEntity.getApplicantMajor())
-                                                  .applicantCity(resumeEntity.getApplicantCity())
-                                                  .applicantEmail(resumeEntity.getApplicantEmail())
-                                                  .applicantPhone(resumeEntity.getApplicantPhone()).build();
-        serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), resumeVo);
+        ResumeVo res = new ResumeVo.Builder().applicantId(applicantId)
+                .applicantName(resumeEntity.getApplicantName())
+                .applicantSex(resumeEntity.getApplicantSex())
+                .applicantAge(resumeEntity.getApplicantAge())
+                .applicantSchool(resumeEntity.getApplicantSchool())
+                .applicantDegree(resumeEntity.getApplicantDegree())
+                .applicantMajor(resumeEntity.getApplicantMajor())
+                .applicantCity(resumeEntity.getApplicantCity())
+                .applicantEmail(resumeEntity.getApplicantEmail())
+                .applicantPhone(resumeEntity.getApplicantPhone()).build();
+        serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), res);
 
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
+
+        List<ApplicationVo> applicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
+        map.addAttribute("applicationVos", applicationVos);
+
         return "applicant-application-list";
-    }
+}
 
     @RequestMapping(value = "/applicant/resume/update", method = RequestMethod.POST)
     public String resumeUpdate(ResumeEntity resumeEntity, ModelMap map){
         //search database and pass it to front end
-
+        ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId());
         //get update information from front end
 
         //save it to backend and redirect to applicant-resume-magm
 
-        map.addAttribute("resume", new ResumeEntity());
+        map.addAttribute("resume", resumeVo);
 
         return "applicant-resume-add";
 

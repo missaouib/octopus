@@ -15,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         this.postDtoRepository = daoFactory.getPostDtoRepository();
         this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
         this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
+        this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
     }
 
 
@@ -118,6 +120,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicationVo.getApplicantId());
             applicationDto.setApplicant(applicantDto);
             applicationDto.setPost(postDto);
+            applicationDto.setCreateTime(Calendar.getInstance().getTime());
             applicationDtoRepository.save(applicationDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
