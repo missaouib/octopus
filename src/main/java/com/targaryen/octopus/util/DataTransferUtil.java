@@ -16,17 +16,20 @@ public class DataTransferUtil {
     public static InterviewVo InterviewDtoToVo(InterviewDto interviewDto) {
         return new InterviewVo.Builder()
                 .interviewId(interviewDto.getInterviewId())
-                .startTime(interviewDto.getStartTime())
+                .interviewStartTime(interviewDto.getInterviewStartTime())
                 .interviewPlace(interviewDto.getInterviewPlace())
                 .applicationId(interviewDto.getApplication().getApplicationId())
                 .interviewerId(interviewDto.getInterviewer().getInterviewerId())
-                .interviewStatus(interviewDto.getInterviewStatus())
+                .reservationStatus(interviewDto.getReservationStatus())
                 .applicantStatus(interviewDto.getApplicantStatus())
                 .applicantComment(interviewDto.getApplicantComment())
                 .interviewerStatus(interviewDto.getInterviewerStatus())
                 .interviewerComment(interviewDto.getInterviewerComment())
                 .interviewResultStatus(interviewDto.getInterviewResultStatus())
                 .interviewResultComment(interviewDto.getInterviewResultComment())
+                .createTime(interviewDto.getCreateTime())
+                .interviewResultTime(interviewDto.getInterviewResultTime())
+                .reservationResultTime(interviewDto.getReservationResultTime())
                 .build();
     }
 
@@ -80,6 +83,34 @@ public class DataTransferUtil {
                 .userName(userDto.getUserName())
                 .userPassword(userDto.getUserPassword())
                 .userRole(userDto.getRole().getRole())
+                .build();
+    }
+
+    public static ApplicationResumeVo ApplicationDtoToHRVo(ApplicationDto applicationDto) {
+        PostDto post = applicationDto.getPost();
+        ApplicantDto applicant = applicationDto.getApplicant();
+        ResumeDto resume = applicant.getResume();
+        return new ApplicationResumeVo.Builder()
+                .applicationId(applicationDto.getApplicationId())
+                .postId(post.getPostId())
+                .applicantId(applicant.getApplicantId())
+                .status(applicationDto.getStatus())
+                .applicantAge(resume.getApplicantAge())
+                .applicantCity(resume.getApplicantCity())
+                .applicantCV(resume.getApplicantCV())
+                .applicantDegree(resume.getApplicantDegree())
+                .applicantEmail(resume.getApplicantEmail())
+                .applicantMajor(resume.getApplicantMajor())
+                .applicantName(resume.getApplicantName())
+                .applicantPhone(resume.getApplicantPhone())
+                .applicantSchool(resume.getApplicantSchool())
+                .applicantSex(resume.getApplicantSex())
+                .createTime(applicationDto.getCreateTime())
+                .filterEndTime(applicationDto.getFilterEndTime())
+                .interviewEndTime(applicationDto.getInterviewEndTime())
+                .dptApproveEndTime(applicationDto.getDptApproveEndTime())
+                .offerTime(applicationDto.getOfferTime())
+                .applicantFeedbackTime(applicationDto.getApplicantFeedbackTime())
                 .build();
     }
 }

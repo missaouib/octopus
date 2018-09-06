@@ -13,5 +13,6 @@ import java.util.List;
 public interface InterviewDtoRepository extends JpaRepository<InterviewDto, Integer> {
     List<InterviewDto> findInterviewDtoByInterviewerStatus(int interviewerStatus);
     List<InterviewDto> findInterviewDtoByApplicantStatus(int applicantStatus);
-    InterviewDto findInterviewDtoByInterviewId(int interviewId);
+    public InterviewDto findInterviewDtoByInterviewId(Integer id);
+    public void deleteInterviewDtoByInterviewId(Integer id);
 }

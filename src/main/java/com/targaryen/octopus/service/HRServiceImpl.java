@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,14 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class HRServiceImpl implements HRService {
     private PostDtoRepository postDtoRepository;
-    private ApplicantDtoRepository applicantDtoRepository;
     private ApplicationDtoRepository applicationDtoRepository;
     private InterviewerDtoRepository interviewerDtoRepository;
     private InterviewDtoRepository interviewDtoRepository;
 
     @Autowired
     public HRServiceImpl(DaoFactory daoFactory) {
-        this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
         this.interviewerDtoRepository = daoFactory.getInterviewerDtoRepository();
@@ -80,6 +77,18 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    public int finishPostById(int postId) {
+        try {
+            PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
+            postDto.setStatus(PostStatus.FINISHED);
+            postDtoRepository.save(postDto);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
     public int updatePost(PostVo updatePost) {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
@@ -100,14 +109,14 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<ApplicationVo> findApplicationsByPostId(int postId) {
+    public List<ApplicationResumeVo> findApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
-                    .map(n -> DataTransferUtil.ApplicationDtoToVo(n))
+                    .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<ApplicationVo>();
+            return new ArrayList<ApplicationResumeVo>();
         }
     }
 
@@ -131,10 +140,24 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public int filterApplicationById(int applicationId) {
+    public int filterPassApplicationById(int applicationId) {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             application.setStatus(ApplicationStatus.FILTER_PASS);
+            application.setFilterEndTime(Calendar.getInstance().getTime());
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int filterFailApplicationById(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.FILTER_FAIL);
+            application.setFilterEndTime(Calendar.getInstance().getTime());
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -155,6 +178,19 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    public List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer status) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        if(post != null) {
+            return post.getApplications().stream()
+                    .filter(n -> status.equals(n.getStatus()))
+                    .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<ApplicationResumeVo>();
+        }
+    }
+
+    @Override
     public List<InterviewerVo> listInterviewers() {
         return interviewerDtoRepository.findAll().stream()
                 .map(n -> DataTransferUtil.InterviewerDtoToVo(n))
@@ -169,13 +205,34 @@ public class HRServiceImpl implements HRService {
             InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
-            newInterview.setStartTime(interviewVo.getStartTime());
+            newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
             newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
             newInterview.setApplicantStatus(ApplicantStatus.INIT);
             newInterview.setInterviewerStatus(InterviewerStatus.INIT);
-            newInterview.setInterviewStatus(InterviewStatus.INIT);
+            newInterview.setReservationStatus(InterviewStatus.INIT);
             newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
+            newInterview.setCreateTime(Calendar.getInstance().getTime());
             interviewDtoRepository.save(newInterview);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public InterviewVo findInterviewById(int interviewId) {
+        try {
+            InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
+            return DataTransferUtil.InterviewDtoToVo(interviewDto);
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public int deleteInterviewById(int interviewId) {
+        try {
+            interviewDtoRepository.deleteInterviewDtoByInterviewId(interviewId);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -190,7 +247,46 @@ public class HRServiceImpl implements HRService {
                     .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                     .collect(Collectors.toList());
         } else {
-            return null;
+            return new ArrayList<InterviewVo>();
+        }
+    }
+
+    @Override
+    public int interviewPassApplicationById(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.INTERVIEW_PASS);
+            application.setInterviewEndTime(Calendar.getInstance().getTime());
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int interviewFailApplicationById(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.INTERVIEW_FAIL);
+            application.setInterviewEndTime(Calendar.getInstance().getTime());
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int sendOfferByApplicationId(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.OFFER);
+            application.setOfferTime(Calendar.getInstance().getTime());
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
         }
     }
 }

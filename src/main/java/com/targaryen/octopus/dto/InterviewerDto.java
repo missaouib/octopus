@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class InterviewerDto implements Serializable {
     @NotBlank
     private String interviewerPosition;
 
-    @NotBlank
+    @NotNull
     private int interviewerAge;
 
     @NotBlank
