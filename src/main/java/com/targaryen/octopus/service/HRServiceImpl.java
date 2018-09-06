@@ -178,11 +178,11 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<ApplicationResumeVo> findFilterPassApplicationsByPostId(int postId) {
+    public List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer status) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
-                    .filter(n -> ApplicationStatus.FILTER_PASS.equals(n.getStatus()))
+                    .filter(n -> status.equals(n.getStatus()))
                     .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
                     .collect(Collectors.toList());
         } else {

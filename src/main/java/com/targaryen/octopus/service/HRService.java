@@ -76,10 +76,10 @@ public interface HRService {
     int revokeFilterApplicationById(int applicationId);
 
     /**
-     * find filter pass application by postId
+     * find applications by postId and status
      *
      */
-    List<ApplicationResumeVo> findFilterPassApplicationsByPostId(int postId);
+    List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer Status);
 
     /**
      * list interviewer
