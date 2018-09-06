@@ -138,16 +138,6 @@ public class ApplicantServiceImpl implements ApplicantService {
         return StatusCode.SUCCESS;
     }
 
-    @Override
-    public List<InterviewVo> findUnreplyedInterviewByUserId(int userId) {
-        return null;
-    }
-
-    @Override
-    public List<InterviewVo> findAcceptedInterviewByUserId(int userId) {
-        return null;
-    }
-
     public List<ApplicationVo> findApplicationsByUserId(int userId) {
         UserDto userDto;
         ApplicantDto applicantDto;
