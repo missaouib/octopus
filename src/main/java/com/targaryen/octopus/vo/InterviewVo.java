@@ -7,39 +7,45 @@ import java.util.Date;
 @Getter
 public class InterviewVo {
     private final int interviewId;
-    private final Date startTime;
+    private final Date interviewStartTime;
     private final String interviewPlace;
     private final int applicantStatus;
     private final String applicantComment;
     private final int interviewerStatus;
     private final String interviewerComment;
-    private final int interviewStatus;
+    private final int reservationStatus;
     private final int interviewResultStatus;
     private final String interviewResultComment;
     private final int applicationId;
     private final int interviewerId;
+    private final Date createTime;
+    private final Date reservationResultTime;
+    private final Date interviewResultTime;
 
     public static class Builder {
         private int interviewId;
-        private Date startTime;
+        private Date interviewStartTime;
         private String interviewPlace;
         private int applicantStatus;
         private String applicantComment;
         private int interviewerStatus;
         private String interviewerComment;
-        private int interviewStatus;
+        private int reservationStatus;
         private int interviewResultStatus;
         private String interviewResultComment;
         private int applicationId;
         private int interviewerId;
+        private Date createTime;
+        private Date reservationResultTime;
+        private Date interviewResultTime;
 
         public Builder interviewId(int interviewId) {
             this.interviewId = interviewId;
             return this;
         }
 
-        public Builder startTime(Date startTime) {
-            this.startTime = startTime;
+        public Builder interviewStartTime(Date interviewStartTime) {
+            this.interviewStartTime = interviewStartTime;
             return this;
         }
 
@@ -68,8 +74,8 @@ public class InterviewVo {
             return this;
         }
 
-        public Builder interviewStatus(int interviewStatus) {
-            this.interviewStatus = interviewStatus;
+        public Builder reservationStatus(int reservationStatus) {
+            this.reservationStatus = reservationStatus;
             return this;
         }
 
@@ -93,6 +99,21 @@ public class InterviewVo {
             return this;
         }
 
+        public Builder createTime(Date createTime) {
+            this.createTime = createTime;
+            return this;
+        }
+
+        public Builder reservationResultTime(Date reservationResultTime) {
+            this.reservationResultTime = reservationResultTime;
+            return this;
+        }
+
+        public Builder interviewResultTime(Date interviewResultTime) {
+            this.interviewResultTime = interviewResultTime;
+            return this;
+        }
+
         public InterviewVo build() {
             return new InterviewVo(this);
         }
@@ -101,16 +122,19 @@ public class InterviewVo {
 
     private InterviewVo(Builder builder) {
         this.interviewId = builder.interviewId;
-        this.startTime = builder.startTime;
+        this.interviewStartTime = builder.interviewStartTime;
         this.interviewPlace = builder.interviewPlace;
         this.applicantStatus = builder.applicantStatus;
         this.applicantComment = builder.applicantComment;
         this.interviewerStatus = builder.interviewerStatus;
         this.interviewerComment = builder.interviewerComment;
-        this.interviewStatus = builder.interviewStatus;
+        this.reservationStatus = builder.reservationStatus;
         this.interviewResultStatus = builder.interviewResultStatus;
         this.interviewResultComment = builder.interviewResultComment;
         this.applicationId = builder.applicationId;
         this.interviewerId = builder.interviewerId;
+        this.createTime = builder.createTime;
+        this.reservationResultTime = builder.reservationResultTime;
+        this.interviewResultTime = builder.interviewResultTime;
     }
 }

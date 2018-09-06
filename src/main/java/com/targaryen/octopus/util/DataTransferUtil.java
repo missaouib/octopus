@@ -16,11 +16,11 @@ public class DataTransferUtil {
     public static InterviewVo InterviewDtoToVo(InterviewDto interviewDto) {
         return new InterviewVo.Builder()
                 .interviewId(interviewDto.getInterviewId())
-                .startTime(interviewDto.getStartTime())
+                .interviewStartTime(interviewDto.getInterviewStartTime())
                 .interviewPlace(interviewDto.getInterviewPlace())
                 .applicationId(interviewDto.getApplication().getApplicationId())
                 .interviewerId(interviewDto.getInterviewer().getInterviewerId())
-                .interviewStatus(interviewDto.getInterviewStatus())
+                .reservationStatus(interviewDto.getReservationStatus())
                 .applicantStatus(interviewDto.getApplicantStatus())
                 .applicantComment(interviewDto.getApplicantComment())
                 .interviewerStatus(interviewDto.getInterviewerStatus())

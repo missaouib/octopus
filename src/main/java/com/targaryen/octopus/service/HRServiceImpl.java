@@ -207,12 +207,13 @@ public class HRServiceImpl implements HRService {
             InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
-            newInterview.setStartTime(interviewVo.getStartTime());
+            newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
             newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
             newInterview.setApplicantStatus(ApplicantStatus.INIT);
             newInterview.setInterviewerStatus(InterviewerStatus.INIT);
-            newInterview.setInterviewStatus(InterviewStatus.INIT);
+            newInterview.setReservationStatus(InterviewStatus.INIT);
             newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
+            newInterview.setCreateTime(Calendar.getInstance().getTime());
             interviewDtoRepository.save(newInterview);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -226,13 +227,13 @@ public class HRServiceImpl implements HRService {
             InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
             return new InterviewVo.Builder()
                     .interviewId(interviewDto.getInterviewId())
-                    .startTime(interviewDto.getStartTime())
+                    .interviewStartTime(interviewDto.getInterviewStartTime())
                     .interviewPlace(interviewDto.getInterviewPlace())
                     .applicantStatus(interviewDto.getApplicantStatus())
                     .applicantComment(interviewDto.getApplicantComment())
                     .interviewerStatus(interviewDto.getInterviewerStatus())
                     .interviewerComment(interviewDto.getInterviewerComment())
-                    .interviewStatus(interviewDto.getInterviewStatus())
+                    .reservationStatus(interviewDto.getReservationStatus())
                     .interviewResultStatus(interviewDto.getInterviewResultStatus())
                     .interviewResultComment(interviewDto.getInterviewResultComment())
                     .applicationId(interviewDto.getApplication().getApplicationId())

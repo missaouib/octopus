@@ -23,7 +23,7 @@ public class InterviewDto implements Serializable {
 
     @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startTime;
+    private Date interviewStartTime;
 
     @NotBlank
     private String interviewPlace;
@@ -39,12 +39,21 @@ public class InterviewDto implements Serializable {
     private String interviewerComment;
 
     @NotBlank
-    private int interviewStatus;
+    private int reservationStatus;
 
     @NotBlank
     private int interviewResultStatus;
 
     private String interviewResultComment;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date reservationResultTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date interviewResultTime;
 
     @JoinColumn(name = "application_id")
     @ManyToOne(cascade = CascadeType.MERGE)
