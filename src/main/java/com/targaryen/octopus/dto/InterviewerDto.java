@@ -22,16 +22,20 @@ public class InterviewerDto implements Serializable {
     @SequenceGenerator(name = "t_interviewer_seq", sequenceName = "t_interviewer_seq", allocationSize = 1)
     private int interviewerId;
 
-
+    @NotBlank
+    @Column(columnDefinition = "TEXT default 'Default Name'")
     private String interviewerName;
 
-
+    @NotBlank
+    @Column(columnDefinition = "TEXT default 'Default Position'")
     private String interviewerPosition;
 
-
+    @NotNull
+    @Column(columnDefinition = "INT default 0")
     private int interviewerAge;
 
-
+    @NotBlank
+    @Column(columnDefinition = "TEXT default 'Default Department'")
     private String interviewerDepartment;
 
     @JoinColumn(name = "user_id")
