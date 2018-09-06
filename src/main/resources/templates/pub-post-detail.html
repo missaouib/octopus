@@ -94,7 +94,7 @@
                                 <div class="col-lg-4 row">
                                     <ul style="list-style-type:none">
                                         <li>
-                                            Department：<label th:text="${post.recruitDpt}}"></label>
+                                            Department：<label th:text="${post.recruitDpt}"></label>
                                         </li>
                                         <li style="margin-top: 10px;">
                                             Post Locale: <label th:text="${post.postLocale}"></label>
@@ -107,14 +107,14 @@
                                             Post Type: <label th:text="${post.postType}"></label>
                                         </li>
                                         <li style="margin-top: 10px;">
-                                            Recruiting Number: <label th:text="${post.recruitNum}}"></label>
+                                            Recruiting Number: <label th:text="${post.recruitNum}"></label>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-4 row">
                                     <ul style="list-style-type:none">
                                         <li>
-                                            Create Time: <label th:text="${post.publishTime}}"></label>
+                                            Create Time: <label th:text="${#dates.format(post.publishTime,'yyyy-MM-dd HH:mm')}"></label>
                                         </li>
                                     </ul>
                                 </div>

@@ -9,7 +9,9 @@ import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.status.PostStatus;
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
+import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -64,9 +66,11 @@ public class ApplicantController {
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
 
-        map.addAttribute("application", new ApplicationEntity());
-        map.addAttribute("postId", postId);
-        map.addAttribute("applicantId", serviceFactory.getIDService().userIdToApplicantId(AuthInfo.getUserId()));
+        ApplicationEntity application = new ApplicationEntity();
+        application.setPostId(Integer.parseInt(postId));
+        application.setApplicantId(serviceFactory.getIDService().userIdToApplicantId(AuthInfo.getUserId()));
+
+        map.addAttribute("application", application);
 
         PostVo getPost = serviceFactory.getPulicService().findPostById(Integer.parseInt(postId));
         if(getPost != null){
@@ -78,31 +82,36 @@ public class ApplicantController {
     @RequestMapping(value = "/applicant/application/list")
     public ModelAndView applicationList(ApplicationEntity applicationEntity, ModelMap map){
 
-        if(Math.random()%2 == 0){
-            map.addAttribute("resume", new ResumeEntity());
-            ModelAndView result = new ModelAndView("applicant-resume-add");
-            return result;
-        }
-
         //product application record
-
-        // get the relative application record
-
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
+        ModelAndView result = null;
 
-
-        ModelAndView result = new ModelAndView("applicant-application-list");
         System.out.println("[msg]: " + applicationEntity.getPostId() + ", " + applicationEntity.getApplicantId());
-        List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED);
-        result.addObject("posts", posts);
+
+        ResumeVo resumeVo =  serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId());
+        if(resumeVo == null){
+
+            System.out.println("[msg]: " + "applicant register");
+            map.addAttribute("resume", new ResumeEntity());
+            result = new ModelAndView("applicant-resume-add");
+            return result;
+        }
+        // get the relative application record
+
+        result = new ModelAndView("applicant-application-list");
+        ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicationEntity.getApplicantId()).postId(applicationEntity.getPostId()).build();
+        serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
+
+        List<ApplicationVo> applicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
+        result.addObject("applicationVos", applicationVos);
         return result;
 
     }
 
 
-    @RequestMapping(value = "/applicant/resume/add", method = RequestMethod.GET)
-    public String resumeAddGet(ModelMap map) {
+    @RequestMapping(value = "/applicant/resume/add", method = RequestMethod.POST)
+    public String resumeAddGet(ResumeEntity resumeEntity, ModelMap map) {
         /* UI Settings *//*
         map.addAttribute("title", "Add new post need");
         map.addAttribute("action", "add");
@@ -110,9 +119,24 @@ public class ApplicantController {
         map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
         map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
 
-        map.addAttribute("resume", new ResumeEntity());
+        System.out.println("[msg]: " + "applicant addd");
+        System.out.println("[msg]: " + resumeEntity.getApplicantName() + ", " + resumeEntity.getApplicantPhone());
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(AuthInfo.getUserId());
+        ResumeVo resumeVo = new ResumeVo.Builder().applicantId(applicantId)
+                                                  .applicantName(resumeEntity.getApplicantName())
+                                                  .applicantSex(resumeEntity.getApplicantSex())
+                                                  .applicantAge(resumeEntity.getApplicantAge())
+                                                  .applicantSchool(resumeEntity.getApplicantSchool())
+                                                  .applicantDegree(resumeEntity.getApplicantDegree())
+                                                  .applicantMajor(resumeEntity.getApplicantMajor())
+                                                  .applicantCity(resumeEntity.getApplicantCity())
+                                                  .applicantEmail(resumeEntity.getApplicantEmail())
+                                                  .applicantPhone(resumeEntity.getApplicantPhone()).build();
+        serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), resumeVo);
 
-        return "applicant-resume-add";
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+        return "applicant-application-list";
     }
 
     @RequestMapping(value = "/applicant/resume/magm", method = RequestMethod.GET)

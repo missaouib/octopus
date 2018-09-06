@@ -111,20 +111,20 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                             <tr>
-                                <th>Post Name</th>
-                                <th>Post Type</th>
-                                <th>Post Locale</th>
+                                <th>Applicant Id</th>
+                                <th>Post Id</th>
+                                <th>Status</th>
                                 <th style="width:100px;">Operation</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="ps: ${posts}">
-                                <td th:text="${ps.postName}"></td>
-                                <td th:text="${ps.postType}"></td>
-                                <td th:text="${ps.postLocale}"></td>
+                            <tr th:each="ps: ${resumeVos}">
+                                <td th:text="${ps.applicantId}"></td>
+                                <td th:text="${ps.postId}"></td>
+                                <td th:text="${ps.status}"></td>
                                 <td>
                                     <button type="button" class="btn btn-warning">
-                                        <a th:href="@{'/octopus/applicant/post/detail/' + ${ps.postId}}" style="color: #eee;"><i class="fa fa-file-text"> View Detail</i></a>
+                                        <a th:href="@{/octopus/applicant/interview/detail}" style="color: #eee;"><i class="fa fa-file-text"> Interview Detail</i></a>
                                     </button>
                                 </td>
                             </tr>

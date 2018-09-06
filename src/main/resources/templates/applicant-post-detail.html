@@ -90,7 +90,7 @@
                                 <div class="col-lg-4 row">
                                     <ul style="list-style-type:none">
                                         <li>
-                                            Department：<label></label>
+                                            Department：<label th:text="${post.recruitDpt}"></label>
                                         </li>
                                         <li style="margin-top: 10px;">
                                             Post Locale: <label th:text="${post.postLocale}"></label>
@@ -103,14 +103,14 @@
                                             Post Type: <label th:text="${post.postType}"></label>
                                         </li>
                                         <li style="margin-top: 10px;">
-                                            Recruiting Number: <label></label>
+                                            Recruiting Number: <label th:text="${post.recruitNum}"></label>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-4 row">
                                     <ul style="list-style-type:none">
                                         <li>
-                                            Create Time: <label></label>
+                                            Create Time: <label th:text="${#dates.format(post.publishTime,'yyyy-MM-dd HH:mm')}"></label>
                                         </li>
                                     </ul>
                                 </div>
@@ -148,14 +148,19 @@
                         </div>
                         <div class="col-lg-12" align="center">
                             <div class="row" style="margin-top: 20px;">
-                                <form role="form" method="post" th:action="@{/octopus/applicant/application/list}" th:object="${application}}">
+                                <form role="form" method="post" th:action="@{/octopus/applicant/application/list}" th:object="${application}">
                                     <fieldset>
-
                                         <div class="form-group">
-                                            <input class="form-control" id="postId" type="hidden" th:field="${postId}}" />
+                                            <input class="form-control" id="applicationId" type="hidden" th:field="*{applicationId}" />
                                         </div>
                                         <div class="form-group">
-                                            <input class="form-control" id="applicantId" type="hidden" th:field="${applicantId}}" />
+                                            <input class="form-control" id="status" type="hidden" th:field="*{status}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="postId" type="hidden" th:field="*{postId}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="applicantId" type="hidden" th:field="*{applicantId}" />
                                         </div>
                                         <button type="submit" class="btn btn-success btn-block" style="width: 200px;">Apply For This Post</button>
                                     </fieldset>
