@@ -41,36 +41,22 @@ public class ApplicantServiceImpl implements ApplicantService {
         this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
     }
 
-    public int CreateResume(int userId, String applicantName) {
-        UserDto userDto;
-        ApplicantDto applicantDto;
-        ResumeDto resumeDto = new ResumeDto();
-        try {
-            userDto = userDtoRepository.findUserDtoByUserId(userId);
-            applicantDto = userDto.getApplicant();
-            resumeDto.setApplicant(applicantDto);
-            resumeDto.setApplicantName(applicantName);
-            resumeDtoRepository.save(resumeDto);
-        } catch (DataAccessException e) {
-            return StatusCode.FAILURE;
-        }
-        return StatusCode.SUCCESS;
-    }
 
     public int SaveResume(int userId, ResumeVo resumeVo) {
         ResumeDto resumeDto;
-        UserDto userDto;
         ApplicantDto applicantDto;
 
+        applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(resumeVo.getApplicantId());
+
         if(findResumeByUserId(userId) == null) {
-            if(CreateResume(userId, resumeVo.getApplicantName()) != StatusCode.SUCCESS)
-                return StatusCode.FAILURE;
+            resumeDto = new ResumeDto();
+            resumeDto.setApplicant(applicantDto);
+        }
+        else {
+            resumeDto = applicantDto.getResume();
         }
 
         try {
-            userDto = userDtoRepository.findUserDtoByUserId(userId);
-//            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(1);
-            resumeDto = userDto.getApplicant().getResume();
             resumeDto.setApplicantAge(resumeVo.getApplicantAge());
             resumeDto.setApplicantCity(resumeVo.getApplicantCity());
             resumeDto.setApplicantCV(resumeVo.getApplicantCV());
