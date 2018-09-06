@@ -5,10 +5,12 @@ import com.targaryen.octopus.dao.UserDtoRepository;
 import com.targaryen.octopus.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
 /**
  *  Created by Liu Mengyang on 2018/09/05
  */
+@Service
 public class IDServiceImpl implements IDService {
     private UserDtoRepository userDtoRepository;
 
