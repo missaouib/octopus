@@ -2,6 +2,7 @@ package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.*;
+import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.*;
 import com.targaryen.octopus.vo.*;
@@ -38,18 +39,7 @@ public class HRServiceImpl implements HRService {
     @Override
     public List<PostVo> listPosts() {
         return postDtoRepository.findAllByStatusNotOrderByPostIdDesc(PostStatus.REVOKED).stream()
-                .map(n -> new PostVo.Builder()
-                        .postId(n.getPostId())
-                        .postName(n.getPostName())
-                        .postType(n.getPostType())
-                        .postLocale(n.getPostLocale())
-                        .postDescription(n.getPostDescription())
-                        .postRequirement(n.getPostRequirement())
-                        .recruitNum(n.getRecruitNum())
-                        .recruitDpt(n.getRecruitDpt())
-                        .publishTime(n.getPublishTime())
-                        .status(n.getStatus())
-                        .build())
+                .map(n -> DataTransferUtil.PostDtoToVo(n))
                 .collect(Collectors.toList());
     }
 
@@ -59,18 +49,7 @@ public class HRServiceImpl implements HRService {
         if(postDto == null) {
             return new PostVo.Builder().build();
         } else {
-            return new PostVo.Builder()
-                    .postId(postDto.getPostId())
-                    .postName(postDto.getPostName())
-                    .postType(postDto.getPostType())
-                    .postLocale(postDto.getPostLocale())
-                    .postDescription(postDto.getPostDescription())
-                    .postRequirement(postDto.getPostRequirement())
-                    .recruitNum(postDto.getRecruitNum())
-                    .recruitDpt(postDto.getRecruitDpt())
-                    .publishTime(postDto.getPublishTime())
-                    .status(postDto.getStatus())
-                    .build();
+            return DataTransferUtil.PostDtoToVo(postDto);
         }
     }
 
@@ -125,11 +104,7 @@ public class HRServiceImpl implements HRService {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
-                    .map(n -> new ApplicationVo.Builder()
-                            .applicationId(n.getApplicationId())
-                            .status(n.getStatus())
-                            .applicantId(n.getApplicant().getApplicantId())
-                            .postId(n.getPost().getPostId()).build())
+                    .map(n -> DataTransferUtil.ApplicationDtoToVo(n))
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<ApplicationVo>();
@@ -148,19 +123,7 @@ public class HRServiceImpl implements HRService {
         }
         ResumeVo resumeVo;
         if(resumeDto != null) {
-            resumeVo = new ResumeVo.Builder()
-                    .resumeId(resumeDto.getResumeId())
-                    .applicantName(resumeDto.getApplicantName())
-                    .applicantSex(resumeDto.getApplicantSex())
-                    .applicantAge(resumeDto.getApplicantAge())
-                    .applicantSchool(resumeDto.getApplicantSchool())
-                    .applicantDegree(resumeDto.getApplicantDegree())
-                    .applicantMajor(resumeDto.getApplicantMajor())
-                    .applicantCity(resumeDto.getApplicantCity())
-                    .applicantEmail(resumeDto.getApplicantEmail())
-                    .applicantPhone(resumeDto.getApplicantPhone())
-                    .applicantCV(resumeDto.getApplicantCV())
-                    .build();
+            resumeVo = DataTransferUtil.ResumeDtoToVo(resumeDto);
         } else {
             resumeVo = null;
         }
@@ -194,26 +157,20 @@ public class HRServiceImpl implements HRService {
     @Override
     public List<InterviewerVo> listInterviewers() {
         return interviewerDtoRepository.findAll().stream()
-                .map(n -> new InterviewerVo.Builder()
-                        .interviewerId(n.getInterviewerId())
-                        .interviewerName(n.getInterviewerName())
-                        .interviewAge(n.getInterviewerAge())
-                        .interviewDepartment(n.getInterviewerDepartment())
-                        .interviewPosition(n.getInterviewerPosition())
-                        .build())
+                .map(n -> DataTransferUtil.InterviewerDtoToVo(n))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public int createInterview(int applicationId, int interviewerId, Date startTime, String interviewPlace) {
+    public int createInterview(InterviewVo interviewVo) {
         try {
             InterviewDto newInterview = new InterviewDto();
-            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
-            InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewerId);
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
+            InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
-            newInterview.setStartTime(startTime);
-            newInterview.setInterviewPlace(interviewPlace);
+            newInterview.setStartTime(interviewVo.getStartTime());
+            newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
             newInterview.setApplicantStatus(ApplicantStatus.INIT);
             newInterview.setInterviewerStatus(InterviewerStatus.INIT);
             newInterview.setInterviewStatus(InterviewStatus.INIT);
@@ -230,20 +187,7 @@ public class HRServiceImpl implements HRService {
         ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
         if(application != null) {
             return application.getInterviews().stream()
-                    .map(n -> new InterviewVo.Builder()
-                            .interviewId(n.getInterviewId())
-                            .startTime(n.getStartTime())
-                            .interviewPlace(n.getInterviewPlace())
-                            .applicantStatus(n.getApplicantStatus())
-                            .applicantComment(n.getApplicantComment())
-                            .interviewerStatus(n.getInterviewerStatus())
-                            .interviewerComment(n.getInterviewerComment())
-                            .interviewStatus(n.getInterviewStatus())
-                            .interviewResultStatus(n.getInterviewResultStatus())
-                            .interviewResultComment(n.getInterviewResultComment())
-                            .applicationId(n.getApplication().getApplicationId())
-                            .interviewerId(n.getInterviewer().getInterviewerId())
-                            .build())
+                    .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                     .collect(Collectors.toList());
         } else {
             return null;
