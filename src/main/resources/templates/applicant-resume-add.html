@@ -49,17 +49,17 @@
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label>Name *</label>
-                                    <input id="name" name="name" type="text" class="form-control required">
+                                    <input id="name" name="name" th:field="*{applicantName}"  type="text" class="form-control required">
                                 </div>
                                 <div class="form-group">
                                     <label>Age *</label>
-                                    <input id="age" name="age" type="text" class="form-control required">
+                                    <input id="age" name="age" th:field="*{applicantAge}"  type="text" class="form-control required number">
                                 </div>
                                 <div class="form-group">
                                     <label>Sex *</label><br>
-                                    <select id="sex" name="sex" style="width: 200px; height:34px;">
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
+                                    <select id="sex" name="sex" th:field="*{applicantSex}" style="width: 200px; height:34px;">
+                                        <option value="0">Male</option>
+                                        <option value="1">Female</option>
                                     </select>
                                 </div>
                             </div>
@@ -80,11 +80,11 @@
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label>School *</label>
-                                    <input id="school" name="school" type="text" class="form-control required">
+                                    <input id="school" name="school" th:field="*{applicantSchool}" type="text" class="form-control required">
                                 </div>
                                 <div class="form-group">
                                     <label>Major *</label>
-                                    <input id="major" name="major" th:field="*{applicantMajor}"  type="text" class="form-control required">
+                                    <input id="major" name="major" th:field="*{applicantMajor}" type="text" class="form-control required">
                                 </div>
                                 <div class="form-group">
                                     <label>Degree *</label>

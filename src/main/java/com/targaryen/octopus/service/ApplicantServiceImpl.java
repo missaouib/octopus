@@ -60,6 +60,7 @@ public class ApplicantServiceImpl implements ApplicantService {
     public int SaveResume(int userId, ResumeVo resumeVo) {
         ResumeDto resumeDto;
         UserDto userDto;
+        ApplicantDto applicantDto;
 
         if(findResumeByUserId(userId) == null) {
             if(CreateResume(userId, resumeVo.getApplicantName()) != StatusCode.SUCCESS)
@@ -68,6 +69,7 @@ public class ApplicantServiceImpl implements ApplicantService {
 
         try {
             userDto = userDtoRepository.findUserDtoByUserId(userId);
+//            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(1);
             resumeDto = userDto.getApplicant().getResume();
             resumeDto.setApplicantAge(resumeVo.getApplicantAge());
             resumeDto.setApplicantCity(resumeVo.getApplicantCity());

@@ -148,6 +148,8 @@ public class ApplicantController {
         map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
         map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
 
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
         return "applicant-resume-magm";
     }
 
