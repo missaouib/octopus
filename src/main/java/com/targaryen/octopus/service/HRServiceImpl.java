@@ -131,10 +131,22 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public int filterApplicationById(int applicationId) {
+    public int filterPassApplicationById(int applicationId) {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             application.setStatus(ApplicationStatus.FILTER_PASS);
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int filterFailApplicationById(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.FILTER_FAIL);
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -151,6 +163,19 @@ public class HRServiceImpl implements HRService {
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public List<ApplicationVo> findFilterPassApplicationsByPostId(int postId) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        if(post != null) {
+            return post.getApplications().stream()
+                    .filter(n -> ApplicationStatus.FILTER_PASS.equals(n.getStatus()))
+                    .map(n -> DataTransferUtil.ApplicationDtoToVo(n))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<ApplicationVo>();
         }
     }
 

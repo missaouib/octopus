@@ -53,16 +53,28 @@ public interface HRService {
     ResumeVo findResumeByApplicationId(int applicationId);
 
     /**
-     * filter application by applicantId
+     * filter pass application by applicantId
      *
      */
-    int filterApplicationById(int applicationId);
+    int filterPassApplicationById(int applicationId);
 
     /**
-     * revoke filter application by applicantId
+     * filter fail application by applicantId
+     *
+     */
+    int filterFailApplicationById(int applicationId);
+
+    /**
+     * revoke filter pass application by applicantId
      *
      */
     int revokeFilterApplicationById(int applicationId);
+
+    /**
+     * find filter pass application by postId
+     *
+     */
+    List<ApplicationVo> findFilterPassApplicationsByPostId(int postId);
 
     /**
      * list interviewer
