@@ -6,6 +6,7 @@ import com.targaryen.octopus.dao.PostDtoRepository;
 import com.targaryen.octopus.dao.UserDtoRepository;
 import com.targaryen.octopus.dto.DptManagerDto;
 import com.targaryen.octopus.dto.PostDto;
+import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.PostVo;
@@ -40,18 +41,7 @@ public class DptManagerServiceImpl implements DptManagerService {
             return new ArrayList<PostVo>();
         } else {
             return dptManager.getPosts().stream()
-                    .map(n -> new PostVo.Builder()
-                            .postId(n.getPostId())
-                            .postName(n.getPostName())
-                            .postType(n.getPostType())
-                            .postLocale(n.getPostLocale())
-                            .postDescription(n.getPostDescription())
-                            .postRequirement(n.getPostRequirement())
-                            .recruitNum(n.getRecruitNum())
-                            .recruitDpt(n.getRecruitDpt())
-                            .publishTime(n.getPublishTime())
-                            .status(n.getStatus())
-                            .build())
+                    .map(n -> DataTransferUtil.PostDtoToVo(n))
                     .collect(Collectors.toList());
         }
     }
@@ -62,18 +52,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         if(postDto == null) {
             return new PostVo.Builder().build();
         } else {
-            return new PostVo.Builder()
-                    .postId(postDto.getPostId())
-                    .postName(postDto.getPostName())
-                    .postType(postDto.getPostType())
-                    .postLocale(postDto.getPostLocale())
-                    .postDescription(postDto.getPostDescription())
-                    .postRequirement(postDto.getPostRequirement())
-                    .recruitNum(postDto.getRecruitNum())
-                    .recruitDpt(postDto.getRecruitDpt())
-                    .publishTime(postDto.getPublishTime())
-                    .status(postDto.getStatus())
-                    .build();
+            return DataTransferUtil.PostDtoToVo(postDto);
         }
     }
 

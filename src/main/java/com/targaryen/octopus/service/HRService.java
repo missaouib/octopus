@@ -71,10 +71,10 @@ public interface HRService {
     List<InterviewerVo> listInterviewers();
 
     /**
-     * create an interview
+     * create an interview, interviewVo should include applicationId, interviewerId, startTime, interviewPlace
      *
      */
-    int createInterview(int applicationId, int interviewerId, Date startTime, String interviewPlace);
+    int createInterview(InterviewVo interviewVo);
 
     /**
      * find interview by applicationId
