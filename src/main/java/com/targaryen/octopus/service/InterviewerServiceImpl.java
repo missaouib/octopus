@@ -5,6 +5,7 @@ import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewerStatus;
+import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -57,20 +59,26 @@ public class InterviewerServiceImpl implements InterviewerService {
         return interviewVos;
     }
 
-//    public int setInterviewerStatus(int interviewerStatus, int interviewId) {
-//        InterviewDto interviewDto;
-//
-//        try {
-//            interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
-//            if(interviewDto == null)
-//                return StatusCode.FAILURE;
-//            interviewDto.setInterviewerStatus(interviewerStatus);
-//            if(InterviewerStatus.REJECTED.equals(interviewerStatus)) {
-//
-//            }
-//
-//        }
-//    }
+    public int setInterviewerStatus(int interviewerStatus, int interviewId, String comment) {
+        InterviewDto interviewDto;
+
+        try {
+            interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
+            if(interviewDto == null)
+                return StatusCode.FAILURE;
+            interviewDto.setInterviewerStatus(interviewerStatus);
+            if(InterviewerStatus.REJECTED.equals(interviewerStatus)) {
+                interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+                interviewDto.setInterviewerComment(comment);
+                interviewDto.setReservationStatus(ReservationStatus.FAIL);
+            }
+            interviewDtoRepository.save(interviewDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
 
     public ResumeVo findResumeByApplicationId(int applicationId) {
         ApplicationDto applicationDto;
