@@ -1,7 +1,21 @@
 package com.targaryen.octopus.util.status;
 
 public class ApplicantStatus {
-    final static public Integer INIT = 0;
-    final static public Integer REJECTED = -1;
-    final static public Integer ACCEPTED = 1;
+    final static public int INIT = 0;
+    final static public int REJECTED = -1;
+    final static public int ACCEPTED = 1;
+
+
+    public static String toString(int status) {
+        switch (status) {
+            case INIT:
+                return "pending";
+            case REJECTED:
+                return "rejected";
+            case ACCEPTED:
+                return "accepted";
+            default:
+                return "invalid";
+        }
+    }
 }
