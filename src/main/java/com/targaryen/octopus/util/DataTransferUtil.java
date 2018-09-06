@@ -127,6 +127,12 @@ public class DataTransferUtil {
                 .postName(postDto.getPostName())
                 .postType(postDto.getPostType())
                 .recruitDpt(postDto.getRecruitDpt())
+                .createTime(applicationDto.getCreateTime())
+                .filterEndTime(applicationDto.getFilterEndTime())
+                .interviewEndTime(applicationDto.getInterviewEndTime())
+                .dptApproveEndTime(applicationDto.getDptApproveEndTime())
+                .offerTime(applicationDto.getOfferTime())
+                .applicantFeedbackTime(applicationDto.getApplicantFeedbackTime())
                 .status(applicationDto.getStatus()).build();
     }
 }

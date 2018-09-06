@@ -1,8 +1,11 @@
 package com.targaryen.octopus.vo;
 
 
+import lombok.Getter;
+
 import java.util.Date;
 
+@Getter
 public class ApplicantApplicationVo {
     private final int applicationId;
     private final int status;
@@ -13,6 +16,12 @@ public class ApplicantApplicationVo {
     private final String postLocale;
     private final String postType;
     private final String recruitDpt;
+    private final Date createTime;
+    private final Date filterEndTime;
+    private final Date interviewEndTime;
+    private final Date dptApproveEndTime;
+    private final Date offerTime;
+    private final Date applicantFeedbackTime;
 
     public static class Builder {
         private int applicationId;
@@ -24,6 +33,12 @@ public class ApplicantApplicationVo {
         private String postLocale;
         private String postType;
         private String recruitDpt;
+        private Date createTime;
+        private Date filterEndTime;
+        private Date interviewEndTime;
+        private Date dptApproveEndTime;
+        private Date offerTime;
+        private Date applicantFeedbackTime;
 
         public Builder applicationId(int applicationId) {
             this.applicantId = applicationId;
@@ -70,6 +85,36 @@ public class ApplicantApplicationVo {
             return this;
         }
 
+        public Builder createTime(Date createTime) {
+            this.createTime = createTime;
+            return this;
+        }
+
+        public Builder filterEndTime(Date filterEndTime) {
+            this.filterEndTime = filterEndTime;
+            return this;
+        }
+
+        public Builder interviewEndTime(Date interviewEndTime) {
+            this.interviewEndTime = interviewEndTime;
+            return this;
+        }
+
+        public Builder dptApproveEndTime(Date dptApproveEndTime) {
+            this.dptApproveEndTime = dptApproveEndTime;
+            return this;
+        }
+
+        public Builder offerTime(Date offerTime) {
+            this.offerTime = offerTime;
+            return this;
+        }
+
+        public Builder applicantFeedbackTime(Date applicantFeedbackTime) {
+            this.applicantFeedbackTime = applicantFeedbackTime;
+            return this;
+        }
+
         public ApplicantApplicationVo build() {
             return new ApplicantApplicationVo(this);
         }
@@ -85,6 +130,12 @@ public class ApplicantApplicationVo {
         this.postLocale = builder.postLocale;
         this.postType = builder.postType;
         this.recruitDpt = builder.recruitDpt;
+        this.createTime = builder.createTime;
+        this.filterEndTime = builder.filterEndTime;
+        this.interviewEndTime = builder.interviewEndTime;
+        this.dptApproveEndTime = builder.dptApproveEndTime;
+        this.offerTime = builder.offerTime;
+        this.applicantFeedbackTime = builder.applicantFeedbackTime;
     }
 
 }
