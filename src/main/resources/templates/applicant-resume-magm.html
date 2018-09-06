@@ -81,28 +81,69 @@
         <div class="col-lg-12">
             <h1 class="page-header">Personal Information</h1>
             <div class="panel-body">
-                <blockquote>Personal</blockquote>
-
-                <blockquote>Education</blockquote>
-
-                <blockquote>Contact</blockquote>
+                <div class="container">
+                    <blockquote>Personal</blockquote>
+                    <div class="row col-lg-4" style="margin-left: 30px;">
+                        <div class="row">
+                            Name: &emsp;<label th:text="${resume.applicantName}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            Age: &emsp;<label th:text="${resume.applicantAge}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            Sex: &emsp;<label th:text="${resume.applicantSex}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 20px;">
+                    <blockquote>Education</blockquote>
+                    <div class="row col-lg-4" style="margin-left: 30px;">
+                        <div class="row">
+                            School: &emsp;<label th:text="${resume.applicantSchool}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            Major: &emsp;<label th:text="${resume.applicantMajor}?'Female':'Male'"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            Degree: &emsp;<label th:text="${resume.applicantDegree}?'Master':'Bachelor'"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 20px;">
+                    <blockquote>Contact</blockquote>
+                    <div class="row col-lg-4" style="margin-left: 30px;">
+                        <div class="row">
+                            City: &emsp;<label th:text="${resume.applicantCity}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            Email: &emsp;<label th:text="${resume.applicantEmail}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            Phone: &emsp;<label th:text="${resume.applicantPhone}"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div align="center" style="margin-top: 50px;">
+                <form method="post" th:action="@{/octopus/applicant/resume/update}">
+                    <button type="submit" class="btn btn-sm btn-success btn-block" style="width:200px;">Update Information</button>
+                </form>
             </div>
         </div>
     </div>
-</div>
-<!-- /#page-wrapper -->
+    <!-- /#page-wrapper -->
 
-<!-- jQuery -->
-<script th:src="@{/js/jquery.min.js}"></script>
+    <!-- jQuery -->
+    <script th:src="@{/js/jquery.min.js}"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script th:src="@{/js/bootstrap.min.js}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 
-<!-- Metis Menu Plugin JavaScript -->
-<script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
 
-<!-- Custom Theme JavaScript -->
-<script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
 
 </body>
 

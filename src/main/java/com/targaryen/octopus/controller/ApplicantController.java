@@ -139,6 +139,19 @@ public class ApplicantController {
         return "applicant-application-list";
     }
 
+    @RequestMapping(value = "/applicant/resume/update", method = RequestMethod.POST)
+    public String resumeUpdate(ResumeEntity resumeEntity, ModelMap map){
+        //search database and pass it to front end
+
+        //get update information from front end
+
+        //save it to backend and redirect to applicant-resume-magm
+
+        map.addAttribute("resume", new ResumeEntity());
+
+        return "applicant-resume-add";
+
+    }
     @RequestMapping(value = "/applicant/resume/magm", method = RequestMethod.GET)
     public String resumeMagm(ModelMap map) {
         /* UI Settings *//*
@@ -150,6 +163,8 @@ public class ApplicantController {
 
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
+        ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId());
+        map.addAttribute("resume", resumeVo);
         return "applicant-resume-magm";
     }
 
