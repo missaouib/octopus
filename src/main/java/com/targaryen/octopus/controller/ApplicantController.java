@@ -115,6 +115,18 @@ public class ApplicantController {
         return "applicant-resume-add";
     }
 
+    @RequestMapping(value = "/applicant/resume/magm", method = RequestMethod.GET)
+    public String resumeMagm(ModelMap map) {
+        /* UI Settings *//*
+        map.addAttribute("title", "Add new post need");
+        map.addAttribute("action", "add");
+        map.addAttribute("returnUrl", "list");
+        map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
+        map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
+
+        return "applicant-resume-magm";
+    }
+
     @RequestMapping(value = "/applicant/post/list", method = RequestMethod.GET)
     public String resumePostList(ModelMap map) {
         /* UI Settings *//*

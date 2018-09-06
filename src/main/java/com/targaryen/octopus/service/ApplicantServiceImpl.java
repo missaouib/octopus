@@ -5,6 +5,7 @@ import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.vo.ApplicationVo;
+import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Service
 public class ApplicantServiceImpl implements ApplicantService {
+
     private ApplicantDtoRepository applicantDtoRepository;
     private UserDtoRepository userDtoRepository;
     private ResumeDtoRepository resumeDtoRepository;
@@ -128,6 +130,16 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
 
         return StatusCode.SUCCESS;
+    }
+
+    @Override
+    public List<InterviewVo> findUnreplyedInterviewByUserId(int userId) {
+        return null;
+    }
+
+    @Override
+    public List<InterviewVo> findAcceptedInterviewByUserId(int userId) {
+        return null;
     }
 
     public List<ApplicationVo> findApplicationsByUserId(int userId) {
