@@ -23,20 +23,16 @@ public class InterviewerDto implements Serializable {
     private int interviewerId;
 
     @NotBlank
-    @Column(columnDefinition = "TEXT default 'Default Name'")
-    private String interviewerName;
+    private String interviewerName = "xxx";
 
     @NotBlank
-    @Column(columnDefinition = "TEXT default 'Default Position'")
-    private String interviewerPosition;
+    private String interviewerPosition = "xxx";
 
     @NotNull
-    @Column(columnDefinition = "INT default 0")
-    private int interviewerAge;
+    private int interviewerAge = 0;
 
     @NotBlank
-    @Column(columnDefinition = "TEXT default 'Default Department'")
-    private String interviewerDepartment;
+    private String interviewerDepartment = "xxx";
 
     @JoinColumn(name = "user_id")
     @OneToOne(cascade = CascadeType.MERGE)

@@ -8,12 +8,14 @@
     <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
     <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
-    <link rel="stylesheet" th:href="@{/css/plugins/iCheck/custom.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
 
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
-    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/js/plugins/layer/laydate/laydate.js}"></script>
+    <script th:src="@{/js/jquery.validate.min.js}"></script>
 </head>
 
 <body class="gray-bg">
@@ -46,6 +48,9 @@
                                 <div class="vertical-timeline-content">
                                     <h2>Resume Passed</h2>
                                     <p>Assessor: Fake HR ID</p>
+
+                                    <a th:if="${interviewList.isEmpty()}" data-toggle="modal" data-target="#new-interview" class="btn btn-sm btn-primary">Arrange new interview</a>
+
                                     <span class="vertical-date">
                                         Fake Day <br/>
                                         <small>Fake Time</small>
@@ -278,7 +283,60 @@
         </div>
     </div>
 
-<script th:inline="javascript">
+    <!-- New interview -->
+    <div class="modal fade" id="new-interview" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                    </button>
+                    <h2 style="text-align:center;">Arrange new interview</h2>
+                </div>
+
+                <form class="form-horizontal m-t" id="new-interview-form" name="new-interview-form" method="POST"
+                      action="interview/new" onsubmit="return false;">
+
+                    <input type="hidden" name="applicationId" th:value="${applicationId}" />
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Interviewer:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b" id="interviewerId" name="interviewerId" required="required">
+                                    <th:block th:each="interviewer : ${interviewerList}">
+                                        <option th:value="${interviewer.interviewerId}" th:text="${interviewer.interviewerName}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Place:</label>
+                            <div class="col-sm-8">
+                                <input name="interviewPlace" type="text" class="form-control" required="required" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Start Time:</label>
+                            <div class="col-sm-8">
+                                <input name="interviewStartTime" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'});" required="required" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button onclick="submitNewInterview();" class="btn btn-primary">Arrange</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
     $(".footable").footable();
 
     $('#lightVersion').click(function(event) {
@@ -303,6 +361,35 @@
     /* Init: Left Version */
     $('#vertical-timeline').toggleClass('center-orientation');
 
+    var validationConfig = {
+        // submitHandler executes after the form PASSED the validation
+        submitHandler: function(form) {
+            $.ajax({
+                type: "post",
+                url: "interview/new",
+                data: $('#new-interview-form').serialize(),
+                async: false,
+                success: function(data) {
+                    swal({
+                        title:"Success",
+                        text: "You have successfully created a new interview.",
+                        type:"success"
+                    }, function(isConfirm) {
+                        document.location.reload();
+                    });
+                },
+                error: function(data) {
+                    swal({
+                        title:"Failure",
+                        text: "You have not successfully created a new interview.",
+                        type: "error"
+                    });
+                }
+            });
+        }
+    };
+
+    $("#new-interview-form").validate(validationConfig);
 </script>
 
 </body>

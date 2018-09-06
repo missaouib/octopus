@@ -86,11 +86,7 @@ public class DataTransferUtil {
                 .build();
     }
 
-<<<<<<< HEAD
     public static ApplicationResumeVo ApplicationDtoToApplicationResumeVo(ApplicationDto applicationDto) {
-=======
-    public static ApplicationResumeVo ApplicationDtoToResumeVo(ApplicationDto applicationDto) {
->>>>>>> 9ae128e1b55fecbe08808d714de843eb77a5905c
         PostDto post = applicationDto.getPost();
         ApplicantDto applicant = applicationDto.getApplicant();
         ResumeDto resume = applicant.getResume();
