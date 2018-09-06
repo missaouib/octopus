@@ -21,14 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class HRServiceImpl implements HRService {
     private PostDtoRepository postDtoRepository;
-    private ApplicantDtoRepository applicantDtoRepository;
     private ApplicationDtoRepository applicationDtoRepository;
     private InterviewerDtoRepository interviewerDtoRepository;
     private InterviewDtoRepository interviewDtoRepository;
 
     @Autowired
     public HRServiceImpl(DaoFactory daoFactory) {
-        this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
         this.interviewerDtoRepository = daoFactory.getInterviewerDtoRepository();
@@ -225,20 +223,7 @@ public class HRServiceImpl implements HRService {
     public InterviewVo findInterviewById(int interviewId) {
         try {
             InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
-            return new InterviewVo.Builder()
-                    .interviewId(interviewDto.getInterviewId())
-                    .interviewStartTime(interviewDto.getInterviewStartTime())
-                    .interviewPlace(interviewDto.getInterviewPlace())
-                    .applicantStatus(interviewDto.getApplicantStatus())
-                    .applicantComment(interviewDto.getApplicantComment())
-                    .interviewerStatus(interviewDto.getInterviewerStatus())
-                    .interviewerComment(interviewDto.getInterviewerComment())
-                    .reservationStatus(interviewDto.getReservationStatus())
-                    .interviewResultStatus(interviewDto.getInterviewResultStatus())
-                    .interviewResultComment(interviewDto.getInterviewResultComment())
-                    .applicationId(interviewDto.getApplication().getApplicationId())
-                    .interviewerId(interviewDto.getInterviewer().getInterviewerId())
-                    .build();
+            return DataTransferUtil.InterviewDtoToVo(interviewDto);
         } catch (DataAccessException e) {
             return null;
         }

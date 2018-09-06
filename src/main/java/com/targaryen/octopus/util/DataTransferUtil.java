@@ -27,6 +27,9 @@ public class DataTransferUtil {
                 .interviewerComment(interviewDto.getInterviewerComment())
                 .interviewResultStatus(interviewDto.getInterviewResultStatus())
                 .interviewResultComment(interviewDto.getInterviewResultComment())
+                .createTime(interviewDto.getCreateTime())
+                .interviewResultTime(interviewDto.getInterviewResultTime())
+                .reservationResultTime(interviewDto.getReservationResultTime())
                 .build();
     }
 
