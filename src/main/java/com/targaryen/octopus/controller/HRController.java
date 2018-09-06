@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -93,4 +90,36 @@ public class HRController {
         map.addAttribute("applicationList", hrService.findApplicationsByPostId(postId));
         return "hr-post-application-list";
     }
+
+    @RequestMapping(value = "/hr/application/resume/pass", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationResumePass(@RequestParam(value="chkArray[]") int[] chkArray) {
+        int overAllStatus = StatusCode.SUCCESS;
+        if (chkArray.length != 0) {
+            for (Integer applicationId: chkArray) {
+                int status = hrService.filterPassApplicationById(applicationId);
+                if (status != StatusCode.SUCCESS) overAllStatus = status;
+            }
+        }
+        return String.valueOf(overAllStatus);
+    }
+
+    @RequestMapping(value = "/hr/application/resume/reject", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationResumeReject(@RequestParam(value="chkArray[]") int[] chkArray) {
+        int overAllStatus = StatusCode.SUCCESS;
+        if (chkArray.length != 0) {
+            for (Integer applicationId: chkArray) {
+                int status = hrService.filterFailApplicationById(applicationId);
+                if (status != StatusCode.SUCCESS) overAllStatus = status;
+            }
+        }
+        return String.valueOf(overAllStatus);
+    }
+
+    @RequestMapping(value = "/hr/application/timeline", method = RequestMethod.GET)
+    public String hrApplicationTimeline(ModelMap map) {
+        return "hr-application-timeline";
+    }
+
 }
