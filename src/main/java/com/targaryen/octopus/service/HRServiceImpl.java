@@ -146,6 +146,7 @@ public class HRServiceImpl implements HRService {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             application.setStatus(ApplicationStatus.FILTER_PASS);
+            application.setFilterEndTime(Calendar.getInstance().getTime());
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -158,6 +159,7 @@ public class HRServiceImpl implements HRService {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             application.setStatus(ApplicationStatus.FILTER_FAIL);
+            application.setFilterEndTime(Calendar.getInstance().getTime());
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -268,6 +270,7 @@ public class HRServiceImpl implements HRService {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             application.setStatus(ApplicationStatus.INTERVIEW_PASS);
+            application.setInterviewEndTime(Calendar.getInstance().getTime());
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -280,6 +283,7 @@ public class HRServiceImpl implements HRService {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             application.setStatus(ApplicationStatus.INTERVIEW_FAIL);
+            application.setInterviewEndTime(Calendar.getInstance().getTime());
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -292,6 +296,7 @@ public class HRServiceImpl implements HRService {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             application.setStatus(ApplicationStatus.OFFER);
+            application.setOfferTime(Calendar.getInstance().getTime());
             applicationDtoRepository.save(application);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {

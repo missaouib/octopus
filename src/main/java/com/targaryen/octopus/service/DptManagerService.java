@@ -58,4 +58,16 @@ public interface DptManagerService {
      */
     ResumeVo findResumeByApplicationId(int applicationId);
 
+    /**
+     * dpt approve pass application by applicationId
+     *
+     */
+    int dptApprovePassApplicationById(int applicationId);
+
+    /**
+     * dpt approve fail application by applicationId
+     *
+     */
+    int dptApproveFailApplicationById(int applicationId);
+
 }

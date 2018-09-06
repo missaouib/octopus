@@ -102,6 +102,12 @@ public class DataTransferUtil {
                 .applicantPhone(resume.getApplicantPhone())
                 .applicantSchool(resume.getApplicantSchool())
                 .applicantSex(resume.getApplicantSex())
+                .createTime(applicationDto.getCreateTime())
+                .filterEndTime(applicationDto.getFilterEndTime())
+                .interviewEndTime(applicationDto.getInterviewEndTime())
+                .dptApproveEndTime(applicationDto.getDptApproveEndTime())
+                .offerTime(applicationDto.getOfferTime())
+                .applicantFeedbackTime(applicationDto.getApplicantFeedbackTime())
                 .build();
     }
 }
