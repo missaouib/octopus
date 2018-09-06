@@ -21,7 +21,7 @@ public class ResumeDto {
     @SequenceGenerator(name = "t_resume_seq", sequenceName = "t_resume_seq", allocationSize = 1)
     private int resumeId;
 
-    @NotNull
+    @NotBlank
     private String applicantName;
     private int applicantSex;
     private int applicantAge;

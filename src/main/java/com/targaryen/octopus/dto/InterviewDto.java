@@ -26,7 +26,7 @@ public class InterviewDto implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date interviewStartTime;
 
-    @NotNull
+    @NotBlank
     private String interviewPlace;
 
     @NotNull

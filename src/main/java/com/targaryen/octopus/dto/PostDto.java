@@ -23,7 +23,7 @@ public class PostDto implements Serializable {
     @SequenceGenerator(name = "t_post_seq", sequenceName = "t_post_seq", allocationSize = 1)
     private int postId;
 
-    @NotNull
+    @NotBlank
     private String postName;
 
     private String postType;
