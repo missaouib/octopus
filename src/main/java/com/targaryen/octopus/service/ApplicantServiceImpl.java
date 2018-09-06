@@ -7,6 +7,7 @@ import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicantStatus;
 import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.InterviewerStatus;
+import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.ApplicantApplicationVo;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.InterviewVo;
@@ -200,12 +201,21 @@ public class ApplicantServiceImpl implements ApplicantService {
         return findInterviewByUserIdAndApplicantStatus(userId, ApplicantStatus.ACCEPTED);
     }
 
-    public int updateApplicantStatusOfInterview(InterviewVo interviewVo) {
+    public int updateApplicantStatusOfInterview(int interviewId, int applicantStatus, String comment) {
         InterviewDto interviewDto;
+
         try {
             interviewDto = interviewDtoRepository
-                    .findInterviewDtoByInterviewId(interviewVo.getInterviewId());
-            interviewDto.setApplicantStatus(interviewVo.getApplicantStatus());
+                    .findInterviewDtoByInterviewId(interviewId);
+            interviewDto.setApplicantStatus(applicantStatus);
+            if(ApplicantStatus.REJECTED.equals(applicantStatus)) {
+                interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+                interviewDto.setReservationStatus(ReservationStatus.FAIL);
+                interviewDto.setApplicantComment(comment);
+            } else if (ApplicantStatus.ACCEPTED.equals(applicantStatus)){
+                interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+                interviewDto.setReservationStatus(ReservationStatus.SUCCESS);
+            }
             interviewDtoRepository.save(interviewDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;

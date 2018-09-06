@@ -2,6 +2,9 @@ package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.*;
+import com.targaryen.octopus.util.DataTransferUtil;
+import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,36 +33,20 @@ public class InterviewerServiceImpl implements InterviewerService {
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
     }
 
-    public List<InterviewVo> listInterviewsByUserId(int userId) {
-        UserDto userDto;
+    public List<InterviewVo> listInterviewsByInterviewerId(int interviewerId) {
         InterviewerDto interviewerDto;
         List<InterviewDto> interviewDtos;
         List<InterviewVo> interviewVos = new ArrayList<>();
 
         try {
-            userDto = userDtoRepository.findUserDtoByUserId(userId);
-            if(userDto == null)
-                return new ArrayList<>();
-            interviewerDto = userDto.getInterviewer();
+            interviewerDto = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewerId);
             if(interviewerDto == null)
                 return new ArrayList<>();
             interviewDtos = interviewerDto.getInterviews();
 
             for(InterviewDto interviewDto: interviewDtos) {
                 interviewVos.add(
-                        new InterviewVo.Builder()
-                        .interviewPlace(interviewDto.getInterviewPlace())
-                        .startTime(interviewDto.getStartTime())
-                        .applicantComment(interviewDto.getApplicantComment())
-                        .applicantStatus(interviewDto.getApplicantStatus())
-                        .interviewerComment(interviewDto.getInterviewerComment())
-                        .interviewerStatus(interviewDto.getInterviewerStatus())
-                        .interviewId(interviewDto.getInterviewId())
-                        .interviewResultComment(interviewDto.getInterviewResultComment())
-                        .interviewResultStatus(interviewDto.getInterviewResultStatus())
-                        .interviewStatus(interviewDto.getInterviewStatus())
-                        .interviewerId(interviewerDto.getInterviewerId())
-                        .applicationId(interviewDto.getApplication().getApplicationId()).build()
+                        DataTransferUtil.InterviewDtoToVo(interviewDto)
                 );
             }
 
@@ -69,6 +56,21 @@ public class InterviewerServiceImpl implements InterviewerService {
 
         return interviewVos;
     }
+
+//    public int setInterviewerStatus(int interviewerStatus, int interviewId) {
+//        InterviewDto interviewDto;
+//
+//        try {
+//            interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
+//            if(interviewDto == null)
+//                return StatusCode.FAILURE;
+//            interviewDto.setInterviewerStatus(interviewerStatus);
+//            if(InterviewerStatus.REJECTED.equals(interviewerStatus)) {
+//
+//            }
+//
+//        }
+//    }
 
     public ResumeVo findResumeByApplicationId(int applicationId) {
         ApplicationDto applicationDto;

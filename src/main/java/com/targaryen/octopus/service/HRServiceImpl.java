@@ -209,7 +209,7 @@ public class HRServiceImpl implements HRService {
             newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
             newInterview.setApplicantStatus(ApplicantStatus.INIT);
             newInterview.setInterviewerStatus(InterviewerStatus.INIT);
-            newInterview.setReservationStatus(InterviewStatus.INIT);
+            newInterview.setReservationStatus(ReservationStatus.INIT);
             newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
             newInterview.setCreateTime(Calendar.getInstance().getTime());
             interviewDtoRepository.save(newInterview);

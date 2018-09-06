@@ -64,5 +64,5 @@ public interface ApplicantService {
     int CreateNewApplication(ApplicationVo applicationVo);
     List<InterviewVo> findUnreplyedInterviewByUserId(int userId);
     List<InterviewVo> findAcceptedInterviewByUserId(int userId);
-    int updateApplicantStatusOfInterview(InterviewVo interviewVo);
+    int updateApplicantStatusOfInterview(int interviewId, int applicantStatus, String comment);
 }

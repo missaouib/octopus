@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Liu Mengyang on 2018/09/05
  */
 public interface InterviewerService {
-    List<InterviewVo> listInterviewsByUserId(int userId);
+    List<InterviewVo> listInterviewsByInterviewerId(int interviewerId);
     ResumeVo findResumeByApplicationId(int applicationId);
     ResumeVo findResumeByInterviewId(int interviewId);
 }
