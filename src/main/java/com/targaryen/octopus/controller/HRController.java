@@ -6,6 +6,7 @@ import com.targaryen.octopus.service.HRService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -83,5 +84,13 @@ public class HRController {
                 .build();
 
         return String.valueOf(hrService.updatePost(postVo));
+    }
+
+    /* Post-Applicant */
+    @RequestMapping(value = "/hr/post/application/{postId}", method = RequestMethod.GET)
+    public String hrPostApplication(@PathVariable("postId") int postId, ModelMap map) {
+        map.addAttribute("post", hrService.findPostById(postId));
+        map.addAttribute("applicationList", hrService.findApplicationsByPostId(postId));
+        return "hr-post-application-list";
     }
 }
