@@ -40,7 +40,7 @@ public class ApplicantApplicationVo {
         private Date applicantFeedbackTime;
 
         public Builder applicationId(int applicationId) {
-            this.applicantId = applicationId;
+            this.applicationId = applicationId;
             return this;
         }
 
