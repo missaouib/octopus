@@ -44,7 +44,7 @@ public interface HRService {
      * find applications by postId
      *
      */
-    List<ApplicationVo> findApplicationsByPostId(int postId);
+    List<ApplicationHRVo> findApplicationsByPostId(int postId);
 
     /**
      * find resume by applicationId
@@ -74,7 +74,7 @@ public interface HRService {
      * find filter pass application by postId
      *
      */
-    List<ApplicationVo> findFilterPassApplicationsByPostId(int postId);
+    List<ApplicationHRVo> findFilterPassApplicationsByPostId(int postId);
 
     /**
      * list interviewer

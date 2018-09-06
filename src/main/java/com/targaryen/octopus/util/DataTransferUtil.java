@@ -82,4 +82,26 @@ public class DataTransferUtil {
                 .userRole(userDto.getRole().getRole())
                 .build();
     }
+
+    public static ApplicationHRVo ApplicationDtoToHRVo(ApplicationDto applicationDto) {
+        PostDto post = applicationDto.getPost();
+        ApplicantDto applicant = applicationDto.getApplicant();
+        ResumeDto resume = applicant.getResume();
+        return new ApplicationHRVo.Builder()
+                .applicationId(applicationDto.getApplicationId())
+                .postId(post.getPostId())
+                .applicantId(applicant.getApplicantId())
+                .status(applicationDto.getStatus())
+                .applicantAge(resume.getApplicantAge())
+                .applicantCity(resume.getApplicantCity())
+                .applicantCV(resume.getApplicantCV())
+                .applicantDegree(resume.getApplicantDegree())
+                .applicantEmail(resume.getApplicantEmail())
+                .applicantMajor(resume.getApplicantMajor())
+                .applicantName(resume.getApplicantName())
+                .applicantPhone(resume.getApplicantPhone())
+                .applicantSchool(resume.getApplicantSchool())
+                .applicantSex(resume.getApplicantSex())
+                .build();
+    }
 }
