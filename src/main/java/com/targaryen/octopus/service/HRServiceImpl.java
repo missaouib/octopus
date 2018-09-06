@@ -100,14 +100,14 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<ApplicationVo> findApplicationsByPostId(int postId) {
+    public List<ApplicationHRVo> findApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
-                    .map(n -> DataTransferUtil.ApplicationDtoToVo(n))
+                    .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<ApplicationVo>();
+            return new ArrayList<ApplicationHRVo>();
         }
     }
 
@@ -167,15 +167,15 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<ApplicationVo> findFilterPassApplicationsByPostId(int postId) {
+    public List<ApplicationHRVo> findFilterPassApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
                     .filter(n -> ApplicationStatus.FILTER_PASS.equals(n.getStatus()))
-                    .map(n -> DataTransferUtil.ApplicationDtoToVo(n))
+                    .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<ApplicationVo>();
+            return new ArrayList<ApplicationHRVo>();
         }
     }
 
