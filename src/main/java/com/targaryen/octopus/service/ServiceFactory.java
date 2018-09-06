@@ -6,4 +6,5 @@ public interface ServiceFactory {
     HRService getHRService();
     PublicService getPulicService();
     ApplicantService getApplicantService();
+    IDService getIDService();
 }

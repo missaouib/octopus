@@ -101,9 +101,10 @@
                             <td th:text="${ps.postType}"></td>
                             <td th:text="${ps.postLocale}"></td>
                             <td>
+                                <a th:href="@{'/octopus/postDetail/' + ${ps.postId}}" style="color: #eee;">
                                 <button type="button" class="btn btn-warning">
-                                    <a th:href="@{'/octopus/postDetail/' + ${ps.postId}}" style="color: #eee;"><i class="fa fa-file-text"> View Detail</i></a>
-                                </button>
+                                    <i class="fa fa-file-text"> View Detail</i>
+                                </button></a>
                             </td>
                         </tr>
                         </tbody>
