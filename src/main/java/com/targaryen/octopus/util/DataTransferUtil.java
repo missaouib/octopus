@@ -113,4 +113,20 @@ public class DataTransferUtil {
                 .applicantFeedbackTime(applicationDto.getApplicantFeedbackTime())
                 .build();
     }
+
+    public static ApplicantApplicationVo ApplicationDtoToApplicantApplicationVo(ApplicationDto applicationDto) {
+        PostDto postDto = applicationDto.getPost();
+        ApplicantDto applicantDto = applicationDto.getApplicant();
+        ResumeDto resumeDto = applicantDto.getResume();
+        return new ApplicantApplicationVo.Builder()
+                .applicantId(applicantDto.getApplicantId())
+                .applicantName(resumeDto.getApplicantName())
+                .applicationId(applicationDto.getApplicationId())
+                .postId(postDto.getPostId())
+                .postLocale(postDto.getPostLocale())
+                .postName(postDto.getPostName())
+                .postType(postDto.getPostType())
+                .recruitDpt(postDto.getRecruitDpt())
+                .status(applicationDto.getStatus()).build();
+    }
 }
