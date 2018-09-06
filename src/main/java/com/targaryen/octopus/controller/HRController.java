@@ -116,4 +116,10 @@ public class HRController {
         }
         return String.valueOf(overAllStatus);
     }
+
+    @RequestMapping(value = "/hr/application/timeline", method = RequestMethod.GET)
+    public String hrApplicationTimeline(ModelMap map) {
+        return "hr-application-timeline";
+    }
+
 }
