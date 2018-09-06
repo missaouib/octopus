@@ -7,6 +7,7 @@ import lombok.Getter;
  */
 @Getter
 public class ApplicationResumeVo {
+
     private final int applicationId;
     private final int status;
     private final int applicantId;
