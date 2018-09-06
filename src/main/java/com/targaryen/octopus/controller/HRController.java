@@ -93,4 +93,11 @@ public class HRController {
         map.addAttribute("applicationList", hrService.findApplicationsByPostId(postId));
         return "hr-post-application-list";
     }
+
+    @RequestMapping(value = "/hr/application/timeline", method = RequestMethod.GET)
+    public String hrApplicationTimeline(ModelMap map) {
+        return "hr-application-timeline";
+    }
+
+
 }
