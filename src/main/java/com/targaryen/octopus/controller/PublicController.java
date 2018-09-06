@@ -38,11 +38,12 @@ public class PublicController {
 
     @RequestMapping(value = "/postDetail/{postId}")
     public ModelAndView postDetail(@PathVariable("postId") String postId){
-        ModelAndView result = new ModelAndView("pub-postDetail");
+        ModelAndView result = new ModelAndView("pub-post-detail");
         PostVo getPost = serviceFactory.getPulicService().findPostById(Integer.parseInt(postId));
         if(getPost != null){
 
             result.getModel().put("post", getPost);
+            System.out.println("[msg]: " + getPost.getRecruitDpt() + ", " + getPost.getPublishTime());
         }
         return result;
     }

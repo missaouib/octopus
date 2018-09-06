@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HR - Post Applications List</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/iCheck/custom.css}"/>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h4>Post Detail</h4>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="m-b-md">
+                                    <h2 th:text="${post.postName}"></h2>
+                                </div>
+                                <dl class="dl-horizontal">
+                                    <dt>Status：</dt>
+                                    <dd>
+                                        <span th:if="${post.status} eq 0" class="label label-success">To be checked</span>
+                                        <span th:if="${post.status} eq -1" class="label label-danger">Revoked by manager</span>
+                                        <span th:if="${post.status} eq 1" class="label label-primary">Published</span>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <dl class="dl-horizontal">
+                                    <dt>Post Type:</dt>
+                                    <dd th:text="${post.postType}"></dd>
+
+                                    <dt>Post Locale:</dt>
+                                    <dd th:text="${post.postLocale}"></dd>
+                                </dl>
+                            </div>
+                            <div class="col-sm-12">
+                                <dl class="dl-horizontal">
+                                    <dt>Department:</dt>
+                                    <dd th:text="${post.recruitDpt}"></dd>
+
+                                    <dt>Department Manager:</dt>
+                                    <dd th:text="${post.dptManagerId}"></dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <dl class="dl-horizontal">
+                                    <dt>Current Progress</dt>
+                                    <dd>
+                                        <div class="progress progress-striped active m-b-sm">
+                                            <div style="width: 60%;" class="progress-bar"></div>
+                                        </div>
+                                        <small>3/5 for Head Count <strong>(60%)</strong></small>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h4>Applications for Post</h4>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="exampleTableEventsToolbar" role="group" style="width:100%;">
+                            <button type="button"
+                                    onclick="editStatusByResume('pass');"
+                                    class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
+                                Resume - Pass
+                            </button>
+
+                            <button type="button"
+                                    onclick="editStatusByResume('reject');"
+                                    class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                Resume - Reject
+                            </button>
+
+                            <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
+                                   style="width:25%;float:right;"/>
+                        </div>
+
+                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6"
+                               data-filter="#filter">
+                            <thead>
+                            <tr class="footable even">
+                                <th>Check</th>
+                                <th>Status</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>School</th>
+                                <th>Degree</th>
+                                <th>Major</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Operation</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                                <th:block th:each="appli : ${applicationList}">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" th:value="${appli.applicationId}" checked class="i-checks">
+                                        </td>
+                                        <td>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">To be checked</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}" class="label label-danger">Resume Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" class="label label-primary">Resume Passed</span>
+                                        </td>
+                                        <td th:text="${appli.applicantName}"></td>
+                                        <td th:text="${appli.applicantAge}"></td>
+                                        <td th:text="${appli.applicantSchool}"></td>
+                                        <td th:text="${appli.applicantDegree}"></td>
+                                        <td th:text="${appli.applicantMajor}"></td>
+                                        <td th:text="${appli.applicantEmail}"></td>
+                                        <td th:text="${appli.applicantPhone}"></td>
+                                        <td>
+                                            <button type="button"
+                                                    th:if="${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}
+                                                    and ${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}"
+                                                    th:onclick="${'location.href=''../../application/timeline' + '' + ''''}"
+                                                    class="btn btn-outline btn-default">
+                                                <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
+                                                Interview Status
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </th:block>
+                            </tbody>
+
+                            <tfoot>
+                            <tr>
+                                <td colspan="10">
+                                    <ul class="pagination pull-right"></ul>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script th:inline="javascript">
+    $(".footable").footable();
+
+    $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green"});
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    function editStatusByResume(operationString){
+        /* Prepare data */
+        var chkArray = [];
+        $(".i-checks:checked").each(function() {
+            chkArray.push($(this).val());
+        });
+
+        if (chkArray.length == 0) {
+            swal({
+                title : "Error",
+                text: "You have not selected any resumes.",
+                type : "error"
+            });
+            return;
+        }
+
+        csrfData["chkArray"] = chkArray;
+
+        /* Confirmation and start requesting */
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to " + operationString + "ed " + chkArray.length + " resumes?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: '../../application/resume/' + operationString,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully " + operationString + "ed " + chkArray.length + " resumes.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully " + operationString + "ed " + chkArray.length + " resumes.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

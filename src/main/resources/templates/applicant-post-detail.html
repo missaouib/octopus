@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Post Detail</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link th:href="@{/js/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link th:href="@{/js/datatables-responsive/dataTables.responsive.css}" rel="stylesheet">
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
+    <!-- DataTables JavaScript -->
+    <script th:src="@{/js/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/datatables-plugins/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/js/datatables-responsive/dataTables.responsive.js}"></script>
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;">
+    <div class="navbar-header">
+        <a class="navbar-brand"  th:href="@{/octopus/applicant/post/apply}">Octopus Recruiting System</a>
+    </div>
+
+    <!-- /.navbar-header -->
+    <ul class="nav navbar-top-links navbar-right">
+        <!-- /.dropdown -->
+        <li class="dropdown"><a class="dropdown-toggle"
+                                data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
+            <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i></a>
+            <ul class="dropdown-menu dropdown-user">
+                <li><a th:href="@{/octopus/applicant/index}"> <i
+                        class="fa fa-user fa-fw"></i> HomePage
+                </a></li>
+                <li class="divider"></li>
+                <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
+                    Logout</a></li>
+            </ul> <!-- /.dropdown-user --></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12" style="margin-top: 20px;">
+            <img th:src="@{/img/bar2.jpg}" alt="" style="width: 100%; height: 120%;" />
+        </div>
+        <div class="col-lg-12" style="margin-top: 20px;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Job Information</h3>
+                </div>
+                <!-- .panel-heading -->
+                <div class="panel-body">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><lable
+                                            th:text="${post.postName}"></lable></a>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-lg-4 row">
+                                    <ul style="list-style-type:none">
+                                        <li>
+                                            Department：<label th:text="${post.recruitDpt}"></label>
+                                        </li>
+                                        <li style="margin-top: 10px;">
+                                            Post Locale: <label th:text="${post.postLocale}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4 row">
+                                    <ul style="list-style-type:none">
+                                        <li>
+                                            Post Type: <label th:text="${post.postType}"></label>
+                                        </li>
+                                        <li style="margin-top: 10px;">
+                                            Recruiting Number: <label th:text="${post.recruitNum}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4 row">
+                                    <ul style="list-style-type:none">
+                                        <li>
+                                            Create Time: <label th:text="${#dates.format(post.publishTime,'yyyy-MM-dd HH:mm')}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default" style="margin-top: 30px;">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Job Description</a>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li>
+                                        <p th:text="${post.postDescription}"></p>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default" style="margin-top: 30px;">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Job Requirement</a>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li>
+                                        <p th:text="${post.postRequirement}"></p>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" align="center">
+                            <div class="row" style="margin-top: 20px;">
+                                <form role="form" method="post" th:action="@{/octopus/applicant/application/list}" th:object="${application}">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <input class="form-control" id="applicationId" type="hidden" th:field="*{applicationId}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="status" type="hidden" th:field="*{status}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="postId" type="hidden" th:field="*{postId}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="applicantId" type="hidden" th:field="*{applicantId}" />
+                                        </div>
+                                        <button type="submit" class="btn btn-success btn-block" style="width: 200px;">Apply For This Post</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- .panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+
+</body>
+</html>

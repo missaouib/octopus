@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Applicant - Index</title>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link th:href="@{/js/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link th:href="@{/js/datatables-responsive/dataTables.responsive.css}" rel="stylesheet">
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
+    <!-- DataTables JavaScript -->
+    <script th:src="@{/js/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/datatables-plugins/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/js/datatables-responsive/dataTables.responsive.js}"></script>
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+
+</head>
+
+<body>
+
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation"
+         style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
+        </div>
+
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+            <!-- /.dropdown -->
+            <li class="dropdown"><a class="dropdown-toggle"
+                                    data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
+                <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i> </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a th:href="@{/octopus/applicant/index}"> <i
+                            class="fa fa-user fa-fw"></i> HomePage
+                    </a></li>
+                    <li class="divider"></li>
+                    <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
+                        Logout</a></li>
+                </ul> <!-- /.dropdown-user --></li>
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li><a th:href="@{/octopus/applicant/post/apply/}"><i
+                            class="fa fa-dashboard fa-fw"></i> Apply For Post </a></li>
+                    <li><a th:href="@{/octopus/applicant/application/list}" class="active"><i
+                            class="fa fa-table fa-fw"></i> Application Information </a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
+                        Resume Management <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a th:href="@{/octopus/applicant/resume/magm}"> Personal Info</a></li>
+                            <li><a href="#"> For Future <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li><a href="#"> NumberOne </a></li>
+                                    <li><a href="#"> Number Two </a></li>
+                                </ul></li>
+                        </ul> <!-- /.nav-second-level --></li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="col-lg-12"  style="margin-top: 20px;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Applications</h3>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>Applicant Name</th>
+                            <th>Post Name</th>
+                            <th>Locale </th>
+                            <th>Post Type</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th style="width:100px;">Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ps: ${applicationVos}">
+                            <td th:text="${ps.applicantName}"></td>
+                            <td th:text="${ps.postName}"></td>
+                            <td th:text="${ps.postLocale}"></td>
+                            <td th:text="${ps.postType}"></td>
+                            <td th:text="${ps.recruitDpt}"></td>
+                            <td th:text="${ps.status}"></td>
+                            <td>
+                                <a th:href="@{/octopus/applicant/interview/detail}" style="color: #eee;">
+                                    <button class="btn btn-warning">
+                                        <i class="fa fa-file-text"> Interview Detail</i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+
+<script>
+        $(document).ready(function() {
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+        });
+    </script>
+
+</body>
+
+</html>

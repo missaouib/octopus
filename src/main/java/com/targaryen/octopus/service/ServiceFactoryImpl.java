@@ -1,6 +1,5 @@
 package com.targaryen.octopus.service;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +15,8 @@ public class ServiceFactoryImpl implements ServiceFactory{
     private PublicService publicService;
     @Autowired
     private ApplicantService applicantService;
+    @Autowired
+    private IDService idService;
 
     @Override
     public UserService getUserService() {
@@ -40,5 +41,10 @@ public class ServiceFactoryImpl implements ServiceFactory{
     @Override
     public ApplicantService getApplicantService() {
         return applicantService;
+    }
+
+    @Override
+    public IDService getIDService() {
+        return idService;
     }
 }

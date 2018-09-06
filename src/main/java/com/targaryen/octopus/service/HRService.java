@@ -1,11 +1,7 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.InterviewerVo;
-import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,35 +33,52 @@ public interface HRService {
     int closePostById(int postId);
 
     /**
+     * Finish post by postId
+     *
+     */
+    int finishPostById(int postId);
+
+    /**
      * update post
      *
      */
     int updatePost(PostVo updatePost);
 
-
     /**
      * find applications by postId
      *
      */
-    List<ApplicationVo> findApplicationsByPostId(int postId);
+    List<ApplicationResumeVo> findApplicationsByPostId(int postId);
 
     /**
-     * find resume by applicantId
+     * find resume by applicationId
      *
      */
-    ResumeVo findResumeByApplicantId(int applicantId);
+    ResumeVo findResumeByApplicationId(int applicationId);
 
     /**
-     * filter application by applicantId
+     * filter pass application by applicantId
      *
      */
-    int filterApplicationById(int applicationId);
+    int filterPassApplicationById(int applicationId);
 
     /**
-     * revoke filter application by applicantId
+     * filter fail application by applicantId
+     *
+     */
+    int filterFailApplicationById(int applicationId);
+
+    /**
+     * revoke filter pass application by applicantId
      *
      */
     int revokeFilterApplicationById(int applicationId);
+
+    /**
+     * find applications by postId and status
+     *
+     */
+    List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer Status);
 
     /**
      * list interviewer
@@ -74,10 +87,44 @@ public interface HRService {
     List<InterviewerVo> listInterviewers();
 
     /**
-     * create an interview
+     * create an interview, interviewVo should include applicationId, interviewerId, startTime, interviewPlace
      *
      */
-    int createInterview(int applicationId, int interviewerId, Date startTime, String interviewPlace);
+    int createInterview(InterviewVo interviewVo);
 
+    /**
+     * find interview by interviewId
+     *
+     */
+    InterviewVo findInterviewById(int interviewId);
 
+    /**
+     * delete interview by interviewId
+     *
+     */
+    int deleteInterviewById(int interviewId);
+
+    /**
+     * find interview by applicationId
+     *
+     */
+    List<InterviewVo> findInterviewByApplicationId(int applicationId);
+
+    /**
+     * interview pass application by applicationId
+     *
+     */
+    int interviewPassApplicationById(int applicationId);
+
+    /**
+     * interview fail application by applicationId
+     *
+     */
+    int interviewFailApplicationById(int applicationId);
+
+    /**
+     * send offer by applicationId
+     *
+     */
+    int sendOfferByApplicationId(int applicationId);
 }

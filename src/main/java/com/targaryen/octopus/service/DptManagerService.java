@@ -1,6 +1,8 @@
 package com.targaryen.octopus.service;
 
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
+import com.targaryen.octopus.vo.ResumeVo;
 
 import java.util.List;
 
@@ -9,10 +11,10 @@ import java.util.List;
  */
 public interface DptManagerService {
     /**
-     * find posts by DptManagerId
+     * find posts by userId
      *
      */
-    List<PostVo> findPostsByDptManagerId(int dptManagerId);
+    List<PostVo> findPostsByUserId(int userId);
 
     /**
      * find posts by Id
@@ -24,7 +26,7 @@ public interface DptManagerService {
      * create new post
      *
      */
-    int createNewPost(PostVo newPost, int dptManagerId);
+    int createNewPost(PostVo newPost, int userId);
 
     /**
      * update post
@@ -43,4 +45,29 @@ public interface DptManagerService {
      *
      */
     int revokePost(int postId);
+
+    /**
+     * find passed applications by postId
+     *
+     */
+    List<ApplicationVo> findPassedApplicationsByPostId(int postId);
+
+    /**
+     * find resume by applicationId
+     *
+     */
+    ResumeVo findResumeByApplicationId(int applicationId);
+
+    /**
+     * dpt approve pass application by applicationId
+     *
+     */
+    int dptApprovePassApplicationById(int applicationId);
+
+    /**
+     * dpt approve fail application by applicationId
+     *
+     */
+    int dptApproveFailApplicationById(int applicationId);
+
 }
