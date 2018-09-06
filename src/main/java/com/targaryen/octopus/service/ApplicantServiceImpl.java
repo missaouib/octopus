@@ -2,9 +2,13 @@ package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.*;
+import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.ApplicantStatus;
 import com.targaryen.octopus.util.status.ApplicationStatus;
+import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.vo.ApplicationVo;
+import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *  Created by Liu Mengyang on 2018/09/05
@@ -23,6 +28,7 @@ public class ApplicantServiceImpl implements ApplicantService {
     private ResumeDtoRepository resumeDtoRepository;
     private PostDtoRepository postDtoRepository;
     private ApplicationDtoRepository applicationDtoRepository;
+    private InterviewDtoRepository interviewDtoRepository;
 
     @Autowired
     public ApplicantServiceImpl(DaoFactory daoFactory) {
@@ -31,6 +37,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         this.resumeDtoRepository = daoFactory.getResumeDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
         this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
+        this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
     }
 
     public int CreateResume(int userId, String applicantName) {
@@ -160,5 +167,62 @@ public class ApplicantServiceImpl implements ApplicantService {
         return applicationVos;
     }
 
+    private List<InterviewVo> findInterviewByUserIdAndApplicantStatus(int userId, int applicantStatus) {
+        UserDto userDto;
+        ApplicantDto applicantDto;
+        List<ApplicationDto> applicationDtos;
+        List<InterviewDto> interviewDtos = new ArrayList<>();
+        List<InterviewDto> unreplyed;
+        List<InterviewVo> interviewVos = new ArrayList<>();
+        try {
+            userDto = userDtoRepository.findUserDtoByUserId(userId);
+            if(userDto == null)
+                return new ArrayList<>();
+            applicantDto = userDto.getApplicant();
+            if(applicantDto == null)
+                return new ArrayList<>();
+            applicationDtos = applicantDto.getApplications();
+
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        for(ApplicationDto a: applicationDtos) {
+            interviewDtos.addAll(a.getInterviews());
+        }
+
+        unreplyed = interviewDtos.stream()
+                .filter(x -> (x.getApplicantStatus() == applicantStatus)
+                        && (x.getInterviewerStatus() == InterviewerStatus.ACCEPTED))
+                .collect(Collectors.toList());
+
+        for(InterviewDto i: unreplyed) {
+            interviewVos.add(DataTransferUtil.InterviewDtoToVo(i));
+        }
+
+        return interviewVos;
+    }
+
+    public List<InterviewVo> findUnreplyedInterviewByUserId(int userId) {
+        return findInterviewByUserIdAndApplicantStatus(userId, ApplicantStatus.INIT);
+    }
+
+    public List<InterviewVo> findAcceptedInterviewByUserId(int userId) {
+        return findInterviewByUserIdAndApplicantStatus(userId, ApplicantStatus.ACCEPTED);
+    }
+
+    public int updateApplicantStatusOfInterview(InterviewVo interviewVo) {
+        InterviewDto interviewDto;
+        try {
+            interviewDto = interviewDtoRepository
+                    .findInterviewDtoByInterviewId(interviewVo.getInterviewId());
+            interviewDto.setApplicantStatus(interviewVo.getApplicantStatus());
+            interviewDtoRepository.save(interviewDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
 
 }
