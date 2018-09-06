@@ -134,28 +134,32 @@
             closeOnConfirm : false,
             closeOnCancel : false
         }, function(isConfirm) {
-            $.ajax({
-                type: "post",
-                url: 'publish/' + postId,
-                data: csrfData,
-                async: false,
-                success: function(data) {
-                    swal({
-                        title:"Success",
-                        text: "You have successfully published this post need.",
-                        type:"success"
-                    }, function(isConfirm) {
-                        document.location.reload();
-                    });
-                },
-                error: function(data) {
-                    swal({
-                        title:"Failure",
-                        text: "You have not successfully published this post need.",
-                        type: "error"
-                    });
-                }
-            });
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'publish/' + postId,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully published this post need.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully published this post need.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
         });
     }
 
@@ -171,28 +175,32 @@
             closeOnConfirm : false,
             closeOnCancel : false
         }, function(isConfirm) {
-            $.ajax({
-                type: "post",
-                url: 'close/' + postId,
-                data: csrfData,
-                async: false,
-                success: function(data) {
-                    swal({
-                        title:"Success",
-                        text: "You have successfully closed this post need.",
-                        type:"success"
-                    }, function(isConfirm) {
-                        document.location.reload();
-                    });
-                },
-                error: function(data) {
-                    swal({
-                        title:"Failure",
-                        text: "You have not successfully closed this post need.",
-                        type: "error"
-                    });
-                }
-            });
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'close/' + postId,
+                    data: csrfData,
+                    async: false,
+                    success: function(data) {
+                        swal({
+                            title:"Success",
+                            text: "You have successfully closed this post need.",
+                            type:"success"
+                        }, function(isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function(data) {
+                        swal({
+                            title:"Failure",
+                            text: "You have not successfully closed this post need.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
         });
     }
 </script>

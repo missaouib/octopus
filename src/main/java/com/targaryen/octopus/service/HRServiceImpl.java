@@ -113,7 +113,7 @@ public class HRServiceImpl implements HRService {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         if(post != null) {
             return post.getApplications().stream()
-                    .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
+                    .map(n -> DataTransferUtil.ApplicationDtoToResumeVo(n))
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<ApplicationResumeVo>();
@@ -183,7 +183,7 @@ public class HRServiceImpl implements HRService {
         if(post != null) {
             return post.getApplications().stream()
                     .filter(n -> status.equals(n.getStatus()))
-                    .map(n -> DataTransferUtil.ApplicationDtoToHRVo(n))
+                    .map(n -> DataTransferUtil.ApplicationDtoToResumeVo(n))
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<ApplicationResumeVo>();

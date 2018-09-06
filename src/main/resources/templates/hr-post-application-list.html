@@ -8,12 +8,14 @@
     <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
     <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
     <link rel="stylesheet" th:href="@{/css/plugins/iCheck/custom.css}"/>
 
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
     <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 </head>
 
 <body class="gray-bg">
@@ -90,17 +92,17 @@
                     <div class="ibox-content">
                         <div id="exampleTableEventsToolbar" role="group" style="width:100%;">
                             <button type="button"
-                                    onclick="getValueUsingClass();"
+                                    onclick="editStatusByResume('pass');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
                                 Resume - Pass
                             </button>
 
                             <button type="button"
-                                    onclick="getValueUsingClass();"
+                                    onclick="editStatusByResume('reject');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                                Resume - Fail
+                                Resume - Reject
                             </button>
 
                             <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
@@ -131,9 +133,9 @@
                                             <input type="checkbox" th:value="${appli.applicationId}" checked class="i-checks">
                                         </td>
                                         <td>
-                                            <span th:if="${appli.status} eq 0" class="label label-success">To be checked</span>
-                                            <span th:if="${appli.status} eq -1" class="label label-danger">Revoked by manager</span>
-                                            <span th:if="${appli.status} eq 1" class="label label-primary">Published</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">To be checked</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}" class="label label-danger">Resume Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" class="label label-primary">Resume Passed</span>
                                         </td>
                                         <td th:text="${appli.applicantName}"></td>
                                         <td th:text="${appli.applicantAge}"></td>
@@ -144,6 +146,8 @@
                                         <td th:text="${appli.applicantPhone}"></td>
                                         <td>
                                             <button type="button"
+                                                    th:if="${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}
+                                                    and ${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
                                                 Interview Status
@@ -174,14 +178,70 @@
 
     $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green"});
 
-    function getValueUsingClass(){
-        var chkArray = [];
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
 
+    function editStatusByResume(operationString){
+        /* Prepare data */
+        var chkArray = [];
         $(".i-checks:checked").each(function() {
             chkArray.push($(this).val());
         });
 
-        console.log(chkArray);
+        if (chkArray.length == 0) {
+            swal({
+                title : "Error",
+                text: "You have not selected any resumes.",
+                type : "error"
+            });
+            return;
+        }
+
+        csrfData["chkArray"] = chkArray;
+
+        /* Confirmation and start requesting */
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to " + operationString + "ed " + chkArray.length + " resumes?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: '../../application/resume/' + operationString,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully " + operationString + "ed " + chkArray.length + " resumes.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully " + operationString + "ed " + chkArray.length + " resumes.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
     }
 </script>
 
