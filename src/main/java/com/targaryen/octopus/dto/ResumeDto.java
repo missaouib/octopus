@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  *  @author He Junfeng
@@ -20,7 +21,7 @@ public class ResumeDto {
     @SequenceGenerator(name = "t_resume_seq", sequenceName = "t_resume_seq", allocationSize = 1)
     private int resumeId;
 
-    @NotBlank
+    @NotNull
     private String applicantName;
     private int applicantSex;
     private int applicantAge;

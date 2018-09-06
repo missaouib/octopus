@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -21,11 +22,11 @@ public class UserDto implements Serializable {
     @SequenceGenerator(name = "t_user_seq", sequenceName = "t_user_seq", allocationSize = 1)
     private int userId;
 
-    @NotBlank
+    @NotNull
     @Column(name = "user_name", unique = true)
     private String userName;
 
-    @NotBlank
+    @NotNull
     @Column(name = "user_password")
     private String userPassword;
 

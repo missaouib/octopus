@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ public class PostDto implements Serializable {
     @SequenceGenerator(name = "t_post_seq", sequenceName = "t_post_seq", allocationSize = 1)
     private int postId;
 
-    @NotBlank
+    @NotNull
     private String postName;
 
     private String postType;

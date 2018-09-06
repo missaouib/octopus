@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,27 +22,27 @@ public class InterviewDto implements Serializable {
     @SequenceGenerator(name = "t_interview_seq", sequenceName = "t_interview_seq", allocationSize = 1)
     private int interviewId;
 
-    @NotBlank
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date interviewStartTime;
 
-    @NotBlank
+    @NotNull
     private String interviewPlace;
 
-    @NotBlank
+    @NotNull
     private int applicantStatus;
 
     private String applicantComment;
 
-    @NotBlank
+    @NotNull
     private int interviewerStatus;
 
     private String interviewerComment;
 
-    @NotBlank
+    @NotNull
     private int reservationStatus;
 
-    @NotBlank
+    @NotNull
     private int interviewResultStatus;
 
     private String interviewResultComment;
