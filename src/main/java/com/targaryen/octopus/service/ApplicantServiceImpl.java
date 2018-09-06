@@ -7,6 +7,7 @@ import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicantStatus;
 import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.InterviewerStatus;
+import com.targaryen.octopus.vo.ApplicantApplicationVo;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
@@ -129,11 +130,11 @@ public class ApplicantServiceImpl implements ApplicantService {
         return StatusCode.SUCCESS;
     }
 
-    public List<ApplicationVo> findApplicationsByUserId(int userId) {
+    public List<ApplicantApplicationVo> findApplicationsByUserId(int userId) {
         UserDto userDto;
         ApplicantDto applicantDto;
         List<ApplicationDto> applicationDtos;
-        List<ApplicationVo> applicationVos = new ArrayList<>();
+        List<ApplicantApplicationVo> applicationVos = new ArrayList<>();
 
         try {
             userDto = userDtoRepository.findUserDtoByUserId(userId);
@@ -145,11 +146,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             applicationDtos = applicantDto.getApplications();
             for(ApplicationDto a: applicationDtos) {
                 applicationVos.add(
-                        new ApplicationVo.Builder()
-                        .applicantId(a.getApplicationId())
-                        .applicationId(a.getApplicationId())
-                        .postId(a.getApplicationId())
-                        .status(a.getStatus()).build()
+                        DataTransferUtil.ApplicationDtoToApplicantApplicationVo(a)
                 );
             }
         } catch (DataAccessException e) {
