@@ -44,7 +44,6 @@ public interface HRService {
      */
     int updatePost(PostVo updatePost);
 
-
     /**
      * find applications by postId
      *
@@ -110,4 +109,22 @@ public interface HRService {
      *
      */
     List<InterviewVo> findInterviewByApplicationId(int applicationId);
+
+    /**
+     * interview pass application by applicationId
+     *
+     */
+    int interviewPassApplicationById(int applicationId);
+
+    /**
+     * interview fail application by applicationId
+     *
+     */
+    int interviewFailApplicationById(int applicationId);
+
+    /**
+     * send offer by applicationId
+     *
+     */
+    int sendOfferByApplicationId(int applicationId);
 }

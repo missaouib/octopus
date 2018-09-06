@@ -262,4 +262,40 @@ public class HRServiceImpl implements HRService {
             return new ArrayList<InterviewVo>();
         }
     }
+
+    @Override
+    public int interviewPassApplicationById(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.INTERVIEW_PASS);
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int interviewFailApplicationById(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.INTERVIEW_FAIL);
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int sendOfferByApplicationId(int applicationId) {
+        try {
+            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            application.setStatus(ApplicationStatus.OFFER);
+            applicationDtoRepository.save(application);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
 }
