@@ -6,6 +6,7 @@ import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.*;
 import com.targaryen.octopus.vo.*;
+import javafx.application.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -121,22 +122,15 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public ResumeVo findResumeByApplicationId(int applicationId) {
-        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
-        ApplicantDto applicant = application.getApplicant();
-        ResumeDto resumeDto;
-        if(applicant != null) {
-            resumeDto = applicant.getResume();
+    public ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId) {
+        ApplicationDto applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ApplicationResumeVo applicationResumeVo;
+        if(applicationDto != null) {
+            applicationResumeVo = DataTransferUtil.ApplicationDtoToApplicationResumeVo(applicationDto);
         } else {
-            resumeDto = null;
+            applicationResumeVo = null;
         }
-        ResumeVo resumeVo;
-        if(resumeDto != null) {
-            resumeVo = DataTransferUtil.ResumeDtoToVo(resumeDto);
-        } else {
-            resumeVo = null;
-        }
-        return resumeVo;
+        return applicationResumeVo;
     }
 
     @Override
