@@ -12,4 +12,5 @@ public interface InterviewerService {
     List<InterviewVo> listInterviewsByInterviewerId(int interviewerId);
     ResumeVo findResumeByApplicationId(int applicationId);
     ResumeVo findResumeByInterviewId(int interviewId);
+    int setInterviewerStatus(int interviewerStatus, int interviewId, String comment);
 }
