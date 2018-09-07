@@ -97,6 +97,7 @@ public class UserController {
         ModelAndView result = null;
         if(istrue == StatusCode.SUCCESS){
             result = new ModelAndView("login");
+            result.getModel().put("isRegister", 1);
         }else {
             result = new ModelAndView("register");
             result.getModel().put("user", new UserEntity());
