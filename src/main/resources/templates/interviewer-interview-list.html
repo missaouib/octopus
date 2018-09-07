@@ -41,19 +41,17 @@
                                data-filter="#filter">
                             <thead>
                             <tr class="footable even">
-                                <th>Post Name</th>
-                                <th>Post Type</th>
-                                <th>Post Locale</th>
+                                <th>Interview Time</th>
+                                <th>Interview Locale</th>
                                 <th>Operation</th>
                             </tr>
                             </thead>
 
                             <tbody>
-                                <th:block th:each="post : ${postList}">
+                                <th:block th:each="post : ${interviewList}">
                                     <tr>
-                                        <td th:text="${post.postName}"></td>
-                                        <td th:text="${post.postType}"></td>
-                                        <td th:text="${post.postLocale}"></td>
+                                        <td th:text="${post.interviewStartTime}"></td>
+                                        <td th:text="${post.interviewPlace}"></td>
                                         <td>
                                             <button type="button"
                                                     onclick=""
