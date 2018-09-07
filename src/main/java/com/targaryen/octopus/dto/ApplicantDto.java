@@ -25,7 +25,7 @@ public class ApplicantDto implements Serializable {
     @OneToOne(cascade = CascadeType.MERGE)
     private UserDto user;
 
-    @OneToOne(mappedBy = "applicant", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "applicant", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private ResumeDto resume;
 
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.REMOVE)

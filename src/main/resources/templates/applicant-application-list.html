@@ -69,8 +69,10 @@
                             class="fa fa-user fa-fw"></i> HomePage
                     </a></li>
                     <li class="divider"></li>
-                    <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
-                        Logout</a></li>
+                    <li>
+                        <a onclick="document.getElementById('logOut').submit();"><i class="fa fa-sign-out fa-fw"></i>Log out</a>
+                        <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
+                    </li>
                 </ul> <!-- /.dropdown-user --></li>
         </ul>
         <!-- /.navbar-top-links -->
@@ -127,7 +129,7 @@
                             <td th:text="${ps.postLocale}"></td>
                             <td th:text="${ps.postType}"></td>
                             <td th:text="${ps.recruitDpt}"></td>
-                            <td th:text="${ps.status}"></td>
+                            <td th:text="${ps.status}?'Interviewing':'Applied'"></td>
                             <td>
                                 <a th:href="@{/octopus/applicant/interview/detail}" style="color: #eee;">
                                     <button class="btn btn-warning">

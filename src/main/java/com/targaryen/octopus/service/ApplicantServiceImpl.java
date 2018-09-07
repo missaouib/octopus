@@ -61,6 +61,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
 
         try {
+            applicantDto.setResume(resumeDto);
             resumeDto.setApplicantAge(resumeVo.getApplicantAge());
             resumeDto.setApplicantCity(resumeVo.getApplicantCity());
             resumeDto.setApplicantCV(resumeVo.getApplicantCV());

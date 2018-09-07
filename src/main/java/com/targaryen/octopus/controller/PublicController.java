@@ -25,7 +25,7 @@ public class PublicController {
         this.serviceFactory = serviceFactory;
     }
 
-    @RequestMapping(value = "")
+    @RequestMapping(value = "/")
     public ModelAndView index(){
         ModelAndView result = new ModelAndView("default");
         List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED);

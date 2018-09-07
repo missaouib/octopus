@@ -50,7 +50,7 @@ public class ApplicationDto implements Serializable {
     private List<InterviewDto> interviews;
 
     @JoinColumn(name = "applicant_id")
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private ApplicantDto applicant;
 
     @JoinColumn(name = "post_id")

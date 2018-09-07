@@ -4,6 +4,7 @@ import com.targaryen.octopus.entity.UserEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
+import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -59,8 +60,8 @@ public class UserController {
         }
         ModelAndView result = null;
         if (tmp.size() != 1){
-            result = new ModelAndView("error");
-
+            result = new ModelAndView("login");
+            result.getModel().put("istrue", 1);
         } else {
             if (tmp.get(0).equals(Role.APPLICANT)){
                 result = new ModelAndView("redirect:/octopus/applicant/index");
@@ -77,8 +78,8 @@ public class UserController {
 
     @RequestMapping(value="/loginError")
     public ModelAndView userLoginError(){
-        ModelAndView result = new ModelAndView("error");
-
+        ModelAndView result = new ModelAndView("login");
+        result.getModel().put("istrue", 1);
         return result;
     }
 
@@ -92,8 +93,15 @@ public class UserController {
     @PostMapping("/userRegister")
     public ModelAndView userRegister(UserEntity user){
         UserVo userVo = new UserVo.Builder().userName(user.getUserName()).userPassword(user.getUserPassword()).userRole(user.getUserRole()).build();
-        serviceFactory.getUserService().saveUser(userVo);
-        ModelAndView result = new ModelAndView("login");
+        int istrue = serviceFactory.getUserService().saveUser(userVo);
+        ModelAndView result = null;
+        if(istrue == StatusCode.SUCCESS){
+            result = new ModelAndView("login");
+        }else {
+            result = new ModelAndView("register");
+            result.getModel().put("user", new UserEntity());
+            result.getModel().put("istrue", 1);
+        }
         return result;
     }
 }

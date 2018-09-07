@@ -10,10 +10,6 @@
     <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
     <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
 
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
-    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 </head>
 
 <body>
@@ -120,5 +116,43 @@
     </div>
 </div>
 
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+<!-- Peity -->
+<script th:src="@{/new-vendor/js/plugins/peity/jquery.peity.min.js}"></script>
+<!-- Custom and plugin javascript -->
+<script th:src="@{/new-vendor/js/inspinia.js}"></script>
+<script th:src="@{/new-vendor/js/plugins/pace/pace.min.js}"></script>
+<!-- Peity -->
+<script th:src="@{/new-vendor/js/demo/peity-demo.js}"></script>
+<script>
+        $(document).ready(function(){
+
+            // Local script for demo purpose only
+            $('#lightVersion').click(function(event) {
+                event.preventDefault()
+                $('#ibox-content').removeClass('ibox-content');
+                $('#vertical-timeline').removeClass('dark-timeline');
+                $('#vertical-timeline').addClass('light-timeline');
+            });
+
+            $('#darkVersion').click(function(event) {
+                event.preventDefault()
+                $('#ibox-content').addClass('ibox-content');
+                $('#vertical-timeline').removeClass('light-timeline');
+                $('#vertical-timeline').addClass('dark-timeline');
+            });
+
+            $('#leftVersion').click(function(event) {
+                event.preventDefault()
+                $('#vertical-timeline').toggleClass('center-orientation');
+            });
+
+
+        });
+    </script>
 </body>
 </html>
