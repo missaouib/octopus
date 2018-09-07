@@ -110,10 +110,22 @@ public class ApplicantServiceImpl implements ApplicantService {
                 .resumeId(resumeDto.getResumeId()).build();
     }
 
+
     public int CreateNewApplication(ApplicationVo applicationVo) {
         ApplicationDto applicationDto = new ApplicationDto();
         PostDto postDto;
         ApplicantDto applicantDto;
+        List<ApplicationDto> existed = applicationDtoRepository.findByApplicantAndPost(
+                applicantDtoRepository.findApplicantDtoByApplicantId(applicationVo.getApplicantId()),
+                postDtoRepository.findPostDtoByPostId(applicationVo.getPostId())
+        );
+
+
+        for(ApplicationDto a: existed) {
+            if(a.getStatus() >= 0)
+                return StatusCode.FAILURE;
+        }
+
 
         applicationDto.setStatus(ApplicationStatus.INIT);
 
