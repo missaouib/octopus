@@ -46,9 +46,17 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         int userId = AuthInfo.getUserId();
+
         List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
         List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
-        map.addAttribute("unreplyMsg", interviewVos);
+
+        InterviewVo interviewVo = new InterviewVo.Builder().interviewPlace("Shanghai").interviewStartTime(Calendar.getInstance().getTime()).build();
+        interviewVos.add(interviewVo);
+        interviewVosAccpted.add(interviewVo);
+
+        System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
+        result.addObject ("unreplyMsg", interviewVos);
+
         map.addAttribute("acceptedMsg", interviewVosAccpted);
         return result;
     }
@@ -67,11 +75,7 @@ public class ApplicantController {
         List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
         List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
 
-        InterviewVo interviewVo = new InterviewVo.Builder().interviewPlace("Shanghai").interviewStartTime(Calendar.getInstance().getTime()).build();
-        interviewVos.add(interviewVo);
-        interviewVosAccpted.add(interviewVo);
-
-        map.addAttribute("unreplyMsg", interviewVos);
+        result.addObject ("unreplyMsg", interviewVos);
         map.addAttribute("acceptedMsg", interviewVosAccpted);
         return result;
     }
@@ -87,6 +91,7 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         int userId = AuthInfo.getUserId();
+
         List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
         List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
         map.addAttribute("unreplyMsg", interviewVos);
@@ -139,7 +144,9 @@ public class ApplicantController {
         if(resumeVo == null){
 
             System.out.println("[msg]: " + "applicant register");
-            map.addAttribute("resume", new ResumeEntity());
+            ResumeEntity resumeEntity = new ResumeEntity();
+            resumeEntity.setHasPostId(applicationEntity.getPostId());
+            map.addAttribute("resume", resumeEntity);
             result = new ModelAndView("applicant-resume-add");
             return result;
         }
@@ -167,7 +174,6 @@ public class ApplicantController {
         map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
         map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
 
-        System.out.println("[msg]: " + "applicant addd");
         System.out.println("[msg]: " + resumeEntity.getApplicantName() + ", " + resumeEntity.getApplicantPhone());
 
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(AuthInfo.getUserId());
@@ -186,6 +192,12 @@ public class ApplicantController {
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
 
+        System.out.println("[msg：msg]: " + resumeEntity.getHasPostId());
+        if(resumeEntity.getHasPostId() != 0){
+            System.out.println("[msg：msg2]: " + resumeEntity.getHasPostId());
+            ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getHasPostId()).build();
+            serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
+        }
         List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
         map.addAttribute("applicationVos", applicantApplicationVos);
 

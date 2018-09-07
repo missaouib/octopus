@@ -39,6 +39,22 @@
                 </div>
 
                 <h2>Octopus</h2>
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-danger alert-dismissable"
+                         th:style="'display:' + @{(${istrue} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Incorrect username or password.
+                    </div>
+                </div>
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-success alert-dismissable"
+                         th:style="'display:' + @{(${isRegister} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Register Success.
+                    </div>
+                </div>
                 <fieldset>
                     <div class="form-group">
                         <input class="form-control" placeholder="Username"

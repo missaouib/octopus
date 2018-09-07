@@ -61,8 +61,10 @@
                         class="fa fa-user fa-fw"></i> HomePage
                 </a></li>
                 <li class="divider"></li>
-                <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
-                    Logout</a></li>
+                <li>
+                    <a onclick="document.getElementById('logOut').submit();"><i class="fa fa-sign-out fa-fw"></i>Log out</a>
+                    <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
+                </li>
             </ul> <!-- /.dropdown-user --></li>
     </ul>
 </nav>

@@ -17,4 +17,5 @@ public class ResumeEntity {
     private String applicantEmail;
     private String applicantPhone;
     private String applicantCV;
+    private int hasPostId;
 }

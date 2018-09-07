@@ -58,8 +58,10 @@
                             class="fa fa-user fa-fw"></i> HomePage
                     </a></li>
                     <li class="divider"></li>
-                    <li><a th:href="@{/octopus/login}"><i class="fa fa-sign-out fa-fw"></i>
-                        Logout</a></li>
+                    <li>
+                        <a onclick="document.getElementById('logOut').submit();"><i class="fa fa-sign-out fa-fw"></i>Log out</a>
+                        <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
+                    </li>
                 </ul> <!-- /.dropdown-user --></li>
         </ul>
         <!-- /.navbar-top-links -->
@@ -108,7 +110,7 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
-                        <div class="alert alert-danger alert-dismissable">
+                        <!--<div class="alert alert-danger alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
                             <label>Interview time:</label>
@@ -118,19 +120,19 @@
                                 <a href="#">Yes</a>&emsp;
                                 <a href="#" data-toggle="modal" data-target="#myModal">No</a>
                             </label>
-                        </div>
-                        <!--<ul>
-                            <div class="alert alert-danger alert-dismissable" >
-                                <button type="button" class="close" data-dismiss="alert"
-                                        aria-hidden="true">&times;</button>
-                                Interview time: &emsp;<label th:text="${ps['interviewPlace']}"></label>
-                                Interview Location: &emsp;<label th:text="${ps['interviewStartTime']}"></label>
-                                <label style="font-style: italic; float:right">
-                                    <a href="#">Yes</a>&emsp;
-                                    <a href="#" data-toggle="modal" data-target="#myModal">No</a>
-                                </label>
-                            </div>
-                        </ul>-->
+                        </div>-->
+                        <ul th:each="ps:${unreplyMsg}" style="list-style-type:none">
+                            <li style="margin-left:-40px;">
+                                <div class="alert alert-danger alert-dismissable" >
+                                    <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
+                                    <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>
+                                    <label style="font-style: italic; float:right">
+                                        <a href="#">Yes</a>&emsp;
+                                        <a href="#" data-toggle="modal" data-target="#myModal">No</a>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
 
                         <!--<div class="alert alert-success alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert"

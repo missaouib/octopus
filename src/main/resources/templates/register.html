@@ -38,6 +38,14 @@
                     <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
                 </div>
                 <h2>Octopus</h2>
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-danger alert-dismissable"
+                         th:style="'display:' + @{(${istrue} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Register Failure.
+                    </div>
+                </div>
                 <fieldset>
                     <div class="form-group">
                         <input class="form-control" placeholder="Username"
