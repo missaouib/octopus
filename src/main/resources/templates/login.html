@@ -1,10 +1,11 @@
+<!--fileName: login.html-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>导航</title>
+    <title>Portal</title>
 
     <link th:href="@{/css/bootstrap.min14ed.css}" rel="stylesheet" />
     <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
@@ -27,41 +28,49 @@
 </head>
 
 <body class="gray-bg" th:background="@{/img/1.jpg}" style="background-size:cover;overflow:-Scroll;overflow-y:hidden">
-    <div class="signinpanel text-center loginscreen">
-        <div class="row">
-            <div class="col-sm-3">
-            </div>
-            <div class="col-md-6">
-                <form method="post" action="side/bar/index">
-                    <div>
-                        <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
+<div class="signinpanel text-center loginscreen">
+    <div class="row">
+        <div class="col-sm-3">
+        </div>
+        <div class="panel-body col-md-6">
+            <form role="form" method="post" th:action="@{/octopus/login}">
+                <div>
+                    <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
+                </div>
+
+                <h2>Octopus</h2>
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-danger alert-dismissable"
+                         th:style="'display:' + @{(${istrue} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Incorrect username or password.
+                    </div>
+                </div>
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-success alert-dismissable"
+                         th:style="'display:' + @{(${isRegister} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Register Success.
+                    </div>
+                </div>
+                <fieldset>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Username"
+                               id="username" name="username" type="text" maxlength="20" required="required" autocomplete="off" autofocus />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Password"
+                               id="password" name="password" type="password" maxlength="20" required="required" />
                     </div>
 
-                    <h2>Octopus</h2>
-                    <h3 class="no-margins">请选择您需要进入的页面与身份</h3>
-                    <h4 class="no-margins">（为便于演示，跳过了密码环节）</h4>
-
-                    <select id="type" name="type" class="form-control">
-                        <option value="1">管理员</option>
-                        <option value="2">店长</option>
-                        <option value="3">员工</option>
-                    </select>
-
-                    <button class="btn btn-success btn-block">进入</button>
-                    <a class="btn btn-warning btn-block" onclick="showOpenSource();">开源软件声明</a>
-                </form>
-            </div>
+                    <button type="submit" class="btn btn-lg btn-success btn-block">Sign In</button>
+                    <a th:href="@{/octopus/register}" class="btn btn-lg btn-warning btn-block" target="_blank">Sign Up</a>
+                </fieldset>
+            </form>
         </div>
     </div>
-
-    <script>
-        function showOpenSource() {
-            swal({
-                title: "Open Source Components",
-                text: "schedule-template/CodyHouse@Github (BSD)\n\nspring-boot/spring-projects@Github (Apache)",
-                type: "success",
-            });
-        }
-    </script>
+</div>
 </body>
 </html>

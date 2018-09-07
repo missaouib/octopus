@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>导航</title>
+
+    <link th:href="@{/css/bootstrap.min14ed.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/animate.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/login.min.css}" rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link th:href="@{/js/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link th:href="@{/js/datatables-responsive/dataTables.responsive.css}" rel="stylesheet">
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- DataTables JavaScript -->
+    <script th:src="@{/js/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/datatables-plugins/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/js/datatables-responsive/dataTables.responsive.js}"></script>
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <style type="text/css">
+        .navbar {
+            position: relative;
+            min-height: 50px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+        .navbar-default {
+            background-color: #f8f8f8;
+            border-color: #e7e7e7;
+        }
+        .navbar-brand {
+          float: left;
+          height: 50px;
+          padding: 15px 15px;
+          font-size: 18px;
+          line-height: 20px;
+        }
+        .navbar-brand:hover,
+        .navbar-brand:focus {
+          text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/octopus/">Octopus Recruiting System</a>
+    </div>
+    <div class="nav navbar-top-links navbar-right">
+        <a class="navbar-brand" th:href="@{/octopus/login}" style="font-size: 17px; margin-right: 15px;">Sign In/Sign Up</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12" style="margin-top: 20px;">
+            <img th:src="@{/img/bar2.jpg}" alt="" style="width: 100%; height: 120%;" />
+        </div>
+        <div class="col-lg-12" style="margin-top: 20px;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Job Information</h3>
+                </div>
+                <!-- .panel-heading -->
+                <div class="panel-body">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><lable
+                                            th:text="${post.postName}"></lable></a>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-lg-4 row">
+                                    <ul style="list-style-type:none">
+                                        <li>
+                                            Department：<label th:text="${post.recruitDpt}"></label>
+                                        </li>
+                                        <li style="margin-top: 10px;">
+                                            Post Locale: <label th:text="${post.postLocale}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4 row">
+                                    <ul style="list-style-type:none">
+                                        <li>
+                                            Post Type: <label th:text="${post.postType}"></label>
+                                        </li>
+                                        <li style="margin-top: 10px;">
+                                            Recruiting Number: <label th:text="${post.recruitNum}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4 row">
+                                    <ul style="list-style-type:none">
+                                        <li>
+                                            Create Time: <label th:text="${#dates.format(post.publishTime,'yyyy-MM-dd HH:mm')}"></label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default" style="margin-top: 30px;">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Job Description</a>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li>
+                                        <p th:text="${post.postDescription}"></p>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default" style="margin-top: 30px;">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Job Requirement</a>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li>
+                                        <p th:text="${post.postRequirement}"></p>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" align="center">
+                            <div class="row" style="margin-top: 20px;">
+                                <form role="form" method="get" th:action="@{/octopus/login}">
+                                    <fieldset>
+                                        <button type="submit" class="btn btn-success btn-block" style="width: 200px;">Apply For This Post</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- .panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div><!--
+            <div class="modal-footer" style="text-align: center;">
+                WorksApplication © 2018 Powered by <a href="#">Targaryen Team</a>
+            </div>-->
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
+</body>
+</html>

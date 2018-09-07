@@ -1,0 +1,75 @@
+<!--fileName: register.html-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Sign Up</title>
+
+    <link th:href="@{/css/bootstrap.min14ed.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/animate.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/login.min.css}" rel="stylesheet" />
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+</head>
+
+<body class="gray-bg" th:background="@{/img/1.jpg}" style="background-size:cover;overflow:-Scroll;overflow-y:hidden">
+<div class="signinpanel text-center loginscreen">
+    <div class="row">
+        <div class="col-sm-3">
+        </div>
+        <div class="panel-body col-md-6">
+            <form role="form" method="post" th:action="@{/octopus/userRegister}" th:object="${user}">
+                <div>
+                    <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
+                </div>
+                <h2>Octopus</h2>
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-danger alert-dismissable"
+                         th:style="'display:' + @{(${istrue} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Register Failure.
+                    </div>
+                </div>
+                <fieldset>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Username"
+                               id="username" type="text" th:field="*{userName}" maxlength="20" autocomplete="off" required="required" autofocus />
+                    </div>
+                    <div class="form-group">
+                        <select style="width: 298px; height: 34px;" id="userRole" th:field="*{userRole}">
+                            <option value="ROLE_HR">ROLE_HR</option>
+                            <option value="ROLE_DPT">ROLE_DPT</option>
+                            <option value="ROLE_APPLICANT">ROLE_APPLICANT</option>
+                            <option value="ROLE_INTERVIEWER">ROLE_INTERVIEWER</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Password"
+                               id="password" type="password" th:field="*{userPassword}" maxlength="20" required="required" />
+                    </div>
+
+                    <button type="submit" class="btn btn-lg btn-success btn-block">Sign
+                        Up</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

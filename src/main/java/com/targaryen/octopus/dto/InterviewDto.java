@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,18 +18,49 @@ import java.util.Date;
 @Data
 public class InterviewDto implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_interview_seq")
+    @SequenceGenerator(name = "t_interview_seq", sequenceName = "t_interview_seq", allocationSize = 1)
     private int interviewId;
 
-    @NotBlank
-    private int applicationId;
-    private int interviewerId;
-
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startTime;
+    private Date interviewStartTime;
+
+    @NotBlank
     private String interviewPlace;
 
-    @NotBlank
+    @NotNull
+    private int applicantStatus;
+
+    private String applicantComment;
+
+    @NotNull
     private int interviewerStatus;
-    private String interviewComment;
+
+    private String interviewerComment;
+
+    @NotNull
+    private int reservationStatus;
+
+    @NotNull
+    private int interviewResultStatus;
+
+    private String interviewResultComment;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date reservationResultTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date interviewResultTime;
+
+    @JoinColumn(name = "application_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private ApplicationDto application;
+
+    @JoinColumn(name = "interviewer_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private InterviewerDto interviewer;
 }

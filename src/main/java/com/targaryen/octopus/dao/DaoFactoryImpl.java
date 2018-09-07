@@ -6,27 +6,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class DaoFactoryImpl implements DaoFactory{
     @Autowired
-    private NoteRepository noteRepository;
-    @Autowired
     private ApplicationDtoRepository applicationDtoRepository;
     @Autowired
-    private CandidateDtoRepository candidateDtoRepository;
+    private ApplicantDtoRepository applicantDtoRepository;
     @Autowired
     private InterviewDtoRepository interviewDtoRepository;
     @Autowired
     private InterviewerDtoRepository interviewerDtoRepository;
     @Autowired
-    private JobDtoRepository jobDtoRepository;
+    private PostDtoRepository postDtoRepository;
     @Autowired
     private RoleDtoRepository roleDtoRepository;
     @Autowired
     private UserDtoRepository userDtoRepository;
+    @Autowired
+    private DptManagerDtoRepository dptManagerDtoRepository;
+    @Autowired
+    private HRDtoRepository hrDtoRepository;
+    @Autowired
+    private ResumeDtoRepository resumeDtoRepository;
 
-
-    @Override
-    public NoteRepository getNoteRepository() {
-        return noteRepository;
-    }
 
     @Override
     public ApplicationDtoRepository getApplicationDtoRepository() {
@@ -34,8 +33,18 @@ public class DaoFactoryImpl implements DaoFactory{
     }
 
     @Override
-    public CandidateDtoRepository getCandidateDtoRepository() {
-        return candidateDtoRepository;
+    public ApplicantDtoRepository getApplicantDtoRepository() {
+        return applicantDtoRepository;
+    }
+
+    @Override
+    public DptManagerDtoRepository getDptManagerDtoRepository() {
+        return dptManagerDtoRepository;
+    }
+
+    @Override
+    public HRDtoRepository getHRDtoRepository() {
+        return hrDtoRepository;
     }
 
     @Override
@@ -49,8 +58,13 @@ public class DaoFactoryImpl implements DaoFactory{
     }
 
     @Override
-    public JobDtoRepository getJobDtoRepository() {
-        return jobDtoRepository;
+    public PostDtoRepository getPostDtoRepository() {
+        return postDtoRepository;
+    }
+
+    @Override
+    public ResumeDtoRepository getResumeDtoRepository() {
+        return resumeDtoRepository;
     }
 
     @Override

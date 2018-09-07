@@ -3,12 +3,11 @@ package com.targaryen.octopus.dto;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *  @author Liu Mengyang
@@ -19,17 +18,26 @@ import java.io.Serializable;
 @Data
 public class InterviewerDto implements Serializable {
     @Id
-    private int userId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_interviewer_seq")
+    @SequenceGenerator(name = "t_interviewer_seq", sequenceName = "t_interviewer_seq", allocationSize = 1)
+    private int interviewerId;
 
     @NotBlank
-    private String interviewerName;
+    private String interviewerName = "xxx";
 
     @NotBlank
-    private String interviewerPosition;
+    private String interviewerPosition = "xxx";
+
+    @NotNull
+    private int interviewerAge = 0;
 
     @NotBlank
-    private int interviewerAge;
+    private String interviewerDepartment = "xxx";
 
-    @NotBlank
-    private String interviewerDepartment;
+    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.MERGE)
+    private UserDto user;
+
+    @OneToMany(mappedBy = "interviewer")
+    private List<InterviewDto> interviews;
 }

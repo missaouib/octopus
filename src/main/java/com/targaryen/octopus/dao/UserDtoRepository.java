@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 public interface UserDtoRepository extends JpaRepository<UserDto, Integer> {
+    UserDto findUserDtoByUserName(String username);
+    UserDto findUserDtoByUserId(int id);
 }

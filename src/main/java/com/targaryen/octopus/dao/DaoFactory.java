@@ -1,12 +1,14 @@
 package com.targaryen.octopus.dao;
 
 public interface DaoFactory {
-    NoteRepository getNoteRepository();
     ApplicationDtoRepository getApplicationDtoRepository();
-    CandidateDtoRepository getCandidateDtoRepository();
+    ApplicantDtoRepository getApplicantDtoRepository();
+    DptManagerDtoRepository getDptManagerDtoRepository();
+    HRDtoRepository getHRDtoRepository();
     InterviewDtoRepository getInterviewDtoRepository();
     InterviewerDtoRepository getInterviewerDtoRepository();
-    JobDtoRepository getJobDtoRepository();
+    PostDtoRepository getPostDtoRepository();
+    ResumeDtoRepository getResumeDtoRepository();
     RoleDtoRepository getRoleDtoRepository();
     UserDtoRepository getUserDtoRepository();
 }
