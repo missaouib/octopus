@@ -51,10 +51,10 @@ public interface HRService {
     List<ApplicationResumeVo> findApplicationsByPostId(int postId);
 
     /**
-     * find resume by applicationId
+     * find ApplicationResumeVo by applicationId
      *
      */
-    ResumeVo findResumeByApplicationId(int applicationId);
+    ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId);
 
     /**
      * filter pass application by applicantId

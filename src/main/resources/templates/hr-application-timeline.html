@@ -40,6 +40,7 @@
 
                         <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
 
+                            <!-- Initial state -->
                             <div class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon lazur-bg">
                                     <i class="fa fa-hourglass-start"></i>
@@ -49,7 +50,8 @@
                                     <h2>Resume Passed</h2>
                                     <p>Assessor: Fake HR ID</p>
 
-                                    <a th:if="${interviewList.isEmpty()}" data-toggle="modal" data-target="#new-interview" class="btn btn-sm btn-primary">Arrange new interview</a>
+                                    <a th:if="${interviewList.isEmpty()}" data-toggle="modal" data-target="#new-interview"
+                                       class="btn btn-sm btn-warning" style="margin-left: 5px;">Arrange new interview</a>
 
                                     <span class="vertical-date">
                                         Fake Day <br/>
@@ -58,98 +60,157 @@
                                 </div>
                             </div>
 
-                            <div class="vertical-timeline-block">
-                                <div class="vertical-timeline-icon yellow-bg">
-                                    <i class="fa fa-calendar-plus-o"></i>
-                                </div>
+                            <!-- ********************************************** ->
 
-                                <div class="vertical-timeline-content">
-                                    <h2>Interview Arrangement</h2>
-                                    <p>New interview created. Waiting for confirmation from interviewer and applicant.</p>
-                                    <span class="vertical-date">
+                            <!-- Interviews -->
+                            <th:block th:each="interview : ${interviewList}">
+
+                                <!-- New Interview Created -->
+                                <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).INIT}"
+                                     class="vertical-timeline-block">
+                                    <div class="vertical-timeline-icon yellow-bg">
+                                        <i class="fa fa-calendar-plus-o"></i>
+                                    </div>
+
+                                    <div class="vertical-timeline-content">
+                                        <h2>Interview Arrangement</h2>
+                                        <p>New interview created. Waiting for confirmation from interviewer and applicant.</p>
+
+                                        <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
+                                            and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
+                                            <a class="btn btn-sm" th:onclick="${'cancelInterview(' + interview.interviewId + ');'}">Cancel</a>
+                                        </th:block>
+
+                                        <span class="vertical-date">
                                         Fake Day <br/>
                                         <small>Fake Time</small>
                                     </span>
-                                </div>
-                            </div>
-
-                            <div class="vertical-timeline-block">
-                                <div class="vertical-timeline-icon muted-bg" style="background-color: #6c757d;">
-                                    <i class="fa fa-calendar-times-o" style="color: #FFF;"></i>
+                                    </div>
                                 </div>
 
-                                <div class="vertical-timeline-content">
-                                    <h2>Interview Arrangement Rejected</h2>
-                                    <p>
-                                        Interview arrangement rejected by interviewer/applicant.
-                                        <br/>
-                                        Comment: ***
-                                    </p>
-                                    <span class="vertical-date">
+                                <!-- Interview Arrangement Rejected -->
+                                <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).FAIL}"
+                                     class="vertical-timeline-block">
+                                    <div class="vertical-timeline-icon muted-bg" style="background-color: #6c757d;">
+                                        <i class="fa fa-calendar-times-o" style="color: #FFF;"></i>
+                                    </div>
+
+                                    <div class="vertical-timeline-content">
+                                        <h2>Interview Arrangement Rejected</h2>
+                                        <p>
+                                            Interview arrangement rejected by interviewer/applicant.
+                                            <br/>
+                                            Comment: ***
+                                        </p>
+
+                                        <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
+                                            and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
+                                            <a data-toggle="modal" data-target="#new-interview"
+                                               class="btn btn-sm btn-warning" style="margin-left: 5px;">Arrange new interview</a>
+                                            <a class="btn btn-sm btn-danger" style="margin-left: 5px;" th:onclick="${'processApplicationByHR(' + appli.applicationId + ', ''reject'');'}">Reject</a>
+                                        </th:block>
+
+                                        <span class="vertical-date">
                                         Fake Day <br/>
                                         <small>Fake Time</small>
                                     </span>
-                                </div>
-                            </div>
-
-                            <div class="vertical-timeline-block">
-                                <div class="vertical-timeline-icon blue-bg">
-                                    <i class="fa fa-calendar-check-o"></i>
+                                    </div>
                                 </div>
 
-                                <div class="vertical-timeline-content">
-                                    <h2>Interview Arrangement Accepted (Waiting for Interview Result)</h2>
-                                    <p>
-                                        Interview arrangement accepted by both interviewer and applicant. Waiting for interview result.
-                                        <br/>
-                                        Interview detail: ***
-                                    </p>
-                                    <span class="vertical-date">
+                                <!-- Interview Arrangement Accepted (Waiting for Interview Result) -->
+                                <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).SUCCESS}
+                                    and ${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).INIT}"
+                                     class="vertical-timeline-block">
+                                    <div class="vertical-timeline-icon blue-bg">
+                                        <i class="fa fa-calendar-check-o"></i>
+                                    </div>
+
+                                    <div class="vertical-timeline-content">
+                                        <h2>Interview Arrangement Accepted (Waiting for Interview Result)</h2>
+                                        <p>
+                                            Interview arrangement accepted by both interviewer and applicant. Waiting for interview result.
+                                            <br/>
+                                            Interview detail: ***
+                                        </p>
+
+                                        <span class="vertical-date">
                                         Fake Day <br/>
                                         <small>Fake Time</small>
                                     </span>
-                                </div>
-                            </div>
-
-                            <div class="vertical-timeline-block">
-                                <div class="vertical-timeline-icon muted-bg" style="background-color: #343a40;">
-                                    <i class="fa fa-undo" style="color: #FFF;"></i>
+                                    </div>
                                 </div>
 
-                                <div class="vertical-timeline-content">
-                                    <h2>Interview Failed</h2>
-                                    <p>
-                                        Interview failed by interviewer.
-                                        <br/>
-                                        Comment: ***
-                                    </p>
-                                    <span class="vertical-date">
+                                <!-- Interview Failed -->
+                                <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).SUCCESS}
+                                    and ${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).FAIL}"
+                                     class="vertical-timeline-block">
+                                    <div class="vertical-timeline-icon muted-bg" style="background-color: #343a40;">
+                                        <i class="fa fa-undo" style="color: #FFF;"></i>
+                                    </div>
+
+                                    <div class="vertical-timeline-content">
+                                        <h2>Interview Failed</h2>
+                                        <p>
+                                            Interview failed by interviewer.
+                                            <br/>
+                                            Comment: ***
+                                        </p>
+
+                                        <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
+                                            and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
+                                            <a data-toggle="modal" data-target="#new-interview"
+                                           class="btn btn-sm btn-warning" style="margin-left: 5px;">Arrange new interview</a>
+                                            <a class="btn btn-sm btn-danger" style="margin-left: 5px;" th:onclick="${'processApplicationByHR(' + appli.applicationId + ', ''reject'');'}">Reject</a>
+                                        </th:block>
+
+                                        <span class="vertical-date">
                                         Fake Day <br/>
                                         <small>Fake Time</small>
                                     </span>
-                                </div>
-                            </div>
-
-                            <div class="vertical-timeline-block">
-                                <div class="vertical-timeline-icon navy-bg">
-                                    <i class="fa fa-arrow-down"></i>
+                                    </div>
                                 </div>
 
-                                <div class="vertical-timeline-content">
-                                    <h2>Interview Passed</h2>
-                                    <p>
-                                        Interview passed by interviewer.
-                                        <br/>
-                                        Interview detail: ***
-                                    </p>
-                                    <span class="vertical-date">
+                                <!-- Interview Passed -->
+                                <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).SUCCESS}
+                                    and ${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).PASS}"
+                                     class="vertical-timeline-block">
+                                    <div class="vertical-timeline-icon navy-bg">
+                                        <i class="fa fa-arrow-down"></i>
+                                    </div>
+
+                                    <div class="vertical-timeline-content">
+                                        <h2>Interview Passed</h2>
+                                        <p>
+                                            Interview passed by interviewer.
+                                            <br/>
+                                            Interview detail: ***
+                                        </p>
+
+                                        <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
+                                            and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
+                                            <a class="btn btn-sm" style="margin-left: 5px; color: #FFF; background-color: #5cb85c;"
+                                               th:onclick="${'processApplicationByHR(' + appli.applicationId + ', ''pass'');'}">Pass</a>
+                                            <a class="btn btn-sm btn-danger" style="margin-left: 5px;" th:onclick="${'processApplicationByHR(' + appli.applicationId + ', ''reject'');'}">Reject</a>
+                                            <a data-toggle="modal" data-target="#new-interview"
+                                               class="btn btn-sm btn-warning" style="margin-left: 5px;">Arrange new interview</a>
+                                            </th:block>
+
+                                        <span class="vertical-date">
                                         Fake Day <br/>
                                         <small>Fake Time</small>
                                     </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="vertical-timeline-block">
+                            </th:block>
+
+                            <!-- ********************************************** ->
+
+                            <!-- Beyond Interview -->
+
+                            <!-- Application Rejected (HR) -->
+                            <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}"
+                                 class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon" style="background-color:#dc3545;">
                                     <i class="fa fa-close" style="color:#FFF;"></i>
                                 </div>
@@ -168,7 +229,10 @@
                                 </div>
                             </div>
 
-                            <div class="vertical-timeline-block">
+                            <!-- Application Passed (HR) -->
+                            <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}
+                                or ${T(java.lang.Math).abs(appli.status)} gt ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}"
+                                 class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon" style="background-color:#cddc39;">
                                     <i class="fa fa-eye" style="color:#FFF;"></i>
                                 </div>
@@ -187,7 +251,9 @@
                                 </div>
                             </div>
 
-                            <div class="vertical-timeline-block">
+                            <!-- Application Rejected (Department Manager) -->
+                            <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}"
+                                 class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon" style="background-color:#dc3545;">
                                     <i class="fa fa-close" style="color:#FFF;"></i>
                                 </div>
@@ -206,7 +272,10 @@
                                 </div>
                             </div>
 
-                            <div class="vertical-timeline-block">
+                            <!-- Application Passed (Department Manager) -->
+                            <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_PASS}
+                                or ${T(java.lang.Math).abs(appli.status)} gt ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_PASS}"
+                                 class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon" style="background-color:#8bc34a;">
                                     <i class="fa fa-flag" style="color:#FFF;"></i>
                                 </div>
@@ -218,6 +287,12 @@
                                         <br/>
                                         Assessor: ***
                                     </p>
+
+                                    <th:block th:if="${T(java.lang.Math).abs(appli.status)} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}">
+                                        <a class="btn btn-sm btn-warning" style="margin-left: 5px; background-color:#9c27b0;"
+                                        th:onclick="${'sendOffer(' + appli.applicationId + ');'}">Send Offer</a>
+                                    </th:block>
+
                                     <span class="vertical-date">
                                         Fake Day <br/>
                                         <small>Fake Time</small>
@@ -225,7 +300,10 @@
                                 </div>
                             </div>
 
-                            <div class="vertical-timeline-block">
+                            <!-- Offer Sent -->
+                            <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}
+                                or ${T(java.lang.Math).abs(appli.status)} gt ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}"
+                                 class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon" style="background-color:#9c27b0;">
                                     <i class="fa fa-envelope" style="color:#FFF;"></i>
                                 </div>
@@ -242,7 +320,9 @@
                                 </div>
                             </div>
 
-                            <div class="vertical-timeline-block">
+                            <!-- Offer Rejected -->
+                            <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}"
+                                 class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon" style="background-color:#dc3545;">
                                     <i class="fa fa-close" style="color:#FFF;"></i>
                                 </div>
@@ -259,7 +339,9 @@
                                 </div>
                             </div>
 
-                            <div class="vertical-timeline-block">
+                            <!-- Offer Accepted -->
+                            <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_ACCEPT}"
+                                 class="vertical-timeline-block">
                                 <div class="vertical-timeline-icon" style="background-color:#28a745;">
                                     <i class="fa fa-check" style="color:#FFF;"></i>
                                 </div>
@@ -275,6 +357,7 @@
                                     </span>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -297,7 +380,7 @@
                 <form class="form-horizontal m-t" id="new-interview-form" name="new-interview-form" method="POST"
                       action="interview/new" onsubmit="return false;">
 
-                    <input type="hidden" name="applicationId" th:value="${applicationId}" />
+                    <input type="hidden" name="applicationId" th:value="${appli.applicationId}" />
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                     <div class="modal-body">
@@ -329,7 +412,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button onclick="submitNewInterview();" class="btn btn-primary">Arrange</button>
+                        <button type="submit" class="btn btn-primary">Arrange</button>
                     </div>
                 </form>
             </div>
@@ -339,6 +422,14 @@
     <script th:inline="javascript">
     $(".footable").footable();
 
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    /* Timeline buttons */
     $('#lightVersion').click(function(event) {
         event.preventDefault();
         $('#ibox-content').removeClass('ibox-content');
@@ -361,6 +452,140 @@
     /* Init: Left Version */
     $('#vertical-timeline').toggleClass('center-orientation');
 
+
+    /* Cancel interview (Delete) */
+    function cancelInterview(interviewId) {
+        csrfData['interviewId'] = interviewId;
+
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to delete this interview permanently?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'interview/cancel',
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully deleted this interview permanently.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully deleted this interview permanently.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    /* Reject application by HR */
+    function processApplicationByHR(applicationId, urlStr) {
+        csrfData['applicationId'] = applicationId;
+
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to reject this application permanently?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: urlStr,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully rejected this application permanently.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully rejected this application permanently.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    /* Send offer */
+    function sendOffer(applicationId) {
+        csrfData['applicationId'] = applicationId;
+
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to send offer?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: "offer",
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully sent offer.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully sent offer.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    /* Validation */
     var validationConfig = {
         // submitHandler executes after the form PASSED the validation
         submitHandler: function(form) {
