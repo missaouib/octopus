@@ -1,9 +1,6 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.vo.ApplicantApplicationVo;
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.InterviewVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 
 import java.util.List;
 
@@ -62,7 +59,9 @@ public interface ApplicantService {
      * execution status
      */
     int CreateNewApplication(ApplicationVo applicationVo);
-    List<InterviewVo> findUnreplyedInterviewByUserId(int userId);
-    List<InterviewVo> findAcceptedInterviewByUserId(int userId);
+    List<InterviewVo> findUnreplyedInterviewsByUserId(int userId);
+    List<InterviewVo> findAcceptedInterviewsByUserId(int userId);
     int updateApplicantStatusOfInterview(int interviewId, int applicantStatus, String comment);
+    List<ApplicantInterviewVo> findUnreplyedInterviewDetailsByUserId(int userId);
+    List<ApplicantInterviewVo> findAcceptedInterviewDetailsByUserId(int userId);
 }

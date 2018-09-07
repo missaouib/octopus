@@ -9,9 +9,11 @@ import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,22 +123,15 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public ResumeVo findResumeByApplicationId(int applicationId) {
-        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
-        ApplicantDto applicant = application.getApplicant();
-        ResumeDto resumeDto;
-        if(applicant != null) {
-            resumeDto = applicant.getResume();
+    public ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId) {
+        ApplicationDto applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ApplicationResumeVo applicationResumeVo;
+        if(applicationDto != null) {
+            applicationResumeVo = DataTransferUtil.ApplicationDtoToApplicationResumeVo(applicationDto);
         } else {
-            resumeDto = null;
+            applicationResumeVo = null;
         }
-        ResumeVo resumeVo;
-        if(resumeDto != null) {
-            resumeVo = DataTransferUtil.ResumeDtoToVo(resumeDto);
-        } else {
-            resumeVo = null;
-        }
-        return resumeVo;
+        return applicationResumeVo;
     }
 
     @Override
@@ -230,6 +225,7 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    @Transactional
     public int deleteInterviewById(int interviewId) {
         try {
             interviewDtoRepository.deleteInterviewDtoByInterviewId(interviewId);
@@ -244,6 +240,7 @@ public class HRServiceImpl implements HRService {
         ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
         if(application != null) {
             return application.getInterviews().stream()
+                    .sorted(Comparator.comparing(n -> n.getInterviewId()))
                     .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                     .collect(Collectors.toList());
         } else {
@@ -289,4 +286,5 @@ public class HRServiceImpl implements HRService {
             return StatusCode.FAILURE;
         }
     }
+
 }

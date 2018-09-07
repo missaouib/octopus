@@ -8,10 +8,7 @@ import com.targaryen.octopus.util.status.ApplicantStatus;
 import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
-import com.targaryen.octopus.vo.ApplicantApplicationVo;
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.InterviewVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -170,13 +167,13 @@ public class ApplicantServiceImpl implements ApplicantService {
         return applicationVos;
     }
 
-    private List<InterviewVo> findInterviewByUserIdAndApplicantStatus(int userId, int applicantStatus) {
+    private List<InterviewDto> findInterviewDtosByUserIdAndApplicantStatus(int userId, int applicantStatus) {
         UserDto userDto;
         ApplicantDto applicantDto;
         List<ApplicationDto> applicationDtos;
         List<InterviewDto> interviewDtos = new ArrayList<>();
-        List<InterviewDto> unreplyed;
-        List<InterviewVo> interviewVos = new ArrayList<>();
+        List<InterviewDto> filtered;
+
         try {
             userDto = userDtoRepository.findUserDtoByUserId(userId);
             if(userDto == null)
@@ -194,25 +191,53 @@ public class ApplicantServiceImpl implements ApplicantService {
             interviewDtos.addAll(a.getInterviews());
         }
 
-        unreplyed = interviewDtos.stream()
+        filtered = interviewDtos.stream()
                 .filter(x -> (x.getApplicantStatus() == applicantStatus)
                         && (x.getInterviewerStatus() == InterviewerStatus.ACCEPTED))
                 .collect(Collectors.toList());
 
-        for(InterviewDto i: unreplyed) {
+        return filtered;
+    }
+
+    private List<InterviewVo> findInterviewsByUserIdAndApplicantStatus(int userId, int applicantStatus) {
+        List<InterviewDto> filtered = findInterviewDtosByUserIdAndApplicantStatus(userId, applicantStatus);
+        List<InterviewVo> interviewVos = new ArrayList<>();
+
+        for(InterviewDto i: filtered) {
             interviewVos.add(DataTransferUtil.InterviewDtoToVo(i));
         }
 
         return interviewVos;
     }
 
-    public List<InterviewVo> findUnreplyedInterviewByUserId(int userId) {
-        return findInterviewByUserIdAndApplicantStatus(userId, ApplicantStatus.INIT);
+    public List<InterviewVo> findUnreplyedInterviewsByUserId(int userId) {
+        return findInterviewsByUserIdAndApplicantStatus(userId, ApplicantStatus.INIT);
     }
 
-    public List<InterviewVo> findAcceptedInterviewByUserId(int userId) {
-        return findInterviewByUserIdAndApplicantStatus(userId, ApplicantStatus.ACCEPTED);
+    public List<InterviewVo> findAcceptedInterviewsByUserId(int userId) {
+        return findInterviewsByUserIdAndApplicantStatus(userId, ApplicantStatus.ACCEPTED);
     }
+
+    private List<ApplicantInterviewVo> findInterviewDetailsByUserIdAndApplicantStatus(int userId, int applicantStatus) {
+        List<InterviewDto> filtered = findInterviewDtosByUserIdAndApplicantStatus(userId, applicantStatus);
+        List<ApplicantInterviewVo> interviewVos = new ArrayList<>();
+
+        for(InterviewDto i: filtered) {
+            interviewVos.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
+        }
+
+        return interviewVos;
+    }
+
+    public List<ApplicantInterviewVo> findUnreplyedInterviewDetailsByUserId(int userId) {
+        return findInterviewDetailsByUserIdAndApplicantStatus(userId, ApplicantStatus.INIT);
+    }
+
+    public List<ApplicantInterviewVo> findAcceptedInterviewDetailsByUserId(int userId) {
+        return findInterviewDetailsByUserIdAndApplicantStatus(userId, ApplicantStatus.ACCEPTED);
+    }
+
+
 
     public int updateApplicantStatusOfInterview(int interviewId, int applicantStatus, String comment) {
         InterviewDto interviewDto;
