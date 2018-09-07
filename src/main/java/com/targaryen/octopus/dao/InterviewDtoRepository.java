@@ -14,7 +14,7 @@ public interface InterviewDtoRepository extends JpaRepository<InterviewDto, Inte
 
     List<InterviewDto> findInterviewDtoByInterviewerStatus(int interviewerStatus);
     List<InterviewDto> findInterviewDtoByApplicantStatus(int applicantStatus);
-    public InterviewDto findInterviewDtoByInterviewId(Integer id);
-    public void deleteInterviewDtoByInterviewId(Integer id);
+    InterviewDto findInterviewDtoByInterviewId(Integer id);
+    void deleteInterviewDtoByInterviewId(int interviewId);
 
 }

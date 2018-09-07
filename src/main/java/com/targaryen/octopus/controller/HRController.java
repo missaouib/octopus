@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
@@ -125,15 +126,20 @@ public class HRController {
 
     @RequestMapping(value = "/hr/application/timeline/{appliId}", method = RequestMethod.GET)
     public String hrApplicationTimeline(@PathVariable("appliId") int applicationId, ModelMap map) {
-        map.addAttribute("applicationId", applicationId);
+        map.addAttribute("appli", hrService.findApplicationResumeVoByApplicationId(applicationId));
+
         map.addAttribute("interviewerList", hrService.listInterviewers());
-        map.addAttribute("interviewList", hrService.findInterviewByApplicationId(applicationId));
+
+        List<InterviewVo> interviewVoList = hrService.findInterviewByApplicationId(applicationId);
+
+        map.addAttribute("interviewList", interviewVoList);
+        map.addAttribute("lastInterviewIdOfList", interviewVoList.get(interviewVoList.size() - 1).getInterviewId());
         return "hr-application-timeline";
     }
 
     @RequestMapping(value = "/hr/application/timeline/interview/new", method = RequestMethod.POST)
     @ResponseBody
-    public String hrApplicationTimeline(InterviewEntity interviewEntity) {
+    public String hrApplicationTimelineInterviewNew(InterviewEntity interviewEntity) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
         Date startTime = null;
         try {
@@ -149,5 +155,29 @@ public class HRController {
             e.printStackTrace();
         }
         return String.valueOf(StatusCode.FAILURE);
+    }
+
+    @RequestMapping(value = "/hr/application/timeline/interview/cancel", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationTimelineInterviewCancel(@RequestParam("interviewId") int interviewId) {
+        return String.valueOf(hrService.deleteInterviewById(interviewId));
+    }
+
+    @RequestMapping(value = "/hr/application/timeline/reject", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationTimelineReject(@RequestParam("applicationId") int applicationId) {
+        return String.valueOf(hrService.interviewFailApplicationById(applicationId));
+    }
+
+    @RequestMapping(value = "/hr/application/timeline/pass", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationTimelinePass(@RequestParam("applicationId") int applicationId) {
+        return String.valueOf(hrService.interviewPassApplicationById(applicationId));
+    }
+
+    @RequestMapping(value = "/hr/application/timeline/offer", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationTimelineOffer(@RequestParam("applicationId") int applicationId) {
+        return String.valueOf(hrService.sendOfferByApplicationId(applicationId));
     }
 }

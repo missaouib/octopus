@@ -6,8 +6,6 @@ import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.*;
 import com.targaryen.octopus.vo.*;
-import javafx.application.Application;
-import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -226,8 +224,8 @@ public class HRServiceImpl implements HRService {
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public int deleteInterviewById(int interviewId) {
         try {
             interviewDtoRepository.deleteInterviewDtoByInterviewId(interviewId);

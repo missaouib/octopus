@@ -39,9 +39,9 @@
                                 <dl class="dl-horizontal">
                                     <dt>Status：</dt>
                                     <dd>
-                                        <span th:if="${post.status} eq 0" class="label label-success">To be checked</span>
-                                        <span th:if="${post.status} eq -1" class="label label-danger">Revoked by manager</span>
-                                        <span th:if="${post.status} eq 1" class="label label-primary">Published</span>
+                                        <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" class="label label-success">To be checked</span>
+                                        <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}" class="label label-danger">Revoked by manager</span>
+                                        <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" class="label label-primary">Published</span>
                                     </dd>
                                 </dl>
                             </div>
