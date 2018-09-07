@@ -26,7 +26,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h4>Post Detail</h4>
+                        <h4>Post Application List</h4>
                     </div>
 
                     <div class="ibox-content">
@@ -92,17 +92,17 @@
                     <div class="ibox-content">
                         <div id="exampleTableEventsToolbar" role="group" style="width:100%;">
                             <button type="button"
-                                    onclick="editStatusByResume('pass');"
+                                    onclick="editStatus('pass');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
-                                Resume - Pass
+                                Pass
                             </button>
 
                             <button type="button"
-                                    onclick="editStatusByResume('reject');"
+                                    onclick="editStatus('reject');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                                Resume - Reject
+                                Reject
                             </button>
 
                             <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
@@ -114,15 +114,9 @@
                             <thead>
                             <tr class="footable even">
                                 <th>Check</th>
-                                <th>Status</th>
                                 <th>Name</th>
-                                <th>Age</th>
                                 <th>School</th>
-                                <th>Degree</th>
                                 <th>Major</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Operation</th>
                             </tr>
                             </thead>
 
@@ -132,28 +126,9 @@
                                         <td>
                                             <input type="checkbox" th:value="${appli.applicationId}" checked class="i-checks">
                                         </td>
-                                        <td>
-                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">To be checked</span>
-                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}" class="label label-danger">Resume Rejected</span>
-                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" class="label label-primary">Resume Passed</span>
-                                        </td>
                                         <td th:text="${appli.applicantName}"></td>
-                                        <td th:text="${appli.applicantAge}"></td>
                                         <td th:text="${appli.applicantSchool}"></td>
-                                        <td th:text="${appli.applicantDegree}"></td>
                                         <td th:text="${appli.applicantMajor}"></td>
-                                        <td th:text="${appli.applicantEmail}"></td>
-                                        <td th:text="${appli.applicantPhone}"></td>
-                                        <td>
-                                            <button type="button"
-                                                    th:if="${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}
-                                                    and ${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}"
-                                                    th:onclick="${'location.href=''../../application/timeline/' + appli.applicationId + ''''}"
-                                                    class="btn btn-outline btn-default">
-                                                <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
-                                                Interview Status
-                                            </button>
-                                        </td>
                                     </tr>
 
                                 </th:block>
@@ -186,7 +161,7 @@
     var csrfData = {};
     csrfData[_csrf_param_name] = _csrf_token;
 
-    function editStatusByResume(operationString){
+    function editStatus(operationString){
         /* Prepare data */
         var chkArray = [];
         $(".i-checks:checked").each(function() {
@@ -196,7 +171,7 @@
         if (chkArray.length == 0) {
             swal({
                 title : "Error",
-                text: "You have not selected any resumes.",
+                text: "You have not selected any applicants.",
                 type : "error"
             });
             return;
@@ -207,7 +182,7 @@
         /* Confirmation and start requesting */
         swal({
             title : "Confirm",
-            text: "Do you really wish to " + operationString + " " + chkArray.length + " resumes?",
+            text: "Do you really wish to " + operationString + " " + chkArray.length + " applicants?",
             type : "warning",
             showCancelButton : true,
             confirmButtonColor : "#DD6B55",
@@ -219,7 +194,7 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: '../../application/resume/' + operationString,
+                    url: operationString,
                     data: csrfData,
                     async: false,
                     success: function (data) {

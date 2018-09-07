@@ -41,6 +41,7 @@
                                data-filter="#filter">
                             <thead>
                             <tr class="footable even">
+                                <th>Status</th>
                                 <th>Post Name</th>
                                 <th>Post Type</th>
                                 <th>Post Locale</th>
@@ -51,6 +52,11 @@
                             <tbody>
                                 <th:block th:each="post : ${postList}">
                                     <tr>
+                                        <td>
+                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" class="label label-success">To be checked</span>
+                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}" class="label label-danger">Revoked by manager</span>
+                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" class="label label-primary">Published</span>
+                                        </td>
                                         <td th:text="${post.postName}"></td>
                                         <td th:text="${post.postType}"></td>
                                         <td th:text="${post.postLocale}"></td>
@@ -62,10 +68,17 @@
                                                 Revoke
                                             </button>
                                             <button type="button"
-                                                    th:onclick="${'location.href=''detail/' + post.postId + ''''}"
+                                                    th:onclick="${'location.href=''' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
                                                 Check/Edit Detail
+                                            </button>
+                                            <button type="button"
+                                                    th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}"
+                                                    th:onclick="${'location.href=''' + post.postId + '/application/list'''}"
+                                                    class="btn btn-outline btn-default">
+                                                <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>
+                                                See Passed Applicants
                                             </button>
                                         </td>
                                     </tr>
@@ -75,7 +88,7 @@
 
                             <tfoot>
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     <ul class="pagination pull-right"></ul>
                                 </td>
                             </tr>
