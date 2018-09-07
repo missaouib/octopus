@@ -91,7 +91,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Degree *</label>
-                                    <input id="degree" name="degree" th:field="*{applicantDegree}"  type="text" class="form-control required number">
+                                    <select id="degree" name="degree" th:field="*{applicantDegree}" style="width: 500px; height:34px;">
+                                        <option value="0">Bachelor</option>
+                                        <option value="1">Master</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-4">
