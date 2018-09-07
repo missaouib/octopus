@@ -130,7 +130,9 @@ public class DptManagerServiceImpl implements DptManagerService {
     public List<ApplicationResumeVo> findInterviewPassedApplicationsByPostId(int postId) {
         PostDto post = postDtoRepository.findPostDtoByPostId(postId);
         List<ApplicationDto> applicationDtos = post.getApplications().stream()
-                .filter(n -> ApplicationStatus.INTERVIEW_PASS.equals(n.getStatus()))
+                .filter(n ->
+                        ApplicationStatus.INTERVIEW_PASS.equals(n.getStatus())
+                        || Math.abs(n.getStatus()) >= 3)
                 .collect(Collectors.toList());
         return applicationDtos.stream()
                 .map(n -> DataTransferUtil.ApplicationDtoToApplicationResumeVo(n))
