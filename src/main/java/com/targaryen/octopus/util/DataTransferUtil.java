@@ -135,4 +135,22 @@ public class DataTransferUtil {
                 .applicantFeedbackTime(applicationDto.getApplicantFeedbackTime())
                 .status(applicationDto.getStatus()).build();
     }
+
+    public static ApplicantInterviewVo InterviewDtoToApplicantInterviewVo(InterviewDto interviewDto) {
+        ApplicationDto applicationDto = interviewDto.getApplication();
+        PostDto postDto = applicationDto.getPost();
+        InterviewerDto interviewerDto = interviewDto.getInterviewer();
+        return new ApplicantInterviewVo.Builder()
+                .applicationId(applicationDto.getApplicationId())
+                .interviewerId(interviewerDto.getInterviewerId())
+                .interviewerName(interviewerDto.getInterviewerName())
+                .interviewPlace(interviewDto.getInterviewPlace())
+                .interviewResultComment(interviewDto.getInterviewResultComment())
+                .interviewResultStatus(interviewDto.getInterviewResultStatus())
+                .interviewStartTime(interviewDto.getInterviewStartTime())
+                .postLocale(postDto.getPostLocale())
+                .postName(postDto.getPostName())
+                .postType(postDto.getPostType())
+                .recruitDpt(postDto.getRecruitDpt()).build();
+    }
 }

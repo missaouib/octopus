@@ -1,7 +1,5 @@
 package com.targaryen.octopus.controller;
 
-import com.targaryen.octopus.dto.PostDto;
-import com.targaryen.octopus.dto.ResumeDto;
 import com.targaryen.octopus.entity.ApplicantCommentEntity;
 import com.targaryen.octopus.entity.ApplicationEntity;
 import com.targaryen.octopus.entity.ResumeEntity;
@@ -10,7 +8,6 @@ import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.status.ApplicantStatus;
-import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +46,8 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         int userId = AuthInfo.getUserId();
-        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewByUserId(userId);
+        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
         map.addAttribute("unreplyMsg", interviewVos);
         map.addAttribute("acceptedMsg", interviewVosAccpted);
         return result;
@@ -67,8 +64,8 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         int userId = AuthInfo.getUserId();
-        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewByUserId(userId);
+        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
 
         InterviewVo interviewVo = new InterviewVo.Builder().interviewPlace("Shanghai").interviewStartTime(Calendar.getInstance().getTime()).build();
         interviewVos.add(interviewVo);
@@ -90,8 +87,8 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         int userId = AuthInfo.getUserId();
-        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewByUserId(userId);
+        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
         map.addAttribute("unreplyMsg", interviewVos);
         map.addAttribute("acceptedMsg", interviewVosAccpted);
         return result;
