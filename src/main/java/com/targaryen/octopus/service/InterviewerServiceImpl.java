@@ -98,18 +98,7 @@ public class InterviewerServiceImpl implements InterviewerService {
             return null;
         }
 
-        return new ResumeVo.Builder()
-                .resumeId(resumeDto.getResumeId())
-                .applicantSex(resumeDto.getApplicantSex())
-                .applicantSchool(resumeDto.getApplicantSchool())
-                .applicantPhone(resumeDto.getApplicantPhone())
-                .applicantName(resumeDto.getApplicantName())
-                .applicantMajor(resumeDto.getApplicantMajor())
-                .applicantEmail(resumeDto.getApplicantEmail())
-                .applicantDegree(resumeDto.getApplicantDegree())
-                .applicantCV(resumeDto.getApplicantCV())
-                .applicantCity(resumeDto.getApplicantCity())
-                .applicantAge(resumeDto.getApplicantAge()).build();
+        return DataTransferUtil.ResumeDtoToVo(resumeDto);
     }
 
     public ResumeVo findResumeByInterviewId(int interviewId) {
