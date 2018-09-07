@@ -4,9 +4,11 @@ import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.InterviewResultStatus;
 import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
+import com.targaryen.octopus.vo.InterviewerVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Liu Mengyang on 2018/09/05
@@ -58,6 +61,23 @@ public class InterviewerServiceImpl implements InterviewerService {
 
         return interviewVos;
     }
+
+    public List<InterviewVo> listUnreplyedInterviewsByInterviewerId(int interviewerId) {
+        List<InterviewVo> interviewVos = listInterviewsByInterviewerId(interviewerId);
+        return interviewVos.stream().filter(x ->
+                (x.getReservationStatus() == ReservationStatus.INIT) &&
+                        (x.getInterviewerStatus() == InterviewerStatus.INIT))
+                .collect(Collectors.toList());
+    }
+
+    public List<InterviewVo> listActiveInterviewsByInterviewerId(int interviewerId) {
+        List<InterviewVo> interviewVos = listInterviewsByInterviewerId(interviewerId);
+        return interviewVos.stream().filter(x ->
+                (x.getReservationStatus() == ReservationStatus.SUCCESS) &&
+                        (x.getInterviewResultStatus() == InterviewResultStatus.INIT))
+                .collect(Collectors.toList());
+    }
+
 
     public int setInterviewerStatus(int interviewerStatus, int interviewId, String comment) {
         InterviewDto interviewDto;
