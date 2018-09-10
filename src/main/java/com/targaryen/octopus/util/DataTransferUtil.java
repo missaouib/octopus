@@ -232,6 +232,7 @@ public class DataTransferUtil {
                 .postId(resumeModelDto.getPost().getPostId())
                 .recommenderName(resumeModelDto.isRecommenderName())
                 .resumeModelId(resumeModelDto.getResumeModelId())
+                .applicantPhoto(resumeModelDto.isApplicantPhoto())
                 .build();
     }
 
