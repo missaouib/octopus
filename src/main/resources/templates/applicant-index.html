@@ -124,10 +124,11 @@
                         <ul th:each="ps:${unreplyMsg}" style="list-style-type:none">
                             <li style="margin-left:-40px;">
                                 <div class="alert alert-danger alert-dismissable" >
+                                    <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>&emsp;
                                     <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
-                                    <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>
+                                    <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
                                     <label style="font-style: italic; float:right">
-                                        <a href="#">Yes</a>&emsp;
+                                        <a th:href="@{'/octopus/applicant/agree/' + ${ps.interviewId}}">Yes</a>&emsp;
                                         <a href="#" data-toggle="modal" data-target="#myModal">No</a>
                                     </label>
                                 </div>
@@ -179,7 +180,6 @@
                             <!-- /.modal-dialog -->
                         </div>
                         <!-- /.modal -->
-
                     </div>
                     <!-- .panel-body -->
                 </div>
@@ -191,12 +191,17 @@
                     <div class="panel-heading">Appointments</div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="alert alert-success">Meet with the manager on
-                            Aug 8.</div>
-                        <div class="alert alert-info">Upload the operation report
-                            about workshop this month.</div>
-                        <div class="alert alert-warning">Call a meeting with all
-                            workers in workshop.</div>
+
+                        <ul th:each="ps:${acceptedMsg}" style="list-style-type:none">
+                            <li style="margin-left:-40px;">
+                                <div class="alert alert-success alert-dismissable" >
+                                    <label>Reservation:</label>
+                                    <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>&emsp;
+                                    <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
+                                    <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                     <!-- .panel-body -->
                 </div>

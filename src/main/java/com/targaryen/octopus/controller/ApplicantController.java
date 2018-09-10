@@ -47,14 +47,14 @@ public class ApplicantController {
 
         int userId = AuthInfo.getUserId();
 
-        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
+        List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
+        List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
 
-        InterviewVo interviewVo = new InterviewVo.Builder().interviewPlace("Shanghai").interviewStartTime(Calendar.getInstance().getTime()).build();
+        /*InterviewVo interviewVo = new InterviewVo.Builder().interviewPlace("Shanghai").interviewStartTime(Calendar.getInstance().getTime()).build();
         interviewVos.add(interviewVo);
-        interviewVosAccpted.add(interviewVo);
+        interviewVosAccpted.add(interviewVo);*/
 
-        System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
+        //System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
         result.addObject ("unreplyMsg", interviewVos);
 
         map.addAttribute("acceptedMsg", interviewVosAccpted);

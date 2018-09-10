@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HR - Post Applications List</title>
+
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/layer/laydate/laydate.js}"></script>
+    <script th:src="@{/octopus/js/jquery.validate.min.js}"></script>
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1>Interview Timeline</h1>
+                </div>
+
+                <div class="ibox-content" id="ibox-content">
+                    <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
+
+                        <!-- Interviews -->
+                        <th:block th:each="interview : ${interviewList}">
+
+                            <!-- Interview Arrangement Accepted (Waiting for Interview Result) -->
+                            <div th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).INIT}"
+                                 class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon blue-bg">
+                                    <i class="fa fa-calendar-check-o"></i>
+                                </div>
+
+                                <div class="vertical-timeline-content">
+                                    <h2>Interview Arrangement Accepted (Waiting for Interview Result)</h2><br/>
+                                    <h2>
+                                        Interview hosting by interviewer: &emsp; <label th:text="${interview.interviewerName}"></label>
+                                    </h2>
+                                    <form class="form-horizontal" method="post" th:action="@{/octopus/interviewer/interview/comment}" th:object="${interviewComment}" style="width:70%;">
+                                        <select id="interviewId" th:field="*{interviewId}" hidden>
+                                            <option th:value="${interview.interviewId}">interviewId</option>
+                                        </select>
+                                        <select id="applicationId" th:field="*{applicationId}" hidden>
+                                            <option th:value="${interview.applicationId}">applicationId</option>
+                                        </select>
+                                        <h2>Comments:</h2>
+                                        <textarea class="form-control" id="comment" type="text" th:field="*{interviewerComment}" style="width:100%;" required /> <br/>
+                                        <h2>Evalution:</h2>
+                                        <select class="form-control" th:field="*{interviewResultStatus}" id="level" required>
+                                            <option value="3">Strong Hire</option>
+                                            <option value="2">Hire</option>
+                                            <option value="1">Weak Hire</option>
+                                            <option value="-1">Not Hire</option>
+                                        </select>
+                                        <br/>
+                                        <div align="center">
+                                            <button type="submit" class="btn btn-success"> Submit</button>
+                                        </div>
+                                    </form>
+                                    </p>
+
+                                    <span class="vertical-date">
+                                        <label th:text="${#dates.format(interview.interviewStartTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(interview.interviewStartTime,'HH:mm')}"></label></small>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Interview NOT_HIRE -->
+                            <div th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).NOT_HIRE}"
+                                 class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon navy-bg">
+                                    <i class="fa fa-arrow-down"></i>
+                                </div>
+
+                                <div class="vertical-timeline-content">
+                                    <h2>Interview NOT HIRE</h2>
+                                    <p>
+                                        Interview Closed by interviewer. <label th:text="${interview.interviewerName}"></label>
+                                        <br/>
+                                        Interview detail: <label th:text="${interview.interviewResultComment}"></label>
+                                        <br/>
+                                        Interview Result: <label th:text="${interview.interviewResultStatus}"></label>
+                                    </p>
+
+                                    <span class="vertical-date">
+                                        <label th:text="${#dates.format(interview.interviewStartTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(interview.interviewStartTime,'HH:mm')}"></label></small>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Interview WEAK_HIRE -->
+                            <div th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).WEAK_HIRE}"
+                                 class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon navy-bg">
+                                    <i class="fa fa-arrow-down"></i>
+                                </div>
+
+                                <div class="vertical-timeline-content">
+                                    <h2>Interview WEAK HIRE</h2>
+                                    <p>
+                                        Interview Closed by interviewer. <label th:text="${interview.interviewerName}"></label>
+                                        <br/>
+                                        Interview detail: <label th:text="${interview.interviewResultComment}"></label>
+                                    </p>
+
+                                    <span class="vertical-date">
+                                        <label th:text="${#dates.format(interview.interviewStartTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(interview.interviewStartTime,'HH:mm')}"></label></small>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Interview HIRE -->
+                            <div th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).HIRE}"
+                                 class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon navy-bg">
+                                    <i class="fa fa-arrow-down"></i>
+                                </div>
+
+                                <div class="vertical-timeline-content">
+                                    <h2>Interview HIRE</h2>
+                                    <p>
+                                        Interview Closed by interviewer. <label th:text="${interview.interviewerName}"></label>
+                                        <br/>
+                                        Interview detail: <label th:text="${interview.interviewResultComment}"></label>
+                                    </p>
+
+                                    <span class="vertical-date">
+                                        <label th:text="${#dates.format(interview.interviewStartTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(interview.interviewStartTime,'HH:mm')}"></label></small>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Interview STRONG_HIRE -->
+                            <div th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).STRONG_HIRE}"
+                                 class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon navy-bg">
+                                    <i class="fa fa-arrow-down"></i>
+                                </div>
+
+                                <div class="vertical-timeline-content">
+                                    <h2>Interview STRONG HIRE</h2>
+                                    <p>
+                                        Interview Closed by interviewer. <label th:text="${interview.interviewerName}"></label>
+                                        <br/>
+                                        Interview detail: <label th:text="${interview.interviewResultComment}"></label>
+                                    </p>
+
+                                    <span class="vertical-date">
+                                        <label th:text="${#dates.format(interview.interviewStartTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(interview.interviewStartTime,'HH:mm')}"></label></small>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </th:block>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    $(".footable").footable();
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    /* Timeline buttons */
+    $('#lightVersion').click(function(event) {
+        event.preventDefault();
+        $('#ibox-content').removeClass('ibox-content');
+        $('#vertical-timeline').removeClass('dark-timeline');
+        $('#vertical-timeline').addClass('light-timeline');
+    });
+
+    $('#darkVersion').click(function(event) {
+        event.preventDefault();
+        $('#ibox-content').addClass('ibox-content');
+        $('#vertical-timeline').removeClass('light-timeline');
+        $('#vertical-timeline').addClass('dark-timeline');
+    });
+
+    $('#leftVersion').click(function(event) {
+        event.preventDefault();
+        $('#vertical-timeline').toggleClass('center-orientation');
+    });
+
+    /* Init: Left Version */
+    $('#vertical-timeline').toggleClass('center-orientation');
+
+
+    /* Cancel interview (Delete) */
+    function cancelInterview(interviewId) {
+        csrfData['interviewId'] = interviewId;
+
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to delete this interview permanently?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'interview/cancel',
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully deleted this interview permanently.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully deleted this interview permanently.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    /* Reject application by HR */
+    function processApplicationByHR(applicationId, urlStr) {
+        csrfData['applicationId'] = applicationId;
+
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to reject this application permanently?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: urlStr,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully rejected this application permanently.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully rejected this application permanently.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    /* Send offer */
+    function sendOffer(applicationId) {
+        csrfData['applicationId'] = applicationId;
+
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to send offer?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: "offer",
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully sent offer.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully sent offer.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    /* Validation */
+    var validationConfig = {
+        // submitHandler executes after the form PASSED the validation
+        submitHandler: function(form) {
+            $.ajax({
+                type: "post",
+                url: "interview/new",
+                data: $('#new-interview-form').serialize(),
+                async: false,
+                success: function(data) {
+                    swal({
+                        title:"Success",
+                        text: "You have successfully created a new interview.",
+                        type:"success"
+                    }, function(isConfirm) {
+                        document.location.reload();
+                    });
+                },
+                error: function(data) {
+                    swal({
+                        title:"Failure",
+                        text: "You have not successfully created a new interview.",
+                        type: "error"
+                    });
+                }
+            });
+        }
+    };
+
+    $("#new-interview-form").validate(validationConfig);
+</script>
+
+</body>
+</html>

@@ -1,7 +1,10 @@
 package com.targaryen.octopus.vo;
 
+import lombok.Getter;
+
 import java.util.Date;
 
+@Getter
 public class InterviewerInterviewVo {
     private final int interviewId;
     private final Date interviewStartTime;
