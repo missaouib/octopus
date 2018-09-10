@@ -66,6 +66,13 @@ public class HRController {
         return "hr-post-application-list";
     }
 
+    @RequestMapping(value = "/hr/post/{postId}/resume", method = RequestMethod.GET)
+    public String hrPostResume(@PathVariable("postId") int postId, ModelMap map) {
+        map.addAttribute("post", hrService.findPostById(postId));
+        // Resume model for this post
+        return "dpt-post-resume";
+    }
+
     @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/timeline", method = RequestMethod.GET)
     public String hrApplicationTimeline(@PathVariable("postId") int postId, @PathVariable("appliId") int applicationId, ModelMap map) {
         map.addAttribute("appli", hrService.findApplicationResumeVoByApplicationId(applicationId));
@@ -118,7 +125,7 @@ public class HRController {
 
         return String.valueOf(hrService.updatePost(postVo));
     }
-    
+
     @RequestMapping(value = "/hr/application/resume/pass", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationResumePass(@RequestParam(value="chkArray[]") int[] chkArray) {
