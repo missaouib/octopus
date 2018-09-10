@@ -124,8 +124,7 @@ public class InterviewerServiceImpl implements InterviewerService {
         try {
             applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
             interviewDtos = applicationDto.getInterviews();
-            interviewDtos = interviewDtos.stream().filter(x -> (x.getInterviewResultStatus() == InterviewResultStatus.PASS) ||
-                    (x.getInterviewResultStatus() == InterviewResultStatus.INIT))
+            interviewDtos = interviewDtos.stream().filter(x -> (x.getReservationStatus() == ReservationStatus.SUCCESS))
                     .sorted(Comparator.comparing(x -> x.getCreateTime())).collect(Collectors.toList());
             for(InterviewDto i: interviewDtos) {
                 interviewerInterviewVos.add(DataTransferUtil.InterviewDtoToInterviewerInterviewVo(i));
