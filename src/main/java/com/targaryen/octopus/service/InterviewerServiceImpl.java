@@ -174,6 +174,22 @@ public class InterviewerServiceImpl implements InterviewerService {
         return StatusCode.SUCCESS;
     }
 
+    public int setInterviewResultStatus(int interviewId, int resultStatus) {
+        InterviewDto interviewDto;
+
+        try {
+            interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
+            if(interviewDto == null)
+                return StatusCode.FAILURE;
+            interviewDto.setInterviewResultStatus(resultStatus);
+            interviewDtoRepository.save(interviewDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
+
     public ResumeVo findResumeByApplicationId(int applicationId) {
         ApplicationDto applicationDto;
         ApplicantDto applicantDto;
