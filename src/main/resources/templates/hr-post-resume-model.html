@@ -17,6 +17,7 @@
     <script th:src="@{/octopus/js/plugins/iCheck/icheck.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
     <script th:src="@{/octopus/js/jquery-ui-1.10.4.min.js}"></script>
+
 </head>
 
 <body class="gray-bg">
@@ -89,6 +90,8 @@
 
                     <div class="ibox-content">
 
+                        <input type="hidden" id="resumeModelId" value="" />
+
                         <div class="row">
 
                             <div class="col-sm-6">
@@ -96,13 +99,7 @@
                                 <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
 
                                 <ul class="sortable-list connectList agile-list" id="display">
-                                    <li class="success-element" id="this">
-                                        加强过程管理，及时统计教育经费使用情况，做到底码清楚，
-                                    </li>
 
-                                    <li class="success-element" id="game">
-                                        加?
-                                    </li>
                                 </ul>
                             </div>
 
@@ -111,9 +108,7 @@
                                 <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
 
                                 <ul class="sortable-list connectList agile-list" id="hide">
-                                    <li class="warning-element" id="sucks">
-                                        加强过程管理，及时统计教育经费使用情况，做到底码清楚，
-                                    </li>
+
                                 </ul>
                             </div>
 
@@ -126,18 +121,89 @@
     </div>
 
 <script th:inline="javascript">
-    $(document).ready(function(){$(".sortable-list").sortable({connectWith:".connectList"}).disableSelection()});
+    $(document).ready(function(){$(".sortable-list").sortable({
+        connectWith:".connectList"
+    }).disableSelection()});
 
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    /* Generate li template */
+    function generateLi(type, id, content) {
+        return "<li class=\"" + type + "-element\"" + " id=\"" + id + "\">" + content +  "</li>";
+    }
+
+    /* Load form fields */
+    function reload() {
+        $.ajax({
+            type: "get",
+            url: 'json',
+            async: true,
+            success: function (data) {
+                $("#display").empty();
+                $("#hide").empty();
+
+                console.log(data);
+                $("#resumeModelId").val(data["resumeModelId"]);
+
+                for (var k in data) {
+                    if (k != "fieldText" && k != "resumeModelId") {
+                        if (data[k] == true) {
+                            $("#display").append(generateLi("success", k, data["fieldText"][k]));
+                        } else {
+                            $("#hide").append(generateLi("warning", k, data["fieldText"][k]));
+                        }
+                    }
+                }
+
+            },
+            error: function (data) {
+                $("#display").append(generateLi("success", "", "Loading failure. Please refresh the page."));
+                $("#hide").append(generateLi("warning", "", "Loading failure. Please refresh the page."));
+            }
+        });
+    }
+
+    /* Save modifications on form fields */
     function save() {
-        var data = {};
         $("#display > li").each(function() {
-            data[$(this).attr("id")] = true;
+            csrfData[$(this).attr("id")] = true;
         });
         $("#hide > li").each(function() {
-            data[$(this).attr("id")] = false;
+            csrfData[$(this).attr("id")] = false;
         });
-        console.log(data);
+        csrfData["resumeModelId"] = $("#resumeModelId").val();
+
+        $.ajax({
+            type: "post",
+            url: 'update',
+            data: csrfData,
+            async: true,
+            success: function (data) {
+                swal({
+                    title: "Success",
+                    text: "You have successfully updated this resume model.",
+                    type: "success"
+                }, function (isConfirm) {
+                    reload();
+                });
+            },
+            error: function (data) {
+                swal({
+                    title: "Failure",
+                    text: "You have not successfully updated this post need.",
+                    type: "error"
+                });
+            }
+        });
     }
+
+    /* Initially load form fields when page is loaded */
+    reload();
 </script>
 
 </body>
