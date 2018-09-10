@@ -7,10 +7,7 @@ import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewResultStatus;
 import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
-import com.targaryen.octopus.vo.InterviewVo;
-import com.targaryen.octopus.vo.InterviewerInterviewVo;
-import com.targaryen.octopus.vo.InterviewerVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     private UserDtoRepository userDtoRepository;
     private ApplicationDtoRepository applicationDtoRepository;
     private InterviewDtoRepository interviewDtoRepository;
+    private PostDtoRepository postDtoRepository;
 
     @Autowired
     public InterviewerServiceImpl(DaoFactory daoFactory) {
@@ -38,6 +36,7 @@ public class InterviewerServiceImpl implements InterviewerService {
         this.userDtoRepository = daoFactory.getUserDtoRepository();
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
         this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
+        this.postDtoRepository = daoFactory.getPostDtoRepository();
     }
 
     private List<InterviewDto> listInterviewDtosByInterviewerId(int interviewerId) {
@@ -191,5 +190,39 @@ public class InterviewerServiceImpl implements InterviewerService {
 
         return findResumeByApplicationId(applicationDto.getApplicationId());
 
+    }
+
+    public List<ApplicationResumeVo> findApplicationsByPostId(int postId) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        if(post != null) {
+            return post.getApplications().stream()
+                    .map(n -> DataTransferUtil.ApplicationDtoToApplicationResumeVo(n))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId) {
+        ApplicationDto applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ApplicationResumeVo applicationResumeVo;
+        if(applicationDto != null) {
+            applicationResumeVo = DataTransferUtil.ApplicationDtoToApplicationResumeVo(applicationDto);
+        } else {
+            applicationResumeVo = null;
+        }
+        return applicationResumeVo;
+    }
+
+    public List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer status) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        if(post != null) {
+            return post.getApplications().stream()
+                    .filter(n -> status.equals(n.getStatus()))
+                    .map(n -> DataTransferUtil.ApplicationDtoToApplicationResumeVo(n))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
     }
 }
