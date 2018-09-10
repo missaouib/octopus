@@ -49,4 +49,7 @@ public class PostDto implements Serializable {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<ApplicationDto> applications;
+
+    @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private ResumeModelDto resumeModel;
 }

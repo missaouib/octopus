@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  *  @author He Junfeng
@@ -58,5 +59,12 @@ public class ResumeDto {
     @JoinColumn(name = "applicant_id")
     @OneToOne(cascade = CascadeType.MERGE)
     private ApplicantDto applicant;
+
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
+    private List<WorkExperienceDto> workExperiences;
+
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
+    private List<EducationExperienceDto> educationExperiences;
+
 
 }
