@@ -2,6 +2,7 @@ package com.targaryen.octopus.util;
 
 import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.status.InterviewResultStatus;
+import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.*;
 
 public class DataTransferUtil {
@@ -163,7 +164,7 @@ public class DataTransferUtil {
         ApplicantDto applicantDto = applicationDto.getApplicant();
         ResumeDto resumeDto = applicantDto.getResume();
         int rounds = (int)applicationDto.getInterviews()
-                .stream().filter(x -> x.getInterviewResultStatus() == InterviewResultStatus.PASS)
+                .stream().filter(x -> x.getReservationStatus() >= 0)
                 .filter(x -> x.getCreateTime().before(interviewDto.getCreateTime()))
                 .count() + 1;
         return new InterviewerInterviewVo.Builder()
