@@ -16,5 +16,5 @@ public interface InterviewerService {
     int setInterviewerStatus(int interviewerStatus, int interviewId, String comment);
     List<InterviewVo> listUnreplyedInterviewsByInterviewerId(int interviewerId);
     List<InterviewVo> listActiveInterviewsByInterviewerId(int interviewerId);
-    List<InterviewerInterviewVo> listInterviewerInterviewByInterviewerId(int interviewerId);
+    List<InterviewerInterviewVo> listInterviewerInterviewsByInterviewerId(int interviewerId);
 }

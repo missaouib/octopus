@@ -56,7 +56,7 @@ public class InterviewerServiceImpl implements InterviewerService {
         return interviewDtos;
     }
 
-    public List<InterviewerInterviewVo> listInterviewerInterviewByInterviewerId(int interviewerId) {
+    public List<InterviewerInterviewVo> listInterviewerInterviewsByInterviewerId(int interviewerId) {
         List<InterviewDto> interviewDtos;
         List<InterviewerInterviewVo> interviewVos = new ArrayList<>();
 
