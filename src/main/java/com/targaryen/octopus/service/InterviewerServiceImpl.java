@@ -37,6 +37,7 @@ public class InterviewerServiceImpl implements InterviewerService {
         this.resumeDtoRepository = daoFactory.getResumeDtoRepository();
         this.userDtoRepository = daoFactory.getUserDtoRepository();
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
+        this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
     }
 
     private List<InterviewDto> listInterviewDtosByInterviewerId(int interviewerId) {
