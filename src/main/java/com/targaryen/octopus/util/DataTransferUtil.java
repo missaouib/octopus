@@ -1,6 +1,7 @@
 package com.targaryen.octopus.util;
 
 import com.targaryen.octopus.dto.*;
+import com.targaryen.octopus.util.status.InterviewResultStatus;
 import com.targaryen.octopus.vo.*;
 
 public class DataTransferUtil {
@@ -153,4 +154,33 @@ public class DataTransferUtil {
                 .postType(postDto.getPostType())
                 .recruitDpt(postDto.getRecruitDpt()).build();
     }
+
+    public static InterviewerInterviewVo InterviewDtoToInterviewerInterviewVo(InterviewDto interviewDto) {
+        ApplicationDto applicationDto = interviewDto.getApplication();
+        PostDto postDto = applicationDto.getPost();
+        InterviewerDto interviewerDto = interviewDto.getInterviewer();
+        ApplicantDto applicantDto = applicationDto.getApplicant();
+        ResumeDto resumeDto = applicantDto.getResume();
+        int rounds = (int)applicationDto.getInterviews()
+                .stream().filter(x -> x.getInterviewResultStatus() == InterviewResultStatus.PASS)
+                .count() + 1;
+        return new InterviewerInterviewVo.Builder()
+                .applicationId(applicationDto.getApplicationId())
+                .applicantId(applicantDto.getApplicantId())
+                .applicantName(resumeDto.getApplicantName())
+                .rounds(rounds)
+                .interviewerId(interviewerDto.getInterviewerId())
+                .interviewerName(interviewerDto.getInterviewerName())
+                .interviewerStatus(interviewDto.getInterviewerStatus())
+                .interviewPlace(interviewDto.getInterviewPlace())
+                .interviewResultComment(interviewDto.getInterviewResultComment())
+                .interviewResultStatus(interviewDto.getInterviewResultStatus())
+                .interviewStartTime(interviewDto.getInterviewStartTime())
+                .postLocale(postDto.getPostLocale())
+                .postName(postDto.getPostName())
+                .postType(postDto.getPostType())
+                .recruitDpt(postDto.getRecruitDpt()).build();
+    }
+
+
 }
