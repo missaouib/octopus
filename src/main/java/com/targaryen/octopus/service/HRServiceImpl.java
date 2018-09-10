@@ -97,13 +97,7 @@ public class HRServiceImpl implements HRService {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {
-                post.setPostName(updatePost.getPostName());
-                post.setPostType(updatePost.getPostType());
-                post.setPostLocale(updatePost.getPostLocale());
-                post.setPostDescription(updatePost.getPostDescription());
-                post.setPostRequirement(updatePost.getPostRequirement());
-                post.setRecruitNum(updatePost.getRecruitNum());
-                post.setRecruitDpt(updatePost.getRecruitDpt());
+                DataTransferUtil.PostVoToDto(post, updatePost);
                 postDtoRepository.save(post);
             }
             return StatusCode.SUCCESS;

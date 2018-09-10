@@ -60,6 +60,17 @@ public class DataTransferUtil {
                 .build();
     }
 
+    public static PostDto PostVoToDto(PostDto postDto, PostVo postVo) {
+        postDto.setPostName(postVo.getPostName());
+        postDto.setPostType(postVo.getPostType());
+        postDto.setPostLocale(postVo.getPostLocale());
+        postDto.setPostDescription(postVo.getPostDescription());
+        postDto.setPostRequirement(postVo.getPostRequirement());
+        postDto.setRecruitNum(postVo.getRecruitNum());
+        postDto.setRecruitDpt(postVo.getRecruitDpt());
+        return postDto;
+    }
+
     public static ResumeVo ResumeDtoToVo(ResumeDto resumeDto) {
         return new ResumeVo.Builder()
                 .resumeId(resumeDto.getResumeId())
