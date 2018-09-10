@@ -148,7 +148,7 @@
                                             <button type="button"
                                                     th:if="${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}
                                                     and ${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}"
-                                                    th:onclick="${'location.href=''../../application/timeline/' + appli.applicationId + ''''}"
+                                                    th:onclick="${'location.href=''' + appli.applicationId + '/timeline'''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
                                                 Interview Status

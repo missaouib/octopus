@@ -35,10 +35,10 @@
                             <thead>
                             <tr class="footable even">
                                 <th>Status</th>
-                                <th>Post Name</th>
-                                <th>Post Type</th>
-                                <th>Post Locale</th>
-                                <th>Recruit Department</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Locale</th>
+                                <th>Department</th>
                                 <th>Publish Time</th>
                                 <th>Publish</th>
                                 <th>Operation</th>
@@ -52,6 +52,7 @@
                                             <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" class="label label-success">To be checked</span>
                                             <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}" class="label label-danger">Revoked by manager</span>
                                             <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" class="label label-primary">Published</span>
+                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).FINISHED}" class="label label-default">Finished</span>
                                         </td>
                                         <td th:text="${post.postName}"></td>
                                         <td th:text="${post.postType}"></td>
@@ -61,13 +62,13 @@
                                         <td th:if="${post.status} ne ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}">Not published</td>
                                         <td>
                                             <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" type="button"
-                                                    th:onclick="${'publishPost(''' + post.postId + ''', ''' + post.postName + ''')'}"
+                                                    th:onclick="${'operatePost(''' + post.postId + ''', ''' + post.postName + ''', ''publish'')'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>
                                                 Publish
                                             </button>
                                             <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" type="button"
-                                                    th:onclick="${'closePost(''' + post.postId + ''', ''' + post.postName + ''')'}"
+                                                    th:onclick="${'operatePost(''' + post.postId + ''', ''' + post.postName + ''', ''unpublish'')'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-eye-close" aria-hidden="true"></i>
                                                 Unpublish
@@ -75,22 +76,29 @@
                                         </td>
                                         <td>
                                             <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" type="button"
-                                                    th:onclick="${'location.href=''detail/' + post.postId + ''''}"
+                                                    th:onclick="${'location.href=''' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
                                                 Check/Edit Detail
                                             </button>
 
                                             <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" type="button"
-                                                    th:onclick="${'location.href=''application/' + post.postId + ''''}"
+                                                    th:onclick="${'location.href=''' + post.postId + '/application/list'''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>
                                                 View Applicants
                                             </button>
                                             <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" type="button"
+                                                    th:onclick="${'operatePost(''' + post.postId + ''', ''' + post.postName + ''', ''finish'')'}"
                                                     class="btn btn-outline btn-default">
-                                                <i class="glyphicon glyphicon-off" aria-hidden="true"></i>
-                                                Close
+                                                <i class="glyphicon glyphicon-flag" aria-hidden="true"></i>
+                                                Finish
+                                            </button>
+                                            <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).FINISHED}" type="button"
+                                                    th:onclick="${'operatePost(''' + post.postId + ''', ''' + post.postName + ''', ''reopen'')'}"
+                                                    class="btn btn-outline btn-default">
+                                                <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
+                                                Reopen
                                             </button>
                                         </td>
                                     </tr>
@@ -122,10 +130,12 @@
     var csrfData = {};
     csrfData[_csrf_param_name] = _csrf_token;
 
-    function publishPost(postId, postName) {
+    function operatePost(postId, postName, operation) {
+        csrfData['postId'] = postId;
+
         swal({
             title : "Confirm",
-            text: "Do you really wish to publish this post need: " + postName + " ?",
+            text: "Do you really wish to " + operation + " this post need: " + postName + " ?",
             type : "warning",
             showCancelButton : true,
             confirmButtonColor : "#DD6B55",
@@ -137,13 +147,13 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: 'publish/' + postId,
+                    url: operation,
                     data: csrfData,
                     async: false,
                     success: function (data) {
                         swal({
                             title: "Success",
-                            text: "You have successfully published this post need.",
+                            text: "You have successfully " + operation + "ed this post need.",
                             type: "success"
                         }, function (isConfirm) {
                             document.location.reload();
@@ -152,48 +162,7 @@
                     error: function (data) {
                         swal({
                             title: "Failure",
-                            text: "You have not successfully published this post need.",
-                            type: "error"
-                        });
-                    }
-                });
-            } else {
-                swal("Cancelled", "You have cancelled.", "error");
-            }
-        });
-    }
-
-    function closePost(postId, postName) {
-        swal({
-            title : "Confirm",
-            text: "Do you really wish to close this post need: " + postName + " ?",
-            type : "warning",
-            showCancelButton : true,
-            confirmButtonColor : "#DD6B55",
-            confirmButtonText : "Yes",
-            cancelButtonText : "No",
-            closeOnConfirm : false,
-            closeOnCancel : false
-        }, function(isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    type: "post",
-                    url: 'close/' + postId,
-                    data: csrfData,
-                    async: false,
-                    success: function(data) {
-                        swal({
-                            title:"Success",
-                            text: "You have successfully closed this post need.",
-                            type:"success"
-                        }, function(isConfirm) {
-                            document.location.reload();
-                        });
-                    },
-                    error: function(data) {
-                        swal({
-                            title:"Failure",
-                            text: "You have not successfully closed this post need.",
+                            text: "You have not successfully " + operation + "ed this post need.",
                             type: "error"
                         });
                     }
