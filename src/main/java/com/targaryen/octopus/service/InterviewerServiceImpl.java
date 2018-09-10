@@ -8,6 +8,7 @@ import com.targaryen.octopus.util.status.InterviewResultStatus;
 import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
+import com.targaryen.octopus.vo.InterviewerInterviewVo;
 import com.targaryen.octopus.vo.InterviewerVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +39,51 @@ public class InterviewerServiceImpl implements InterviewerService {
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
     }
 
-    public List<InterviewVo> listInterviewsByInterviewerId(int interviewerId) {
+    private List<InterviewDto> listInterviewDtosByInterviewerId(int interviewerId) {
         InterviewerDto interviewerDto;
         List<InterviewDto> interviewDtos;
-        List<InterviewVo> interviewVos = new ArrayList<>();
 
         try {
             interviewerDto = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewerId);
             if(interviewerDto == null)
                 return new ArrayList<>();
             interviewDtos = interviewerDto.getInterviews();
+
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return interviewDtos;
+    }
+
+    public List<InterviewerInterviewVo> listInterviewerInterviewByInterviewerId(int interviewerId) {
+        List<InterviewDto> interviewDtos;
+        List<InterviewerInterviewVo> interviewVos = new ArrayList<>();
+
+        try {
+
+            interviewDtos = listInterviewDtosByInterviewerId(interviewerId);
+
+            for(InterviewDto interviewDto: interviewDtos) {
+                interviewVos.add(
+                        DataTransferUtil.InterviewDtoToInterviewerInterviewVo(interviewDto)
+                );
+            }
+
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return interviewVos;
+    }
+
+    public List<InterviewVo> listInterviewsByInterviewerId(int interviewerId) {
+        List<InterviewDto> interviewDtos;
+        List<InterviewVo> interviewVos = new ArrayList<>();
+
+        try {
+
+            interviewDtos = listInterviewDtosByInterviewerId(interviewerId);
 
             for(InterviewDto interviewDto: interviewDtos) {
                 interviewVos.add(

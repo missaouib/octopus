@@ -1,6 +1,7 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.vo.InterviewVo;
+import com.targaryen.octopus.vo.InterviewerInterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface InterviewerService {
     int setInterviewerStatus(int interviewerStatus, int interviewId, String comment);
     List<InterviewVo> listUnreplyedInterviewsByInterviewerId(int interviewerId);
     List<InterviewVo> listActiveInterviewsByInterviewerId(int interviewerId);
+    List<InterviewerInterviewVo> listInterviewerInterviewByInterviewerId(int interviewerId);
 }
