@@ -45,6 +45,18 @@ public interface HRService {
     int updatePost(PostVo updatePost);
 
     /**
+     * find resume model by postId
+     *
+     */
+    ResumeModelVo findResumeModelVoByPostId(int postId);
+
+    /**
+     * update resume model by resumeModelId
+     *
+     */
+    int updateResumeModelById(ResumeModelVo resumeModelVo);
+
+    /**
      * find applications by postId
      *
      */

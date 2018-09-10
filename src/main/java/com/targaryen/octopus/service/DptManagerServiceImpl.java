@@ -8,9 +8,7 @@ import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.ApplicationResumeVo;
-import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -29,12 +27,14 @@ public class DptManagerServiceImpl implements DptManagerService {
     private PostDtoRepository postDtoRepository;
     private UserDtoRepository userDtoRepository;
     private ApplicationDtoRepository applicationDtoRepository;
+    private ResumeModelDtoRepository resumeModelDtoRepository;
 
     @Autowired
     public DptManagerServiceImpl(DaoFactory daoFactory) {
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
         this.postDtoRepository = daoFactory.getPostDtoRepository();
         this.userDtoRepository = daoFactory.getUserDtoRepository();
+        this.resumeModelDtoRepository = daoFactory.getResumeModelDtoRepository();
     }
 
     @Override
@@ -74,6 +74,10 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setRecruitDpt(newPost.getRecruitDpt());
             postDto.setStatus(newPost.getStatus());
             postDto.setDptManager(dptManager);
+            ResumeModelDto resumeModelDto = new ResumeModelDto();
+            resumeModelDto.setPost(postDto);
+            postDto.setResumeModel(resumeModelDto);
+            resumeModelDtoRepository.save(resumeModelDto);
             postDtoRepository.save(postDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
