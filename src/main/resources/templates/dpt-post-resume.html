@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HR - Post Applications List</title>
+
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/iCheck/custom.css}"/>
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/octopus/js/jquery-ui-1.10.4.min.js}"></script>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h4>Post Application List</h4>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="m-b-md">
+                                    <h2 th:text="${post.postName}"></h2>
+                                </div>
+                                <dl class="dl-horizontal">
+                                    <dt>Status：</dt>
+                                    <dd>
+                                        <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" class="label label-success">To be checked</span>
+                                        <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}" class="label label-danger">Revoked by manager</span>
+                                        <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" class="label label-primary">Published</span>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <dl class="dl-horizontal">
+                                    <dt>Post Type:</dt>
+                                    <dd th:text="${post.postType}"></dd>
+
+                                    <dt>Post Locale:</dt>
+                                    <dd th:text="${post.postLocale}"></dd>
+                                </dl>
+                            </div>
+                            <div class="col-sm-12">
+                                <dl class="dl-horizontal">
+                                    <dt>Department:</dt>
+                                    <dd th:text="${post.recruitDpt}"></dd>
+
+                                    <dt>Department Manager:</dt>
+                                    <dd th:text="${post.dptManagerId}"></dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <h2>Customize resume form for the post</h2>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="pull-right btn btn-outline btn-default"
+                                    onclick="save();">
+                                    <i class="glyphicon glyphicon-edit" aria-hidden="true"> Save</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <h3>Display</h3>
+                                <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
+
+                                <ul class="sortable-list connectList agile-list" id="display">
+                                    <li class="success-element" id="this">
+                                        加强过程管理，及时统计教育经费使用情况，做到底码清楚，
+                                    </li>
+
+                                    <li class="success-element" id="game">
+                                        加?
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <h3>Hide</h3>
+                                <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
+
+                                <ul class="sortable-list connectList agile-list" id="hide">
+                                    <li class="warning-element" id="sucks">
+                                        加强过程管理，及时统计教育经费使用情况，做到底码清楚，
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script th:inline="javascript">
+    $(document).ready(function(){$(".sortable-list").sortable({connectWith:".connectList"}).disableSelection()});
+
+    function save() {
+        var data = {};
+        $("#display > li").each(function() {
+            data[$(this).attr("id")] = true;
+        });
+        $("#hide > li").each(function() {
+            data[$(this).attr("id")] = false;
+        });
+        console.log(data);
+    }
+</script>
+
+</body>
+</html>

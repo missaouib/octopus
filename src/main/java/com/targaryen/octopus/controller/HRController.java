@@ -46,12 +46,12 @@ public class HRController {
         return "hr-post-list";
     }
 
-    @RequestMapping(value = "/hr/post/detail/{postId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/hr/post/{postId}", method = RequestMethod.GET)
     public String hrPostDetail(@PathVariable("postId") int postId, ModelMap map) {
         /* UI Settings */
         map.addAttribute("title", "Check/Edit post need detail");
-        map.addAttribute("action", "../edit");
-        map.addAttribute("returnUrl", "../list");
+        map.addAttribute("action", "edit");
+        map.addAttribute("returnUrl", "list");
         map.addAttribute("swalTextSuccess", "You have successfully edited this post need!");
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
@@ -59,16 +59,52 @@ public class HRController {
         return "dpt-hr-post-detail";
     }
 
-    @RequestMapping(value = "/hr/post/publish/{postId}", method = RequestMethod.POST)
-    public String hrPostPublish(@PathVariable("postId") int postId) {
-        int status = hrService.publishPostById(postId);
-        return "redirect:../list";
+    @RequestMapping(value = "/hr/post/{postId}/application/list", method = RequestMethod.GET)
+    public String hrPostApplication(@PathVariable("postId") int postId, ModelMap map) {
+        map.addAttribute("post", hrService.findPostById(postId));
+        map.addAttribute("applicationList", hrService.findApplicationsByPostId(postId));
+        return "hr-post-application-list";
     }
 
-    @RequestMapping(value = "/hr/post/close/{postId}", method = RequestMethod.POST)
-    public String hrPostClose(@PathVariable("postId") int postId) {
-        int status = hrService.closePostById(postId);
-        return "redirect:../list";
+    @RequestMapping(value = "/hr/post/{postId}/resume", method = RequestMethod.GET)
+    public String hrPostResume(@PathVariable("postId") int postId, ModelMap map) {
+        map.addAttribute("post", hrService.findPostById(postId));
+        // Resume model for this post
+        return "dpt-post-resume";
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/timeline", method = RequestMethod.GET)
+    public String hrApplicationTimeline(@PathVariable("postId") int postId, @PathVariable("appliId") int applicationId, ModelMap map) {
+        map.addAttribute("appli", hrService.findApplicationResumeVoByApplicationId(applicationId));
+
+        map.addAttribute("interviewerList", hrService.listInterviewers());
+
+        List<InterviewVo> interviewVoList = hrService.findInterviewByApplicationId(applicationId);
+
+        map.addAttribute("interviewList", interviewVoList);
+        if (interviewVoList.size() != 0)
+            map.addAttribute("lastInterviewIdOfList", interviewVoList.get(interviewVoList.size() - 1).getInterviewId());
+        return "hr-application-timeline";
+    }
+
+    /* ***************************************************************************** */
+
+    @RequestMapping(value = "/hr/post/publish", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostPublish(PostEntity postEntity) {
+        return String.valueOf(hrService.publishPostById(postEntity.getPostId()));
+    }
+
+    @RequestMapping(value = {"/hr/post/unpublish", "/hr/post/reopen"}, method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostUnpublish(PostEntity postEntity) {
+        return String.valueOf(hrService.closePostById(postEntity.getPostId()));
+    }
+
+    @RequestMapping(value = "/hr/post/finish", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostFinish(PostEntity postEntity) {
+        return String.valueOf(hrService.finishPostById(postEntity.getPostId()));
     }
 
     @RequestMapping(value = "/hr/post/edit", method = RequestMethod.POST)
@@ -88,14 +124,6 @@ public class HRController {
                 .build();
 
         return String.valueOf(hrService.updatePost(postVo));
-    }
-
-    /* Post-Applicant */
-    @RequestMapping(value = "/hr/post/application/{postId}", method = RequestMethod.GET)
-    public String hrPostApplication(@PathVariable("postId") int postId, ModelMap map) {
-        map.addAttribute("post", hrService.findPostById(postId));
-        map.addAttribute("applicationList", hrService.findApplicationsByPostId(postId));
-        return "hr-post-application-list";
     }
 
     @RequestMapping(value = "/hr/application/resume/pass", method = RequestMethod.POST)
@@ -122,20 +150,6 @@ public class HRController {
             }
         }
         return String.valueOf(overAllStatus);
-    }
-
-    @RequestMapping(value = "/hr/application/timeline/{appliId}", method = RequestMethod.GET)
-    public String hrApplicationTimeline(@PathVariable("appliId") int applicationId, ModelMap map) {
-        map.addAttribute("appli", hrService.findApplicationResumeVoByApplicationId(applicationId));
-
-        map.addAttribute("interviewerList", hrService.listInterviewers());
-
-        List<InterviewVo> interviewVoList = hrService.findInterviewByApplicationId(applicationId);
-
-        map.addAttribute("interviewList", interviewVoList);
-        if (interviewVoList.size() != 0)
-            map.addAttribute("lastInterviewIdOfList", interviewVoList.get(interviewVoList.size() - 1).getInterviewId());
-        return "hr-application-timeline";
     }
 
     @RequestMapping(value = "/hr/application/timeline/interview/new", method = RequestMethod.POST)
