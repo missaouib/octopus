@@ -223,4 +223,36 @@ public class DataTransferUtil {
                 .resumeModelId(resumeModelDto.getResumeModelId())
                 .build();
     }
+
+    public static ResumeModelDto ResumeModelVoToDto(ResumeModelDto resumeModelDto, ResumeModelVo resumeModelVo) {
+        resumeModelDto.setApplicantAddress(resumeModelVo.isApplicantAddress());
+        resumeModelDto.setApplicantAge(resumeModelVo.isApplicantAge());
+        resumeModelDto.setApplicantCity(resumeModelVo.isApplicantCity());
+        resumeModelDto.setApplicantCurrentSalary(resumeModelVo.isApplicantCurrentSalary());
+        resumeModelDto.setApplicantCV(resumeModelVo.isApplicantCV());
+        resumeModelDto.setApplicantDateOfBirth(resumeModelVo.isApplicantDateOfBirth());
+        resumeModelDto.setApplicantDegree(resumeModelVo.isApplicantDegree());
+        resumeModelDto.setApplicantDegreePhoto(resumeModelVo.isApplicantDegree());
+        resumeModelDto.setApplicantDutyTime(resumeModelVo.isApplicantDutyTime());
+        resumeModelDto.setApplicantEmail(resumeModelVo.isApplicantEmail());
+        resumeModelDto.setApplicantExpectSalary(resumeModelVo.isApplicantExpectSalary());
+        resumeModelDto.setApplicantHometown(resumeModelVo.isApplicantHometown());
+        resumeModelDto.setApplicantMajor(resumeModelVo.isApplicantMajor());
+        resumeModelDto.setApplicantMaritalStatus(resumeModelVo.isApplicantMaritalStatus());
+        resumeModelDto.setApplicantName(resumeModelVo.isApplicantName());
+        resumeModelDto.setApplicantNation(resumeModelVo.isApplicantNation());
+        resumeModelDto.setApplicantPhone(resumeModelVo.isApplicantPhone());
+        resumeModelDto.setApplicantPhoto(resumeModelVo.isApplicantPhoto());
+        resumeModelDto.setApplicantPoliticalStatus(resumeModelVo.isApplicantPoliticalStatus());
+        resumeModelDto.setApplicantSchool(resumeModelVo.isApplicantSchool());
+        resumeModelDto.setApplicantSelfIntro(resumeModelVo.isApplicantSelfIntro());
+        resumeModelDto.setApplicantSex(resumeModelVo.isApplicantSex());
+        resumeModelDto.setApplicantTimeToWork(resumeModelVo.isApplicantTimeToWork());
+        resumeModelDto.setFamilyContactCompany(resumeModelVo.isFamilyContactCompany());
+        resumeModelDto.setFamilyContactName(resumeModelVo.isFamilyContactName());
+        resumeModelDto.setFamilyContactPhoneNum(resumeModelVo.isFamilyContactPhoneNum());
+        resumeModelDto.setFamilyContactRelation(resumeModelVo.isFamilyContactRelation());
+        resumeModelDto.setRecommenderName(resumeModelVo.isRecommenderName());
+        return resumeModelDto;
+    }
 }
