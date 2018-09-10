@@ -22,4 +22,5 @@ public interface InterviewerService {
     List<ApplicationResumeVo> findApplicationsByPostId(int postId);
     ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId);
     List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer status);
+    List<InterviewerInterviewVo> findInterviewerInterviewsByApplicationId(int applicationId);
 }

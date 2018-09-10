@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,6 +114,27 @@ public class InterviewerServiceImpl implements InterviewerService {
                 (x.getReservationStatus() == ReservationStatus.SUCCESS) &&
                         (x.getInterviewResultStatus() == InterviewResultStatus.INIT))
                 .collect(Collectors.toList());
+    }
+
+    public List<InterviewerInterviewVo> findInterviewerInterviewsByApplicationId(int applicationId) {
+        ApplicationDto applicationDto;
+        List<InterviewDto> interviewDtos;
+        List<InterviewerInterviewVo> interviewerInterviewVos = new ArrayList<>();
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            interviewDtos = applicationDto.getInterviews();
+            interviewDtos = interviewDtos.stream().filter(x -> (x.getInterviewResultStatus() == InterviewResultStatus.PASS) ||
+                    (x.getInterviewResultStatus() == InterviewResultStatus.INIT))
+                    .sorted(Comparator.comparing(x -> x.getCreateTime())).collect(Collectors.toList());
+            for(InterviewDto i: interviewDtos) {
+                interviewerInterviewVos.add(DataTransferUtil.InterviewDtoToInterviewerInterviewVo(i));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return interviewerInterviewVos;
     }
 
 
