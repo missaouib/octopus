@@ -16,6 +16,7 @@
     <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/iCheck/icheck.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/octopus/js/jquery-ui-1.10.4.min.js}"></script>
 </head>
 
 <body class="gray-bg">
@@ -68,80 +69,55 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <dl class="dl-horizontal">
-                                    <dt>Current Progress</dt>
-                                    <dd>
-                                        <div class="progress progress-striped active m-b-sm">
-                                            <div style="width: 60%;" class="progress-bar"></div>
-                                        </div>
-                                        <small>3/5 for Head Count <strong>(60%)</strong></small>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h4>Customize resume form for the post</h4>
-                    </div>
-                    <div class="ibox-content">
-                        <div id="exampleTableEventsToolbar" role="group" style="width:100%;">
-                            <button type="button"
-                                    onclick="editStatus('pass');"
-                                    class="btn btn-outline btn-default">
-                                <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
-                                Pass
-                            </button>
-
-                            <button type="button"
-                                    onclick="editStatus('reject');"
-                                    class="btn btn-outline btn-default">
-                                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                                Reject
-                            </button>
-
-                            <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
-                                   style="width:25%;float:right;"/>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <h2>Customize resume form for the post</h2>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="pull-right btn btn-outline btn-default"
+                                    onclick="save();">
+                                    <i class="glyphicon glyphicon-edit" aria-hidden="true"> Save</i>
+                                </button>
+                            </div>
                         </div>
+                    </div>
 
-                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="6"
-                               data-filter="#filter">
-                            <thead>
-                            <tr class="footable even">
-                                <th>Check</th>
-                                <th>Name</th>
-                                <th>School</th>
-                                <th>Major</th>
-                            </tr>
-                            </thead>
+                    <div class="ibox-content">
 
-                            <tbody>
-                                <th:block th:each="appli : ${applicationList}">
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" th:value="${appli.applicationId}" checked class="i-checks">
-                                        </td>
-                                        <td th:text="${appli.applicantName}"></td>
-                                        <td th:text="${appli.applicantSchool}"></td>
-                                        <td th:text="${appli.applicantMajor}"></td>
-                                    </tr>
+                        <div class="row">
 
-                                </th:block>
-                            </tbody>
+                            <div class="col-sm-6">
+                                <h3>Display</h3>
+                                <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
 
-                            <tfoot>
-                            <tr>
-                                <td colspan="10">
-                                    <ul class="pagination pull-right"></ul>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
+                                <ul class="sortable-list connectList agile-list" id="display">
+                                    <li class="success-element" id="this">
+                                        加强过程管理，及时统计教育经费使用情况，做到底码清楚，
+                                    </li>
+
+                                    <li class="success-element" id="game">
+                                        加?
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <h3>Hide</h3>
+                                <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
+
+                                <ul class="sortable-list connectList agile-list" id="hide">
+                                    <li class="warning-element" id="sucks">
+                                        加强过程管理，及时统计教育经费使用情况，做到底码清楚，
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
 
                     </div>
                 </div>
@@ -150,74 +126,17 @@
     </div>
 
 <script th:inline="javascript">
-    $(".footable").footable();
+    $(document).ready(function(){$(".sortable-list").sortable({connectWith:".connectList"}).disableSelection()});
 
-    $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green"});
-
-    /*<![CDATA[*/
-    var _csrf_token = /*[[${_csrf.token}]]*/ '';
-    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
-    /*]]>*/
-    var csrfData = {};
-    csrfData[_csrf_param_name] = _csrf_token;
-
-    function editStatus(operationString){
-        /* Prepare data */
-        var chkArray = [];
-        $(".i-checks:checked").each(function() {
-            chkArray.push($(this).val());
+    function save() {
+        var data = {};
+        $("#display > li").each(function() {
+            data[$(this).attr("id")] = true;
         });
-
-        if (chkArray.length == 0) {
-            swal({
-                title : "Error",
-                text: "You have not selected any applicants.",
-                type : "error"
-            });
-            return;
-        }
-
-        csrfData["chkArray"] = chkArray;
-
-        /* Confirmation and start requesting */
-        swal({
-            title : "Confirm",
-            text: "Do you really wish to " + operationString + " " + chkArray.length + " applicants?",
-            type : "warning",
-            showCancelButton : true,
-            confirmButtonColor : "#DD6B55",
-            confirmButtonText : "Yes",
-            cancelButtonText : "No",
-            closeOnConfirm : false,
-            closeOnCancel : false
-        }, function(isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    type: "post",
-                    url: operationString,
-                    data: csrfData,
-                    async: false,
-                    success: function (data) {
-                        swal({
-                            title: "Success",
-                            text: "You have successfully " + operationString + "ed " + chkArray.length + " resumes.",
-                            type: "success"
-                        }, function (isConfirm) {
-                            document.location.reload();
-                        });
-                    },
-                    error: function (data) {
-                        swal({
-                            title: "Failure",
-                            text: "You have not successfully " + operationString + "ed " + chkArray.length + " resumes.",
-                            type: "error"
-                        });
-                    }
-                });
-            } else {
-                swal("Cancelled", "You have cancelled.", "error");
-            }
+        $("#hide > li").each(function() {
+            data[$(this).attr("id")] = false;
         });
+        console.log(data);
     }
 </script>
 
