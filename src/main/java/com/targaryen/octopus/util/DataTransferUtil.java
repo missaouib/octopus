@@ -142,6 +142,7 @@ public class DataTransferUtil {
         PostDto postDto = applicationDto.getPost();
         InterviewerDto interviewerDto = interviewDto.getInterviewer();
         return new ApplicantInterviewVo.Builder()
+                .interviewId(interviewDto.getInterviewId())
                 .applicationId(applicationDto.getApplicationId())
                 .interviewerId(interviewerDto.getInterviewerId())
                 .interviewerName(interviewerDto.getInterviewerName())
@@ -165,6 +166,7 @@ public class DataTransferUtil {
                 .stream().filter(x -> x.getInterviewResultStatus() == InterviewResultStatus.PASS)
                 .count() + 1;
         return new InterviewerInterviewVo.Builder()
+                .interviewId(interviewDto.getInterviewId())
                 .applicationId(applicationDto.getApplicationId())
                 .applicantId(applicantDto.getApplicantId())
                 .applicantName(resumeDto.getApplicantName())
