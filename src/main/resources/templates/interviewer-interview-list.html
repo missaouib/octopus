@@ -3,17 +3,17 @@
 <head>
     <title>Department Manager - Post List</title>
 
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
-    <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
-    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
-    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
-    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
 
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
-    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
 </head>
 
 <body class="gray-bg">
@@ -57,13 +57,13 @@
                                                     onclick=""
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
-                                                Revoke
+                                                Agree
                                             </button>
                                             <button type="button"
                                                     th:onclick="${'location.href=''detail/' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
-                                                Check/Edit Detail
+                                                Check Interview
                                             </button>
                                         </td>
                                     </tr>

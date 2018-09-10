@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/fonts/**", "/new-vendor/**", "/img/**", "/octopus/", "/octopus/postDetail/**", "/octopus/register", "/octopus/userRegister").permitAll()
+                .antMatchers("/octopus/css/**", "/octopus/js/**", "/octopus/fonts/**", "/octopus/new-vendor/**", "/octopus/img/**", "/octopus/", "/octopus/postDetail/**", "/octopus/register", "/octopus/userRegister").permitAll()
                 .antMatchers("/octopus/applicant/**").hasRole("APPLICANT")
                 .antMatchers("/octopus/hr/**").hasRole("HR")
                 .antMatchers("/octopus/interviewer/**").hasRole("INTERVIEWER")

@@ -133,7 +133,8 @@ public class HRController {
         List<InterviewVo> interviewVoList = hrService.findInterviewByApplicationId(applicationId);
 
         map.addAttribute("interviewList", interviewVoList);
-        map.addAttribute("lastInterviewIdOfList", interviewVoList.get(interviewVoList.size() - 1).getInterviewId());
+        if (interviewVoList.size() != 0)
+            map.addAttribute("lastInterviewIdOfList", interviewVoList.get(interviewVoList.size() - 1).getInterviewId());
         return "hr-application-timeline";
     }
 

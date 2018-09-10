@@ -1,5 +1,6 @@
 package com.targaryen.octopus.service;
 
+import com.targaryen.octopus.vo.ApplicationResumeVo;
 import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeVo;
@@ -47,16 +48,16 @@ public interface DptManagerService {
     int revokePost(int postId);
 
     /**
-     * find passed applications by postId
+     * find interview passed applications by postId
      *
      */
-    List<ApplicationVo> findPassedApplicationsByPostId(int postId);
+    List<ApplicationResumeVo> findInterviewPassedApplicationsByPostId(int postId);
 
     /**
-     * find resume by applicationId
+     * find ApplicationResumeVo by applicationId
      *
      */
-    ResumeVo findResumeByApplicationId(int applicationId);
+    ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId);
 
     /**
      * dpt approve pass application by applicationId
