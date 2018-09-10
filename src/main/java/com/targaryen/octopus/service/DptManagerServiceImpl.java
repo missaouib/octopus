@@ -90,7 +90,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {
-                DataTransferUtil.PostVoToDto(post, updatePost);
+                DataTransferUtil.updatePostDtoByVo(post, updatePost);
                 postDtoRepository.save(post);
             }
             return StatusCode.SUCCESS;

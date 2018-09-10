@@ -60,7 +60,7 @@ public class DataTransferUtil {
                 .build();
     }
 
-    public static PostDto PostVoToDto(PostDto postDto, PostVo postVo) {
+    public static PostDto updatePostDtoByVo(PostDto postDto, PostVo postVo) {
         postDto.setPostName(postVo.getPostName());
         postDto.setPostType(postVo.getPostType());
         postDto.setPostLocale(postVo.getPostLocale());
@@ -235,7 +235,7 @@ public class DataTransferUtil {
                 .build();
     }
 
-    public static ResumeModelDto ResumeModelVoToDto(ResumeModelDto resumeModelDto, ResumeModelVo resumeModelVo) {
+    public static ResumeModelDto updateResumeModelDtoByVo(ResumeModelDto resumeModelDto, ResumeModelVo resumeModelVo) {
         resumeModelDto.setApplicantAddress(resumeModelVo.isApplicantAddress());
         resumeModelDto.setApplicantAge(resumeModelVo.isApplicantAge());
         resumeModelDto.setApplicantCity(resumeModelVo.isApplicantCity());
