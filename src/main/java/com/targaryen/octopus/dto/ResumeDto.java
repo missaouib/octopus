@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  *  @author He Junfeng
@@ -32,6 +33,27 @@ public class ResumeDto {
     private String applicantEmail;
     private String applicantPhone;
     private String applicantCV;
+    private String applicantHometown;
+    private String applicantNation;
+    private String applicantPoliticalStatus;
+    private String applicantMaritalStatus;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date applicantDateOfBirth;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date applicantTimeToWork;
+    private int applicantCurrentSalary;
+    private int applicantExpectSalary;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date applicantDutyTime;
+    private String recommenderName;
+    private String applicantAddress;
+    private String applicantSelfIntro;
+    private String applicantPhoto;
+    private String applicantDegreePhoto;
+    private String familyContactRelation;
+    private String familyContactName;
+    private String familyContactCompany;
+    private String familyContactPhoneNum;
 
     @JoinColumn(name = "applicant_id")
     @OneToOne(cascade = CascadeType.MERGE)
