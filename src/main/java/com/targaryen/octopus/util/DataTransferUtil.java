@@ -172,6 +172,8 @@ public class DataTransferUtil {
                 .interviewerId(interviewerDto.getInterviewerId())
                 .interviewerName(interviewerDto.getInterviewerName())
                 .interviewerStatus(interviewDto.getInterviewerStatus())
+                .applicantStatus(interviewDto.getApplicantStatus())
+                .reservationStatus(interviewDto.getReservationStatus())
                 .interviewPlace(interviewDto.getInterviewPlace())
                 .interviewResultComment(interviewDto.getInterviewResultComment())
                 .interviewResultStatus(interviewDto.getInterviewResultStatus())

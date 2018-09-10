@@ -7,6 +7,8 @@ public class InterviewerInterviewVo {
     private final Date interviewStartTime;
     private final String interviewPlace;
     private final int interviewResultStatus;
+    private final int applicantStatus;
+    private final int reservationStatus;
     private final String interviewResultComment;
     private final int applicationId;
     private final int interviewerId;
@@ -25,6 +27,8 @@ public class InterviewerInterviewVo {
         private Date interviewStartTime;
         private String interviewPlace;
         private int interviewResultStatus;
+        private int applicantStatus;
+        private int reservationStatus;
         private String interviewResultComment;
         private int applicationId;
         private int interviewerId;
@@ -56,6 +60,16 @@ public class InterviewerInterviewVo {
 
         public Builder interviewResultStatus(int interviewResultStatus) {
             this.interviewResultStatus = interviewResultStatus;
+            return this;
+        }
+
+        public Builder applicantStatus(int applicantStatus) {
+            this.applicantStatus = applicantStatus;
+            return this;
+        }
+
+        public Builder reservationStatus(int interviewStatus) {
+            this.reservationStatus = interviewStatus;
             return this;
         }
 
@@ -131,6 +145,8 @@ public class InterviewerInterviewVo {
         this.interviewStartTime = builder.interviewStartTime;
         this.interviewPlace = builder.interviewPlace;
         this.interviewResultStatus = builder.interviewResultStatus;
+        this.applicantStatus = builder.applicantStatus;
+        this.reservationStatus = builder.reservationStatus;
         this.interviewResultComment = builder.interviewResultComment;
         this.applicationId = builder.applicationId;
         this.interviewerId = builder.interviewerId;
