@@ -164,6 +164,7 @@ public class DataTransferUtil {
         ResumeDto resumeDto = applicantDto.getResume();
         int rounds = (int)applicationDto.getInterviews()
                 .stream().filter(x -> x.getInterviewResultStatus() == InterviewResultStatus.PASS)
+                .filter(x -> x.getCreateTime().before(interviewDto.getCreateTime()))
                 .count() + 1;
         return new InterviewerInterviewVo.Builder()
                 .interviewId(interviewDto.getInterviewId())
