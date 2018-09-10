@@ -19,7 +19,7 @@ public class PostVo {
     private final String recruitDpt;
     private final Date publishTime;
     private final int status;
-    private final int dptManagerId;
+    private final int departmentId;
 
     public static class Builder {
         private int postId;
@@ -32,7 +32,7 @@ public class PostVo {
         private String recruitDpt;
         private Date publishTime;
         private int status;
-        private int dptManagerId;
+        private int departmentId;
 
         public Builder postId(int postId) {
             this.postId = postId;
@@ -84,8 +84,8 @@ public class PostVo {
             return this;
         }
 
-        public Builder dptManagerId(int dptManagerId) {
-            this.dptManagerId = dptManagerId;
+        public Builder departmentId(int departmentId) {
+            this.departmentId = departmentId;
             return this;
         }
 
@@ -105,6 +105,6 @@ public class PostVo {
         this.recruitDpt = builder.recruitDpt;
         this.publishTime = builder.publishTime;
         this.status = builder.status;
-        this.dptManagerId = builder.dptManagerId;
+        this.departmentId = builder.departmentId;
     }
 }

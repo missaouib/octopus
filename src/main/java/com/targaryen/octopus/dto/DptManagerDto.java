@@ -21,7 +21,7 @@ public class DptManagerDto {
     @OneToOne(cascade = CascadeType.MERGE)
     private UserDto user;
 
-    @OneToMany(mappedBy = "dptManager", cascade = CascadeType.REMOVE)
-    @OrderBy("post_id DESC")
-    private List<PostDto> posts;
+    @JoinColumn(name = "department_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private DepartmentDto department;
 }

@@ -40,4 +40,8 @@ public class InterviewerDto implements Serializable {
 
     @OneToMany(mappedBy = "interviewer")
     private List<InterviewDto> interviews;
+
+    @JoinColumn(name = "department_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private DepartmentDto department;
 }

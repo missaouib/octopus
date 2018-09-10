@@ -34,6 +34,9 @@ public class PostDto implements Serializable {
 
     private String postRequirement;
 
+    @NotNull
+    private int recruitType;
+
     private int recruitNum;
 
     private String recruitDpt;
@@ -43,9 +46,9 @@ public class PostDto implements Serializable {
 
     private int status;
 
-    @JoinColumn(name = "dpt_manager_id")
+    @JoinColumn(name = "department_id")
     @ManyToOne(cascade = CascadeType.MERGE)
-    private DptManagerDto dptManager;
+    private DepartmentDto department;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<ApplicationDto> applications;

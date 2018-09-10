@@ -43,7 +43,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         if(dptManager == null) {
             return new ArrayList<PostVo>();
         } else {
-            return dptManager.getPosts().stream()
+            return dptManager.getDepartment().getPosts().stream()
                     .map(n -> DataTransferUtil.PostDtoToVo(n))
                     .collect(Collectors.toList());
         }
@@ -62,7 +62,7 @@ public class DptManagerServiceImpl implements DptManagerService {
     @Override
     public int createNewPost(PostVo newPost, int userId) {
         try {
-            DptManagerDto dptManager = userDtoRepository.findUserDtoByUserId(userId).getDptManager();
+            DepartmentDto department = userDtoRepository.findUserDtoByUserId(userId).getDptManager().getDepartment();
             PostDto postDto = new PostDto();
             postDto.setPostId(newPost.getPostId());
             postDto.setPostName(newPost.getPostName());
@@ -73,7 +73,7 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setRecruitNum(newPost.getRecruitNum());
             postDto.setRecruitDpt(newPost.getRecruitDpt());
             postDto.setStatus(newPost.getStatus());
-            postDto.setDptManager(dptManager);
+            postDto.setDepartment(department);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);
             postDto.setResumeModel(resumeModelDto);

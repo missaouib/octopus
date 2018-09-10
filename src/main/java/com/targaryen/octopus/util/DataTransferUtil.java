@@ -56,7 +56,7 @@ public class DataTransferUtil {
                 .recruitNum(postDto.getRecruitNum())
                 .publishTime(postDto.getPublishTime())
                 .status(postDto.getStatus())
-                .dptManagerId(postDto.getDptManager().getDptManagerId())
+                .departmentId(postDto.getDepartment().getDepartmentId())
                 .build();
     }
 
