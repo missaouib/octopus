@@ -62,12 +62,6 @@
                                         <td th:text="${post.postLocale}"></td>
                                         <td>
                                             <button type="button"
-                                                    onclick=""
-                                                    class="btn btn-outline btn-default">
-                                                <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
-                                                Revoke
-                                            </button>
-                                            <button type="button"
                                                     th:onclick="${'location.href=''' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
@@ -79,6 +73,13 @@
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>
                                                 See Passed Applicants
+                                            </button>
+                                            <button type="button"
+                                                    th:if="${post.status} ne ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}"
+                                                    th:onclick="${'revokePost(' + post.postId + ', ''' + post.postName + ''')'}"
+                                                    class="btn btn-outline btn-default">
+                                                <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
+                                                Revoke
                                             </button>
                                         </td>
                                     </tr>
@@ -100,8 +101,58 @@
         </div>
     </div>
 
-<script>
+<script th:inline="javascript">
     $(".footable").footable();
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    function revokePost(postId, postName) {
+        csrfData['postId'] = postId;
+
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to revoke this post need: " + postName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'revoke',
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully published this post need.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully published this post need.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
 </script>
 
 </body>

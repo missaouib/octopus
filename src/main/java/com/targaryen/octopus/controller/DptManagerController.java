@@ -137,4 +137,10 @@ public class DptManagerController {
         }
         return String.valueOf(overAllStatus);
     }
+
+    @RequestMapping(value = "/dpt/post/revoke", method = RequestMethod.POST)
+    @ResponseBody
+    public String dptPostRevokePost(PostEntity postEntity) {
+        return String.valueOf(dptManagerService.revokePost(postEntity.getPostId()));
+    }
 }
