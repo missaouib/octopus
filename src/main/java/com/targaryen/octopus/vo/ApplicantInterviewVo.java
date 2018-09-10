@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.Date;
 
+/**
+ * @author He Junfeng
+ */
 @Getter
 public class ApplicantInterviewVo {
     private final int interviewId;

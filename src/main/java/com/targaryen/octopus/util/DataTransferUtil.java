@@ -3,6 +3,9 @@ package com.targaryen.octopus.util;
 import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.vo.*;
 
+/**
+ * @author He Junfeng
+ */
 public class DataTransferUtil {
 
     public static ApplicationVo ApplicationDtoToVo(ApplicationDto applicationDto) {
