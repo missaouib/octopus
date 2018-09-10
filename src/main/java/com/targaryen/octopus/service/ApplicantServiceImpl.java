@@ -262,4 +262,22 @@ public class ApplicantServiceImpl implements ApplicantService {
         return StatusCode.SUCCESS;
     }
 
+    public ResumeModelVo findResumeModelByPostId(int postId) {
+        PostDto postDto;
+        ResumeModelDto resumeModelDto;
+
+        try {
+            postDto = postDtoRepository.findPostDtoByPostId(postId);
+            if(postDto == null)
+                return null;
+            resumeModelDto = postDto.getResumeModel();
+            if(resumeModelDto == null)
+                return null;
+        } catch (DataAccessException e) {
+            return null;
+        }
+
+        return DataTransferUtil.ResumeModeDtoToVo(resumeModelDto);
+    }
+
 }
