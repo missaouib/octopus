@@ -183,18 +183,39 @@
                             </div>
                         </div>
 
-                        <!-- Offer -->
-                        <div th:if="${InterviewFinal.status} ge ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_PASS}
-                                    and ${InterviewFinal.status} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}"
+                        <!-- Receive Offer -->
+                        <div th:if="${InterviewFinal.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}"
                              class="vertical-timeline-block">
                             <div class="vertical-timeline-icon blue-bg">
                                 <i class="fa fa-calendar-check-o"></i>
                             </div>
 
                             <div class="vertical-timeline-content">
-                                <h2>Send Offer</h2>
+                                <h2>Consider accepting Offer</h2>
                                 <p>
-                                    Interview Closed by HR.
+                                    Do you wish to accept this offer?
+                                </p>
+                                <a class="btn btn-sm btn-warning" style="margin-left: 5px; background-color:#9c27b0;"
+                                   th:onclick="${'acceptOffer(' + InterviewFinal.applicationId + ');'}">Accept Offer</a>
+                                <span class="vertical-date">
+                                        <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(InterviewFinal.interviewEndTime,'HH:mm')}"></label></small>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <!-- Offer Accepted-->
+                        <div th:if="${InterviewFinal.status} ge ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_ACCEPT}
+                                    or ${InterviewFinal.status} le ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}"
+                             class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon" style="background-color:#28a745;">
+                                <i class="fa fa-check" style="color:#FFF;"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Offer Accept</h2>
+                                <p>
+                                    Congratulations.
                                 </p>
 
                                 <span class="vertical-date">
@@ -333,13 +354,13 @@
         });
     }
 
-    /* Send offer */
-    function sendOffer(applicationId) {
+    /* Accept offer */
+    function acceptOffer(applicationId) {
         csrfData['applicationId'] = applicationId;
 
         swal({
             title : "Confirm",
-            text: "Do you really wish to send offer?",
+            text: "Do you really wish to accept offer?",
             type : "warning",
             showCancelButton : true,
             confirmButtonColor : "#DD6B55",
@@ -351,13 +372,13 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: "offer",
+                    url: "../acceptOffer",
                     data: csrfData,
                     async: false,
                     success: function (data) {
                         swal({
                             title: "Success",
-                            text: "You have successfully sent offer.",
+                            text: "You have successfully accept offer.",
                             type: "success"
                         }, function (isConfirm) {
                             document.location.reload();

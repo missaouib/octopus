@@ -197,8 +197,8 @@
                         </div>
 
                         <!-- Interview pass -->
-                        <div th:if="${InterviewFinal.status} gt ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}
-                                    and ${InterviewFinal.status} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}"
+                        <div th:if="${InterviewFinal.status} ge ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}
+                                    or ${InterviewFinal.status} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}"
                              class="vertical-timeline-block">
                             <div class="vertical-timeline-icon blue-bg">
                                 <i class="fa fa-calendar-check-o"></i>

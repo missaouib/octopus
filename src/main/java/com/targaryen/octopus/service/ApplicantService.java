@@ -129,4 +129,6 @@ public interface ApplicantService {
      */
     List<ApplicantInterviewVo> findApplicantInterviewsByApplicationId(int applicationId);
     ApplicationVo findApplicationByApplicationId(int applicationId);
+    int acceptOfferByApplicationId(int applicationId);
+    int rejectOfferByApplicationId(int applicationId);
 }
