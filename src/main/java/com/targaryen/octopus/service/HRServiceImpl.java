@@ -51,6 +51,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int publishPostById(int postId) {
         try {
@@ -65,6 +66,7 @@ public class HRServiceImpl implements HRService {
 
     }
 
+    @Transactional
     @Override
     public int closePostById(int postId) {
         try {
@@ -77,6 +79,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int finishPostById(int postId) {
         try {
@@ -89,6 +92,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int updatePost(PostVo updatePost) {
         try {
@@ -109,6 +113,7 @@ public class HRServiceImpl implements HRService {
         return DataTransferUtil.ResumeModeDtoToVo(postDto.getResumeModel());
     }
 
+    @Transactional
     @Override
     public int updateResumeModelById(ResumeModelVo resumeModelVo) {
         try {
@@ -145,6 +150,7 @@ public class HRServiceImpl implements HRService {
         return applicationResumeVo;
     }
 
+    @Transactional
     @Override
     public int filterPassApplicationById(int applicationId) {
         try {
@@ -158,6 +164,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int filterFailApplicationById(int applicationId) {
         try {
@@ -171,6 +178,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int revokeFilterApplicationById(int applicationId) {
         try {
@@ -288,6 +296,7 @@ public class HRServiceImpl implements HRService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public int addNewInterviewRoundByPostId(int postId) {
         try {
@@ -301,6 +310,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int interviewPassApplicationById(int applicationId) {
         try {
@@ -314,6 +324,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int interviewFailApplicationById(int applicationId) {
         try {
@@ -327,6 +338,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int sendOfferByApplicationId(int applicationId) {
         try {
