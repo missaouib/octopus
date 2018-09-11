@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.Date;
 
+/**
+ * @author Liu Mengyang
+ */
 @Getter
 public class EducationExperienceVo {
 

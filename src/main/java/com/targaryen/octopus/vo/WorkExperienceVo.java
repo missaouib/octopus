@@ -1,7 +1,13 @@
 package com.targaryen.octopus.vo;
 
+import lombok.Getter;
+
 import java.util.Date;
 
+/**
+ * @author Liu Mengyang
+ */
+@Getter
 public class WorkExperienceVo {
     final private int workExperienceId;
     final private int resumeId;

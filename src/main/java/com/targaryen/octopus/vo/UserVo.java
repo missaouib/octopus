@@ -2,6 +2,9 @@ package com.targaryen.octopus.vo;
 
 import lombok.Data;
 
+/**
+ * @author Liu Mengyang
+ */
 @Data
 public class UserVo {
     final private int userId;

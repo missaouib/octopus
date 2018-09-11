@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * @author Liu Mengyang
+ */
 @Getter
 public class DepartmentVo {
     final private int departmentId;
