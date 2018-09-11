@@ -7,6 +7,7 @@ import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewerStatus;
+import com.targaryen.octopus.vo.ApplicationVo;
 import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.InterviewerInterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
@@ -91,7 +92,8 @@ public class InterviewerController {
         map.addAttribute("interviewList", serviceFactory.getInterviewerService().findInterviewerInterviewsByApplicationId(applicationId));
         //map.addAttribute("interviewComment", new InterviewerCommentEntity());
         map.put("interviewComment", new InterviewerCommentEntity());
-        map.addAttribute("InterviewFinal", serviceFactory.getInterviewerService().findApplicationByApplicationId(applicationId));
+        ApplicationVo applicationVo =  serviceFactory.getInterviewerService().findApplicationByApplicationId(applicationId);
+        map.addAttribute("InterviewFinal",applicationVo );
         return "interviewer-interview-timeline";
     }
 
@@ -109,6 +111,9 @@ public class InterviewerController {
         map.addAttribute("interviewList", serviceFactory.getInterviewerService().findInterviewerInterviewsByApplicationId(applicationId));
         //map.addAttribute("interviewComment", new InterviewerCommentEntity());
         map.put("interviewComment", new InterviewerCommentEntity());
+
+        ApplicationVo applicationVo =  serviceFactory.getInterviewerService().findApplicationByApplicationId(applicationId);
+        map.addAttribute("InterviewFinal",applicationVo );
         return "interviewer-interview-timeline";
     }
 /*
