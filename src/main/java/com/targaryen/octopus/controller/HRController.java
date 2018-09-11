@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
@@ -141,7 +142,8 @@ public class HRController {
     @RequestMapping(value = "/hr/application/timeline/interview/new", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelineInterviewNew(InterviewEntity interviewEntity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
+        // Locale is a MUST?
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
         Date startTime = null;
         try {
             startTime = dateFormat.parse(interviewEntity.getInterviewStartTime());

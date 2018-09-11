@@ -55,7 +55,7 @@ public class InterviewVo {
         }
 
         public Builder applicantStatus(int applicantStatus) {
-            this.applicantStatus = interviewerStatus;
+            this.applicantStatus = applicantStatus;
             return this;
         }
 
