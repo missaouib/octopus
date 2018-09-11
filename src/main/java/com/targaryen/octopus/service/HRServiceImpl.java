@@ -11,10 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -212,8 +209,10 @@ public class HRServiceImpl implements HRService {
             InterviewDto newInterview = new InterviewDto();
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
             InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+            PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
+            newInterview.setPost(post);
             newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
             newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
             newInterview.setApplicantStatus(ApplicantStatus.INIT);
@@ -226,6 +225,17 @@ public class HRServiceImpl implements HRService {
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
+    }
+
+    @Override
+    public int createListOfInterviews(List<InterviewVo> interviewVos) {
+        for(InterviewVo interviewVo : interviewVos) {
+            int result = createInterview(interviewVo);
+            if(StatusCode.FAILURE.equals(result)) {
+                return StatusCode.FAILURE;
+            }
+        }
+        return StatusCode.SUCCESS;
     }
 
     @Override
@@ -260,6 +270,14 @@ public class HRServiceImpl implements HRService {
         } else {
             return new ArrayList<InterviewVo>();
         }
+    }
+
+    @Override
+    public List<InterviewVo> findListOfInterviewsByPostIdAndTime(int postId, Date beginTime, Date endTime) {
+        return interviewDtoRepository.findAllByPostAndTime(postDtoRepository.findPostDtoByPostId(postId),
+                beginTime, endTime).stream()
+                .map(n -> DataTransferUtil.InterviewDtoToVo(n))
+                .collect(Collectors.toList());
     }
 
     @Override
