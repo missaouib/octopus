@@ -24,4 +24,5 @@ public interface InterviewDtoRepository extends JpaRepository<InterviewDto, Inte
     @Query("select t from InterviewDto t where t.post = :post and t.interviewStartTime >= :startTime and t.interviewStartTime <= :endTime")
     List<InterviewDto> findAllByPostAndTime(@Param("post")PostDto post, @Param("startTime") Date startTime, @Param("endTime") Date entTime);
 
+    List<InterviewDto> findAllByPostAndInterviewRound(PostDto post, Integer interviewRound);
 }

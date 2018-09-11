@@ -75,6 +75,7 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setRecruitType(newPost.getRecruitType());
             postDto.setStatus(newPost.getStatus());
             postDto.setDepartment(department);
+            postDto.setInterviewRound(0);
             postDtoRepository.save(postDto);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);

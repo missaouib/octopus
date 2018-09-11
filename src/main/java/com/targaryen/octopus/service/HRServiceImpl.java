@@ -281,6 +281,27 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    public List<InterviewVo> findListOfInterviewsByPostIdAndInterviewRound(int postId, int interviewRound) {
+        return interviewDtoRepository.findAllByPostAndInterviewRound(postDtoRepository.findPostDtoByPostId(postId),
+                interviewRound).stream()
+                .map(n -> DataTransferUtil.InterviewDtoToVo(n))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int addNewInterviewRoundByPostId(int postId) {
+        try {
+            PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+            int interviewRound = post.getInterviewRound();
+            post.setInterviewRound(++interviewRound);
+            postDtoRepository.save(post);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
     public int interviewPassApplicationById(int applicationId) {
         try {
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
