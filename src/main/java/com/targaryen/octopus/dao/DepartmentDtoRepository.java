@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DepartmentDtoRepository extends JpaRepository<DepartmentDto, Integer> {
+    DepartmentDto findDepartmentDtoByDepartmentId(int departmentId);
 }

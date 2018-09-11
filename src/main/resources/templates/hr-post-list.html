@@ -23,7 +23,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h1>Post needs</h1>
+                        <h1>Social Recruitment</h1>
                     </div>
                     <div class="ibox-content">
                         <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" style="width:100%;">
@@ -57,7 +57,7 @@
                                         <td th:text="${post.postName}"></td>
                                         <td th:text="${post.postType}"></td>
                                         <td th:text="${post.postLocale}"></td>
-                                        <td th:text="${post.recruitDpt}"></td>
+                                        <td th:text="${post.departmentName}"></td>
                                         <td th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" th:text="${#strings.substring(post.publishTime, 0, 16)}"></td>
                                         <td th:if="${post.status} ne ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}">Not published</td>
                                         <td>

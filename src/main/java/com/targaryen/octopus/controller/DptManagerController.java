@@ -1,6 +1,5 @@
 package com.targaryen.octopus.controller;
 
-import com.targaryen.octopus.dto.PostDto;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.DptManagerService;
@@ -55,7 +54,7 @@ public class DptManagerController {
         map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
         map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");
 
-        map.addAttribute("post", new PostDto());
+        map.addAttribute("post", new PostVo.Builder().departmentName(dptManagerService.findDptNameByUserId(AuthInfo.getUserId())).build());
         return "dpt-hr-post-detail";
     }
 
@@ -85,7 +84,6 @@ public class DptManagerController {
                 .postDescription(postEntity.getPostDescription())
                 .postRequirement(postEntity.getPostRequirement())
                 .recruitNum(postEntity.getRecruitNum())
-                .recruitDpt(postEntity.getRecruitDpt())
                 .publishTime(postEntity.getPublishTime())
                 .status(postEntity.getStatus())
                 .build();
@@ -104,7 +102,6 @@ public class DptManagerController {
                 .postDescription(postEntity.getPostDescription())
                 .postRequirement(postEntity.getPostRequirement())
                 .recruitNum(postEntity.getRecruitNum())
-                .recruitDpt(postEntity.getRecruitDpt())
                 .publishTime(postEntity.getPublishTime())
                 .status(postEntity.getStatus())
                 .build();

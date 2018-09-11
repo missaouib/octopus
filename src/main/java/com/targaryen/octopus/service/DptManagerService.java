@@ -18,13 +18,19 @@ public interface DptManagerService {
     List<PostVo> findPostsByUserId(int userId);
 
     /**
+     * find departmentName by userId
+     *
+     */
+    String findDptNameByUserId(int userId);
+
+    /**
      * find posts by Id
      *
      */
     PostVo findPostById(int postId);
 
     /**
-     * create new post, newPost Vo should include postName, recruitType
+     * create new post, newPost Vo should include postName, recruitType, departmentId
      *
      */
     int createNewPost(PostVo newPost, int userId);
