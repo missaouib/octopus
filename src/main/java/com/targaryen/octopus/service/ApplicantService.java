@@ -131,4 +131,20 @@ public interface ApplicantService {
     ApplicationVo findApplicationByApplicationId(int applicationId);
     int acceptOfferByApplicationId(int applicationId);
     int rejectOfferByApplicationId(int applicationId);
+    ResumeModelVo findResumeModelByPostId(int postId);
+
+    int createWorkExperience(WorkExperienceVo workExperienceVo);
+    int createEducationExperience(EducationExperienceVo educationExperienceVo);
+    int updateEducationExperience(EducationExperienceVo educationExperienceVo);
+    int updateWorkExperience(WorkExperienceVo workExperienceVo);
+    WorkExperienceVo findWorkExperienceByWorkExperienceId(int workExperienceId);
+    EducationExperienceVo findEducationExperienceByEducationExperienceId(int educationExperienceId);
+    int deleteWorkExperienceByWorkExperienceId(int workExperienceId);
+    int deleteEducationExperienceByEducationExperienceId(int educationExperienceId);
+    List<WorkExperienceVo> listWorkExperiencesByResumeId(int resumeId);
+    List<EducationExperienceVo> listEducationExperiencesByResumeId(int resumeId);
+    ResumeVo findResumeByApplicantId(int applicantId);
+    int createResume(int applicantId);
+    int saveResumeWithModel(ResumeVo resumeVo, int modelId);
+    boolean isResumeComplete(int resumeId, int modelId);
 }

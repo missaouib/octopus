@@ -32,6 +32,8 @@ public class ApplicantServiceImpl implements ApplicantService {
     private ApplicationDtoRepository applicationDtoRepository;
     private InterviewDtoRepository interviewDtoRepository;
     private ResumeModelDtoRepository resumeModelDtoRepository;
+    private WorkExperienceRepository workExperienceRepository;
+    private EducationExperienceRepository educationExperienceRepository;
 
     @Autowired
     public ApplicantServiceImpl(DaoFactory daoFactory) {
@@ -43,6 +45,8 @@ public class ApplicantServiceImpl implements ApplicantService {
         this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
         this.resumeModelDtoRepository = daoFactory.getResumeModelDtoRepository();
+        this.workExperienceRepository = daoFactory.getWorkExperienceRepository();
+        this.educationExperienceRepository = daoFactory.getEducationExperienceRepository();
     }
 
 
@@ -283,6 +287,198 @@ public class ApplicantServiceImpl implements ApplicantService {
         return DataTransferUtil.ResumeModeDtoToVo(resumeModelDto);
     }
 
+    public int createWorkExperience(WorkExperienceVo workExperienceVo) {
+        WorkExperienceDto workExperienceDto = new WorkExperienceDto();
+        ResumeDto resumeDto;
+
+        try {
+            resumeDto = resumeDtoRepository.findResumeDtoByResumeId(workExperienceVo.getResumeId());
+            if(resumeDto == null)
+                return StatusCode.FAILURE;
+            workExperienceDto.setResume(resumeDto);
+            workExperienceRepository.save(workExperienceDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+        return StatusCode.SUCCESS;
+    }
+
+    public int createEducationExperience(EducationExperienceVo educationExperienceVo) {
+        EducationExperienceDto educationExperienceDto = new EducationExperienceDto();
+        ResumeDto resumeDto;
+
+        try {
+            resumeDto = resumeDtoRepository.findResumeDtoByResumeId(educationExperienceVo.getResumeId());
+            if(resumeDto == null)
+                return StatusCode.FAILURE;
+            educationExperienceDto.setResume(resumeDto);
+            educationExperienceRepository.save(educationExperienceDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+        return StatusCode.SUCCESS;
+    }
+
+    public int updateEducationExperience(EducationExperienceVo educationExperienceVo) {
+        EducationExperienceDto educationExperienceDto;
+
+        try {
+            educationExperienceDto = educationExperienceRepository
+                    .findEducationExperienceDtoByEducationExperienceId(educationExperienceVo.getEducationExperienceId());
+            educationExperienceDto.setDegree(educationExperienceVo.getDegree());
+            educationExperienceDto.setEndTime(educationExperienceVo.getEndTime());
+            educationExperienceDto.setStartTime(educationExperienceVo.getStartTime());
+            educationExperienceDto.setMajor(educationExperienceVo.getMajor());
+            educationExperienceDto.setSchool(educationExperienceVo.getSchool());
+            educationExperienceDto.setTypeOfStudy(educationExperienceVo.getTypeOfStudy());
+            educationExperienceRepository.save(educationExperienceDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
+
+    public int updateWorkExperience(WorkExperienceVo workExperienceVo) {
+        WorkExperienceDto workExperienceDto;
+
+        try {
+            workExperienceDto = workExperienceRepository
+                    .findWorkExperienceDtoByWorkExperienceId(workExperienceVo.getWorkExperienceId());
+            workExperienceDto.setAchievement(workExperienceVo.getAchievement());
+            workExperienceDto.setCity(workExperienceVo.getCity());
+            workExperienceDto.setCompany(workExperienceVo.getCompany());
+            workExperienceDto.setStartTime(workExperienceVo.getStartTime());
+            workExperienceDto.setEndTime(workExperienceVo.getEndTime());
+            workExperienceDto.setPost(workExperienceVo.getPost());
+            workExperienceDto.setReferenceName(workExperienceVo.getReferenceName());
+            workExperienceDto.setReferencePhoneNum(workExperienceVo.getReferencePhoneNum());
+            workExperienceDto.setWorkDiscription(workExperienceVo.getWorkDescription());
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
+
+    public WorkExperienceVo findWorkExperienceByWorkExperienceId(int workExperienceId) {
+        WorkExperienceDto workExperienceDto;
+
+        try {
+            workExperienceDto = workExperienceRepository.findWorkExperienceDtoByWorkExperienceId(workExperienceId);
+            if(workExperienceDto == null)
+                return null;
+
+        } catch (DataAccessException e) {
+            return null;
+        }
+        return DataTransferUtil.WorkExperienceDtoToVo(workExperienceDto);
+    }
+
+    public EducationExperienceVo findEducationExperienceByEducationExperienceId(int educationExperienceId) {
+        EducationExperienceDto educationExperienceDto;
+
+        try {
+            educationExperienceDto = educationExperienceRepository
+                    .findEducationExperienceDtoByEducationExperienceId(educationExperienceId);
+            if(educationExperienceDto == null)
+                return null;
+        } catch (DataAccessException e) {
+            return null;
+        }
+        return DataTransferUtil.EducationExperienceDtoToVo(educationExperienceDto);
+    }
+
+    public int deleteWorkExperienceByWorkExperienceId(int workExperienceId) {
+        try {
+            workExperienceRepository.deleteWorkExperienceDtoByWorkExperienceId(workExperienceId);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+        return StatusCode.SUCCESS;
+    }
+
+    public int deleteEducationExperienceByEducationExperienceId(int educationExperienceId) {
+        try {
+            educationExperienceRepository.deleteEducationExperienceDtoByEducationExperienceId(educationExperienceId);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+        return StatusCode.SUCCESS;
+    }
+
+    public List<WorkExperienceVo> listWorkExperiencesByResumeId(int resumeId) {
+        ResumeDto resumeDto;
+        List<WorkExperienceDto> workExperienceDtos;
+        List<WorkExperienceVo> workExperienceVos = new ArrayList<>();
+        try {
+            resumeDto = resumeDtoRepository.findResumeDtoByResumeId(resumeId);
+            if(resumeDto == null)
+                return new ArrayList<>();
+            workExperienceDtos = resumeDto.getWorkExperiences();
+            for(WorkExperienceDto w: workExperienceDtos) {
+                workExperienceVos.add(DataTransferUtil.WorkExperienceDtoToVo(w));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return workExperienceVos;
+    }
+
+    public List<EducationExperienceVo> listEducationExperiencesByResumeId(int resumeId) {
+        ResumeDto resumeDto;
+        List<EducationExperienceDto> educationExperienceDtos;
+        List<EducationExperienceVo> educationExperienceVos = new ArrayList<>();
+
+        try {
+            resumeDto = resumeDtoRepository.findResumeDtoByResumeId(resumeId);
+            if(resumeDto == null)
+                return new ArrayList<>();
+            educationExperienceDtos = resumeDto.getEducationExperiences();
+            for(EducationExperienceDto e: educationExperienceDtos) {
+                educationExperienceVos.add(DataTransferUtil.EducationExperienceDtoToVo(e));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return educationExperienceVos;
+    }
+
+
+    public ResumeVo findResumeByApplicantId(int applicantId) {
+        ApplicantDto applicantDto;
+        ResumeDto resumeDto;
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            if(applicantDto == null)
+                return null;
+            resumeDto = applicantDto.getResume();
+            if(resumeDto == null)
+                return null;
+        } catch (DataAccessException e) {
+            return null;
+        }
+
+        return DataTransferUtil.ResumeDtoToVo(resumeDto);
+    }
+
+    public int createResume(int applicantId) {
+        ApplicantDto applicantDto;
+        ResumeDto resumeDto;
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            resumeDto = new ResumeDto();
+            resumeDto.setApplicantName(applicantDto.getUser().getUserName());
+            resumeDto.setApplicant(applicantDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
+
     public int saveResumeWithModel(ResumeVo resumeVo, int modelId) {
         ResumeDto resumeDto;
         ResumeModelDto resumeModelDto;
@@ -365,6 +561,78 @@ public class ApplicantServiceImpl implements ApplicantService {
         return  StatusCode.SUCCESS;
     }
 
+    public boolean isResumeComplete(int resumeId, int modelId) {
+        ResumeModelDto resumeModelDto;
+        ResumeDto resumeDto;
+
+        try {
+            resumeModelDto = resumeModelDtoRepository.findResumeModelDtoByResumeModelId(modelId);
+            resumeDto = resumeDtoRepository.findResumeDtoByResumeId(resumeId);
+            if(resumeDto == null)
+                return false;
+        } catch (DataAccessException e) {
+            return false;
+        }
+
+        if(resumeModelDto.isApplicantName() && resumeDto.getApplicantName() == null)
+            return false;
+        if(resumeModelDto.isApplicantSex() && resumeDto.getApplicantSex() < 0)
+            return false;
+        if(resumeModelDto.isApplicantAge() && resumeDto.getApplicantAge() < 0)
+            return false;
+        if(resumeModelDto.isApplicantSchool() && resumeDto.getApplicantSchool() == null)
+            return false;
+        if(resumeModelDto.isApplicantDegree() && resumeDto.getApplicantDegree() < 0)
+            return false;
+        if(resumeModelDto.isApplicantMajor() && resumeDto.getApplicantMajor() == null)
+            return false;
+        if(resumeModelDto.isApplicantCity() && resumeDto.getApplicantCity() == null)
+            return false;
+        if(resumeModelDto.isApplicantEmail() && resumeDto.getApplicantEmail() == null)
+            return false;
+        if(resumeModelDto.isApplicantPhone() && resumeDto.getApplicantPhone() == null)
+            return false;
+        if(resumeModelDto.isApplicantCV() && resumeDto.getApplicantCV() == null)
+            return false;
+        if(resumeModelDto.isApplicantHometown() && resumeDto.getApplicantHometown() == null)
+            return false;
+        if(resumeModelDto.isApplicantNation() && resumeDto.getApplicantNation() == null)
+            return false;
+        if(resumeModelDto.isApplicantPoliticalStatus() && resumeDto.getApplicantPoliticalStatus() == null)
+            return false;
+        if(resumeModelDto.isApplicantMaritalStatus() && resumeDto.getApplicantMaritalStatus() == null)
+            return false;
+        if(resumeModelDto.isApplicantDateOfBirth() && resumeDto.getApplicantDateOfBirth() == null)
+            return false;
+        if(resumeModelDto.isApplicantTimeToWork() && resumeDto.getApplicantTimeToWork() == null)
+            return false;
+        if(resumeModelDto.isApplicantCurrentSalary() && resumeDto.getApplicantCurrentSalary() < 0)
+            return false;
+        if(resumeModelDto.isApplicantExpectSalary() && resumeDto.getApplicantExpectSalary() < 0)
+            return false;
+        if(resumeModelDto.isApplicantDutyTime() && resumeDto.getApplicantDutyTime() == null)
+            return false;
+        if(resumeModelDto.isRecommenderName() && resumeDto.getRecommenderName() == null)
+            return false;
+        if(resumeModelDto.isApplicantAddress() && resumeDto.getApplicantAddress() == null)
+            return false;
+        if(resumeModelDto.isApplicantSelfIntro() && resumeDto.getApplicantSelfIntro() == null)
+            return false;
+        if(resumeModelDto.isApplicantPhoto() && resumeDto.getApplicantPhoto() == null)
+            return false;
+        if(resumeModelDto.isApplicantDegreePhoto() && resumeDto.getApplicantDegreePhoto() == null)
+            return false;
+        if(resumeModelDto.isFamilyContactRelation() && resumeDto.getFamilyContactRelation() == null)
+            return false;
+        if(resumeModelDto.isFamilyContactName() && resumeDto.getFamilyContactName() == null)
+            return false;
+        if(resumeModelDto.isFamilyContactCompany() && resumeDto.getFamilyContactCompany() == null)
+            return false;
+        if(resumeModelDto.isFamilyContactPhoneNum() && resumeDto.getFamilyContactPhoneNum() == null)
+            return false;
+
+        return true;
+    }
 
     public List<ApplicantInterviewVo> findApplicantInterviewsByApplicationId(int applicationId) {
         ApplicationDto applicationDto;
