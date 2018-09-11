@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -260,6 +261,26 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
 
         return StatusCode.SUCCESS;
+    }
+
+    public List<ApplicantInterviewVo> findApplicantInterviewsByApplicationId(int applicationId) {
+        ApplicationDto applicationDto;
+        List<InterviewDto> interviewDtos;
+        List<ApplicantInterviewVo> applicantInterviewVos = new ArrayList<>();
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            interviewDtos = applicationDto.getInterviews();
+            interviewDtos = interviewDtos.stream().filter(x -> (x.getReservationStatus() == ReservationStatus.SUCCESS))
+                    .sorted(Comparator.comparing(x -> x.getCreateTime())).collect(Collectors.toList());
+            for(InterviewDto i: interviewDtos) {
+                applicantInterviewVos.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return applicantInterviewVos;
     }
 
 }
