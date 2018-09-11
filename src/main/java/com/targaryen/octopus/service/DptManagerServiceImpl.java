@@ -75,11 +75,11 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setRecruitType(newPost.getRecruitType());
             postDto.setStatus(newPost.getStatus());
             postDto.setDepartment(department);
+            postDtoRepository.save(postDto);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);
             postDto.setResumeModel(resumeModelDto);
             resumeModelDtoRepository.save(resumeModelDto);
-            postDtoRepository.save(postDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -91,14 +91,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {
-                post.setPostName(updatePost.getPostName());
-                post.setPostType(updatePost.getPostType());
-                post.setPostLocale(updatePost.getPostLocale());
-                post.setPostDescription(updatePost.getPostDescription());
-                post.setPostRequirement(updatePost.getPostRequirement());
-                post.setRecruitNum(updatePost.getRecruitNum());
-                post.setRecruitDpt(updatePost.getRecruitDpt());
-                post.setRecruitType(updatePost.getRecruitType());
+                DataTransferUtil.updatePostDtoByVo(post, updatePost);
                 postDtoRepository.save(post);
             }
             return StatusCode.SUCCESS;

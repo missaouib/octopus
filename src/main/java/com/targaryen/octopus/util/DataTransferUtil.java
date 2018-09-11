@@ -3,6 +3,9 @@ package com.targaryen.octopus.util;
 import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.vo.*;
 
+/**
+ * @author He Junfeng
+ */
 public class DataTransferUtil {
 
     public static ApplicationVo ApplicationDtoToVo(ApplicationDto applicationDto) {
@@ -62,6 +65,18 @@ public class DataTransferUtil {
                 .recruitType(postDto.getRecruitType())
                 .interviewRound(postDto.getInterviewRound())
                 .build();
+    }
+
+    public static PostDto updatePostDtoByVo(PostDto postDto, PostVo postVo) {
+        postDto.setPostName(postVo.getPostName());
+        postDto.setPostType(postVo.getPostType());
+        postDto.setPostLocale(postVo.getPostLocale());
+        postDto.setPostDescription(postVo.getPostDescription());
+        postDto.setPostRequirement(postVo.getPostRequirement());
+        postDto.setRecruitNum(postVo.getRecruitNum());
+        postDto.setRecruitDpt(postVo.getRecruitDpt());
+        postDto.setRecruitType(postVo.getRecruitType());
+        return postDto;
     }
 
     public static ResumeVo ResumeDtoToVo(ResumeDto resumeDto) {
@@ -225,6 +240,39 @@ public class DataTransferUtil {
                 .postId(resumeModelDto.getPost().getPostId())
                 .recommenderName(resumeModelDto.isRecommenderName())
                 .resumeModelId(resumeModelDto.getResumeModelId())
+                .applicantPhoto(resumeModelDto.isApplicantPhoto())
                 .build();
+    }
+
+    public static ResumeModelDto updateResumeModelDtoByVo(ResumeModelDto resumeModelDto, ResumeModelVo resumeModelVo) {
+        resumeModelDto.setApplicantAddress(resumeModelVo.isApplicantAddress());
+        resumeModelDto.setApplicantAge(resumeModelVo.isApplicantAge());
+        resumeModelDto.setApplicantCity(resumeModelVo.isApplicantCity());
+        resumeModelDto.setApplicantCurrentSalary(resumeModelVo.isApplicantCurrentSalary());
+        resumeModelDto.setApplicantCV(resumeModelVo.isApplicantCV());
+        resumeModelDto.setApplicantDateOfBirth(resumeModelVo.isApplicantDateOfBirth());
+        resumeModelDto.setApplicantDegree(resumeModelVo.isApplicantDegree());
+        resumeModelDto.setApplicantDegreePhoto(resumeModelVo.isApplicantDegree());
+        resumeModelDto.setApplicantDutyTime(resumeModelVo.isApplicantDutyTime());
+        resumeModelDto.setApplicantEmail(resumeModelVo.isApplicantEmail());
+        resumeModelDto.setApplicantExpectSalary(resumeModelVo.isApplicantExpectSalary());
+        resumeModelDto.setApplicantHometown(resumeModelVo.isApplicantHometown());
+        resumeModelDto.setApplicantMajor(resumeModelVo.isApplicantMajor());
+        resumeModelDto.setApplicantMaritalStatus(resumeModelVo.isApplicantMaritalStatus());
+        resumeModelDto.setApplicantName(resumeModelVo.isApplicantName());
+        resumeModelDto.setApplicantNation(resumeModelVo.isApplicantNation());
+        resumeModelDto.setApplicantPhone(resumeModelVo.isApplicantPhone());
+        resumeModelDto.setApplicantPhoto(resumeModelVo.isApplicantPhoto());
+        resumeModelDto.setApplicantPoliticalStatus(resumeModelVo.isApplicantPoliticalStatus());
+        resumeModelDto.setApplicantSchool(resumeModelVo.isApplicantSchool());
+        resumeModelDto.setApplicantSelfIntro(resumeModelVo.isApplicantSelfIntro());
+        resumeModelDto.setApplicantSex(resumeModelVo.isApplicantSex());
+        resumeModelDto.setApplicantTimeToWork(resumeModelVo.isApplicantTimeToWork());
+        resumeModelDto.setFamilyContactCompany(resumeModelVo.isFamilyContactCompany());
+        resumeModelDto.setFamilyContactName(resumeModelVo.isFamilyContactName());
+        resumeModelDto.setFamilyContactPhoneNum(resumeModelVo.isFamilyContactPhoneNum());
+        resumeModelDto.setFamilyContactRelation(resumeModelVo.isFamilyContactRelation());
+        resumeModelDto.setRecommenderName(resumeModelVo.isRecommenderName());
+        return resumeModelDto;
     }
 }

@@ -97,14 +97,7 @@ public class HRServiceImpl implements HRService {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {
-                post.setPostName(updatePost.getPostName());
-                post.setPostType(updatePost.getPostType());
-                post.setPostLocale(updatePost.getPostLocale());
-                post.setPostDescription(updatePost.getPostDescription());
-                post.setPostRequirement(updatePost.getPostRequirement());
-                post.setRecruitNum(updatePost.getRecruitNum());
-                post.setRecruitDpt(updatePost.getRecruitDpt());
-                post.setRecruitType(updatePost.getRecruitType());
+                DataTransferUtil.updatePostDtoByVo(post, updatePost);
                 postDtoRepository.save(post);
             }
             return StatusCode.SUCCESS;
@@ -123,34 +116,7 @@ public class HRServiceImpl implements HRService {
     public int updateResumeModelById(ResumeModelVo resumeModelVo) {
         try {
             ResumeModelDto resumeModelDto = resumeModelDtoRepository.findResumeModelDtoByResumeModelId(resumeModelVo.getResumeModelId());
-            resumeModelDto.setApplicantAddress(resumeModelVo.isApplicantAddress());
-            resumeModelDto.setApplicantAge(resumeModelVo.isApplicantAge());
-            resumeModelDto.setApplicantCity(resumeModelVo.isApplicantCity());
-            resumeModelDto.setApplicantCurrentSalary(resumeModelVo.isApplicantCurrentSalary());
-            resumeModelDto.setApplicantCV(resumeModelVo.isApplicantCV());
-            resumeModelDto.setApplicantDateOfBirth(resumeModelVo.isApplicantDateOfBirth());
-            resumeModelDto.setApplicantDegree(resumeModelVo.isApplicantDegree());
-            resumeModelDto.setApplicantDegreePhoto(resumeModelVo.isApplicantDegree());
-            resumeModelDto.setApplicantDutyTime(resumeModelVo.isApplicantDutyTime());
-            resumeModelDto.setApplicantEmail(resumeModelVo.isApplicantEmail());
-            resumeModelDto.setApplicantExpectSalary(resumeModelVo.isApplicantExpectSalary());
-            resumeModelDto.setApplicantHometown(resumeModelVo.isApplicantHometown());
-            resumeModelDto.setApplicantMajor(resumeModelVo.isApplicantMajor());
-            resumeModelDto.setApplicantMaritalStatus(resumeModelVo.isApplicantMaritalStatus());
-            resumeModelDto.setApplicantName(resumeModelVo.isApplicantName());
-            resumeModelDto.setApplicantNation(resumeModelVo.isApplicantNation());
-            resumeModelDto.setApplicantPhone(resumeModelVo.isApplicantPhone());
-            resumeModelDto.setApplicantPhoto(resumeModelVo.isApplicantPhoto());
-            resumeModelDto.setApplicantPoliticalStatus(resumeModelVo.isApplicantPoliticalStatus());
-            resumeModelDto.setApplicantSchool(resumeModelVo.isApplicantSchool());
-            resumeModelDto.setApplicantSelfIntro(resumeModelVo.isApplicantSelfIntro());
-            resumeModelDto.setApplicantSex(resumeModelVo.isApplicantSex());
-            resumeModelDto.setApplicantTimeToWork(resumeModelVo.isApplicantTimeToWork());
-            resumeModelDto.setFamilyContactCompany(resumeModelVo.isFamilyContactCompany());
-            resumeModelDto.setFamilyContactName(resumeModelVo.isFamilyContactName());
-            resumeModelDto.setFamilyContactPhoneNum(resumeModelVo.isFamilyContactPhoneNum());
-            resumeModelDto.setFamilyContactRelation(resumeModelVo.isFamilyContactRelation());
-            resumeModelDto.setRecommenderName(resumeModelVo.isRecommenderName());
+            DataTransferUtil.updateResumeModelDtoByVo(resumeModelDto, resumeModelVo);
             resumeModelDtoRepository.save(resumeModelDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
