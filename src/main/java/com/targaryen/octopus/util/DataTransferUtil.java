@@ -1,6 +1,8 @@
 package com.targaryen.octopus.util;
 
 import com.targaryen.octopus.dto.*;
+import com.targaryen.octopus.util.status.InterviewResultStatus;
+import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.*;
 
 /**
@@ -196,6 +198,7 @@ public class DataTransferUtil {
         PostDto postDto = applicationDto.getPost();
         InterviewerDto interviewerDto = interviewDto.getInterviewer();
         return new ApplicantInterviewVo.Builder()
+                .interviewId(interviewDto.getInterviewId())
                 .applicationId(applicationDto.getApplicationId())
                 .interviewerId(interviewerDto.getInterviewerId())
                 .interviewerName(interviewerDto.getInterviewerName())
@@ -274,5 +277,36 @@ public class DataTransferUtil {
         resumeModelDto.setFamilyContactRelation(resumeModelVo.isFamilyContactRelation());
         resumeModelDto.setRecommenderName(resumeModelVo.isRecommenderName());
         return resumeModelDto;
+    }
+
+    public static InterviewerInterviewVo InterviewDtoToInterviewerInterviewVo(InterviewDto interviewDto) {
+        ApplicationDto applicationDto = interviewDto.getApplication();
+        PostDto postDto = applicationDto.getPost();
+        InterviewerDto interviewerDto = interviewDto.getInterviewer();
+        ApplicantDto applicantDto = applicationDto.getApplicant();
+        ResumeDto resumeDto = applicantDto.getResume();
+        int rounds = (int)applicationDto.getInterviews()
+                .stream().filter(x -> x.getReservationStatus() >= 0)
+                .filter(x -> x.getCreateTime().before(interviewDto.getCreateTime()))
+                .count() + 1;
+        return new InterviewerInterviewVo.Builder()
+                .interviewId(interviewDto.getInterviewId())
+                .applicationId(applicationDto.getApplicationId())
+                .applicantId(applicantDto.getApplicantId())
+                .applicantName(resumeDto.getApplicantName())
+                .rounds(rounds)
+                .interviewerId(interviewerDto.getInterviewerId())
+                .interviewerName(interviewerDto.getInterviewerName())
+                .interviewerStatus(interviewDto.getInterviewerStatus())
+                .applicantStatus(interviewDto.getApplicantStatus())
+                .reservationStatus(interviewDto.getReservationStatus())
+                .interviewPlace(interviewDto.getInterviewPlace())
+                .interviewResultComment(interviewDto.getInterviewResultComment())
+                .interviewResultStatus(interviewDto.getInterviewResultStatus())
+                .interviewStartTime(interviewDto.getInterviewStartTime())
+                .postLocale(postDto.getPostLocale())
+                .postName(postDto.getPostName())
+                .postType(postDto.getPostType())
+                .recruitDpt(postDto.getRecruitDpt()).build();
     }
 }

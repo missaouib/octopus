@@ -17,77 +17,225 @@
 </head>
 
 <body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight">
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h1>Post needs</h1>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1>Interview Summary</h1>
+                </div>
+                <div class="ibox-content">
+                    <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" style="width:100%;">
+
+                        <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
+                               style="width:25%;float:right;"/>
                     </div>
-                    <div class="ibox-content">
-                        <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" style="width:100%;">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="9"
+                           data-filter="#filter">
+                        <thead>
+                        <tr class="footable even">
+                            <th>Applicant Status</th>
+                            <th>Interviewer Status</th>
+                            <th>Reservation</th>
+                            <th>Result Status</th>
+                            <th>Applicant</th>
+                            <th>Post</th>
+                            <!--<th>Post Type</th>
+                            <th>Post Locale</th>
+                            <th>Recruit Department</th>-->
+                            <th>Interview Time</th>
+                            <th>Interview Place</th>
+                            <th>Round</th>
+                            <th>Check</th>
+                            <th>Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                            <button type="button" class="btn btn-outline btn-default"
-                                    onclick="{location.href='add'}">
-                                <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
-                                Add new
-                            </button>
-
-                            <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
-                                   style="width:25%;float:right;"/>
-                        </div>
-                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="9"
-                               data-filter="#filter">
-                            <thead>
-                            <tr class="footable even">
-                                <th>Interview Time</th>
-                                <th>Interview Locale</th>
-                                <th>Operation</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                                <th:block th:each="post : ${interviewList}">
-                                    <tr>
-                                        <td th:text="${post.interviewStartTime}"></td>
-                                        <td th:text="${post.interviewPlace}"></td>
-                                        <td>
-                                            <button type="button"
-                                                    onclick=""
-                                                    class="btn btn-outline btn-default">
-                                                <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
-                                                Agree
-                                            </button>
-                                            <button type="button"
-                                                    th:onclick="${'location.href=''detail/' + post.postId + ''''}"
-                                                    class="btn btn-outline btn-default">
-                                                <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
-                                                Check Interview
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                </th:block>
-                            </tbody>
-
-                            <tfoot>
+                        <th:block th:each="interview : ${interviewList}">
                             <tr>
-                                <td colspan="4">
+                                <td>
+                                    <span th:if="${interview.applicantStatus} eq ${T(com.targaryen.octopus.util.status.ApplicantStatus).INIT}" class="label label-success">App Init</span>
+                                    <span th:if="${interview.applicantStatus} eq ${T(com.targaryen.octopus.util.status.ApplicantStatus).REJECTED}" class="label label-danger">App Rejected</span>
+                                    <span th:if="${interview.applicantStatus} eq ${T(com.targaryen.octopus.util.status.ApplicantStatus).ACCEPTED}" class="label label-primary">App Accepted</span>
+                                </td>
+                                <td>
+                                    <span th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).INIT}" class="label label-success">Iner Init</span>
+                                    <span th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).REJECTED}" class="label label-danger">Iner Rejected</span>
+                                    <span th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).ACCEPTED}" class="label label-primary">Iner Accepted</span>
+                                </td>
+                                <td>
+                                    <span th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).INIT}" class="label label-success">Res Init</span>
+                                    <span th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).FAIL}" class="label label-danger">Res Fail</span>
+                                    <span th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).SUCCESS}" class="label label-primary">Res Success</span>
+                                </td>
+                                <td>
+                                    <span th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).INIT}" class="label label-success">Result Init</span>
+                                    <span th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).NOT_HIRE}" class="label label-danger">Not Hire</span>
+                                    <span th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).WEAK_HIRE}" class="label label-default">Weak Hire</span>
+                                    <span th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).HIRE}" class="label label-info">Hire</span>
+                                    <span th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).STRONG_HIRE}" class="label label-primary">Strong Hire</span>
+                                </td>
+
+                                <td th:text="${interview.applicantName}"></td>
+                                <td th:text="${interview.postName}"></td>
+                                <!--s<td th:text="${interview.interviewId}"></td>
+                                <td th:text="${interview.postLocale}"></td>
+                                <td th:text="${interview.recruitDpt}"></td>-->
+                                <td th:text="${interview.interviewStartTime}"></td>
+                                <td th:text="${interview.interviewPlace}"></td>
+                                <td th:text="${interview.rounds}"></td>
+                                <td>
+                                    <button th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).INIT}" type="button"
+                                            th:onclick="${'agreeInterview(''' + interview.interviewId + ''', ''' + interview.applicantName + ''')'}"
+                                            class="btn btn-outline btn-default">
+                                        Agree
+                                    </button>
+                                    <button th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).INIT}" type="button"
+                                            th:onclick="${'rejectInterview(''' + interview.interviewId + ''', ''' + interview.applicantName + ''')'}"
+                                            class="btn btn-outline btn-default">
+                                        Reject
+                                    </button>
+                                    <button th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).ACCEPTED}" type="button"
+                                            disabled="disabled"
+                                            class="btn btn-primary">
+                                        Accept
+                                    </button>
+                                    <button th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).REJECTED}" type="button"
+                                            disabled="d isabled"
+                                            class="btn btn-danger">
+                                        Reject
+                                    </button>
+
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            th:onclick="${'location.href=''../applicant/detail/' + interview.applicantId + ''''}"
+                                            class="btn btn-outline btn-default">
+                                        <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>
+                                        Applicant Detail
+                                    </button>
+                                    <button type="button"
+                                            th:onclick="${'location.href=''timeline/' + interview.applicationId + ''''}"
+                                            class="btn btn-outline btn-default">
+                                        <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
+                                        Check Interview
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </th:block>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="12">
                                     <ul class="pagination pull-right"></ul>
                                 </td>
                             </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-<script>
+
+<script th:inline="javascript">
     $(".footable").footable();
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    function agreeInterview(interviewId, applicantName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to start this interview with : " + applicantName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'agree/' + interviewId,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully agreed with this interview.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully agreed with this interview.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    function rejectInterview(interviewId, applicantName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to reject  interview with: " + applicantName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'reject/' + interviewId,
+                    data: csrfData,
+                    async: false,
+                    success: function(data) {
+                        swal({
+                            title:"Success",
+                            text: "You have successfully rejected this interview.",
+                            type:"success"
+                        }, function(isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function(data) {
+                        swal({
+                            title:"Failure",
+                            text: "You have not successfully rejected this interview.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
 </script>
+
 
 </body>
 </html>

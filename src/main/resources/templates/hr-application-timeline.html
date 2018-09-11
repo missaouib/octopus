@@ -48,14 +48,14 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Resume Passed</h2>
-                                    <p>Assessor: Fake HR ID</p>
+                                    <p th:text="${'Applicant: ' + appli.applicantName}"></p>
 
                                     <a th:if="${interviewList.isEmpty()}" data-toggle="modal" data-target="#new-interview"
                                        class="btn btn-sm btn-warning" style="margin-left: 5px;">Arrange new interview</a>
 
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.filterEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.filterEndTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -75,6 +75,8 @@
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Arrangement</h2>
                                         <p>New interview created. Waiting for confirmation from interviewer and applicant.</p>
+                                        <p th:text="${'Interview Start Time: ' + #dates.format(interview.interviewStartTime,'yyyy-MM-dd HH:mm')}"></p>
+                                        <p th:text="${'Interview Place: ' + interview.interviewPlace}"></p>
 
                                         <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
                                             and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
@@ -82,9 +84,9 @@
                                         </th:block>
 
                                         <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
-                                    </span>
+                                            <label th:text="${#dates.format(interview.createTime,'yyyy-MM-dd')}"></label> <br/>
+                                            <small><label th:text="${#dates.format(interview.createTime,'HH:mm')}"></label></small>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -97,11 +99,20 @@
 
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Arrangement Rejected</h2>
-                                        <p>
-                                            Interview arrangement rejected by interviewer/applicant.
-                                            <br/>
-                                            Comment: ***
+
+                                        <p th:if="${interview.applicantStatus} eq ${T(com.targaryen.octopus.util.status.ApplicantStatus).REJECTED}">
+                                            Interview arrangement rejected by applicant.
                                         </p>
+
+                                        <p th:if="${interview.applicantStatus} eq ${T(com.targaryen.octopus.util.status.ApplicantStatus).REJECTED}"
+                                           th:text="${'Applicant Comment: ' + interview.applicantComment}"></p>
+
+                                        <p th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).REJECTED}">
+                                            Interview arrangement rejected by interviewer.
+                                        </p>
+
+                                        <p th:if="${interview.interviewerStatus} eq ${T(com.targaryen.octopus.util.status.InterviewerStatus).REJECTED}"
+                                           th:text="${'Interviewer Comment: ' + interview.interviewerComment}"></p>
 
                                         <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
                                             and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
@@ -111,9 +122,9 @@
                                         </th:block>
 
                                         <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
-                                    </span>
+                                            <label th:text="${#dates.format(interview.reservationResultTime,'yyyy-MM-dd')}"></label> <br/>
+                                            <small><label th:text="${#dates.format(interview.reservationResultTime,'HH:mm')}"></label></small>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -127,22 +138,20 @@
 
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Arrangement Accepted (Waiting for Interview Result)</h2>
-                                        <p>
-                                            Interview arrangement accepted by both interviewer and applicant. Waiting for interview result.
-                                            <br/>
-                                            Interview detail: ***
-                                        </p>
+                                        <p>Interview arrangement accepted by both interviewer and applicant. Waiting for interview result.</p>
+                                        <p th:text="${'Interview Start Time: ' + #dates.format(interview.interviewStartTime,'yyyy-MM-dd HH:mm')}"></p>
+                                        <p th:text="${'Interview Place: ' + interview.interviewPlace}"></p>
 
                                         <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
-                                    </span>
+                                            <label th:text="${#dates.format(interview.reservationResultTime,'yyyy-MM-dd')}"></label> <br/>
+                                            <small><label th:text="${#dates.format(interview.reservationResultTime,'HH:mm')}"></label></small>
+                                        </span>
                                     </div>
                                 </div>
 
                                 <!-- Interview Failed -->
                                 <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).SUCCESS}
-                                    and ${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).FAIL}"
+                                    and ${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).NOT_HIRE}"
                                      class="vertical-timeline-block">
                                     <div class="vertical-timeline-icon muted-bg" style="background-color: #343a40;">
                                         <i class="fa fa-undo" style="color: #FFF;"></i>
@@ -150,11 +159,8 @@
 
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Failed</h2>
-                                        <p>
-                                            Interview failed by interviewer.
-                                            <br/>
-                                            Comment: ***
-                                        </p>
+                                        <p>Interview failed by interviewer.</p>
+                                        <p th:text="${'Interviewer Result Comment: ' + interview.interviewResultComment}"></p>
 
                                         <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
                                             and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
@@ -164,15 +170,16 @@
                                         </th:block>
 
                                         <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
-                                    </span>
+                                            <label th:text="${#dates.format(interview.interviewResultTime,'yyyy-MM-dd')}"></label> <br/>
+                                            <small><label th:text="${#dates.format(interview.interviewResultTime,'HH:mm')}"></label></small>
+                                        </span>
                                     </div>
                                 </div>
 
                                 <!-- Interview Passed -->
                                 <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).SUCCESS}
-                                    and ${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).PASS}"
+                                    and ${interview.interviewResultStatus} ne ${T(com.targaryen.octopus.util.status.InterviewResultStatus).NOT_HIRE}
+                                    and ${interview.interviewResultStatus} ne ${T(com.targaryen.octopus.util.status.InterviewResultStatus).INIT}"
                                      class="vertical-timeline-block">
                                     <div class="vertical-timeline-icon navy-bg">
                                         <i class="fa fa-arrow-down"></i>
@@ -180,11 +187,11 @@
 
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Passed</h2>
-                                        <p>
-                                            Interview passed by interviewer.
-                                            <br/>
-                                            Interview detail: ***
-                                        </p>
+                                        <p>Interview passed by interviewer.</p>
+                                        <p th:text="${'Interviewer Result Comment: ' + interview.interviewResultComment}"></p>
+                                        <p th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).WEAK_HIRE}">Interviewer Result Level: Weak Hire</p>
+                                        <p th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).HIRE}">Interviewer Result Level: Normal Hire</p>
+                                        <p th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).STRONG_HIRE}">Interviewer Result Level: Strong Hire</p>
 
                                         <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
                                             and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
@@ -196,9 +203,9 @@
                                             </th:block>
 
                                         <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
-                                    </span>
+                                            <label th:text="${#dates.format(interview.interviewResultTime,'yyyy-MM-dd')}"></label> <br/>
+                                            <small><label th:text="${#dates.format(interview.interviewResultTime,'HH:mm')}"></label></small>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -217,14 +224,11 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Application Rejected (HR)</h2>
-                                    <p>
-                                        Application rejected by HR.
-                                        <br/>
-                                        Assessor: ***
-                                    </p>
+                                    <p>Application rejected by HR.</p>
+
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.interviewEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.interviewEndTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -239,14 +243,11 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Application Passed (HR)</h2>
-                                    <p>
-                                        Application passed by HR. Waiting for department manager confirmation.
-                                        <br/>
-                                        Assessor: ***
-                                    </p>
+                                    <p>Application passed by HR. Waiting for department manager confirmation.</p>
+
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.interviewEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.interviewEndTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -260,14 +261,11 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Application Rejected (Department Manager)</h2>
-                                    <p>
-                                        Application rejected by department manager.
-                                        <br/>
-                                        Assessor: ***
-                                    </p>
+                                    <p>Application rejected by department manager.</p>
+
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.dptApproveEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.dptApproveEndTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -282,11 +280,7 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Application Passed (Department Manager)</h2>
-                                    <p>
-                                        Application passed by department manager. Ready for sending offer!
-                                        <br/>
-                                        Assessor: ***
-                                    </p>
+                                    <p>Application passed by department manager. Ready for sending offer!</p>
 
                                     <th:block th:if="${T(java.lang.Math).abs(appli.status)} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}">
                                         <a class="btn btn-sm btn-warning" style="margin-left: 5px; background-color:#9c27b0;"
@@ -294,8 +288,8 @@
                                     </th:block>
 
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.dptApproveEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.dptApproveEndTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -310,12 +304,11 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Offer Sent</h2>
-                                    <p>
-                                        Offer sent to applicant. Waiting for confirmation.
-                                    </p>
+                                    <p>Offer sent to applicant. Waiting for confirmation.</p>
+
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.offerTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.offerTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -329,12 +322,11 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Offer Rejected</h2>
-                                    <p>
-                                        Offer rejected by applicant.
-                                    </p>
+                                    <p>Offer rejected by applicant.</p>
+
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.applicantFeedbackTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.applicantFeedbackTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -348,12 +340,11 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Offer Accepted</h2>
-                                    <p>
-                                        Offer accepted by applicant. Congratulations!
-                                    </p>
+                                    <p>Offer accepted by applicant. Congratulations!</p>
+
                                     <span class="vertical-date">
-                                        Fake Day <br/>
-                                        <small>Fake Time</small>
+                                        <label th:text="${#dates.format(appli.applicantFeedbackTime,'yyyy-MM-dd')}"></label> <br/>
+                                        <small><label th:text="${#dates.format(appli.applicantFeedbackTime,'HH:mm')}"></label></small>
                                     </span>
                                 </div>
                             </div>
@@ -405,7 +396,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Start Time:</label>
                             <div class="col-sm-8">
-                                <input name="interviewStartTime" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'});" required="required" />
+                                <input type="text" name="interviewStartTime" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'});" required="required" />
                             </div>
                         </div>
 
@@ -419,203 +410,204 @@
         </div>
     </div>
 
+
     <script th:inline="javascript">
-    $(".footable").footable();
+        $(".footable").footable();
 
-    /*<![CDATA[*/
-    var _csrf_token = /*[[${_csrf.token}]]*/ '';
-    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
-    /*]]>*/
-    var csrfData = {};
-    csrfData[_csrf_param_name] = _csrf_token;
+        /*<![CDATA[*/
+        var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+        /*]]>*/
+        var csrfData = {};
+        csrfData[_csrf_param_name] = _csrf_token;
 
-    /* Timeline buttons */
-    $('#lightVersion').click(function(event) {
-        event.preventDefault();
-        $('#ibox-content').removeClass('ibox-content');
-        $('#vertical-timeline').removeClass('dark-timeline');
-        $('#vertical-timeline').addClass('light-timeline');
-    });
+        /* Timeline buttons */
+        $('#lightVersion').click(function(event) {
+            event.preventDefault();
+            $('#ibox-content').removeClass('ibox-content');
+            $('#vertical-timeline').removeClass('dark-timeline');
+            $('#vertical-timeline').addClass('light-timeline');
+        });
 
-    $('#darkVersion').click(function(event) {
-        event.preventDefault();
-        $('#ibox-content').addClass('ibox-content');
-        $('#vertical-timeline').removeClass('light-timeline');
-        $('#vertical-timeline').addClass('dark-timeline');
-    });
+        $('#darkVersion').click(function(event) {
+            event.preventDefault();
+            $('#ibox-content').addClass('ibox-content');
+            $('#vertical-timeline').removeClass('light-timeline');
+            $('#vertical-timeline').addClass('dark-timeline');
+        });
 
-    $('#leftVersion').click(function(event) {
-        event.preventDefault();
+        $('#leftVersion').click(function(event) {
+            event.preventDefault();
+            $('#vertical-timeline').toggleClass('center-orientation');
+        });
+
+        /* Init: Left Version */
         $('#vertical-timeline').toggleClass('center-orientation');
-    });
-
-    /* Init: Left Version */
-    $('#vertical-timeline').toggleClass('center-orientation');
 
 
-    /* Cancel interview (Delete) */
-    function cancelInterview(interviewId) {
-        csrfData['interviewId'] = interviewId;
+        /* Cancel interview (Delete) */
+        function cancelInterview(interviewId) {
+            csrfData['interviewId'] = interviewId;
 
-        swal({
-            title : "Confirm",
-            text: "Do you really wish to delete this interview permanently?",
-            type : "warning",
-            showCancelButton : true,
-            confirmButtonColor : "#DD6B55",
-            confirmButtonText : "Yes",
-            cancelButtonText : "No",
-            closeOnConfirm : false,
-            closeOnCancel : false
-        }, function(isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    type: "post",
-                    url: 'interview/cancel',
-                    data: csrfData,
-                    async: false,
-                    success: function (data) {
-                        swal({
-                            title: "Success",
-                            text: "You have successfully deleted this interview permanently.",
-                            type: "success"
-                        }, function (isConfirm) {
-                            document.location.reload();
-                        });
-                    },
-                    error: function (data) {
-                        swal({
-                            title: "Failure",
-                            text: "You have not successfully deleted this interview permanently.",
-                            type: "error"
-                        });
-                    }
-                });
-            } else {
-                swal("Cancelled", "You have cancelled.", "error");
-            }
-        });
-    }
-
-    /* Reject application by HR */
-    function processApplicationByHR(applicationId, urlStr) {
-        csrfData['applicationId'] = applicationId;
-
-        swal({
-            title : "Confirm",
-            text: "Do you really wish to reject this application permanently?",
-            type : "warning",
-            showCancelButton : true,
-            confirmButtonColor : "#DD6B55",
-            confirmButtonText : "Yes",
-            cancelButtonText : "No",
-            closeOnConfirm : false,
-            closeOnCancel : false
-        }, function(isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    type: "post",
-                    url: urlStr,
-                    data: csrfData,
-                    async: false,
-                    success: function (data) {
-                        swal({
-                            title: "Success",
-                            text: "You have successfully rejected this application permanently.",
-                            type: "success"
-                        }, function (isConfirm) {
-                            document.location.reload();
-                        });
-                    },
-                    error: function (data) {
-                        swal({
-                            title: "Failure",
-                            text: "You have not successfully rejected this application permanently.",
-                            type: "error"
-                        });
-                    }
-                });
-            } else {
-                swal("Cancelled", "You have cancelled.", "error");
-            }
-        });
-    }
-
-    /* Send offer */
-    function sendOffer(applicationId) {
-        csrfData['applicationId'] = applicationId;
-
-        swal({
-            title : "Confirm",
-            text: "Do you really wish to send offer?",
-            type : "warning",
-            showCancelButton : true,
-            confirmButtonColor : "#DD6B55",
-            confirmButtonText : "Yes",
-            cancelButtonText : "No",
-            closeOnConfirm : false,
-            closeOnCancel : false
-        }, function(isConfirm) {
-            if (isConfirm) {
-                $.ajax({
-                    type: "post",
-                    url: "offer",
-                    data: csrfData,
-                    async: false,
-                    success: function (data) {
-                        swal({
-                            title: "Success",
-                            text: "You have successfully sent offer.",
-                            type: "success"
-                        }, function (isConfirm) {
-                            document.location.reload();
-                        });
-                    },
-                    error: function (data) {
-                        swal({
-                            title: "Failure",
-                            text: "You have not successfully sent offer.",
-                            type: "error"
-                        });
-                    }
-                });
-            } else {
-                swal("Cancelled", "You have cancelled.", "error");
-            }
-        });
-    }
-
-    /* Validation */
-    var validationConfig = {
-        // submitHandler executes after the form PASSED the validation
-        submitHandler: function(form) {
-            $.ajax({
-                type: "post",
-                url: "interview/new",
-                data: $('#new-interview-form').serialize(),
-                async: false,
-                success: function(data) {
-                    swal({
-                        title:"Success",
-                        text: "You have successfully created a new interview.",
-                        type:"success"
-                    }, function(isConfirm) {
-                        document.location.reload();
+            swal({
+                title : "Confirm",
+                text: "Do you really wish to delete this interview permanently?",
+                type : "warning",
+                showCancelButton : true,
+                confirmButtonColor : "#DD6B55",
+                confirmButtonText : "Yes",
+                cancelButtonText : "No",
+                closeOnConfirm : false,
+                closeOnCancel : false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "post",
+                        url: 'interview/cancel',
+                        data: csrfData,
+                        async: false,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: "You have successfully deleted this interview permanently.",
+                                type: "success"
+                            }, function (isConfirm) {
+                                document.location.reload();
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Failure",
+                                text: "You have not successfully deleted this interview permanently.",
+                                type: "error"
+                            });
+                        }
                     });
-                },
-                error: function(data) {
-                    swal({
-                        title:"Failure",
-                        text: "You have not successfully created a new interview.",
-                        type: "error"
-                    });
+                } else {
+                    swal("Cancelled", "You have cancelled.", "error");
                 }
             });
         }
-    };
 
-    $("#new-interview-form").validate(validationConfig);
-</script>
+        /* Reject application by HR */
+        function processApplicationByHR(applicationId, urlStr) {
+            csrfData['applicationId'] = applicationId;
+
+            swal({
+                title : "Confirm",
+                text: "Do you really wish to reject this application permanently?",
+                type : "warning",
+                showCancelButton : true,
+                confirmButtonColor : "#DD6B55",
+                confirmButtonText : "Yes",
+                cancelButtonText : "No",
+                closeOnConfirm : false,
+                closeOnCancel : false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "post",
+                        url: urlStr,
+                        data: csrfData,
+                        async: false,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: "You have successfully rejected this application permanently.",
+                                type: "success"
+                            }, function (isConfirm) {
+                                document.location.reload();
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Failure",
+                                text: "You have not successfully rejected this application permanently.",
+                                type: "error"
+                            });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "You have cancelled.", "error");
+                }
+            });
+        }
+
+        /* Send offer */
+        function sendOffer(applicationId) {
+            csrfData['applicationId'] = applicationId;
+
+            swal({
+                title : "Confirm",
+                text: "Do you really wish to send offer?",
+                type : "warning",
+                showCancelButton : true,
+                confirmButtonColor : "#DD6B55",
+                confirmButtonText : "Yes",
+                cancelButtonText : "No",
+                closeOnConfirm : false,
+                closeOnCancel : false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "post",
+                        url: "offer",
+                        data: csrfData,
+                        async: false,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: "You have successfully sent offer.",
+                                type: "success"
+                            }, function (isConfirm) {
+                                document.location.reload();
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Failure",
+                                text: "You have not successfully sent offer.",
+                                type: "error"
+                            });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "You have cancelled.", "error");
+                }
+            });
+        }
+
+        /* Validation */
+        var validationConfig = {
+            // submitHandler executes after the form PASSED the validation
+            submitHandler: function(form) {
+                $.ajax({
+                    type: "post",
+                    url: "interview/new",
+                    data: $('#new-interview-form').serialize(),
+                    async: false,
+                    success: function(data) {
+                        swal({
+                            title:"Success",
+                            text: "You have successfully created a new interview.",
+                            type:"success"
+                        }, function(isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function(data) {
+                        swal({
+                            title:"Failure",
+                            text: "You have not successfully created a new interview.",
+                            type: "error"
+                        });
+                    }
+                });
+            }
+        };
+
+        $("#new-interview-form").validate(validationConfig);
+    </script>
 
 </body>
 </html>

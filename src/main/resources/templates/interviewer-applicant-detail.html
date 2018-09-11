@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Department Manager - Post List</title>
+
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1>Applicant Detail</h1>
+                </div>
+                <div class="col-lg-4">
+                    <div class="panel-body">
+                        <div class="container">
+                            <blockquote style="font-style: italic;background-color: #F0F0F0; width:500px;">Personal</blockquote>
+                            <div class="row col-lg-4" style="margin-left: 30px;">
+                                <div class="row">
+                                    <label style="width:50px; font-style: italic;">Name: </label>&emsp;<label th:text="${resume.applicantName}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:50px; font-style: italic;">Age: </label>&emsp;<label th:text="${resume.applicantAge}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:50px; font-style: italic;">Sex: </label>&emsp;<label th:text="${resume.applicantSex}?'Female':'Male'"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container" style="margin-top: 20px;">
+                            <blockquote style="font-style: italic;background-color: #F0F0F0; width:500px;">Education</blockquote>
+                            <div class="row col-lg-4" style="margin-left: 30px;">
+                                <div class="row">
+                                    <label style="width:50px; font-style: italic;">School: </label>&emsp;<label th:text="${resume.applicantSchool}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:50px; font-style: italic;">Major: </label>&emsp;<label th:text="${resume.applicantMajor}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:50px; font-style: italic;">Degree: </label>&emsp;<label th:text="${resume.applicantDegree}?'Master':'Bachelor'"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container" style="margin-top: 20px;">
+                            <blockquote style="font-style: italic;background-color:#F0F0F0; width:500px;">Contact</blockquote>
+                            <div class="row col-lg-4" style="margin-left: 30px;">
+                                <div class="row">
+                                    <label style="width:50px; font-style: italic;">City: </label>&emsp;<label th:text="${resume.applicantCity}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:50px; font-style: italic;">Email: </label>&emsp;<label th:text="${resume.applicantEmail}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:50px; font-style: italic;">Phone: </label>&emsp;<label th:text="${resume.applicantPhone}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center" style="margin-top: 50px;">
+                        <button type="button" class="btn btn-w-m btn-info" th:onclick="${'location.href=''' + returnUrl + ''''}">
+                            Return To Interview List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:inline="javascript">
+    $(".footable").footable();
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    function agreeInterview(interviewId, applicantName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to start this interview with : " + applicantName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'agree/' + interviewId,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully agreed with this interview.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully agreed with this interview.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    function rejectInterview(interviewId, applicantName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to reject  interview with: " + applicantName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'reject/' + interviewId,
+                    data: csrfData,
+                    async: false,
+                    success: function(data) {
+                        swal({
+                            title:"Success",
+                            text: "You have successfully rejected this interview.",
+                            type:"success"
+                        }, function(isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function(data) {
+                        swal({
+                            title:"Failure",
+                            text: "You have not successfully rejected this interview.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>

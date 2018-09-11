@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -260,6 +261,62 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
 
         return StatusCode.SUCCESS;
+    }
+
+    public List<ApplicantInterviewVo> findApplicantInterviewsByApplicationId(int applicationId) {
+        ApplicationDto applicationDto;
+        List<InterviewDto> interviewDtos;
+        List<ApplicantInterviewVo> applicantInterviewVos = new ArrayList<>();
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            interviewDtos = applicationDto.getInterviews();
+            interviewDtos = interviewDtos.stream().filter(x -> (x.getReservationStatus() == ReservationStatus.SUCCESS))
+                    .sorted(Comparator.comparing(x -> x.getCreateTime())).collect(Collectors.toList());
+            for(InterviewDto i: interviewDtos) {
+                applicantInterviewVos.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return applicantInterviewVos;
+    }
+
+    public ApplicationVo findApplicationByApplicationId(int applicationId) {
+        ApplicationDto applicationDto;
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            return DataTransferUtil.ApplicationDtoToVo(applicationDto);
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+
+
+    private int updateApplicationStatus(int applicationId, int status) {
+        ApplicationDto applicationDto;
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            applicationDto.setStatus(status);
+            applicationDto.setApplicantFeedbackTime(Calendar.getInstance().getTime());
+            applicationDtoRepository.save(applicationDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return  StatusCode.SUCCESS;
+    }
+
+    public int acceptOfferByApplicationId(int applicationId) {
+        return updateApplicationStatus(applicationId, ApplicationStatus.APPLICANT_ACCEPT);
+    }
+
+    public int rejectOfferByApplicationId(int applicationId) {
+        return updateApplicationStatus(applicationId, ApplicationStatus.APPLICANT_REJECT);
     }
 
 }
