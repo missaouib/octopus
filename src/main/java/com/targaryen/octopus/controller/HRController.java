@@ -97,6 +97,11 @@ public class HRController {
         return "hr-application-timeline";
     }
 
+    @RequestMapping(value = "/hr/post/schedule/model", method = RequestMethod.GET)
+    public String hrPostScheduleModel(ModelMap map) {
+        return "hr-post-schedule-model";
+    }
+
     /* ***************************************************************************** */
 
     @RequestMapping(value = "/hr/post/publish", method = RequestMethod.POST)
