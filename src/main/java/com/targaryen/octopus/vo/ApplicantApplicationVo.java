@@ -14,7 +14,8 @@ public class ApplicantApplicationVo {
     private final String postName;
     private final String postLocale;
     private final String postType;
-    private final String recruitDpt;
+    private final int departmentId;
+    private final String departmentName;
     private final Date createTime;
     private final Date filterEndTime;
     private final Date interviewEndTime;
@@ -31,7 +32,8 @@ public class ApplicantApplicationVo {
         private String postName;
         private String postLocale;
         private String postType;
-        private String recruitDpt;
+        private int departmentId;
+        private String departmentName;
         private Date createTime;
         private Date filterEndTime;
         private Date interviewEndTime;
@@ -79,8 +81,13 @@ public class ApplicantApplicationVo {
             return this;
         }
 
-        public Builder recruitDpt(String recruitDpt) {
-            this.recruitDpt = recruitDpt;
+        public Builder departmentId(int departmentId) {
+            this.departmentId = departmentId;
+            return this;
+        }
+
+        public Builder departmentName(String departmentName) {
+            this.departmentName = departmentName;
             return this;
         }
 
@@ -128,7 +135,8 @@ public class ApplicantApplicationVo {
         this.postName = builder.postName;
         this.postLocale = builder.postLocale;
         this.postType = builder.postType;
-        this.recruitDpt = builder.recruitDpt;
+        this.departmentId = builder.departmentId;
+        this.departmentName = builder.departmentName;
         this.createTime = builder.createTime;
         this.filterEndTime = builder.filterEndTime;
         this.interviewEndTime = builder.interviewEndTime;
