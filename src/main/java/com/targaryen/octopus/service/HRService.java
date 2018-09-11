@@ -101,14 +101,15 @@ public interface HRService {
     List<InterviewerVo> listInterviewers();
 
     /**
-     * create an interview, interviewVo should include applicationId, interviewerId, startTime, interviewPlace
+     * create an interview, interviewVo should at least include postId, interviewerId, startTime, interviewPlace,
+     * for society recruitment it should include applicationId
      *
      */
     int createInterview(InterviewVo interviewVo);
 
     /**
-     * create a list of interviews, interviewVo should include applicationId, interviewerId, startTime, interviewPlace
-     *
+     * create a list of interviews,interviewVo should at least include postId, interviewerId, startTime, interviewPlace,
+     * for society recruitment it should include applicationId
      */
     int createListOfInterviews(List<InterviewVo> interviewVos);
 
