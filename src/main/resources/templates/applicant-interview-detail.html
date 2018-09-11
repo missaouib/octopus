@@ -10,6 +10,19 @@
     <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
 
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- Peity -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/peity/jquery.peity.min.js}"></script>
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/octopus/new-vendor/js/inspinia.js}"></script>
+    <script th:src="@{/octopus/new-vendor/js/plugins/pace/pace.min.js}"></script>
+    <!-- Peity -->
+    <script th:src="@{/octopus/new-vendor/js/demo/peity-demo.js}"></script>
 </head>
 
 <body>
@@ -148,6 +161,48 @@
                             </div>
 
                         </th:block>
+
+
+                        <!-- No offer -->
+                        <div th:if="${InterviewFinal.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}"
+                             class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon muted-bg" style="background-color: #343a40;">
+                                <i class="fa fa-undo" style="color: #FFF;"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>No Offer.</h2>
+                                <p>
+                                    Interview Closed by HR.
+                                </p>
+
+                                <span class="vertical-date">
+                                        <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(InterviewFinal.interviewEndTime,'HH:mm')}"></label></small>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <!-- Offer -->
+                        <div th:if="${InterviewFinal.status} ge ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_PASS}
+                                    and ${InterviewFinal.status} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}"
+                             class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon blue-bg">
+                                <i class="fa fa-calendar-check-o"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Send Offer</h2>
+                                <p>
+                                    Interview Closed by HR.
+                                </p>
+
+                                <span class="vertical-date">
+                                        <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(InterviewFinal.interviewEndTime,'HH:mm')}"></label></small>
+                                    </span>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -353,43 +408,5 @@
 
     $("#new-interview-form").validate(validationConfig);
 </script>
-<script th:src="@{/octopus/js/jquery.min.js}"></script>
-<script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-<script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
-<script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
-
-<!-- Peity -->
-<script th:src="@{/octopus/new-vendor/js/plugins/peity/jquery.peity.min.js}"></script>
-<!-- Custom and plugin javascript -->
-<script th:src="@{/octopus/new-vendor/js/inspinia.js}"></script>
-<script th:src="@{/octopus/new-vendor/js/plugins/pace/pace.min.js}"></script>
-<!-- Peity -->
-<script th:src="@{/octopus/new-vendor/js/demo/peity-demo.js}"></script>
-<script>
-        $(document).ready(function(){
-
-            // Local script for demo purpose only
-            $('#lightVersion').click(function(event) {
-                event.preventDefault()
-                $('#ibox-content').removeClass('ibox-content');
-                $('#vertical-timeline').removeClass('dark-timeline');
-                $('#vertical-timeline').addClass('light-timeline');
-            });
-
-            $('#darkVersion').click(function(event) {
-                event.preventDefault()
-                $('#ibox-content').addClass('ibox-content');
-                $('#vertical-timeline').removeClass('light-timeline');
-                $('#vertical-timeline').addClass('dark-timeline');
-            });
-
-            $('#leftVersion').click(function(event) {
-                event.preventDefault()
-                $('#vertical-timeline').toggleClass('center-orientation');
-            });
-
-
-        });
-    </script>
 </body>
 </html>
