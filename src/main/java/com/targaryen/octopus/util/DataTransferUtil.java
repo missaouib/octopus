@@ -59,11 +59,11 @@ public class DataTransferUtil {
                 .postLocale(postDto.getPostLocale())
                 .postDescription(postDto.getPostDescription())
                 .postRequirement(postDto.getPostRequirement())
-                .recruitDpt(postDto.getRecruitDpt())
                 .recruitNum(postDto.getRecruitNum())
                 .publishTime(postDto.getPublishTime())
                 .status(postDto.getStatus())
                 .departmentId(postDto.getDepartment().getDepartmentId())
+                .departmentName(postDto.getDepartment().getDepartmentName())
                 .recruitType(postDto.getRecruitType())
                 .interviewRound(postDto.getInterviewRound())
                 .build();
@@ -76,7 +76,6 @@ public class DataTransferUtil {
         postDto.setPostDescription(postVo.getPostDescription());
         postDto.setPostRequirement(postVo.getPostRequirement());
         postDto.setRecruitNum(postVo.getRecruitNum());
-        postDto.setRecruitDpt(postVo.getRecruitDpt());
         postDto.setRecruitType(postVo.getRecruitType());
         return postDto;
     }
