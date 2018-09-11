@@ -85,7 +85,6 @@ public class DptManagerController {
                 .postDescription(postEntity.getPostDescription())
                 .postRequirement(postEntity.getPostRequirement())
                 .recruitNum(postEntity.getRecruitNum())
-                .recruitDpt(postEntity.getRecruitDpt())
                 .publishTime(postEntity.getPublishTime())
                 .status(postEntity.getStatus())
                 .build();
@@ -104,7 +103,6 @@ public class DptManagerController {
                 .postDescription(postEntity.getPostDescription())
                 .postRequirement(postEntity.getPostRequirement())
                 .recruitNum(postEntity.getRecruitNum())
-                .recruitDpt(postEntity.getRecruitDpt())
                 .publishTime(postEntity.getPublishTime())
                 .status(postEntity.getStatus())
                 .build();

@@ -71,7 +71,6 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setPostDescription(newPost.getPostDescription());
             postDto.setPostRequirement(newPost.getPostRequirement());
             postDto.setRecruitNum(newPost.getRecruitNum());
-            postDto.setRecruitDpt(newPost.getRecruitDpt());
             postDto.setRecruitType(newPost.getRecruitType());
             postDto.setStatus(newPost.getStatus());
             postDto.setDepartment(department);

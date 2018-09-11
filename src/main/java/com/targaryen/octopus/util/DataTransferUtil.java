@@ -174,6 +174,7 @@ public class DataTransferUtil {
         PostDto postDto = applicationDto.getPost();
         ApplicantDto applicantDto = applicationDto.getApplicant();
         ResumeDto resumeDto = applicantDto.getResume();
+        DepartmentDto departmentDto = postDto.getDepartment();
         return new ApplicantApplicationVo.Builder()
                 .applicantId(applicantDto.getApplicantId())
                 .applicantName(resumeDto.getApplicantName())
@@ -182,7 +183,8 @@ public class DataTransferUtil {
                 .postLocale(postDto.getPostLocale())
                 .postName(postDto.getPostName())
                 .postType(postDto.getPostType())
-                .recruitDpt(postDto.getRecruitDpt())
+                .departmentId(departmentDto.getDepartmentId())
+                .departmentName(departmentDto.getDepartmentName())
                 .createTime(applicationDto.getCreateTime())
                 .filterEndTime(applicationDto.getFilterEndTime())
                 .interviewEndTime(applicationDto.getInterviewEndTime())
@@ -196,6 +198,7 @@ public class DataTransferUtil {
         ApplicationDto applicationDto = interviewDto.getApplication();
         PostDto postDto = applicationDto.getPost();
         InterviewerDto interviewerDto = interviewDto.getInterviewer();
+        DepartmentDto departmentDto = postDto.getDepartment();
         return new ApplicantInterviewVo.Builder()
                 .interviewId(interviewDto.getInterviewId())
                 .applicationId(applicationDto.getApplicationId())
@@ -208,7 +211,8 @@ public class DataTransferUtil {
                 .postLocale(postDto.getPostLocale())
                 .postName(postDto.getPostName())
                 .postType(postDto.getPostType())
-                .recruitDpt(postDto.getRecruitDpt()).build();
+                .departmentId(departmentDto.getDepartmentId())
+                .departmentName(departmentDto.getDepartmentName()).build();
     }
 
     public static ResumeModelVo ResumeModeDtoToVo(ResumeModelDto resumeModelDto) {
@@ -284,6 +288,7 @@ public class DataTransferUtil {
         InterviewerDto interviewerDto = interviewDto.getInterviewer();
         ApplicantDto applicantDto = applicationDto.getApplicant();
         ResumeDto resumeDto = applicantDto.getResume();
+        DepartmentDto departmentDto = postDto.getDepartment();
         int rounds = (int)applicationDto.getInterviews()
                 .stream().filter(x -> x.getReservationStatus() >= 0)
                 .filter(x -> x.getCreateTime().before(interviewDto.getCreateTime()))
@@ -306,7 +311,8 @@ public class DataTransferUtil {
                 .postLocale(postDto.getPostLocale())
                 .postName(postDto.getPostName())
                 .postType(postDto.getPostType())
-                .recruitDpt(postDto.getRecruitDpt()).build();
+                .departmentId(departmentDto.getDepartmentId())
+                .departmentName(departmentDto.getDepartmentName()).build();
     }
 
     public static DepartmentVo DepartmentDtoToVo(DepartmentDto departmentDto) {
