@@ -1,7 +1,10 @@
 package com.targaryen.octopus.vo;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class DepartmentVo {
     final private int departmentId;
     final private String departmentName;
