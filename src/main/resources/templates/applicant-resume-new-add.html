@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Department Manager - Post List</title>
+
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/octopus/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/octopus/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+
+    <!--new vendor -->
+    <link th:href="@{/octopus/new-vendor/css/plugins/steps/jquery.steps.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-content">
+                <h2>
+                    Please Input Your Information Carefully.
+                </h2>
+                <p>
+                    Your Information is very important for job hunting.
+                </p>
+
+                <form id="form" method="post" action="#" class="wizard-big">
+                    <h1>Basic Information</h1>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+<<<<<<< HEAD
+                                    <input  name="postId" type="hidden" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Name *</label>
+                                    <input  name="name"  type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age *</label>
+                                    <input  name="age" type="text" class="form-control required number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sex *</label><br>
+                                    <select  name="sex" style="width: 200px; height:34px;">
+=======
+                                    <input id="postId" name="postId" type="hidden" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Name *</label>
+                                    <input id="name" name="name"  type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age *</label>
+                                    <input id="age" name="age" type="text" class="form-control required number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sex *</label><br>
+                                    <select id="sex" name="sex" style="width: 200px; height:34px;">
+>>>>>>> fb47c6fbbdce25a23a64e3b6c51c478d24fdd991
+                                        <option value="0">Male</option>
+                                        <option value="1">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+<<<<<<< HEAD
+                                    <input  name="postId" type="hidden" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Name *</label>
+                                    <input name="name"  type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age *</label>
+                                    <input  name="age" type="text" class="form-control required number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sex *</label><br>
+                                    <select name="sex" style="width: 200px; height:34px;">
+=======
+                                    <input id="postId" name="postId" type="hidden" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Name *</label>
+                                    <input id="name" name="name"  type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age *</label>
+                                    <input id="age" name="age" type="text" class="form-control required number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sex *</label><br>
+                                    <select id="sex" name="sex" style="width: 200px; height:34px;">
+>>>>>>> fb47c6fbbdce25a23a64e3b6c51c478d24fdd991
+                                        <option value="0">Male</option>
+                                        <option value="1">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <input id="postId" name="postId" type="hidden" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Name *</label>
+                                    <input id="name" name="name"  type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Age *</label>
+                                    <input id="age" name="age" type="text" class="form-control required number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sex *</label><br>
+                                    <select id="sex" name="sex" style="width: 200px; height:34px;">
+                                        <option value="0">Male</option>
+                                        <option value="1">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <h1>Education</h1>
+                    <fieldset>
+                        <h2>Education Information</h2>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label>School *</label>
+                                    <input id="school" name="school" type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Major *</label>
+                                    <input id="major" name="major" type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Degree *</label>
+                                    <select id="degree" name="degree" style="width: 500px; height:34px;">
+                                        <option value="0">Bachelor</option>
+                                        <option value="1">Master</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="text-center">
+                                    <div style="margin-top: 20px">
+                                        <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <h1>Contact</h1>
+                    <fieldset>
+                        <h2>Contact Information</h2>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label>City *</label>
+                                    <input id="city" name="city" type="text" class="form-control required">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email *</label>
+                                    <input id="email" name="email" type="text" class="form-control required email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone *</label>
+                                    <input id="phone" name="phone" type="text" class="form-control required number">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="text-center">
+                                    <div style="margin-top: 20px">
+                                        <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <h1>Resume Paperwork</h1>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Your Resume</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                            <span class="input-group-addon btn btn-default btn-file">
+                                                    <span class="fileinput-new">Select file</span>
+                                                    <span class="fileinput-exists">Change</span>
+                                                    <input type="file" accept="application/pdf" name="..." />
+                                                </span>
+                                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/octopus/js/jquery.min.js}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
+
+<script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+<script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+<!-- Steps -->
+<script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
+
+
+<!-- Jasny -->
+<script th:src="@{/octopus/new-vendor/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
+
+<!-- Jquery Validate -->
+<script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<script>
+$(document).ready(function(){
+    $("#wizard").steps();
+    $("#form").steps({
+        bodyTag: "fieldset",
+        onStepChanging: function (event, currentIndex, newIndex)
+        {
+            // Always allow going backward even if the current step contains invalid fields!
+            if (currentIndex > newIndex)
+            {
+                return true;
+            }
+
+            // Forbid suppressing "Warning" step if the user is to young
+            //if (newIndex === 3 && Number($("#age").val()) < 18)
+            //{
+            //    return false;
+            //}
+
+            var form = $(this);
+
+            // Clean up if user went backward before
+            if (currentIndex < newIndex)
+            {
+                // To remove error styles
+                $(".body:eq(" + newIndex + ") label.error", form).remove();
+                $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+            }
+
+            // Disable validation on fields that are disabled or hidden.
+            form.validate().settings.ignore = ":disabled,:hidden";
+
+            // Start validation; Prevent going forward if false
+            return form.valid();
+        },
+        onStepChanged: function (event, currentIndex, priorIndex)
+        {
+            // Suppress (skip) "Warning" step if the user is old enough.
+            //if (currentIndex === 2 && Number($("#age").val()) >= 18)
+            //{
+            //    $(this).steps("next");
+            //}
+
+            // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+            //if (currentIndex === 2 && priorIndex === 3)
+            //{
+            //    $(this).steps("previous");
+            //}
+        },
+        onFinishing: function (event, currentIndex)
+        {
+            var form = $(this);
+
+            // Disable validation on fields that are disabled.
+            // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+            form.validate().settings.ignore = ":disabled";
+
+            // Start validation; Prevent form submission if false
+            return form.valid();
+        },
+        onFinished: function (event, currentIndex)
+        {
+            var form = $(this);
+
+            // Submit form input
+            form.submit();
+        }
+    }).validate({
+                errorPlacement: function (error, element)
+                {
+                    element.before(error);
+                }
+            });
+});
+</script>
+
+</body>
+</html>

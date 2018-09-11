@@ -60,9 +60,10 @@
                             <div class="col-sm-12">
                                 <dl class="dl-horizontal">
                                     <dt>Department:</dt>
-                                    <dd th:text="${post.recruitDpt}"></dd>
+                                    <dd th:text="${post.departmentName}"></dd>
 
-                                    <input type="hidden" name="departmentId" th:value="${post.departmentId}"></dd>
+                                    <dt>Department Manager:</dt>
+                                    <dd th:text="${post.dptManagerId}"></dd>
                                 </dl>
                             </div>
                         </div>

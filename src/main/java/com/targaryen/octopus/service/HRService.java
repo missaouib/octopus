@@ -95,10 +95,10 @@ public interface HRService {
     List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer Status);
 
     /**
-     * list interviewer
+     * list interviewers by postId
      *
      */
-    List<InterviewerVo> listInterviewers();
+    List<InterviewerVo> listInterviewersByPostId(int postId);
 
     /**
      * create an interview, interviewVo should at least include postId, interviewerId, startTime, interviewPlace,

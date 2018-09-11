@@ -135,7 +135,6 @@ public class HRController {
         return String.valueOf(hrService.updatePost(postVo));
     }
 
-    @RequestMapping(value = "/hr/post/application/resume/pass", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationResumePass(@RequestParam(value="chkArray[]") int[] chkArray) {
         int overAllStatus = StatusCode.SUCCESS;
@@ -148,7 +147,7 @@ public class HRController {
         return String.valueOf(overAllStatus);
     }
 
-    @RequestMapping(value = "/hr/post/application/resume/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/application/resume/reject", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationResumeReject(@RequestParam(value="chkArray[]") int[] chkArray) {
         int overAllStatus = StatusCode.SUCCESS;
@@ -161,9 +160,9 @@ public class HRController {
         return String.valueOf(overAllStatus);
     }
 
-    @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/interview/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/application/timeline/interview/new", method = RequestMethod.POST)
     @ResponseBody
-    public String hrApplicationTimelineInterviewNew(@PathVariable("postId") int postId, InterviewEntity interviewEntity) {
+    public String hrApplicationTimelineInterviewNew(InterviewEntity interviewEntity) {
         // Locale is a MUST?
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
         Date startTime = null;
@@ -174,7 +173,6 @@ public class HRController {
                     .interviewerId(interviewEntity.getInterviewerId())
                     .interviewStartTime(startTime)
                     .interviewPlace(interviewEntity.getInterviewPlace())
-                    .postId(postId)
                     .build();
             return String.valueOf(hrService.createInterview(interviewVo));
         } catch (ParseException e) {
@@ -183,25 +181,25 @@ public class HRController {
         return String.valueOf(StatusCode.FAILURE);
     }
 
-    @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/interview/cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/application/timeline/interview/cancel", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelineInterviewCancel(@RequestParam("interviewId") int interviewId) {
         return String.valueOf(hrService.deleteInterviewById(interviewId));
     }
 
-    @RequestMapping(value = "/hr/post/1/application/1/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/application/timeline/reject", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelineReject(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(hrService.interviewFailApplicationById(applicationId));
     }
 
-    @RequestMapping(value = "/hr/post/1/application/1/pass", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/application/timeline/pass", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelinePass(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(hrService.interviewPassApplicationById(applicationId));
     }
 
-    @RequestMapping(value = "/hr/post/1/application/1/offer", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/application/timeline/offer", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelineOffer(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(hrService.sendOfferByApplicationId(applicationId));
