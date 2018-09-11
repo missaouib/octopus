@@ -18,6 +18,12 @@ public interface DptManagerService {
     List<PostVo> findPostsByUserId(int userId);
 
     /**
+     * find departmentName by userId
+     *
+     */
+    String findDptNameByUserId(int userId);
+
+    /**
      * find posts by Id
      *
      */
