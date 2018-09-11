@@ -62,6 +62,7 @@
                                         <td th:text="${post.postLocale}"></td>
                                         <td>
                                             <button type="button"
+                                                    th:if="${post.status} ne ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}"
                                                     th:onclick="${'location.href=''' + post.postId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
@@ -75,7 +76,7 @@
                                                 See Passed Applicants
                                             </button>
                                             <button type="button"
-                                                    th:if="${post.status} ne ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}"
+                                                    th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}"
                                                     th:onclick="${'revokePost(' + post.postId + ', ''' + post.postName + ''')'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
