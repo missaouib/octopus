@@ -30,6 +30,8 @@ public class DataTransferUtil {
                 .createTime(interviewDto.getCreateTime())
                 .interviewResultTime(interviewDto.getInterviewResultTime())
                 .reservationResultTime(interviewDto.getReservationResultTime())
+                .postId(interviewDto.getPost().getPostId())
+                .interviewRound(interviewDto.getInterviewRound())
                 .build();
     }
 
@@ -57,6 +59,8 @@ public class DataTransferUtil {
                 .publishTime(postDto.getPublishTime())
                 .status(postDto.getStatus())
                 .departmentId(postDto.getDepartment().getDepartmentId())
+                .recruitType(postDto.getRecruitType())
+                .interviewRound(postDto.getInterviewRound())
                 .build();
     }
 

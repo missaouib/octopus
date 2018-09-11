@@ -104,6 +104,7 @@ public class HRServiceImpl implements HRService {
                 post.setPostRequirement(updatePost.getPostRequirement());
                 post.setRecruitNum(updatePost.getRecruitNum());
                 post.setRecruitDpt(updatePost.getRecruitDpt());
+                post.setRecruitType(updatePost.getRecruitType());
                 postDtoRepository.save(post);
             }
             return StatusCode.SUCCESS;

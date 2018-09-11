@@ -20,6 +20,8 @@ public class PostVo {
     private final Date publishTime;
     private final int status;
     private final int departmentId;
+    private final int recruitType;
+    private final int interviewRound;
 
     public static class Builder {
         private int postId;
@@ -33,6 +35,8 @@ public class PostVo {
         private Date publishTime;
         private int status;
         private int departmentId;
+        private int recruitType;
+        private int interviewRound;
 
         public Builder postId(int postId) {
             this.postId = postId;
@@ -89,6 +93,16 @@ public class PostVo {
             return this;
         }
 
+        public Builder recruitType(int recruitType) {
+            this.recruitType = recruitType;
+            return this;
+        }
+
+        public Builder interviewRound(int interviewRound) {
+            this.interviewRound = interviewRound;
+            return this;
+        }
+
         public PostVo build() {
             return new PostVo(this);
         }
@@ -106,5 +120,7 @@ public class PostVo {
         this.publishTime = builder.publishTime;
         this.status = builder.status;
         this.departmentId = builder.departmentId;
+        this.recruitType = builder.recruitType;
+        this.interviewRound = builder.interviewRound;
     }
 }

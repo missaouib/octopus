@@ -46,6 +46,8 @@ public class PostDto implements Serializable {
 
     private int status;
 
+    private int interviewRound;
+
     @JoinColumn(name = "department_id")
     @ManyToOne(cascade = CascadeType.MERGE)
     private DepartmentDto department;
@@ -55,4 +57,7 @@ public class PostDto implements Serializable {
 
     @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
     private ResumeModelDto resumeModel;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<InterviewDto> interviews;
 }
