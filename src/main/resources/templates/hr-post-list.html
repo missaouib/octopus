@@ -84,7 +84,7 @@
                                             </button>
 
                                             <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" type="button"
-                                                    th:onclick="${'location.href=''' + post.postId + '/resume'''}"
+                                                    th:onclick="${'location.href=''' + post.postId + '/resume/model'''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
                                                 Customize Resume Form
