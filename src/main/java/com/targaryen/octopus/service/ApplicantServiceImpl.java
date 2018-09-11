@@ -30,6 +30,7 @@ public class ApplicantServiceImpl implements ApplicantService {
     private PostDtoRepository postDtoRepository;
     private ApplicationDtoRepository applicationDtoRepository;
     private InterviewDtoRepository interviewDtoRepository;
+    private ResumeModelDtoRepository resumeModelDtoRepository;
 
     @Autowired
     public ApplicantServiceImpl(DaoFactory daoFactory) {
@@ -40,6 +41,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         this.applicantDtoRepository = daoFactory.getApplicantDtoRepository();
         this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
         this.applicationDtoRepository = daoFactory.getApplicationDtoRepository();
+        this.resumeModelDtoRepository = daoFactory.getResumeModelDtoRepository();
     }
 
 
@@ -278,6 +280,90 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
 
         return DataTransferUtil.ResumeModeDtoToVo(resumeModelDto);
+    }
+
+    public int saveResumeWithModel(ResumeVo resumeVo, int modelId) {
+        ResumeDto resumeDto;
+        ResumeModelDto resumeModelDto;
+        ApplicantDto applicantDto;
+        int applicantId = resumeVo.getApplicantId();
+
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            resumeDto = applicantDto.getResume();
+            if(resumeDto == null) {
+                resumeDto = new ResumeDto();
+                resumeDto.setApplicantName(resumeVo.getApplicantName());
+                resumeDto.setApplicant(applicantDto);
+                resumeDtoRepository.save(resumeDto);
+                applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+                resumeDto = applicantDto.getResume();
+            }
+
+            resumeModelDto = resumeModelDtoRepository.findResumeModelDtoByResumeModelId(modelId);
+
+            if(resumeModelDto.isApplicantName())
+                resumeDto.setApplicantName(resumeVo.getApplicantName());
+            if(resumeModelDto.isApplicantSex())
+                resumeDto.setApplicantSex(resumeVo.getApplicantSex());
+            if(resumeModelDto.isApplicantAge())
+                resumeDto.setApplicantAge(resumeVo.getApplicantAge());
+            if(resumeModelDto.isApplicantSchool())
+                resumeDto.setApplicantSchool(resumeVo.getApplicantSchool());
+            if(resumeModelDto.isApplicantDegree())
+                resumeDto.setApplicantDegree(resumeVo.getApplicantDegree());
+            if(resumeModelDto.isApplicantMajor())
+                resumeDto.setApplicantMajor(resumeVo.getApplicantMajor());
+            if(resumeModelDto.isApplicantCity())
+                resumeDto.setApplicantCity(resumeVo.getApplicantCity());
+            if(resumeModelDto.isApplicantEmail())
+                resumeDto.setApplicantEmail(resumeVo.getApplicantEmail());
+            if(resumeModelDto.isApplicantPhone())
+                resumeDto.setApplicantPhone(resumeVo.getApplicantPhone());
+            if(resumeModelDto.isApplicantCV())
+                resumeDto.setApplicantCV(resumeVo.getApplicantCV());
+            if(resumeModelDto.isApplicantHometown())
+                resumeDto.setApplicantHometown(resumeVo.getApplicantHometown());
+            if(resumeModelDto.isApplicantNation())
+                resumeDto.setApplicantNation(resumeVo.getApplicantNation());
+            if(resumeModelDto.isApplicantPoliticalStatus())
+                resumeDto.setApplicantPoliticalStatus(resumeVo.getApplicantPoliticalStatus());
+            if(resumeModelDto.isApplicantMaritalStatus())
+                resumeDto.setApplicantMaritalStatus(resumeVo.getApplicantMaritalStatus());
+            if(resumeModelDto.isApplicantDateOfBirth())
+                resumeDto.setApplicantDateOfBirth(resumeVo.getApplicantDateOfBirth());
+            if(resumeModelDto.isApplicantTimeToWork())
+                resumeDto.setApplicantTimeToWork(resumeVo.getApplicantTimeToWork());
+            if(resumeModelDto.isApplicantCurrentSalary())
+                resumeDto.setApplicantCurrentSalary(resumeVo.getApplicantCurrentSalary());
+            if(resumeModelDto.isApplicantExpectSalary())
+                resumeDto.setApplicantExpectSalary(resumeVo.getApplicantExpectSalary());
+            if(resumeModelDto.isApplicantDutyTime())
+                resumeDto.setApplicantDutyTime(resumeVo.getApplicantDutyTime());
+            if(resumeModelDto.isRecommenderName())
+                resumeDto.setRecommenderName(resumeVo.getRecommenderName());
+            if(resumeModelDto.isApplicantAddress())
+                resumeDto.setApplicantAddress(resumeVo.getApplicantAddress());
+            if(resumeModelDto.isApplicantSelfIntro())
+                resumeDto.setApplicantSelfIntro(resumeVo.getApplicantSelfIntro());
+            if(resumeModelDto.isApplicantPhoto())
+                resumeDto.setApplicantPhoto(resumeVo.getApplicantPhoto());
+            if(resumeModelDto.isApplicantDegreePhoto())
+                resumeDto.setApplicantDegreePhoto(resumeVo.getApplicantDegreePhoto());
+            if(resumeModelDto.isFamilyContactRelation())
+                resumeDto.setFamilyContactRelation(resumeVo.getFamilyContactRelation());
+            if(resumeModelDto.isFamilyContactName())
+                resumeDto.setFamilyContactName(resumeVo.getFamilyContactName());
+            if(resumeModelDto.isFamilyContactCompany())
+                resumeDto.setFamilyContactCompany(resumeVo.getFamilyContactCompany());
+            if(resumeModelDto.isFamilyContactPhoneNum())
+                resumeDto.setFamilyContactPhoneNum(resumeVo.getFamilyContactPhoneNum());
+
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
     }
 
 }
