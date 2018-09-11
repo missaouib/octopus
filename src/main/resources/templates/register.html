@@ -33,7 +33,7 @@
             tselect.onchange = function(){
                 var index = tselect.selectedIndex
 		        var mySelectText = tselect.options[index].value
-                if(mySelectText == "ROLE_DPT"){
+                if(mySelectText == "ROLE_DPT" || mySelectText == "ROLE_INTERVIEWER"){
                     var dptselect = document.getElementById("dpt")
                     dptselect.style.display="block"
                 }
