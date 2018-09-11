@@ -50,6 +50,11 @@ public class DptManagerServiceImpl implements DptManagerService {
     }
 
     @Override
+    public String findDptNameByUserId(int userId) {
+        return userDtoRepository.findUserDtoByUserId(userId).getDptManager().getDepartment().getDepartmentName();
+    }
+
+    @Override
     public PostVo findPostById(int postId) {
         PostDto postDto = postDtoRepository.findPostDtoByPostId(postId);
         if(postDto == null) {

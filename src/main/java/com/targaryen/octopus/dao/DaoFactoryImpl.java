@@ -29,6 +29,10 @@ public class DaoFactoryImpl implements DaoFactory{
     private ResumeModelDtoRepository resumeModelDtoRepository;
     @Autowired
     private DepartmentDtoRepository departmentDtoRepository;
+    @Autowired
+    private EducationExperienceRepository educationExperienceRepository;
+    @Autowired
+    private WorkExperienceRepository workExperienceRepository;
 
 
     @Override
@@ -89,5 +93,15 @@ public class DaoFactoryImpl implements DaoFactory{
     @Override
     public DepartmentDtoRepository getDepartmentDtoRepository() {
         return departmentDtoRepository;
+    }
+
+    @Override
+    public EducationExperienceRepository getEducationExperienceRepository() {
+        return educationExperienceRepository;
+    }
+
+    @Override
+    public WorkExperienceRepository getWorkExperienceRepository() {
+        return workExperienceRepository;
     }
 }
