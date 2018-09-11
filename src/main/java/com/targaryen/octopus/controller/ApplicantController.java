@@ -6,6 +6,7 @@ import com.targaryen.octopus.entity.ResumeEntity;
 import com.targaryen.octopus.entity.UserEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
+import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.status.ApplicantStatus;
 import com.targaryen.octopus.util.status.PostStatus;
@@ -212,8 +213,21 @@ public class ApplicantController {
         //get update information from front end
 
         //save it to backend and redirect to applicant-resume-magm
+        ResumeEntity newResumeEntity = new ResumeEntity();
+        newResumeEntity.setResumeId(resumeVo.getResumeId());
+        newResumeEntity.setApplicantName(resumeVo.getApplicantName());
+        newResumeEntity.setApplicantSex(resumeVo.getApplicantSex());
+        newResumeEntity.setApplicantAge(resumeVo.getApplicantAge());
+        newResumeEntity.setApplicantSchool(resumeVo.getApplicantSchool());
+        newResumeEntity.setApplicantDegree(resumeVo.getApplicantDegree());
+        newResumeEntity.setApplicantMajor(resumeVo.getApplicantMajor());
+        newResumeEntity.setApplicantCity(resumeVo.getApplicantCity());
+        newResumeEntity.setApplicantEmail(resumeVo.getApplicantEmail());
+        newResumeEntity.setApplicantPhone(resumeVo.getApplicantPhone());
+        newResumeEntity.setApplicantCV(resumeVo.getApplicantCV());
+        newResumeEntity.setHasPostId(0);
 
-        map.addAttribute("resume", resumeVo);
+        map.addAttribute("resume", newResumeEntity);
 
         return "applicant-resume-add";
 
