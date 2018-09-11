@@ -309,4 +309,11 @@ public class DataTransferUtil {
                 .postType(postDto.getPostType())
                 .recruitDpt(postDto.getRecruitDpt()).build();
     }
+
+    public static DepartmentVo DepartmentDtoToVo(DepartmentDto departmentDto) {
+        return new DepartmentVo.Builder()
+                .departmentId(departmentDto.getDepartmentId())
+                .departmentName(departmentDto.getDepartmentName())
+                .build();
+    }
 }
