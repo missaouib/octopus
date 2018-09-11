@@ -16,10 +16,10 @@ public class PostVo {
     private final String postDescription;
     private final String postRequirement;
     private final int recruitNum;
-    private final String recruitDpt;
     private final Date publishTime;
     private final int status;
     private final int departmentId;
+    private final String departmentName;
     private final int recruitType;
     private final int interviewRound;
 
@@ -31,10 +31,10 @@ public class PostVo {
         private String postDescription;
         private String postRequirement;
         private int recruitNum;
-        private String recruitDpt;
         private Date publishTime;
         private int status;
         private int departmentId;
+        private String departmentName;
         private int recruitType;
         private int interviewRound;
 
@@ -73,11 +73,6 @@ public class PostVo {
             return this;
         }
 
-        public Builder recruitDpt(String recruitDpt) {
-            this.recruitDpt = recruitDpt;
-            return this;
-        }
-
         public Builder publishTime(Date publishTime) {
             this.publishTime = publishTime;
             return this;
@@ -90,6 +85,11 @@ public class PostVo {
 
         public Builder departmentId(int departmentId) {
             this.departmentId = departmentId;
+            return this;
+        }
+
+        public Builder departmentName(String departmentName) {
+            this.departmentName = departmentName;
             return this;
         }
 
@@ -116,10 +116,10 @@ public class PostVo {
         this.postDescription = builder.postDescription;
         this.postRequirement = builder.postRequirement;
         this.recruitNum = builder.recruitNum;
-        this.recruitDpt = builder.recruitDpt;
         this.publishTime = builder.publishTime;
         this.status = builder.status;
         this.departmentId = builder.departmentId;
+        this.departmentName = builder.departmentName;
         this.recruitType = builder.recruitType;
         this.interviewRound = builder.interviewRound;
     }

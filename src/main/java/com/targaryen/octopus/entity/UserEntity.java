@@ -9,5 +9,6 @@ public class UserEntity {
     private int userId;
     private String userName;
     private String userPassword;
+    private int dpt;
     private String userRole;
 }
