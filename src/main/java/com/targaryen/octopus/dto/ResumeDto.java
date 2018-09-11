@@ -25,10 +25,10 @@ public class ResumeDto {
 
     @NotBlank
     private String applicantName;
-    private int applicantSex;
-    private int applicantAge;
+    private int applicantSex = -1;
+    private int applicantAge = -1;
     private String applicantSchool;
-    private int applicantDegree;
+    private int applicantDegree = -1;
     private String applicantMajor;
     private String applicantCity;
     private String applicantEmail;
@@ -42,8 +42,8 @@ public class ResumeDto {
     private Date applicantDateOfBirth;
     @Temporal(TemporalType.TIMESTAMP)
     private Date applicantTimeToWork;
-    private int applicantCurrentSalary;
-    private int applicantExpectSalary;
+    private int applicantCurrentSalary = -1;
+    private int applicantExpectSalary = -1;
     @Temporal(TemporalType.TIMESTAMP)
     private Date applicantDutyTime;
     private String recommenderName;
