@@ -178,7 +178,8 @@
 
                                 <!-- Interview Passed -->
                                 <div th:if="${interview.reservationStatus} eq ${T(com.targaryen.octopus.util.status.ReservationStatus).SUCCESS}
-                                    and ${interview.interviewResultStatus} ne ${T(com.targaryen.octopus.util.status.InterviewResultStatus).NOT_HIRE}"
+                                    and ${interview.interviewResultStatus} ne ${T(com.targaryen.octopus.util.status.InterviewResultStatus).NOT_HIRE}
+                                    and ${interview.interviewResultStatus} ne ${T(com.targaryen.octopus.util.status.InterviewResultStatus).INIT}"
                                      class="vertical-timeline-block">
                                     <div class="vertical-timeline-icon navy-bg">
                                         <i class="fa fa-arrow-down"></i>
