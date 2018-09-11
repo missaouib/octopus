@@ -228,6 +228,7 @@ public class HRServiceImpl implements HRService {
             newInterview.setReservationStatus(ReservationStatus.INIT);
             newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
             newInterview.setCreateTime(Calendar.getInstance().getTime());
+            newInterview.setInterviewRound(post.getInterviewRound());
             interviewDtoRepository.save(newInterview);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
