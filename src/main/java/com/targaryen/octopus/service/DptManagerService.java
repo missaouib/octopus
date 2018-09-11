@@ -24,7 +24,7 @@ public interface DptManagerService {
     PostVo findPostById(int postId);
 
     /**
-     * create new post, newPost Vo should include postName, recruitType
+     * create new post, newPost Vo should include postName, recruitType, departmentId
      *
      */
     int createNewPost(PostVo newPost, int userId);
