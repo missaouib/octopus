@@ -12,6 +12,7 @@ import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -354,6 +355,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             workExperienceDto.setReferenceName(workExperienceVo.getReferenceName());
             workExperienceDto.setReferencePhoneNum(workExperienceVo.getReferencePhoneNum());
             workExperienceDto.setWorkDiscription(workExperienceVo.getWorkDescription());
+            workExperienceRepository.save(workExperienceDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
@@ -389,6 +391,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         return DataTransferUtil.EducationExperienceDtoToVo(educationExperienceDto);
     }
 
+    @Transactional
     public int deleteWorkExperienceByWorkExperienceId(int workExperienceId) {
         try {
             workExperienceRepository.deleteWorkExperienceDtoByWorkExperienceId(workExperienceId);
@@ -398,6 +401,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         return StatusCode.SUCCESS;
     }
 
+    @Transactional
     public int deleteEducationExperienceByEducationExperienceId(int educationExperienceId) {
         try {
             educationExperienceRepository.deleteEducationExperienceDtoByEducationExperienceId(educationExperienceId);
@@ -472,6 +476,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             resumeDto = new ResumeDto();
             resumeDto.setApplicantName(applicantDto.getUser().getUserName());
             resumeDto.setApplicant(applicantDto);
+            resumeDtoRepository.save(resumeDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
@@ -555,6 +560,9 @@ public class ApplicantServiceImpl implements ApplicantService {
                 resumeDto.setFamilyContactCompany(resumeVo.getFamilyContactCompany());
             if(resumeModelDto.isFamilyContactPhoneNum())
                 resumeDto.setFamilyContactPhoneNum(resumeVo.getFamilyContactPhoneNum());
+
+            resumeDtoRepository.save(resumeDto);
+
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
