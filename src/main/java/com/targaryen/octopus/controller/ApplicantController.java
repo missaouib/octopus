@@ -164,6 +164,11 @@ public class ApplicantController {
 
     }
 
+    @RequestMapping(value = "/new/add", method = RequestMethod.GET)
+    public String newResumeAdd(ModelMap map){
+
+        return "applicant-resume-new-add";
+    }
 
     @RequestMapping(value = "/applicant/resume/add", method = RequestMethod.POST)
     public String resumeAdd(ResumeEntity resumeEntity, ModelMap map) {
