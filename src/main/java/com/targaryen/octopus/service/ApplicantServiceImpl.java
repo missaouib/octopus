@@ -294,4 +294,29 @@ public class ApplicantServiceImpl implements ApplicantService {
         }
     }
 
+
+
+    private int updateApplicationStatus(int applicationId, int status) {
+        ApplicationDto applicationDto;
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            applicationDto.setStatus(status);
+            applicationDto.setApplicantFeedbackTime(Calendar.getInstance().getTime());
+            applicationDtoRepository.save(applicationDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return  StatusCode.SUCCESS;
+    }
+
+    public int acceptOfferByApplicationId(int applicationId) {
+        return updateApplicationStatus(applicationId, ApplicationStatus.APPLICANT_ACCEPT);
+    }
+
+    public int rejectOfferByApplicationId(int applicationId) {
+        return updateApplicationStatus(applicationId, ApplicationStatus.APPLICANT_REJECT);
+    }
+
 }
