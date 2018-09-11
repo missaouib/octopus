@@ -5,6 +5,7 @@ import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.vo.DepartmentVo;
 import com.targaryen.octopus.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -87,12 +88,15 @@ public class UserController {
     public ModelAndView register() {
         ModelAndView result = new ModelAndView("register");
         result.getModel().put("user", new UserEntity());
+        List<DepartmentVo> departmentVos  = serviceFactory.getPulicService().findAllDepartments();
+        System.out.println("[msg]: " + departmentVos.get(0).getDepartmentName());
+        result.getModel().put("dptList", departmentVos);
         return result;
     }
 
     @PostMapping("/userRegister")
     public ModelAndView userRegister(UserEntity user){
-        UserVo userVo = new UserVo.Builder().userName(user.getUserName()).userPassword(user.getUserPassword()).userRole(user.getUserRole()).build();
+        UserVo userVo = new UserVo.Builder().userName(user.getUserName()).userPassword(user.getUserPassword()).userRole(user.getUserRole()).departmentId(user.getDpt()).build();
         int istrue = serviceFactory.getUserService().saveUser(userVo);
         ModelAndView result = null;
         if(istrue == StatusCode.SUCCESS){

@@ -25,6 +25,21 @@
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
     <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+
+    <script>
+        window.onload = function() {
+            var tselect = document.getElementById("userRole");
+
+            tselect.onchange = function(){
+                var index = tselect.selectedIndex
+		        var mySelectText = tselect.options[index].value
+                if(mySelectText == "ROLE_DPT" || mySelectText == "ROLE_INTERVIEWER"){
+                    var dptselect = document.getElementById("dpt")
+                    dptselect.style.display="block"
+                }
+            }
+        }
+    </script>
 </head>
 
 <body class="gray-bg" th:background="@{/octopus/img/1.jpg}" style="background-size:cover;overflow:-Scroll;overflow-y:hidden">
@@ -52,11 +67,18 @@
                                id="username" type="text" th:field="*{userName}" maxlength="20" autocomplete="off" required="required" autofocus />
                     </div>
                     <div class="form-group">
-                        <select style="width: 298px; height: 34px;" id="userRole" th:field="*{userRole}">
+                        <select class="form-control" id="userRole" th:field="*{userRole}">
                             <option value="ROLE_HR">ROLE_HR</option>
                             <option value="ROLE_DPT">ROLE_DPT</option>
                             <option value="ROLE_APPLICANT">ROLE_APPLICANT</option>
                             <option value="ROLE_INTERVIEWER">ROLE_INTERVIEWER</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" style="display:none;" id="dpt" th:field="*{dpt}">
+                            <th:block th:each="list: ${dptList}">
+                                <option th:value="${list.departmentId}" th:text="${list.departmentName}"></option>
+                            </th:block>
                         </select>
                     </div>
                     <div class="form-group">

@@ -129,9 +129,21 @@
                             <td th:text="${ps.postLocale}"></td>
                             <td th:text="${ps.postType}"></td>
                             <td th:text="${ps.recruitDpt}"></td>
-                            <td th:text="${ps.status}?'Interviewing':'Applied'"></td>
                             <td>
-                                <a th:href="@{/octopus/applicant/interview/detail}" style="color: #eee;">
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">Init</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" class="label label-success">FILTER_PASS</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}" class="label label-danger">FILTER_FAIL</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}" class="label label-success">INTERVIEW_PASS</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}" class="label label-danger">INTERVIEW_FAIL</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_PASS}" class="label label-success">DPT_PASS</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}" class="label label-danger">DPT_FAIL</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}" class="label label-primary">OFFER</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_ACCEPT}" class="label label-success">APPLICANT_ACCEPT</span>
+                                <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}" class="label label-danger">APPLICANT_REJECT</span>
+                            </td>
+
+                            <td>
+                                <a th:href="@{'/octopus/applicant/interview/detail/' + ${ps.applicationId}}" style="color: #eee;">
                                     <button class="btn btn-warning">
                                         <i class="fa fa-file-text"> Interview Detail</i>
                                     </button>

@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private InterviewerDtoRepository interviewerDtoRepository;
     private HRDtoRepository hrDtoRepository;
     private DptManagerDtoRepository dptManagerDtoRepository;
+    private DepartmentDtoRepository departmentDtoRepository;
 
     @Autowired
     public UserServiceImpl(DaoFactory daoFactory) {
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
         this.interviewerDtoRepository = daoFactory.getInterviewerDtoRepository();
         this.hrDtoRepository = daoFactory.getHRDtoRepository();
         this.dptManagerDtoRepository = daoFactory.getDptManagerDtoRepository();
+        this.departmentDtoRepository = daoFactory.getDepartmentDtoRepository();
     }
 
     /**
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = new UserDto();
         RoleDto roleDto = new RoleDto();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        DepartmentDto departmentDto;
 
         userDto.setUserName(userVo.getUserName());
         userDto.setUserPassword(encoder.encode(userVo.getUserPassword()));
@@ -69,7 +72,9 @@ public class UserServiceImpl implements UserService {
                 break;
             case Role.DPT:
                 DptManagerDto dptManagerDto = new DptManagerDto();
+                departmentDto = departmentDtoRepository.findDepartmentDtoByDepartmentId(userVo.getDepartmentId());
                 dptManagerDto.setUser(userDto);
+                dptManagerDto.setDepartment(departmentDto);
                 dptManagerDtoRepository.save(dptManagerDto);
                 break;
             case Role.HR:
@@ -79,7 +84,9 @@ public class UserServiceImpl implements UserService {
                 break;
             case Role.INTERVIEWER:
                 InterviewerDto interviewerDto = new InterviewerDto();
+                departmentDto = departmentDtoRepository.findDepartmentDtoByDepartmentId(userVo.getDepartmentId());
                 interviewerDto.setUser(userDto);
+                interviewerDto.setDepartment(departmentDto);
                 interviewerDtoRepository.save(interviewerDto);
                 break;
             default:

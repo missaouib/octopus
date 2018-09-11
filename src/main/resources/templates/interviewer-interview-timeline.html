@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Department Manager - Post List</title>
+    <title>HR - Post Applications List</title>
 
     <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
@@ -10,22 +10,16 @@
     <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
 
-
     <script th:src="@{/octopus/js/jquery.min.js}"></script>
     <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
-
-    <!-- Peity -->
-    <script th:src="@{/octopus/new-vendor/js/plugins/peity/jquery.peity.min.js}"></script>
-    <!-- Custom and plugin javascript -->
-    <script th:src="@{/octopus/new-vendor/js/inspinia.js}"></script>
-    <script th:src="@{/octopus/new-vendor/js/plugins/pace/pace.min.js}"></script>
-    <!-- Peity -->
-    <script th:src="@{/octopus/new-vendor/js/demo/peity-demo.js}"></script>
+    <script th:src="@{/octopus/js/plugins/layer/laydate/laydate.js}"></script>
+    <script th:src="@{/octopus/js/jquery.validate.min.js}"></script>
 </head>
 
-<body>
+<body class="gray-bg">
+
 <div class="wrapper wrapper-content">
     <div class="row animated fadeInRight">
         <div class="col-lg-12">
@@ -49,13 +43,32 @@
 
                                 <div class="vertical-timeline-content">
                                     <h2>Interview Arrangement Accepted (Waiting for Interview Result)</h2><br/>
-                                    <p>
+                                    <h2>
                                         Interview hosting by interviewer: &emsp; <label th:text="${interview.interviewerName}"></label>
+                                    </h2>
+                                    <form class="form-horizontal" method="post" th:action="@{/octopus/interviewer/interview/comment}" th:object="${interviewComment}" style="width:70%;">
+                                        <select id="interviewId" th:field="*{interviewId}" hidden>
+                                            <option th:value="${interview.interviewId}">interviewId</option>
+                                        </select>
+                                        <select id="applicationId" th:field="*{applicationId}" hidden>
+                                            <option th:value="${interview.applicationId}">applicationId</option>
+                                        </select>
+                                        <h2>Comments:</h2>
+                                        <textarea class="form-control" id="comment" type="text" th:field="*{interviewerComment}" style="width:100%;" required /> <br/>
+                                        <h2>Evaluation:</h2>
+                                        <select class="form-control" th:field="*{interviewResultStatus}" id="level" required>
+                                            <option value="3">Strong Hire</option>
+                                            <option value="2">Hire</option>
+                                            <option value="1">Weak Hire</option>
+                                            <option value="-1">Not Hire</option>
+                                        </select>
                                         <br/>
-                                        Interview detail: <label>Waiting for comments.</label>
-                                        <br/>
-                                        Interview Result: <label>Waiting for interview result.</label>
+                                        <div align="center">
+                                            <button type="submit" class="btn btn-success"> Submit</button>
+                                        </div>
+                                    </form>
                                     </p>
+
                                     <span class="vertical-date">
                                         <label th:text="${#dates.format(interview.interviewStartTime,'yyyy-MM-dd')}"></label><br/>
                                             <small><label th:text="${#dates.format(interview.interviewStartTime,'HH:mm')}"></label></small>
@@ -160,18 +173,18 @@
                                 </div>
                             </div>
 
+
                         </th:block>
 
-
-                        <!-- No offer -->
-                        <div th:if="${InterviewFinal.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}"
+                        <!-- Interview fail -->
+                        <div th:if="${InterviewFinal.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}"
                              class="vertical-timeline-block">
                             <div class="vertical-timeline-icon muted-bg" style="background-color: #343a40;">
                                 <i class="fa fa-undo" style="color: #FFF;"></i>
                             </div>
 
                             <div class="vertical-timeline-content">
-                                <h2>No Offer.</h2>
+                                <h2>Interview Failed.</h2>
                                 <p>
                                     Interview Closed by HR.
                                 </p>
@@ -183,39 +196,18 @@
                             </div>
                         </div>
 
-                        <!-- Receive Offer -->
-                        <div th:if="${InterviewFinal.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}"
+                        <!-- Interview pass -->
+                        <div th:if="${InterviewFinal.status} ge ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}
+                                    or ${InterviewFinal.status} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}"
                              class="vertical-timeline-block">
                             <div class="vertical-timeline-icon blue-bg">
                                 <i class="fa fa-calendar-check-o"></i>
                             </div>
 
                             <div class="vertical-timeline-content">
-                                <h2>Consider accepting Offer</h2>
+                                <h2>Interview Accepted</h2>
                                 <p>
-                                    Do you wish to accept this offer?
-                                </p>
-                                <a class="btn btn-sm btn-warning" style="margin-left: 5px; background-color:#9c27b0;"
-                                   th:onclick="${'acceptOffer(' + InterviewFinal.applicationId + ');'}">Accept Offer</a>
-                                <span class="vertical-date">
-                                        <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
-                                            <small><label th:text="${#dates.format(InterviewFinal.interviewEndTime,'HH:mm')}"></label></small>
-                                    </span>
-                            </div>
-                        </div>
-
-                        <!-- Offer Accepted-->
-                        <div th:if="${InterviewFinal.status} ge ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_ACCEPT}
-                                    or ${InterviewFinal.status} le ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}"
-                             class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon" style="background-color:#28a745;">
-                                <i class="fa fa-check" style="color:#FFF;"></i>
-                            </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Offer Accept</h2>
-                                <p>
-                                    Congratulations.
+                                    Interview Closed by HR.
                                 </p>
 
                                 <span class="vertical-date">
@@ -224,7 +216,6 @@
                                     </span>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -354,13 +345,13 @@
         });
     }
 
-    /* Accept offer */
-    function acceptOffer(applicationId) {
+    /* Send offer */
+    function sendOffer(applicationId) {
         csrfData['applicationId'] = applicationId;
 
         swal({
             title : "Confirm",
-            text: "Do you really wish to accept offer?",
+            text: "Do you really wish to send offer?",
             type : "warning",
             showCancelButton : true,
             confirmButtonColor : "#DD6B55",
@@ -372,13 +363,13 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: "../acceptOffer",
+                    url: "offer",
                     data: csrfData,
                     async: false,
                     success: function (data) {
                         swal({
                             title: "Success",
-                            text: "You have successfully accept offer.",
+                            text: "You have successfully sent offer.",
                             type: "success"
                         }, function (isConfirm) {
                             document.location.reload();
@@ -429,5 +420,6 @@
 
     $("#new-interview-form").validate(validationConfig);
 </script>
+
 </body>
 </html>

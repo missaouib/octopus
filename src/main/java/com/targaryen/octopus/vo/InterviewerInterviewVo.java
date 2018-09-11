@@ -4,19 +4,22 @@ import lombok.Getter;
 
 import java.util.Date;
 
-/**
- * @author He Junfeng
- */
 @Getter
-public class ApplicantInterviewVo {
+public class InterviewerInterviewVo {
     private final int interviewId;
     private final Date interviewStartTime;
     private final String interviewPlace;
     private final int interviewResultStatus;
+    private final int applicantStatus;
+    private final int reservationStatus;
     private final String interviewResultComment;
     private final int applicationId;
     private final int interviewerId;
     private final String interviewerName;
+    private final int interviewerStatus;
+    private final int applicantId;
+    private final String applicantName;
+    private final int rounds;
     private final String postName;
     private final String recruitDpt;
     private final String postType;
@@ -27,10 +30,16 @@ public class ApplicantInterviewVo {
         private Date interviewStartTime;
         private String interviewPlace;
         private int interviewResultStatus;
+        private int applicantStatus;
+        private int reservationStatus;
         private String interviewResultComment;
         private int applicationId;
         private int interviewerId;
         private String interviewerName;
+        private int interviewerStatus;
+        private int applicantId;
+        private String applicantName;
+        private int rounds;
         private String postName;
         private String recruitDpt;
         private String postType;
@@ -57,6 +66,16 @@ public class ApplicantInterviewVo {
             return this;
         }
 
+        public Builder applicantStatus(int applicantStatus) {
+            this.applicantStatus = applicantStatus;
+            return this;
+        }
+
+        public Builder reservationStatus(int interviewStatus) {
+            this.reservationStatus = interviewStatus;
+            return this;
+        }
+
         public Builder interviewResultComment(String interviewResultComment) {
             this.interviewResultComment = interviewResultComment;
             return this;
@@ -74,6 +93,26 @@ public class ApplicantInterviewVo {
 
         public Builder interviewerName(String interviewerName) {
             this.interviewerName = interviewerName;
+            return this;
+        }
+
+        public Builder interviewerStatus(int interviewerStatus) {
+            this.interviewerStatus = interviewerStatus;
+            return this;
+        }
+
+        public Builder applicantId(int applicantId) {
+            this.applicantId = applicantId;
+            return this;
+        }
+
+        public Builder applicantName(String applicantName) {
+            this.applicantName = applicantName;
+            return this;
+        }
+
+        public Builder rounds(int rounds) {
+            this.rounds = rounds;
             return this;
         }
 
@@ -98,21 +137,27 @@ public class ApplicantInterviewVo {
         }
 
 
-        public ApplicantInterviewVo build() {
-            return new ApplicantInterviewVo(this);
+        public InterviewerInterviewVo build() {
+            return new InterviewerInterviewVo(this);
         }
 
     }
 
-    private ApplicantInterviewVo(Builder builder) {
+    private InterviewerInterviewVo(Builder builder) {
         this.interviewId = builder.interviewId;
         this.interviewStartTime = builder.interviewStartTime;
         this.interviewPlace = builder.interviewPlace;
         this.interviewResultStatus = builder.interviewResultStatus;
+        this.applicantStatus = builder.applicantStatus;
+        this.reservationStatus = builder.reservationStatus;
         this.interviewResultComment = builder.interviewResultComment;
         this.applicationId = builder.applicationId;
         this.interviewerId = builder.interviewerId;
         this.interviewerName = builder.interviewerName;
+        this.interviewerStatus = builder.interviewerStatus;
+        this.applicantId = builder.applicantId;
+        this.applicantName = builder.applicantName;
+        this.rounds = builder.rounds;
         this.postName = builder.postName;
         this.recruitDpt = builder.recruitDpt;
         this.postType = builder.postType;

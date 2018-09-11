@@ -11,10 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -97,13 +94,7 @@ public class HRServiceImpl implements HRService {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {
-                post.setPostName(updatePost.getPostName());
-                post.setPostType(updatePost.getPostType());
-                post.setPostLocale(updatePost.getPostLocale());
-                post.setPostDescription(updatePost.getPostDescription());
-                post.setPostRequirement(updatePost.getPostRequirement());
-                post.setRecruitNum(updatePost.getRecruitNum());
-                post.setRecruitDpt(updatePost.getRecruitDpt());
+                DataTransferUtil.updatePostDtoByVo(post, updatePost);
                 postDtoRepository.save(post);
             }
             return StatusCode.SUCCESS;
@@ -122,34 +113,7 @@ public class HRServiceImpl implements HRService {
     public int updateResumeModelById(ResumeModelVo resumeModelVo) {
         try {
             ResumeModelDto resumeModelDto = resumeModelDtoRepository.findResumeModelDtoByResumeModelId(resumeModelVo.getResumeModelId());
-            resumeModelDto.setApplicantAddress(resumeModelVo.isApplicantAddress());
-            resumeModelDto.setApplicantAge(resumeModelVo.isApplicantAge());
-            resumeModelDto.setApplicantCity(resumeModelVo.isApplicantCity());
-            resumeModelDto.setApplicantCurrentSalary(resumeModelVo.isApplicantCurrentSalary());
-            resumeModelDto.setApplicantCV(resumeModelVo.isApplicantCV());
-            resumeModelDto.setApplicantDateOfBirth(resumeModelVo.isApplicantDateOfBirth());
-            resumeModelDto.setApplicantDegree(resumeModelVo.isApplicantDegree());
-            resumeModelDto.setApplicantDegreePhoto(resumeModelVo.isApplicantDegree());
-            resumeModelDto.setApplicantDutyTime(resumeModelVo.isApplicantDutyTime());
-            resumeModelDto.setApplicantEmail(resumeModelVo.isApplicantEmail());
-            resumeModelDto.setApplicantExpectSalary(resumeModelVo.isApplicantExpectSalary());
-            resumeModelDto.setApplicantHometown(resumeModelVo.isApplicantHometown());
-            resumeModelDto.setApplicantMajor(resumeModelVo.isApplicantMajor());
-            resumeModelDto.setApplicantMaritalStatus(resumeModelVo.isApplicantMaritalStatus());
-            resumeModelDto.setApplicantName(resumeModelVo.isApplicantName());
-            resumeModelDto.setApplicantNation(resumeModelVo.isApplicantNation());
-            resumeModelDto.setApplicantPhone(resumeModelVo.isApplicantPhone());
-            resumeModelDto.setApplicantPhoto(resumeModelVo.isApplicantPhoto());
-            resumeModelDto.setApplicantPoliticalStatus(resumeModelVo.isApplicantPoliticalStatus());
-            resumeModelDto.setApplicantSchool(resumeModelVo.isApplicantSchool());
-            resumeModelDto.setApplicantSelfIntro(resumeModelVo.isApplicantSelfIntro());
-            resumeModelDto.setApplicantSex(resumeModelVo.isApplicantSex());
-            resumeModelDto.setApplicantTimeToWork(resumeModelVo.isApplicantTimeToWork());
-            resumeModelDto.setFamilyContactCompany(resumeModelVo.isFamilyContactCompany());
-            resumeModelDto.setFamilyContactName(resumeModelVo.isFamilyContactName());
-            resumeModelDto.setFamilyContactPhoneNum(resumeModelVo.isFamilyContactPhoneNum());
-            resumeModelDto.setFamilyContactRelation(resumeModelVo.isFamilyContactRelation());
-            resumeModelDto.setRecommenderName(resumeModelVo.isRecommenderName());
+            DataTransferUtil.updateResumeModelDtoByVo(resumeModelDto, resumeModelVo);
             resumeModelDtoRepository.save(resumeModelDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -245,8 +209,10 @@ public class HRServiceImpl implements HRService {
             InterviewDto newInterview = new InterviewDto();
             ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
             InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+            PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
+            newInterview.setPost(post);
             newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
             newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
             newInterview.setApplicantStatus(ApplicantStatus.INIT);
@@ -259,6 +225,17 @@ public class HRServiceImpl implements HRService {
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
+    }
+
+    @Override
+    public int createListOfInterviews(List<InterviewVo> interviewVos) {
+        for(InterviewVo interviewVo : interviewVos) {
+            int result = createInterview(interviewVo);
+            if(StatusCode.FAILURE.equals(result)) {
+                return StatusCode.FAILURE;
+            }
+        }
+        return StatusCode.SUCCESS;
     }
 
     @Override
@@ -292,6 +269,35 @@ public class HRServiceImpl implements HRService {
                     .collect(Collectors.toList());
         } else {
             return new ArrayList<InterviewVo>();
+        }
+    }
+
+    @Override
+    public List<InterviewVo> findListOfInterviewsByPostIdAndTime(int postId, Date beginTime, Date endTime) {
+        return interviewDtoRepository.findAllByPostAndTime(postDtoRepository.findPostDtoByPostId(postId),
+                beginTime, endTime).stream()
+                .map(n -> DataTransferUtil.InterviewDtoToVo(n))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<InterviewVo> findListOfInterviewsByPostIdAndInterviewRound(int postId, int interviewRound) {
+        return interviewDtoRepository.findAllByPostAndInterviewRound(postDtoRepository.findPostDtoByPostId(postId),
+                interviewRound).stream()
+                .map(n -> DataTransferUtil.InterviewDtoToVo(n))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int addNewInterviewRoundByPostId(int postId) {
+        try {
+            PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+            int interviewRound = post.getInterviewRound();
+            post.setInterviewRound(++interviewRound);
+            postDtoRepository.save(post);
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
         }
     }
 

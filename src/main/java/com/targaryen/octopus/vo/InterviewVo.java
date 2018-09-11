@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.Date;
 
+/**
+ * @author He Junfeng
+ */
 @Getter
 public class InterviewVo {
     private final int interviewId;
@@ -21,6 +24,8 @@ public class InterviewVo {
     private final Date createTime;
     private final Date reservationResultTime;
     private final Date interviewResultTime;
+    private final int postId;
+    private final int interviewRound;
 
     public static class Builder {
         private int interviewId;
@@ -38,6 +43,8 @@ public class InterviewVo {
         private Date createTime;
         private Date reservationResultTime;
         private Date interviewResultTime;
+        private int postId;
+        private int interviewRound;
 
         public Builder interviewId(int interviewId) {
             this.interviewId = interviewId;
@@ -55,7 +62,7 @@ public class InterviewVo {
         }
 
         public Builder applicantStatus(int applicantStatus) {
-            this.applicantStatus = interviewerStatus;
+            this.applicantStatus = applicantStatus;
             return this;
         }
 
@@ -114,6 +121,16 @@ public class InterviewVo {
             return this;
         }
 
+        public Builder postId(int postId) {
+            this.postId = postId;
+            return this;
+        }
+
+        public Builder interviewRound(int interviewRound) {
+            this.interviewRound = interviewRound;
+            return this;
+        }
+
         public InterviewVo build() {
             return new InterviewVo(this);
         }
@@ -136,5 +153,7 @@ public class InterviewVo {
         this.createTime = builder.createTime;
         this.reservationResultTime = builder.reservationResultTime;
         this.interviewResultTime = builder.interviewResultTime;
+        this.postId = builder.postId;
+        this.interviewRound = builder.interviewRound;
     }
 }

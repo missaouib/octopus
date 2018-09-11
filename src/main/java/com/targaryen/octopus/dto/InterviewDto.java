@@ -47,6 +47,8 @@ public class InterviewDto implements Serializable {
 
     private String interviewResultComment;
 
+    private int interviewRound;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
@@ -63,4 +65,8 @@ public class InterviewDto implements Serializable {
     @JoinColumn(name = "interviewer_id")
     @ManyToOne(cascade = CascadeType.MERGE)
     private InterviewerDto interviewer;
+
+    @JoinColumn(name = "post_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private PostDto post;
 }

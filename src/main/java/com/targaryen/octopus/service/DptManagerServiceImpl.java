@@ -43,7 +43,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         if(dptManager == null) {
             return new ArrayList<PostVo>();
         } else {
-            return dptManager.getPosts().stream()
+            return dptManager.getDepartment().getPosts().stream()
                     .map(n -> DataTransferUtil.PostDtoToVo(n))
                     .collect(Collectors.toList());
         }
@@ -62,7 +62,7 @@ public class DptManagerServiceImpl implements DptManagerService {
     @Override
     public int createNewPost(PostVo newPost, int userId) {
         try {
-            DptManagerDto dptManager = userDtoRepository.findUserDtoByUserId(userId).getDptManager();
+            DepartmentDto department = userDtoRepository.findUserDtoByUserId(userId).getDptManager().getDepartment();
             PostDto postDto = new PostDto();
             postDto.setPostId(newPost.getPostId());
             postDto.setPostName(newPost.getPostName());
@@ -72,13 +72,15 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setPostRequirement(newPost.getPostRequirement());
             postDto.setRecruitNum(newPost.getRecruitNum());
             postDto.setRecruitDpt(newPost.getRecruitDpt());
+            postDto.setRecruitType(newPost.getRecruitType());
             postDto.setStatus(newPost.getStatus());
-            postDto.setDptManager(dptManager);
+            postDto.setDepartment(department);
+            postDto.setInterviewRound(0);
+            postDtoRepository.save(postDto);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);
             postDto.setResumeModel(resumeModelDto);
             resumeModelDtoRepository.save(resumeModelDto);
-            postDtoRepository.save(postDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -90,13 +92,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             if(post != null) {
-                post.setPostName(updatePost.getPostName());
-                post.setPostType(updatePost.getPostType());
-                post.setPostLocale(updatePost.getPostLocale());
-                post.setPostDescription(updatePost.getPostDescription());
-                post.setPostRequirement(updatePost.getPostRequirement());
-                post.setRecruitNum(updatePost.getRecruitNum());
-                post.setRecruitDpt(updatePost.getRecruitDpt());
+                DataTransferUtil.updatePostDtoByVo(post, updatePost);
                 postDtoRepository.save(post);
             }
             return StatusCode.SUCCESS;

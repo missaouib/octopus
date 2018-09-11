@@ -59,9 +59,76 @@ public interface ApplicantService {
      * execution status
      */
     int CreateNewApplication(ApplicationVo applicationVo);
+
+    /**
+     * find interviews are not replied by applicant, group by applicant's userId
+     *
+     * @param userId
+     * applicant's userId
+     *
+     * @return
+     * list of not replied interviews
+     */
     List<InterviewVo> findUnreplyedInterviewsByUserId(int userId);
+
+    /**
+     * find interviews that are accepted by applicant, group by applicant's userId
+     *
+     * @param userId
+     * applicant's userId
+     *
+     * @return
+     * list of interviews accepted by applicant
+     */
     List<InterviewVo> findAcceptedInterviewsByUserId(int userId);
+
+    /**
+     * Update applicant status of interview, once the status is updated to "accept" or "reject",
+     * the interview reservation status is determined
+     *
+     * @param interviewId
+     * InterviewId of the interview to be updated
+     *
+     * @param applicantStatus
+     * New applicant status
+     *
+     * @param comment
+     * If applicant accept the interview, this field will be left null. If applicant reject the interview,
+     * this field will contain the reject reason
+     *
+     * @return
+     */
     int updateApplicantStatusOfInterview(int interviewId, int applicantStatus, String comment);
+
+    /**
+     * find interviews' detail are not replied by applicant, group by applicant's userId
+     *
+     * @param userId
+     * applicant's userId
+     *
+     * @return
+     * list of not replied interviews
+     */
     List<ApplicantInterviewVo> findUnreplyedInterviewDetailsByUserId(int userId);
+
+    /**
+     * find interviews' detail that are accepted by applicant, group by applicant's userId
+     *
+     * @param userId
+     * applicant's userId
+     *
+     * @return
+     * list of interviews accepted by applicant
+     */
     List<ApplicantInterviewVo> findAcceptedInterviewDetailsByUserId(int userId);
+
+    /**
+     * find applicantInterviews by applicationId
+     * @param applicationId
+     * @return
+     */
+    List<ApplicantInterviewVo> findApplicantInterviewsByApplicationId(int applicationId);
+    ApplicationVo findApplicationByApplicationId(int applicationId);
+    int acceptOfferByApplicationId(int applicationId);
+    int rejectOfferByApplicationId(int applicationId);
 }

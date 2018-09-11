@@ -1,7 +1,9 @@
 package com.targaryen.octopus.service;
 
+import com.targaryen.octopus.dto.InterviewDto;
 import com.targaryen.octopus.vo.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,6 +107,12 @@ public interface HRService {
     int createInterview(InterviewVo interviewVo);
 
     /**
+     * create a list of interviews, interviewVo should include applicationId, interviewerId, startTime, interviewPlace
+     *
+     */
+    int createListOfInterviews(List<InterviewVo> interviewVos);
+
+    /**
      * find interview by interviewId
      *
      */
@@ -121,6 +129,24 @@ public interface HRService {
      *
      */
     List<InterviewVo> findInterviewByApplicationId(int applicationId);
+
+    /**
+     * find list of interviews by and postId and date
+     *
+     */
+    List<InterviewVo> findListOfInterviewsByPostIdAndTime(int postId, Date beginTime, Date endTime);
+
+    /**
+     * find list of interviews by postId and interviewRound
+     *
+     */
+    List<InterviewVo> findListOfInterviewsByPostIdAndInterviewRound(int postId, int interviewRound);
+
+    /**
+     * add a new interview round by postId
+     *
+     */
+    int addNewInterviewRoundByPostId(int postId);
 
     /**
      * interview pass application by applicationId

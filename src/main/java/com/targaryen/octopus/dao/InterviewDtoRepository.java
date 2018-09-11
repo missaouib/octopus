@@ -1,9 +1,13 @@
 package com.targaryen.octopus.dao;
 
 import com.targaryen.octopus.dto.InterviewDto;
+import com.targaryen.octopus.dto.PostDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,4 +21,8 @@ public interface InterviewDtoRepository extends JpaRepository<InterviewDto, Inte
     InterviewDto findInterviewDtoByInterviewId(Integer id);
     void deleteInterviewDtoByInterviewId(int interviewId);
 
+    @Query("select t from InterviewDto t where t.post = :post and t.interviewStartTime >= :startTime and t.interviewStartTime <= :endTime")
+    List<InterviewDto> findAllByPostAndTime(@Param("post")PostDto post, @Param("startTime") Date startTime, @Param("endTime") Date entTime);
+
+    List<InterviewDto> findAllByPostAndInterviewRound(PostDto post, Integer interviewRound);
 }
