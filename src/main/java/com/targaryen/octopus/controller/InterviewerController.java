@@ -91,6 +91,7 @@ public class InterviewerController {
         map.addAttribute("interviewList", serviceFactory.getInterviewerService().findInterviewerInterviewsByApplicationId(applicationId));
         //map.addAttribute("interviewComment", new InterviewerCommentEntity());
         map.put("interviewComment", new InterviewerCommentEntity());
+        map.addAttribute("InterviewFinal", serviceFactory.getInterviewerService().findApplicationByApplicationId(applicationId));
         return "interviewer-interview-timeline";
     }
 

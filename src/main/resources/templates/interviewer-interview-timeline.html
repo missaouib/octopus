@@ -173,8 +173,49 @@
                                 </div>
                             </div>
 
+
                         </th:block>
 
+                        <!-- Interview fail -->
+                        <div th:if="${InterviewFinal.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}"
+                             class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon muted-bg" style="background-color: #343a40;">
+                                <i class="fa fa-undo" style="color: #FFF;"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Interview Failed.</h2>
+                                <p>
+                                    Interview Closed by HR.
+                                </p>
+
+                                <span class="vertical-date">
+                                        <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(InterviewFinal.interviewEndTime,'HH:mm')}"></label></small>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <!-- Interview pass -->
+                        <div th:if="${InterviewFinal.status} gt ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}
+                                    and ${InterviewFinal.status} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}"
+                             class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon blue-bg">
+                                <i class="fa fa-calendar-check-o"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Interview Accepted</h2>
+                                <p>
+                                    Interview Closed by HR.
+                                </p>
+
+                                <span class="vertical-date">
+                                        <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(InterviewFinal.interviewEndTime,'HH:mm')}"></label></small>
+                                    </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

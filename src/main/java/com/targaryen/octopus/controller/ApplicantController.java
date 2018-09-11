@@ -258,9 +258,11 @@ public class ApplicantController {
         return "applicant-interview-magm";
     }
 
-    @RequestMapping(value = "/applicant/interview/detail", method = RequestMethod.GET)
-    public String interviewDetail(ModelMap map){
+    @RequestMapping(value = "/applicant/interview/detail/{applicationId}", method = RequestMethod.GET)
+    public String interviewDetail(@PathVariable("applicationId") int applicationId, ModelMap map){
 
+        map.addAttribute("interviewList", serviceFactory.getApplicantService().findApplicantInterviewsByApplicationId(applicationId));
+        map.addAttribute("InterviewFinal", serviceFactory.getApplicantService().findApplicationByApplicationId(applicationId));
         return "applicant-interview-detail";
     }
 
