@@ -283,4 +283,15 @@ public class ApplicantServiceImpl implements ApplicantService {
         return applicantInterviewVos;
     }
 
+    public ApplicationVo findApplicationByApplicationId(int applicationId) {
+        ApplicationDto applicationDto;
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            return DataTransferUtil.ApplicationDtoToVo(applicationDto);
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
 }

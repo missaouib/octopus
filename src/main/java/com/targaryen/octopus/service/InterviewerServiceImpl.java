@@ -263,4 +263,15 @@ public class InterviewerServiceImpl implements InterviewerService {
             return new ArrayList<>();
         }
     }
+
+    public ApplicationVo findApplicationByApplicationId(int applicationId) {
+        ApplicationDto applicationDto;
+
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            return DataTransferUtil.ApplicationDtoToVo(applicationDto);
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
 }

@@ -1,9 +1,6 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.vo.ApplicationResumeVo;
-import com.targaryen.octopus.vo.InterviewVo;
-import com.targaryen.octopus.vo.InterviewerInterviewVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 
 import java.util.List;
 
@@ -24,4 +21,5 @@ public interface InterviewerService {
     List<ApplicationResumeVo> findApplicationsByPostIdAndStatus(int postId, Integer status);
     List<InterviewerInterviewVo> findInterviewerInterviewsByApplicationId(int applicationId);
     int setInterviewResultStatus(int interviewId, int resultStatus);
+    ApplicationVo findApplicationByApplicationId(int applicationId);
 }

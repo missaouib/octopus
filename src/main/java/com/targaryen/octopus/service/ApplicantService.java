@@ -65,4 +65,5 @@ public interface ApplicantService {
     List<ApplicantInterviewVo> findUnreplyedInterviewDetailsByUserId(int userId);
     List<ApplicantInterviewVo> findAcceptedInterviewDetailsByUserId(int userId);
     List<ApplicantInterviewVo> findApplicantInterviewsByApplicationId(int applicationId);
+    ApplicationVo findApplicationByApplicationId(int applicationId);
 }
