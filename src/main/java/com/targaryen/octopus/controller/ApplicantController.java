@@ -72,10 +72,11 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         int userId = AuthInfo.getUserId();
-        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
-
-        result.addObject ("unreplyMsg", interviewVos);
+        /*List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);*/
+        List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
+        List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
+        map.addAttribute("unreplyMsg", interviewVos);
         map.addAttribute("acceptedMsg", interviewVosAccpted);
         return result;
     }
@@ -259,6 +260,7 @@ public class ApplicantController {
 
     @RequestMapping(value = "/applicant/interview/detail", method = RequestMethod.GET)
     public String interviewDetail(ModelMap map){
+
         return "applicant-interview-detail";
     }
 
