@@ -197,8 +197,8 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<InterviewerVo> listInterviewers() {
-        return interviewerDtoRepository.findAll().stream()
+    public List<InterviewerVo> listInterviewersByPostId(int postId) {
+        return postDtoRepository.findPostDtoByPostId(postId).getDepartment().getInterviewers().stream()
                 .map(n -> DataTransferUtil.InterviewerDtoToVo(n))
                 .collect(Collectors.toList());
     }
