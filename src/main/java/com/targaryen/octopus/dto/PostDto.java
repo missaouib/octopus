@@ -39,8 +39,6 @@ public class PostDto implements Serializable {
 
     private int recruitNum;
 
-    private String recruitDpt;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date publishTime;
 

@@ -128,7 +128,6 @@ public class HRController {
                 .postDescription(postEntity.getPostDescription())
                 .postRequirement(postEntity.getPostRequirement())
                 .recruitNum(postEntity.getRecruitNum())
-                .recruitDpt(postEntity.getRecruitDpt())
                 .publishTime(postEntity.getPublishTime())
                 .status(postEntity.getStatus())
                 .build();
