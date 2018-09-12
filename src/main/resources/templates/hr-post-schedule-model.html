@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/jsCalendar.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/scroller.css}"/>
 
     <script th:src="@{/octopus/js/jquery.min.js}"></script>
     <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
@@ -17,6 +18,7 @@
     <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
     <script th:src="@{/octopus/js/jquery-ui-1.10.4.min.js}"></script>
     <script th:src="@{/octopus/js/jsCalendar.js}"></script>
+    <script th:src="@{/octopus/js/scroller.js}"></script>
 
     <style>
         .jsCalendar.material-theme thead {
@@ -26,20 +28,99 @@
         .jsCalendar tbody td.jsCalendar-current {
             background-color: rgb(26, 179, 148);
         }
-
     </style>
 </head>
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-2">
                 <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h4>Edit Interview Schedule</h4>
+                    <div class="ibox-title" style="height: 55px;">
+                        <div class="col-sm-3">
+                            <a id="round-prev" class="pull-left btn-xs btn-outline btn-default"
+                                    onclick="decre();"
+                                    style="margin-top: 2px;">
+                                <i class="glyphicon glyphicon-chevron-left" aria-hidden="true"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <h4 style="text-align: center;">Round</h4>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <a id="round-next" class="pull-right btn-xs btn-outline btn-default"
+                                    onclick="incre();"
+                                    style="margin-top: 2px;">
+                                <i class="glyphicon glyphicon-chevron-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content profile-content" style="height: 250px;">
+                        <div class="row">
+                            <div id="scroller-pane" class="center-block"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12  col-centered">
+                                <button type="button" class="btn btn-outline btn-rounded btn-primary center-block" style="text-align: center;">
+                                    <i class="fa fa-plus"></i> New Round
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="height: 55px;">
+                        <h4 style="text-align: center;">Status</h4>
                     </div>
                     <div>
-                        <div class="ibox-content profile-content">
+                        <div class="ibox-content profile-content" style="height: 250px;">
+
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <span class="badge badge-primary">2018-08-01</span> First date of interview schedule
+                                </li>
+                                <li class="list-group-item ">
+                                    <span class="badge badge-info">2018-08-30</span> Last date of interview schedule
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="badge badge-warning">500</span> Interview overall count
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="badge badge-success">600</span> Applicant overall count
+                                </li>
+                            </ul>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-block btn-rounded btn-primary">
+                                        <i class="fa fa-plus"></i> Batch Add Interviews
+                                    </button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-block btn-rounded btn-success">
+                                        <i class="fa fa-calendar-check-o"></i> Auto Scheduling
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="height: 55px;">
+                        <h4>Post Detail</h4>
+                    </div>
+                    <div>
+                        <div class="ibox-content profile-content" style="height: 250px;">
 
                             <div class="row">
                                 <div class="col-sm-12">
@@ -49,7 +130,7 @@
                                     <dl class="dl-horizontal">
                                         <dt>Status：</dt>
                                         <dd>
-                                            d
+                                            ddd
                                         </dd>
                                     </dl>
                                 </div>
@@ -59,16 +140,16 @@
                                 <div class="col-sm-5">
                                     <dl class="dl-horizontal">
                                         <dt>Post Type:</dt>
-                                        <dd th:text="d"></dd>
+                                        <dd th:text="ddd"></dd>
 
                                         <dt>Post Locale:</dt>
-                                        <dd th:text="d"></dd>
+                                        <dd th:text="ddd"></dd>
                                     </dl>
                                 </div>
                                 <div class="col-sm-12">
                                     <dl class="dl-horizontal">
                                         <dt>Department:</dt>
-                                        <dd th:text="d"></dd>
+                                        <dd th:text="ddd"></dd>
                                     </dl>
                                 </div>
                             </div>
@@ -77,30 +158,31 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="row">
-            <div class="col-sm-7">
+            <div class="col-sm-6">
                 <div class="ibox-title">
-                    <h4>Calendar/Timetable of Interview Schedule</h4>
+                    <h4>Calendar of Interview Schedule</h4>
                 </div>
 
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <div id="my-calendar" class="material-theme" data-month-format="month YYYY" data-day-format="DDD"></div>
                         </div>
 
-                        <div class="col-sm-7">
+                        <div class="col-sm-6">
 
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>Check</th>
                                         <th>Start Time</th>
-                                        <th>End Time</th>
-                                        <th>Head Count</th>
+                                        <th>Place</th>
+                                        <th>Count</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -111,7 +193,7 @@
                                             <input type="checkbox" checked class="i-checks" name="input[]">
                                         </td>
                                         <td>13:00</td>
-                                        <td>15:00</td>
+                                        <td>Tiananmen</td>
                                         <td>5</td>
                                         <td>
                                             <a><i class="fa fa-pencil text-warning"></i></a>
@@ -121,48 +203,21 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" checked class="i-checks" name="input[]">
-                                        </td>
-                                        <td>13:00</td>
-                                        <td>15:00</td>
-                                        <td>5</td>
-                                        <td>
-                                            <a><i class="fa fa-pencil text-warning"></i></a>
-                                        </td>
-                                        <td>
-                                            <a><i class="fa fa-remove text-danger"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" checked class="i-checks" name="input[]">
-                                        </td>
-                                        <td>13:00</td>
-                                        <td>15:00</td>
-                                        <td>5</td>
-                                        <td>
-                                            <a><i class="fa fa-pencil text-warning"></i></a>
-                                        </td>
-                                        <td>
-                                            <a><i class="fa fa-remove text-danger"></i></a>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
 
                             <div class="pull-right">
-                                <a class="btn btn-s btn-primary"><i class="fa fa-plus"></i> Add new</a>
-                                <a class="btn btn-s btn-danger"><i class="fa fa-remove"></i> Delete in batch</a>
+                                <label style="margin-right: 10px;">Batch operations for:</label>
+                                <a class="btn btn-s btn-primary"><i class="fa fa-plus"></i> Add</a>
+                                <a class="btn btn-s btn-danger"><i class="fa fa-remove"></i> Delete</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!--
             <div class="col-sm-5">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -181,7 +236,7 @@
                                 </ul>
                             </div>
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" style="background-color: #f5f5f6;">
                                 <h3>NOT participate</h3>
                                 <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
 
@@ -194,107 +249,142 @@
                     </div>
                 </div>
             </div>
+            -->
+
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h4>Interviews on ***</h4>
+                    </div>
+
+                    <div class="ibox-content">
+                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                            <thead>
+                                <tr class="footable even">
+                                    <th>Applicant</th>
+                                    <th>Interviewer</th>
+                                    <th>Result</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                                <tr>
+                                    <td>J2EE Developers <a><i class="fa fa-pencil text-warning"></i></a></td>
+                                    <td>Engineer <a><i class="fa fa-pencil text-warning"></i></a></td>
+                                    <td>If result not init, hide icons</td>
+                                    <td>
+                                        <a><i class="fa fa-remove text-danger"></i></a>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+
+
     <script th:inline="javascript">
+        /* Interviewer list initialization */
         $(document).ready(function(){$(".sortable-list").sortable({
             connectWith:".connectList"
         }).disableSelection()});
 
-        /*<![CDATA[*/
-        var _csrf_token = /*[[${_csrf.token}]]*/ '';
-        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
-        /*]]>*/
-        var csrfData = {};
-        csrfData[_csrf_param_name] = _csrf_token;
-
-        /* Generate li template */
-        function generateLi(type, id, content) {
-            return "<li class=\"" + type + "-element\"" + " id=\"" + id + "\">" + content +  "</li>";
-        }
-
-        /* Load form fields */
-        function reload() {
-            $.ajax({
-                type: "get",
-                url: 'json',
-                async: true,
-                success: function (data) {
-                    $("#participate").empty();
-                    $("#non-participate").empty();
-
-                    console.log(data);
-                    $("#resumeModelId").val(data["resumeModelId"]);
-
-                    for (var k in data) {
-                        if (k != "fieldText" && k != "resumeModelId") {
-                            if (data[k] == true) {
-                                $("#participate").append(generateLi("success", k, data["fieldText"][k]));
-                            } else {
-                                $("#non-participate").append(generateLi("warning", k, data["fieldText"][k]));
-                            }
-                        }
-                    }
-
-                },
-                error: function (data) {
-                    $("#participate").append(generateLi("success", "", "Loading failure. Please refresh the page."));
-                    $("#non-participate").append(generateLi("warning", "", "Loading failure. Please refresh the page."));
-                }
-            });
-        }
-
-        /* Save modifications on form fields */
-        function save() {
-            $("#display > li").each(function() {
-                csrfData[$(this).attr("id")] = true;
-            });
-            $("#hide > li").each(function() {
-                csrfData[$(this).attr("id")] = false;
-            });
-            csrfData["resumeModelId"] = $("#resumeModelId").val();
-
-            $.ajax({
-                type: "post",
-                url: 'update',
-                data: csrfData,
-                async: true,
-                success: function (data) {
-                    swal({
-                        title: "Success",
-                        text: "You have successfully updated this resume model.",
-                        type: "success"
-                    }, function (isConfirm) {
-                        reload();
-                    });
-                },
-                error: function (data) {
-                    swal({
-                        title: "Failure",
-                        text: "You have not successfully updated this post need.",
-                        type: "error"
-                    });
-                }
-            });
-        }
-
-        /* Initially load form fields when page is loaded */
-        reload();
-
-
-        // Get the element
+        /* Calendar initialization */
         var element = document.getElementById("my-calendar");
-        // Create the calendar
         var myCalendar = jsCalendar.new(element, "now", {
             "dayFormat": "DDD"
         });
 
-        // Add events
         myCalendar.onDateClick(function(event, date){
             myCalendar.set(date);
             console.log(date);
             myCalendar.select(date);
         });
+
+        /* Scroller initialization */
+        var scroller = Scroller.getNewInstance({
+            direction: Scroller.DIRECTION.DOWN,
+            interval: 300,
+            width: 150,
+            amount: 150,
+            separatorType: Scroller.SEPARATOR.NONE
+        });
+
+        scroller.appendTo(document.getElementById("scroller-pane"));
+        scroller.start("01");
+        var min = 1, max = 3; // min >= 1 and max <= 99
+        var d = 1;
+
+        if (d == min) {
+            $("#round-prev").css("display", "none");
+        }
+        if (d == max) {
+            $("#round-next").css("display", "none");
+        }
+
+        function incre() {
+            if (d < max) {
+                ++d;
+
+                if (d == max) {
+                    $("#round-next").css("display", "none");
+                }
+                if (d != min) {
+                    $("#round-prev").css("display", "block");
+                }
+
+                // Do something using d
+
+                if (d >= min && d < 10) {
+                    scroller.scrollTo("0" + d);
+                } else {
+                    scroller.scrollTo(d);
+                }
+            }
+        }
+
+        function decre() {
+            if (d > min) {
+                --d;
+
+                if (d == min) {
+                    $("#round-prev").css("display", "none");
+                }
+                if (d != max) {
+                    $("#round-next").css("display", "block");
+                }
+
+                // Do something using d
+
+                if (d >= min && d < 10) {
+                    scroller.scrollTo("0" + d);
+                } else {
+                    scroller.scrollTo(d);
+                }
+            }
+        }
+
+        /* Footable initialization */
+        $(".footable").footable();
+
     </script>
 </body>
 </html>
