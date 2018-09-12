@@ -215,8 +215,18 @@ public class HRServiceImpl implements HRService {
     public int createInterview(InterviewVo interviewVo) {
         try {
             InterviewDto newInterview = new InterviewDto();
-            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
-            InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+            ApplicationDto application;
+            if(interviewVo.getApplicationId() <= 0) {
+                application = null;
+            } else {
+                application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
+            }
+            InterviewerDto interviewer;
+            if(interviewVo.getInterviewerId() <= 0) {
+                interviewer = null;
+            } else {
+                interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+            }
             PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
