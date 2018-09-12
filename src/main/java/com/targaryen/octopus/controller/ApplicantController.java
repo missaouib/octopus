@@ -285,8 +285,14 @@ public class ApplicantController {
 
     @RequestMapping(value = "/applicant/interview/acceptOffer", method = RequestMethod.POST)
     @ResponseBody
-    public String hrApplicationTimelineOffer(@RequestParam("applicationId") int applicationId) {
+    public String applicantAcceptOffer(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(serviceFactory.getApplicantService().acceptOfferByApplicationId(applicationId));
+    }
+
+    @RequestMapping(value = "/applicant/interview/rejectOffer", method = RequestMethod.POST)
+    @ResponseBody
+    public String applicantRejectOffer(@RequestParam("applicationId") int applicationId) {
+        return String.valueOf(serviceFactory.getApplicantService().rejectOfferByApplicationId(applicationId));
     }
 
 }

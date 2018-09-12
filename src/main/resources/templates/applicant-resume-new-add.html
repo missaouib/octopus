@@ -16,14 +16,16 @@
     <!-- Custom Fonts -->
     <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
 
-    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+
+
+    <link th:href="@{/octopus/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/plugins/codemirror/codemirror.css}" rel="stylesheet" />
 
     <!--new vendor -->
     <link th:href="@{/octopus/new-vendor/css/plugins/steps/jquery.steps.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet">
-
+    <link th:href="@{/octopus/new-vendor/css/animate.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/style.css}" rel="stylesheet" />
 
 </head>
 
@@ -40,189 +42,234 @@
                 <p>
                     Your Information is very important for job hunting.
                 </p>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <p>
+                            This is basic example of Step
+                        </p>
+                        <div id="wizard">
+                            <h1>1. Basic Information</h1>
+                            <div class="step-content">
+                                <form method="post" action="#">
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Name</label>
+                                                    <input id="applicantName" name="name"  type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">City</label>
+                                                    <input id="applicantCity"  name="city" type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Political</label>
+                                                    <input id="applicantPoliticalStatus" name="political"  type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">CurrentSalary</label>
+                                                    <input id="applicantCurrentSalary" name="CurrentSalary" type="text" class="form-control number">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">familyContactName</label>
+                                                    <input id="familyContactName" name="familyContactName" type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Phone</label>
+                                                    <input id="applicantPhone" name="phone"  type="text" class="form-control number">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Degree</label><br>
+                                                    <select class="form-control" id="applicantDegree" name="applicantDegree" >
+                                                        <option value="0">High School</option>
+                                                        <option value="1">Bachlor</option>
+                                                        <option value="2">Master</option>
+                                                        <option value="3">Doctor</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Marital</label>
+                                                    <input id="applicantMaritalStatus" name="applicantMaritalStatus"  type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">ExpectSalary</label>
+                                                    <input id="applicantExpectSalary" name="applicantExpectSalary"  type="text" class="form-control number">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">familyContactRelation</label>
+                                                    <input id="familyContactRelation" name="familyContactRelation" type="text" class="form-control">
+                                                </div>
+                                            </div>
 
-                <form id="form" method="post" action="#" class="wizard-big">
-                    <h1>Basic Information</h1>
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-<<<<<<< HEAD
-                                    <input  name="postId" type="hidden" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Name *</label>
-                                    <input  name="name"  type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Age *</label>
-                                    <input  name="age" type="text" class="form-control required number">
-                                </div>
-                                <div class="form-group">
-                                    <label>Sex *</label><br>
-                                    <select  name="sex" style="width: 200px; height:34px;">
-=======
-                                    <input id="postId" name="postId" type="hidden" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Name *</label>
-                                    <input id="name" name="name"  type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Age *</label>
-                                    <input id="age" name="age" type="text" class="form-control required number">
-                                </div>
-                                <div class="form-group">
-                                    <label>Sex *</label><br>
-                                    <select id="sex" name="sex" style="width: 200px; height:34px;">
->>>>>>> fb47c6fbbdce25a23a64e3b6c51c478d24fdd991
-                                        <option value="0">Male</option>
-                                        <option value="1">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-<<<<<<< HEAD
-                                    <input  name="postId" type="hidden" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Name *</label>
-                                    <input name="name"  type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Age *</label>
-                                    <input  name="age" type="text" class="form-control required number">
-                                </div>
-                                <div class="form-group">
-                                    <label>Sex *</label><br>
-                                    <select name="sex" style="width: 200px; height:34px;">
-=======
-                                    <input id="postId" name="postId" type="hidden" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Name *</label>
-                                    <input id="name" name="name"  type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Age *</label>
-                                    <input id="age" name="age" type="text" class="form-control required number">
-                                </div>
-                                <div class="form-group">
-                                    <label>Sex *</label><br>
-                                    <select id="sex" name="sex" style="width: 200px; height:34px;">
->>>>>>> fb47c6fbbdce25a23a64e3b6c51c478d24fdd991
-                                        <option value="0">Male</option>
-                                        <option value="1">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <input id="postId" name="postId" type="hidden" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Name *</label>
-                                    <input id="name" name="name"  type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Age *</label>
-                                    <input id="age" name="age" type="text" class="form-control required number">
-                                </div>
-                                <div class="form-group">
-                                    <label>Sex *</label><br>
-                                    <select id="sex" name="sex" style="width: 200px; height:34px;">
-                                        <option value="0">Male</option>
-                                        <option value="1">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Email</label>
+                                                    <input id="applicantEmail" name="applicantEmail" type="text" class="form-control email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">applicantHometown</label>
+                                                    <input id="applicantHometown" name="applicantHometown" type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">BirthDate</label>
+                                                    <input id="applicantDateOfBirth" name="applicantDateOfBirth" type="date" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">DutyTime</label>
+                                                    <select class="form-control" id="applicantDutyTime" name="applicantDutyTime" >
+                                                        <option value="0">One Week</option>
+                                                        <option value="1">One Month</option>
+                                                        <option value="2">Two Month</option>
+                                                        <option value="3">Pending</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">familyContactCompany</label>
+                                                    <input id="familyContactCompany" name="familyContactCompany" type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Sex</label><br>
+                                                    <select class="form-control" id="sex" name="sex">
+                                                        <option value="0">Male</option>
+                                                        <option value="1">Female</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Nation</label>
+                                                    <input id="applicantNation" name="applicantNation" type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">TimeToWork</label>
+                                                    <input id="applicantTimeToWork" name="applicantTimeToWork" type="date" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">recommenderName</label>
+                                                    <input id="recommenderName" name="recommenderName" type="text" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">familyContactPhoneNum</label>
+                                                    <input id="familyContactPhoneNum" name="familyContactPhoneNum" type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Address</label>
+                                                    <input id="applicantAddress" name="applicantAddress" type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.}">Self Introduction</label>
+                                                    <textarea id="applicantSelfIntro" name="applicantSelfIntro" type="text" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                    <h1>Education</h1>
-                    <fieldset>
-                        <h2>Education Information</h2>
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group">
-                                    <label>School *</label>
-                                    <input id="school" name="school" type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Major *</label>
-                                    <input id="major" name="major" type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Degree *</label>
-                                    <select id="degree" name="degree" style="width: 500px; height:34px;">
-                                        <option value="0">Bachelor</option>
-                                        <option value="1">Master</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="text-center">
-                                    <div style="margin-top: 20px">
-                                        <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <h3>applicantPhoto</h3>
+                                                    <div class="ibox float-e-margins">
+                                                        <div class="ibox-content">
+                                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                                <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                                                <span class="input-group-addon btn btn-default btn-file">
+                                                        <span class="fileinput-new">Select file</span>
+                                                        <span class="fileinput-exists">Change</span>
+                                                        <input type="file" accept="image/*" name="..." />
+                                                    </span>
+                                                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                    <h1>Contact</h1>
-                    <fieldset>
-                        <h2>Contact Information</h2>
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group">
-                                    <label>City *</label>
-                                    <input id="city" name="city" type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Email *</label>
-                                    <input id="email" name="email" type="text" class="form-control required email">
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone *</label>
-                                    <input id="phone" name="phone" type="text" class="form-control required number">
-                                </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <h3>applicantDegreePhoto</h3>
+                                                    <div class="ibox float-e-margins">
+                                                        <div class="ibox-content">
+                                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                                <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                                                <span class="input-group-addon btn btn-default btn-file">
+                                                        <span class="fileinput-new">Select file</span>
+                                                        <span class="fileinput-exists">Change</span>
+                                                        <input type="file" accept="image/*" name="..." />
+                                                    </span>
+                                                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="text-center">
-                                    <div style="margin-top: 20px">
-                                        <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
 
-                    <h1>Resume Paperwork</h1>
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Your Resume</h5>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                            <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
-                                            <span class="input-group-addon btn btn-default btn-file">
-                                                    <span class="fileinput-new">Select file</span>
-                                                    <span class="fileinput-exists">Change</span>
-                                                    <input type="file" accept="application/pdf" name="..." />
-                                                </span>
-                                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                            <h1>2. Work Experience</h1>
+                            <div class="step-content">
+                                <div class="row" >
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <button type="button" style="height:50px; width:105%; background-color:#fff; border-style:dotted; float:bottom;">+ Add New</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <h1>3. Education Experience</h1>
+                            <div class="step-content">
+                                <div class="row" >
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <button type="button" style="height:50px; width:105%; background-color:#fff; border-style:dotted; float:bottom;">+ Add New</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h1>4. Resume Paperwork</h1>
+                            <div class="step-content">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>Your Resume</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                                    <span class="input-group-addon btn btn-default btn-file">
+                                                    <span class="fileinput-new">Select file</span>
+                                                    <span class="fileinput-exists">Change</span>
+                                                    <input type="file" accept="application/pdf" name="..." />
+                                                </span>
+                                                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="text-center">
+                                            <div style="margin-top: 20px">
+                                                <i class="fa fa-check-square" style="font-size: 100px;color: #e5e5e5 "></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                    </fieldset>
-                </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -234,98 +281,29 @@
 <!-- Bootstrap Core JavaScript -->
 <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
 
-<!-- Metis Menu Plugin JavaScript -->
-<script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
+<script th:src="@{/octopus/new-vendor/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+<script th:src="@{/octopus/new-vendor/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
 
-<!-- Custom Theme JavaScript -->
-<script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
-
-<script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
-<script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
-
-<!-- Steps -->
-<script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
-
+<!-- Custom and plugin javascript -->
+<script th:src="@{/octopus/new-vendor/js/inspinia.js}"></script>
+<script th:src="@{/octopus/new-vendor/js/plugins/pace/pace.min.js}"></script>
 
 <!-- Jasny -->
 <script th:src="@{/octopus/new-vendor/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
 
+<!-- Steps -->
+<script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
 <!-- Jquery Validate -->
 <script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
 
 <script>
 $(document).ready(function(){
-    $("#wizard").steps();
-    $("#form").steps({
-        bodyTag: "fieldset",
-        onStepChanging: function (event, currentIndex, newIndex)
-        {
-            // Always allow going backward even if the current step contains invalid fields!
-            if (currentIndex > newIndex)
-            {
-                return true;
-            }
-
-            // Forbid suppressing "Warning" step if the user is to young
-            //if (newIndex === 3 && Number($("#age").val()) < 18)
-            //{
-            //    return false;
-            //}
-
-            var form = $(this);
-
-            // Clean up if user went backward before
-            if (currentIndex < newIndex)
-            {
-                // To remove error styles
-                $(".body:eq(" + newIndex + ") label.error", form).remove();
-                $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
-            }
-
-            // Disable validation on fields that are disabled or hidden.
-            form.validate().settings.ignore = ":disabled,:hidden";
-
-            // Start validation; Prevent going forward if false
-            return form.valid();
-        },
-        onStepChanged: function (event, currentIndex, priorIndex)
-        {
-            // Suppress (skip) "Warning" step if the user is old enough.
-            //if (currentIndex === 2 && Number($("#age").val()) >= 18)
-            //{
-            //    $(this).steps("next");
-            //}
-
-            // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
-            //if (currentIndex === 2 && priorIndex === 3)
-            //{
-            //    $(this).steps("previous");
-            //}
-        },
-        onFinishing: function (event, currentIndex)
-        {
-            var form = $(this);
-
-            // Disable validation on fields that are disabled.
-            // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
-            form.validate().settings.ignore = ":disabled";
-
-            // Start validation; Prevent form submission if false
-            return form.valid();
-        },
+    $("#wizard").steps({
         onFinished: function (event, currentIndex)
         {
-            var form = $(this);
-
-            // Submit form input
-            form.submit();
+            window.location.href='error.html';
         }
-    }).validate({
-                errorPlacement: function (error, element)
-                {
-                    element.before(error);
-                }
-            });
+    });
 });
 </script>
 

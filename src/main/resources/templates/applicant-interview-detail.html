@@ -196,6 +196,8 @@
                                     Do you wish to accept this offer?
                                 </p>
                                 <a class="btn btn-sm btn-warning" style="margin-left: 5px; background-color:#9c27b0;"
+                                   th:onclick="${'rejectOffer(' + InterviewFinal.applicationId + ');'}">Object Offer</a>
+                                <a class="btn btn-sm btn-warning" style="margin-left: 5px; background-color:#9c27b0;"
                                    th:onclick="${'acceptOffer(' + InterviewFinal.applicationId + ');'}">Accept Offer</a>
                                 <span class="vertical-date">
                                         <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
@@ -310,13 +312,13 @@
         });
     }
 
-    /* Reject application by HR */
-    function processApplicationByHR(applicationId, urlStr) {
+    /* Reject offer */
+    function rejectOffer(applicationId) {
         csrfData['applicationId'] = applicationId;
 
         swal({
             title : "Confirm",
-            text: "Do you really wish to reject this application permanently?",
+            text: "Do you really wish to reject this offer permanently?",
             type : "warning",
             showCancelButton : true,
             confirmButtonColor : "#DD6B55",
@@ -328,13 +330,13 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: urlStr,
+                    url: "../rejectOffer",
                     data: csrfData,
                     async: false,
                     success: function (data) {
                         swal({
                             title: "Success",
-                            text: "You have successfully rejected this application permanently.",
+                            text: "You have successfully rejected this offer permanently.",
                             type: "success"
                         }, function (isConfirm) {
                             document.location.reload();
