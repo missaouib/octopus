@@ -1,13 +1,11 @@
 package com.targaryen.octopus.controller;
 
-import com.targaryen.octopus.entity.ApplicantCommentEntity;
-import com.targaryen.octopus.entity.ApplicationEntity;
-import com.targaryen.octopus.entity.ResumeEntity;
-import com.targaryen.octopus.entity.UserEntity;
+import com.targaryen.octopus.entity.*;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.Role;
+import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicantStatus;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.*;
@@ -144,10 +142,12 @@ public class ApplicantController {
         if(resumeVo == null){
 
             System.out.println("[msg]: " + "applicant register");
-            ResumeEntity resumeEntity = new ResumeEntity();
+            /*ResumeEntity resumeEntity = new ResumeEntity();
             resumeEntity.setHasPostId(applicationEntity.getPostId());
             map.addAttribute("resume", resumeEntity);
-            result = new ModelAndView("applicant-resume-add");
+            result = new ModelAndView("applicant-resume-add");*/
+
+            result = new ModelAndView("applicant-resume-new-magm");
             return result;
         }
         // get the relative application record
@@ -164,10 +164,67 @@ public class ApplicantController {
 
     }
 
-    @RequestMapping(value = "/new/add", method = RequestMethod.GET)
-    public String newResumeAdd(ModelMap map){
+    //@RequestMapping(value = "/new/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/applicant/resume/new/add", method = RequestMethod.GET)
+    public ModelAndView newResumeAddGet(ResumeEntity resumeEntity, ModelMap map){
 
-        return "applicant-resume-new-add";
+        ModelAndView result = null;
+        ResumeRequiredEntity resumeRequiredEntity = new ResumeRequiredEntity();
+        /*resumeRequiredEntity.setApplicantPoliticalStatus(false);
+        resumeRequiredEntity.setApplicantMajor(false);*/
+        map.addAttribute("listResumeModel", resumeRequiredEntity);
+        int userId = AuthInfo.getUserId();
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
+
+
+        if(resumeStatus == StatusCode.SUCCESS) {
+
+            //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
+            //int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
+            //List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(reumseId);
+
+            map.addAttribute("listResumeModel", new ResumeRequiredEntity());
+            map.addAttribute("resumeEntity", new ResumeEntity());
+            ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId);
+            System.out.println("[msg]: " + resumeVo);
+            int resumeId = resumeVo.getResumeId();
+            List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(resumeId);
+            map.addAttribute("workExperienceList", workExperienceVos);
+
+            result = new ModelAndView("applicant-resume-new-add");
+        }else {
+            result = new ModelAndView("redirect:/octopus/applicant/index");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/applicant/resume/new/add", method = RequestMethod.POST)
+    public ModelAndView newResumeAddPost(ResumeEntity resumeEntity, ModelMap map){
+
+        ModelAndView result = null;
+        ResumeRequiredEntity resumeRequiredEntity = new ResumeRequiredEntity();
+        /*resumeRequiredEntity.setApplicantPoliticalStatus(false);
+        resumeRequiredEntity.setApplicantMajor(false);*/
+        map.addAttribute("listResumeModel", resumeRequiredEntity);
+        int userId = AuthInfo.getUserId();
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
+
+        if(resumeStatus == StatusCode.SUCCESS) {
+
+            //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
+            //int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
+            //List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(reumseId);
+
+            List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(1);
+            map.addAttribute("workExperienceList", workExperienceVos);
+
+            result = new ModelAndView("applicant-resume-magm");
+        }else {
+            result = new ModelAndView("redirect:/octopus/applicant/index");
+        }
+        return result;
     }
 
     @RequestMapping(value = "/applicant/resume/add", method = RequestMethod.POST)
@@ -192,19 +249,19 @@ public class ApplicantController {
                 .applicantCity(resumeEntity.getApplicantCity())
                 .applicantEmail(resumeEntity.getApplicantEmail())
                 .applicantPhone(resumeEntity.getApplicantPhone()).build();
-        serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), res);
+        //serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), res);
 
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
 
-        System.out.println("[msg：msg]: " + resumeEntity.getHasPostId());
+        /*System.out.println("[msg：msg]: " + resumeEntity.getHasPostId());
         if(resumeEntity.getHasPostId() != 0){
             System.out.println("[msg：msg2]: " + resumeEntity.getHasPostId());
             ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getHasPostId()).build();
             serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
         }
         List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
-        map.addAttribute("applicationVos", applicantApplicationVos);
+        map.addAttribute("applicationVos", applicantApplicationVos);*/
 
         return "applicant-application-list";
 }
@@ -228,7 +285,7 @@ public class ApplicantController {
         newResumeEntity.setApplicantEmail(resumeVo.getApplicantEmail());
         newResumeEntity.setApplicantPhone(resumeVo.getApplicantPhone());
         newResumeEntity.setApplicantCV(resumeVo.getApplicantCV());
-        newResumeEntity.setHasPostId(0);
+        //newResumeEntity.setHasPostId(0);
 
         map.addAttribute("resume", newResumeEntity);
 

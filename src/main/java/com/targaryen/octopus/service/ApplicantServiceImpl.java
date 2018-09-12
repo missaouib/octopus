@@ -498,11 +498,11 @@ public class ApplicantServiceImpl implements ApplicantService {
         ResumeDto resumeDto;
         try {
             applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
-            if(applicantDto == null)
-                return null;
+//            if(applicantDto == null)
+//                return null;
             resumeDto = applicantDto.getResume();
-            if(resumeDto == null)
-                return null;
+//            if(resumeDto == null)
+//                return null;
         } catch (DataAccessException e) {
             return null;
         }
