@@ -13,16 +13,13 @@ public interface ApplicantService {
      *
      * save applicant user resume, if no resume saved before it will create one first
      *
-     * @param userId
-     * userId of current applicant
-     *
      * @param resumeVo
      * resumeVo of saved resume, field 'applicantName' must not be blank
      *
      * @return
      * Execution status
      */
-    int SaveResume(int userId, ResumeVo resumeVo);
+    int SaveResume(ResumeVo resumeVo);
 
     /**
      *
