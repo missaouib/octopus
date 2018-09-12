@@ -292,17 +292,9 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<InterviewVo> findListOfInterviewsByPostIdAndTime(int postId, Date beginTime, Date endTime) {
-        return interviewDtoRepository.findAllByPostAndTime(postDtoRepository.findPostDtoByPostId(postId),
-                beginTime, endTime).stream()
-                .map(n -> DataTransferUtil.InterviewDtoToVo(n))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<InterviewVo> findListOfInterviewsByPostIdAndInterviewRound(int postId, int interviewRound) {
-        return interviewDtoRepository.findAllByPostAndInterviewRound(postDtoRepository.findPostDtoByPostId(postId),
-                interviewRound).stream()
+    public List<InterviewVo> findInterviewByPostIdAndRoundAndTime(int postId, int interviewRound, Date beginTime, Date endTime) {
+        return interviewDtoRepository.findAllByPostAndRoundAndTime(postDtoRepository.findPostDtoByPostId(postId),
+                interviewRound, beginTime, endTime).stream()
                 .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                 .collect(Collectors.toList());
     }
