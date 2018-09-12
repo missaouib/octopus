@@ -11,6 +11,9 @@
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/jsCalendar.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/scroller.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap-select.min.css}" />
+    <link rel="stylesheet" th:href="@{/octopus/css/jquery.timepicker.css}" />
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap-tagsinput.css}" />
 
     <script th:src="@{/octopus/js/jquery.min.js}"></script>
     <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
@@ -19,6 +22,9 @@
     <script th:src="@{/octopus/js/jquery-ui-1.10.4.min.js}"></script>
     <script th:src="@{/octopus/js/jsCalendar.js}"></script>
     <script th:src="@{/octopus/js/scroller.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap-select.min.js}"></script>
+    <script th:src="@{/octopus/js/jquery.timepicker.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap-tagsinput.js}"></script>
 
     <style>
         .jsCalendar.material-theme thead {
@@ -27,6 +33,11 @@
 
         .jsCalendar tbody td.jsCalendar-current {
             background-color: rgb(26, 179, 148);
+        }
+
+        .btn-default {
+            background-color: #FFF;
+            color: rgb(103,106,108);
         }
     </style>
 </head>
@@ -63,10 +74,14 @@
                             <div id="scroller-pane" class="center-block"></div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12  col-centered">
-                                <button type="button" class="btn btn-outline btn-rounded btn-primary center-block" style="text-align: center;">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-8">
+                                <a onclick="newRound()" class="btn btn-outline btn-rounded btn-primary center-block">
                                     <i class="fa fa-plus"></i> New Round
-                                </button>
+                                </a>
+                            </div>
+                            <div class="col-sm-2">
                             </div>
                         </div>
                     </div>
@@ -86,7 +101,7 @@
                                     <span class="badge badge-primary">2018-08-01</span> First date of interview schedule
                                 </li>
                                 <li class="list-group-item ">
-                                    <span class="badge badge-info">2018-08-30</span> Last date of interview schedule
+                                    <span class="badge badge-primary">2018-08-30</span> Last date of interview schedule
                                 </li>
                                 <li class="list-group-item">
                                     <span class="badge badge-warning">500</span> Interview overall count
@@ -98,14 +113,14 @@
 
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <button type="button" class="btn btn-block btn-rounded btn-primary">
-                                        <i class="fa fa-plus"></i> Batch Add Interviews
-                                    </button>
+                                    <a class="btn btn-block btn-rounded btn-primary" data-toggle="modal" data-target="#batch-add-interview">
+                                        <i class="fa fa-plus"></i> Batch Create Interviews
+                                    </a>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="button" class="btn btn-block btn-rounded btn-success">
+                                    <a class="btn btn-block btn-rounded btn-success">
                                         <i class="fa fa-calendar-check-o"></i> Auto Scheduling
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
@@ -164,7 +179,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="ibox-title">
-                    <h4>Calendar of Interview Schedule</h4>
+                    <h4>Calendar of Interview Schedule on <span class="badge badge-info">2018-08-30</span></h4>
                 </div>
 
                 <div class="ibox-content">
@@ -175,42 +190,47 @@
 
                         <div class="col-sm-6">
 
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Check</th>
-                                        <th>Start Time</th>
-                                        <th>Place</th>
-                                        <th>Count</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" checked class="i-checks" name="input[]">
-                                        </td>
-                                        <td>13:00</td>
-                                        <td>Tiananmen</td>
-                                        <td>5</td>
-                                        <td>
-                                            <a><i class="fa fa-pencil text-warning"></i></a>
-                                        </td>
-                                        <td>
-                                            <a><i class="fa fa-remove text-danger"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    </tbody>
-                                </table>
+                            <div class="row" style="margin: 10px 10px;">
+                                <a class="btn btn-s btn-primary" data-toggle="modal" data-target="#batch-add-interview"><i class="fa fa-plus"></i> Batch Create</a>
+                                <a class="btn btn-s btn-danger" onclick="batchDelete();"><i class="fa fa-remove"></i> Batch Delete</a>
                             </div>
 
-                            <div class="pull-right">
-                                <label style="margin-right: 10px;">Batch operations for:</label>
-                                <a class="btn btn-s btn-primary"><i class="fa fa-plus"></i> Add</a>
-                                <a class="btn btn-s btn-danger"><i class="fa fa-remove"></i> Delete</a>
+                            <div class="table-responsive">
+                                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                                    <thead>
+                                        <tr class="footable even">
+                                            <th></th>
+                                            <th>Start Time</th>
+                                            <th>Place</th>
+                                            <th>Count</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" checked class="i-checks" name="input[]">
+                                            </td>
+                                            <td>13:00</td>
+                                            <td>Tiananmen</td>
+                                            <td>5</td>
+                                            <td>
+                                                <a><i class="fa fa-pencil text-warning"></i></a>
+                                            </td>
+                                            <td>
+                                                <a><i class="fa fa-remove text-danger"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="6">
+                                            <ul class="pagination pull-right"></ul>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -254,7 +274,7 @@
             <div class="col-sm-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h4>Interviews on ***</h4>
+                        <h4>Interviews list on <span class="badge badge-info">2018-08-30</span> </h4>
                     </div>
 
                     <div class="ibox-content">
@@ -299,7 +319,77 @@
         </div>
     </div>
 
+    <!-- New interviews -->
+    <div class="modal fade" id="batch-add-interview" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                    </button>
+                    <h1 style="text-align:center;">Batch add interviews</h1>
+                </div>
 
+                <form class="form-horizontal m-t" id="new-interview-form" name="new-interview-form" method="POST"
+                      action="interview/new" onsubmit="return false;">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Exclude dates:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b selectpicker" id="shiftDayAdd" name="shiftDay"
+                                        multiple="multiple" title="可多选" required="required">
+                                    <option th:value="1" th:text="一"></option>
+                                    <option th:value="2" th:text="二"></option>
+                                    <option th:value="3" th:text="三"></option>
+                                    <option th:value="4" th:text="四"></option>
+                                    <option th:value="5" th:text="五"></option>
+                                    <option th:value="6" th:text="六"></option>
+                                    <option th:value="7" th:text="日"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Place:</label>
+                            <div class="col-sm-8">
+                                <input name="interviewPlace" type="text" class="form-control" required="required" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Start Time:</label>
+                            <div class="col-sm-8">
+                                <input style="background-color: #FFF;" id="interviewStartTimeSelect" type="text" class="form-control" required="required" readonly="readonly" placeholder="HH:mm" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Start Time Selected:</label>
+                            <div class="col-sm-8">
+                                <input id="interviewStartTime" type="text" value="" data-role="tagsinput" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Count:</label>
+                            <div class="col-sm-8">
+                                <input name="count" type="text" class="form-control" required="required" />
+                            </div>
+                        </div>
+
+                        <!-- Round count -->
+                        <input type="hidden" id="interviewRound" name="interviewRound" value="" />
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Arrange</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script th:inline="javascript">
         /* Interviewer list initialization */
@@ -385,6 +475,107 @@
         /* Footable initialization */
         $(".footable").footable();
 
+        /* Timepicker initialization */
+        var setObj = {'interval': 10, 'timeFormat': 'HH:mm', 'zindex':1000000,
+            change: function() {
+                console.log("sdad");
+                $("#interviewStartTime").tagsinput('add', $("#interviewStartTimeSelect").val());
+            }};
+        $('#interviewStartTimeSelect').timepicker(setObj);
+
+
+        /******************************************************/
+
+        /*<![CDATA[*/
+        var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+        /*]]>*/
+        var csrfData = {};
+        csrfData[_csrf_param_name] = _csrf_token;
+
+        /* Add new round */
+        function newRound() {
+            swal({
+                title : "Confirm",
+                text: "Do you really wish to create a new round?",
+                type : "warning",
+                showCancelButton : true,
+                confirmButtonColor : "#DD6B55",
+                confirmButtonText : "Yes",
+                cancelButtonText : "No",
+                closeOnConfirm : false,
+                closeOnCancel : false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "get",
+                        url: "",
+                        data: csrfData,
+                        async: false,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: "You have successfully created a new round.",
+                                type: "success"
+                            }, function (isConfirm) {
+                                document.location.reload();
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Failure",
+                                text: "You have not successfully created a new round.",
+                                type: "error"
+                            });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "You have cancelled.", "error");
+                }
+            });
+        }
+
+        /* /Batch delete */
+        function batchDelete() {
+            swal({
+                title : "Confirm",
+                text: "Do you really wish to delete 15 interviews in total?",
+                type : "warning",
+                showCancelButton : true,
+                confirmButtonColor : "#DD6B55",
+                confirmButtonText : "Yes",
+                cancelButtonText : "No",
+                closeOnConfirm : false,
+                closeOnCancel : false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "get",
+                        url: "",
+                        data: csrfData,
+                        async: false,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: "You have successfully deleted 15 interviews in total.",
+                                type: "success"
+                            }, function (isConfirm) {
+                                document.location.reload();
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Failure",
+                                text: "You have not successfully deleted 15 interviews in total.",
+                                type: "error"
+                            });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "You have cancelled.", "error");
+                }
+            });
+        }
     </script>
 </body>
 </html>
