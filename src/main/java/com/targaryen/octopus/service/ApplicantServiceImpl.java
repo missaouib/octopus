@@ -52,38 +52,58 @@ public class ApplicantServiceImpl implements ApplicantService {
     }
 
 
-    public int SaveResume(int userId, ResumeVo resumeVo) {
+    public int saveResume(ResumeVo resumeVo) {
         ResumeDto resumeDto;
         ApplicantDto applicantDto;
-
-        applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(resumeVo.getApplicantId());
-
-        if(findResumeByUserId(userId) == null) {
-            resumeDto = new ResumeDto();
-            resumeDto.setApplicant(applicantDto);
-        }
-        else {
-            resumeDto = applicantDto.getResume();
-        }
+        int applicantId = resumeVo.getApplicantId();
 
         try {
-            applicantDto.setResume(resumeDto);
-            resumeDto.setApplicantAge(resumeVo.getApplicantAge());
-            resumeDto.setApplicantCity(resumeVo.getApplicantCity());
-            resumeDto.setApplicantCV(resumeVo.getApplicantCV());
-            resumeDto.setApplicantDegree(resumeVo.getApplicantDegree());
-            resumeDto.setApplicantEmail(resumeVo.getApplicantEmail());
-            resumeDto.setApplicantMajor(resumeVo.getApplicantMajor());
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            resumeDto = applicantDto.getResume();
+            if(resumeDto == null) {
+                resumeDto = new ResumeDto();
+                resumeDto.setApplicantName(resumeVo.getApplicantName());
+                resumeDto.setApplicant(applicantDto);
+                resumeDtoRepository.save(resumeDto);
+                applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+                resumeDto = applicantDto.getResume();
+            }
+
             resumeDto.setApplicantName(resumeVo.getApplicantName());
-            resumeDto.setApplicantPhone(resumeVo.getApplicantPhone());
-            resumeDto.setApplicantSchool(resumeVo.getApplicantSchool());
             resumeDto.setApplicantSex(resumeVo.getApplicantSex());
+            resumeDto.setApplicantAge(resumeVo.getApplicantAge());
+            resumeDto.setApplicantSchool(resumeVo.getApplicantSchool());
+            resumeDto.setApplicantDegree(resumeVo.getApplicantDegree());
+            resumeDto.setApplicantMajor(resumeVo.getApplicantMajor());
+            resumeDto.setApplicantCity(resumeVo.getApplicantCity());
+            resumeDto.setApplicantEmail(resumeVo.getApplicantEmail());
+            resumeDto.setApplicantPhone(resumeVo.getApplicantPhone());
+            resumeDto.setApplicantCV(resumeVo.getApplicantCV());
+            resumeDto.setApplicantHometown(resumeVo.getApplicantHometown());
+            resumeDto.setApplicantNation(resumeVo.getApplicantNation());
+            resumeDto.setApplicantPoliticalStatus(resumeVo.getApplicantPoliticalStatus());
+            resumeDto.setApplicantMaritalStatus(resumeVo.getApplicantMaritalStatus());
+            resumeDto.setApplicantDateOfBirth(resumeVo.getApplicantDateOfBirth());
+            resumeDto.setApplicantTimeToWork(resumeVo.getApplicantTimeToWork());
+            resumeDto.setApplicantCurrentSalary(resumeVo.getApplicantCurrentSalary());
+            resumeDto.setApplicantExpectSalary(resumeVo.getApplicantExpectSalary());
+            resumeDto.setApplicantDutyTime(resumeVo.getApplicantDutyTime());
+            resumeDto.setRecommenderName(resumeVo.getRecommenderName());
+            resumeDto.setApplicantAddress(resumeVo.getApplicantAddress());
+            resumeDto.setApplicantSelfIntro(resumeVo.getApplicantSelfIntro());
+            resumeDto.setApplicantPhoto(resumeVo.getApplicantPhoto());
+            resumeDto.setApplicantDegreePhoto(resumeVo.getApplicantDegreePhoto());
+            resumeDto.setFamilyContactRelation(resumeVo.getFamilyContactRelation());
+            resumeDto.setFamilyContactName(resumeVo.getFamilyContactName());
+            resumeDto.setFamilyContactCompany(resumeVo.getFamilyContactCompany());
+            resumeDto.setFamilyContactPhoneNum(resumeVo.getFamilyContactPhoneNum());
+
             resumeDtoRepository.save(resumeDto);
+
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
-
-        return StatusCode.SUCCESS;
+        return  StatusCode.SUCCESS;
     }
 
     public ResumeVo findResumeByUserId(int userId) {
