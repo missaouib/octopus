@@ -87,7 +87,7 @@ public class HRController {
     public String hrApplicationTimeline(@PathVariable("postId") int postId, @PathVariable("appliId") int applicationId, ModelMap map) {
         map.addAttribute("appli", hrService.findApplicationResumeVoByApplicationId(applicationId));
 
-        map.addAttribute("interviewerList", hrService.listInterviewers());
+        map.addAttribute("interviewerList", hrService.listInterviewersByPostId(postId));
 
         List<InterviewVo> interviewVoList = hrService.findInterviewByApplicationId(applicationId);
 
