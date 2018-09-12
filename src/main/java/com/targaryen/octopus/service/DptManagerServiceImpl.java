@@ -83,7 +83,6 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDtoRepository.save(postDto);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);
-            postDto.setResumeModel(resumeModelDto);
             resumeModelDtoRepository.save(resumeModelDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
