@@ -15,6 +15,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -36,6 +38,9 @@ public class ApplicantServiceImpl implements ApplicantService {
     private ResumeModelDtoRepository resumeModelDtoRepository;
     private WorkExperienceRepository workExperienceRepository;
     private EducationExperienceRepository educationExperienceRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Autowired
     public ApplicantServiceImpl(DaoFactory daoFactory) {
@@ -459,6 +464,9 @@ public class ApplicantServiceImpl implements ApplicantService {
             Hibernate.initialize(resumeDto.getWorkExperiences());
             workExperienceDtos = resumeDto.getWorkExperiences();
 
+            if(workExperienceDtos == null)
+                return new ArrayList<>();
+
             for(WorkExperienceDto w: workExperienceDtos) {
                 workExperienceVos.add(DataTransferUtil.WorkExperienceDtoToVo(w));
             }
@@ -482,6 +490,9 @@ public class ApplicantServiceImpl implements ApplicantService {
             Hibernate.initialize(resumeDto.getEducationExperiences());
             educationExperienceDtos = resumeDto.getEducationExperiences();
 
+            if(educationExperienceDtos == null)
+                return new ArrayList<>();
+
             for(EducationExperienceDto e: educationExperienceDtos) {
                 educationExperienceVos.add(DataTransferUtil.EducationExperienceDtoToVo(e));
             }
@@ -493,16 +504,19 @@ public class ApplicantServiceImpl implements ApplicantService {
     }
 
 
+    @Transactional
     public ResumeVo findResumeByApplicantId(int applicantId) {
         ApplicantDto applicantDto;
         ResumeDto resumeDto;
         try {
             applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
-//            if(applicantDto == null)
-//                return null;
+            entityManager.refresh(applicantDto);
+
+            if(applicantDto == null)
+                return null;
             resumeDto = applicantDto.getResume();
-//            if(resumeDto == null)
-//                return null;
+            if(resumeDto == null)
+                return null;
         } catch (DataAccessException e) {
             return null;
         }
@@ -515,6 +529,8 @@ public class ApplicantServiceImpl implements ApplicantService {
         ResumeDto resumeDto;
         try {
             applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            if(applicantDto.getResume() != null)
+                return StatusCode.FAILURE;
             resumeDto = new ResumeDto();
             resumeDto.setApplicantName(applicantDto.getUser().getUserName());
             resumeDto.setApplicant(applicantDto);
