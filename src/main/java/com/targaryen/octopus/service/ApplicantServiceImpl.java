@@ -518,6 +518,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             resumeDto = new ResumeDto();
             resumeDto.setApplicantName(applicantDto.getUser().getUserName());
             resumeDto.setApplicant(applicantDto);
+            applicantDto.setResume(resumeDto);
             resumeDtoRepository.save(resumeDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
