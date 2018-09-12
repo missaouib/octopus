@@ -1,6 +1,8 @@
 package com.targaryen.octopus.dto;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -60,9 +62,11 @@ public class ResumeDto {
     @OneToOne(cascade = CascadeType.MERGE)
     private ApplicantDto applicant;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
     private List<WorkExperienceDto> workExperiences;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
     private List<EducationExperienceDto> educationExperiences;
 
