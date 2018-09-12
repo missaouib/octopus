@@ -26,8 +26,8 @@ public class ResumeEntity {
     private String applicantNation;
     private String applicantPoliticalStatus;
     private String applicantMaritalStatus;
-    private Date applicantDateOfBirth;
-    private Date applicantTimeToWork;
+    private String applicantDateOfBirth;
+    private String applicantTimeToWork;
     private int applicantCurrentSalary;
     private int applicantExpectSalary;
     private String applicantDutyTime;

@@ -87,49 +87,118 @@
             <div class="panel-body">
                 <div class="container">
                     <blockquote style="font-style: italic;background-color: #F0F0F0; width:500px;">Personal</blockquote>
-                    <div class="row col-lg-4" style="margin-left: 30px;">
+                    <div class="row col-lg-3" style="margin-left: 30px;">
                         <div class="row">
-                            <label style="width:50px; font-style: italic;">Name: </label>&emsp;<label th:text="${resume.applicantName}"></label>
+                            <label style="width:50px; font-style: italic;">Name: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                         <div class="row" style="margin-top: 10px;">
-                            <label style="width:50px; font-style: italic;">Age: </label>&emsp;<label th:text="${resume.applicantAge}"></label>
+                            <label style="width:50px; font-style: italic;">Phone: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                         <div class="row" style="margin-top: 10px;">
-                            <label style="width:50px; font-style: italic;">Sex: </label>&emsp;<label th:text="${resume.applicantSex}?'Female':'Male'"></label>
+                            <label style="width:50px; font-style: italic;">Email: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">Sex: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                     </div>
                 </div>
                 <div class="container" style="margin-top: 20px;">
                     <blockquote style="font-style: italic;background-color: #F0F0F0; width:500px;">Education</blockquote>
-                    <div class="row col-lg-4" style="margin-left: 30px;">
+                    <div class="row col-lg-3" style="margin-left: 30px;">
                         <div class="row">
-                            <label style="width:50px; font-style: italic;">School: </label>&emsp;<label th:text="${resume.applicantSchool}"></label>
+                            <label style="width:50px; font-style: italic;">Age: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                         <div class="row" style="margin-top: 10px;">
-                            <label style="width:50px; font-style: italic;">Major: </label>&emsp;<label th:text="${resume.applicantMajor}"></label>
+                            <label style="width:50px; font-style: italic;">School: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                         <div class="row" style="margin-top: 10px;">
-                            <label style="width:50px; font-style: italic;">Degree: </label>&emsp;<label th:text="${resume.applicantDegree}?'Master':'Bachelor'"></label>
+                            <label style="width:50px; font-style: italic;">Major: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">Nation: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                     </div>
                 </div>
                 <div class="container" style="margin-top: 20px;">
                     <blockquote style="font-style: italic;background-color:#F0F0F0; width:500px;">Contact</blockquote>
-                    <div class="row col-lg-4" style="margin-left: 30px;">
+                    <div class="row col-lg-3" style="margin-left: 30px;">
                         <div class="row">
-                            <label style="width:50px; font-style: italic;">City: </label>&emsp;<label th:text="${resume.applicantCity}"></label>
+                            <label style="width:50px; font-style: italic;">City: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                         <div class="row" style="margin-top: 10px;">
-                            <label style="width:50px; font-style: italic;">Email: </label>&emsp;<label th:text="${resume.applicantEmail}"></label>
+                            <label style="width:50px; font-style: italic;">Degree: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                         <div class="row" style="margin-top: 10px;">
-                            <label style="width:50px; font-style: italic;">Phone: </label>&emsp;<label th:text="${resume.applicantPhone}"></label>
+                            <label style="width:50px; font-style: italic;">Hometown: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">TimeToWork: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 20px;">
+                    <blockquote style="font-style: italic;background-color:#F0F0F0; width:500px;">Contact</blockquote>
+                    <div class="row col-lg-3" style="margin-left: 30px;">
+                        <div class="row">
+                            <label style="width:50px; font-style: italic;">Political: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">Marital: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">BirthDate: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">recommenderName: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 20px;">
+                    <blockquote style="font-style: italic;background-color:#F0F0F0; width:500px;">Contact</blockquote>
+                    <div class="row col-lg-3" style="margin-left: 30px;">
+                        <div class="row">
+                            <label style="width:50px; font-style: italic;">familyContactName: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">familyContactRelation: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">familyContactCompany: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">familyContactPhoneNum: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 20px;">
+                    <blockquote style="font-style: italic;background-color:#F0F0F0; width:500px;">Contact</blockquote>
+                    <div class="row col-lg-3" style="margin-left: 30px;">
+                        <div class="row">
+                            <label style="width:50px; font-style: italic;">CurrentSalary($): </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">ExpectSalary($): </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <label style="width:50px; font-style: italic;">DutyTime: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container" style="margin-top: 20px;">
+                    <blockquote style="font-style: italic;background-color:#F0F0F0; width:500px;">Contact</blockquote>
+                    <div class="row col-lg-6" style="margin-left: 30px;">
+                        <div class="row">
+                            <label style="width:50px; font-style: italic;">Address: </label>&emsp;<label th:text="${resume.}"></label>
+                        </div>
+                        <div class="row">
+                            <label style="width:50px; font-style: italic;">Self Introduction: </label>&emsp;<label th:text="${resume.}"></label>
                         </div>
                     </div>
                 </div>
             </div>
             <div align="center" style="margin-top: 50px;">
-                <form method="post" th:action="@{/octopus/applicant/resume/update}" style="float: right;">
+                <form method="post" action="#" style="float: right;">
                     <button type="submit" class="btn btn-sm btn-success btn-block" style="width:200px;">Update Information</button>
                 </form>
             </div>

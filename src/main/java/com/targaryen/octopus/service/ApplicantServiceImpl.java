@@ -514,6 +514,7 @@ public class ApplicantServiceImpl implements ApplicantService {
 
             if(applicantDto == null)
                 return null;
+
             resumeDto = applicantDto.getResume();
             if(resumeDto == null)
                 return null;

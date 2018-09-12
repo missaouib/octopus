@@ -69,7 +69,7 @@
                         <div id="wizard">
                             <h1>1. Basic Information</h1>
                             <div class="step-content">
-                                <form id="basicInfo" method="post" action="#" th:object="${resumeEntity}">
+                                <form id="basicInfo" method="post" th:action="@{/octopus/applicant/resume/new/add/fill}" th:object="${resumeEntity}">
                                     <fieldset>
                                         <div class="row">
                                             <div class="col-lg-3">
@@ -91,7 +91,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label th:style="${listResumeModel.familyContactName}? 'display:block' : 'display:none'">familyContactName</label>
-                                                    <input id="familyContactName" name="familyContactName" th:type="${listResumeModel.familyContactName}?'text':'hidden'" th:required="${listResumeModel.familyContactName}?'required':'none'" th:field="*{}" class="form-control">
+                                                    <input id="familyContactName" name="familyContactName" th:type="${listResumeModel.familyContactName}?'text':'hidden'" th:required="${listResumeModel.familyContactName}?'required':'none'" th:field="*{familyContactName}" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label th:style="${listResumeModel.applicantCurrentSalary}? 'display:block' : 'display:none'">CurrentSalary($)</label>
@@ -153,12 +153,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label th:style="${listResumeModel.applicantDutyTime}? 'display:block' : 'display:none'">DutyTime</label>
-                                                    <select th:field="*{applicantDutyTime}" class="form-control" th:style="${listResumeModel.applicantDutyTime}? 'visibility:visible' : 'visibility:hidden'" id="applicantDutyTime" name="applicantDutyTime" >
-                                                        <option value="0">One Week</option>
-                                                        <option value="1">One Month</option>
-                                                        <option value="2">Two Month</option>
-                                                        <option value="3">Pending</option>
-                                                    </select>
+                                                    <input id="applicantDutyTime" name="applicantDutyTime" th:type="${listResumeModel.applicantDutyTime}?'date':'hidden'" th:required="${listResumeModel.applicantDutyTime}?'required':'none'" th:field="*{applicantDutyTime}" class="form-control" >
                                                 </div>
                                             </div>
                                             <div class="col-lg-3">
@@ -197,7 +192,7 @@
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label th:style="${listResumeModel.applicantSelfIntro}? 'display:block' : 'display:none'">Self Introduction</label>
-                                                    <textarea id="applicantSelfIntro" name="applicantSelfIntro"  th:type="${listResumeModel.applicantSelfIntro}?'text':'hidden'" th:required="${listResumeModel.applicantSelfIntro}?'required':'none'" th:field="*{applicantSelfIntro}" class="form-control"></textarea>
+                                                    <textarea id="applicantSelfIntro" name="applicantSelfIntro"  th:style="${listResumeModel.applicantSelfIntro}?'visibility:visible':'visibility:hidden'" th:required="${listResumeModel.applicantSelfIntro}?'none' : 'required'" th:field="*{applicantSelfIntro}" class="form-control"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -213,7 +208,7 @@
                                                                 <span class="input-group-addon btn btn-default btn-file">
                                                         <span class="fileinput-new">Select file</span>
                                                         <span class="fileinput-exists">Change</span>
-                                                        <input type="file" accept="image/*" name="..." th:required="${listResumeModel.applicantPhoto}?'required':'none'" class="form-control" />
+                                                        <input type="file" accept="image/*" name="..." class="form-control" />
                                                     </span>
                                                                 <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                                                             </div>
@@ -221,7 +216,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <h3><label th:style="${listResumeModel.applicantDegreePhoto}? 'display:block' : 'display:none'">applicantDegreePhoto</label></h3>
@@ -230,10 +224,10 @@
                                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
                                                                 <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
                                                                 <span class="input-group-addon btn btn-default btn-file">
-                                                        <span class="fileinput-new">Select file</span>
-                                                        <span class="fileinput-exists">Change</span>
-                                                        <input type="file" accept="image/*" name="..." th:required="${listResumeModel.applicantDegreePhoto}?'required':'none'" class="form-control" />
-                                                    </span>
+                                                                    <span class="fileinput-new">Select file</span>
+                                                                    <span class="fileinput-exists">Change</span>
+                                                                    <input type="file" accept="image/*" name="..." class="form-control" />
+                                                                </span>
                                                                 <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                                                             </div>
                                                         </div>

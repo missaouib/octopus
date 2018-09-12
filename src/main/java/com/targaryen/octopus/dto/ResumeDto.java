@@ -59,7 +59,7 @@ public class ResumeDto {
     private String familyContactPhoneNum;
 
     @JoinColumn(name = "applicant_id")
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private ApplicantDto applicant;
 
     @LazyCollection(LazyCollectionOption.FALSE)

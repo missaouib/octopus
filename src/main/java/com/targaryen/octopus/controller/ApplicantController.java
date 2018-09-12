@@ -16,6 +16,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,7 +34,6 @@ public class ApplicantController {
     public ApplicantController(ServiceFactoryImpl serviceFactory){
         this.serviceFactory = serviceFactory;
     }
-
 
     @RequestMapping(value="/applicant/index")
     ModelAndView applicantLogin(UserEntity user, ModelMap map){
@@ -55,6 +56,10 @@ public class ApplicantController {
         result.addObject ("unreplyMsg", interviewVos);
 
         map.addAttribute("acceptedMsg", interviewVosAccpted);
+
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
+
         return result;
     }
 
@@ -139,7 +144,7 @@ public class ApplicantController {
         System.out.println("[msg]: " + applicationEntity.getPostId() + ", " + applicationEntity.getApplicantId());
 
         ResumeVo resumeVo =  serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId());
-        if(resumeVo == null){
+        if(resumeVo != null){
 
             System.out.println("[msg]: " + "applicant register");
             /*ResumeEntity resumeEntity = new ResumeEntity();
@@ -166,7 +171,7 @@ public class ApplicantController {
 
     //@RequestMapping(value = "/new/add", method = RequestMethod.GET)
     @RequestMapping(value = "/applicant/resume/new/add", method = RequestMethod.GET)
-    public ModelAndView newResumeAddGet(ResumeEntity resumeEntity, ModelMap map){
+    public ModelAndView newResumeAddGet(ModelMap map){
 
         ModelAndView result = null;
         ResumeRequiredEntity resumeRequiredEntity = new ResumeRequiredEntity();
@@ -175,58 +180,92 @@ public class ApplicantController {
         map.addAttribute("listResumeModel", resumeRequiredEntity);
         int userId = AuthInfo.getUserId();
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
-        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
+        //int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
 
-
-        if(resumeStatus == StatusCode.SUCCESS) {
+        //if(resumeStatus == StatusCode.SUCCESS) {
 
             //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
             //int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
             //List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(reumseId);
+            ResumeRequiredEntity resumeRequiredEntity1 = new ResumeRequiredEntity();
 
-            map.addAttribute("listResumeModel", new ResumeRequiredEntity());
+            resumeRequiredEntity1.setApplicantAddress(false);
+
+            map.addAttribute("listResumeModel", resumeRequiredEntity1);
             map.addAttribute("resumeEntity", new ResumeEntity());
+
             ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId);
-            System.out.println("[msg]: " + resumeVo);
+            //System.out.println("[msg]: " + resumeVo);
             int resumeId = resumeVo.getResumeId();
             List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(resumeId);
             map.addAttribute("workExperienceList", workExperienceVos);
 
             result = new ModelAndView("applicant-resume-new-add");
-        }else {
-            result = new ModelAndView("redirect:/octopus/applicant/index");
-        }
+        //}else {
+        //    result = new ModelAndView("redirect:/octopus/applicant/index");
+        //}
         return result;
     }
 
-    @RequestMapping(value = "/applicant/resume/new/add", method = RequestMethod.POST)
-    public ModelAndView newResumeAddPost(ResumeEntity resumeEntity, ModelMap map){
+    @RequestMapping(value = "/applicant/resume/new/add/fill", method = RequestMethod.POST)
+    public void newResumeAddPost(ResumeEntity resumeEntity, ModelMap map) throws ParseException {
 
-        ModelAndView result = null;
-        ResumeRequiredEntity resumeRequiredEntity = new ResumeRequiredEntity();
-        /*resumeRequiredEntity.setApplicantPoliticalStatus(false);
-        resumeRequiredEntity.setApplicantMajor(false);*/
-        map.addAttribute("listResumeModel", resumeRequiredEntity);
+        System.out.println("[msg]: " + "newResumeAddPost");
+
         int userId = AuthInfo.getUserId();
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
-        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
+        //int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
 
-        if(resumeStatus == StatusCode.SUCCESS) {
+        //if(resumeStatus == StatusCode.SUCCESS) {
 
-            //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
-            //int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
-            //List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(reumseId);
+        //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
+        int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
 
-            List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(1);
-            map.addAttribute("workExperienceList", workExperienceVos);
-
-            result = new ModelAndView("applicant-resume-magm");
-        }else {
-            result = new ModelAndView("redirect:/octopus/applicant/index");
-        }
-        return result;
+        ResumeVo resumeVo = new ResumeVo.Builder()
+                .resumeId(resumeEntity.getResumeId())
+                .applicantId(resumeEntity.getApplicantId())
+                .applicantName(resumeEntity.getApplicantName())
+                .applicantSex(resumeEntity.getApplicantSex())
+                .applicantAge(resumeEntity.getApplicantAge())
+                .applicantSchool(resumeEntity.getApplicantSchool())
+                .applicantDegree(resumeEntity.getApplicantDegree())
+                .applicantMajor(resumeEntity.getApplicantMajor())
+                .applicantCity(resumeEntity.getApplicantCity())
+                .applicantEmail(resumeEntity.getApplicantEmail())
+                .applicantPhone(resumeEntity.getApplicantPhone())
+                .applicantCV(resumeEntity.getApplicantCV())
+                .applicantHometown(resumeEntity.getApplicantHometown())
+                .applicantNation(resumeEntity.getApplicantNation())
+                .applicantPoliticalStatus(resumeEntity.getApplicantPoliticalStatus())
+                .applicantMaritalStatus(resumeEntity.getApplicantMaritalStatus())
+                .applicantDateOfBirth(fmt.parse(resumeEntity.getApplicantDateOfBirth()))
+                .applicantTimeToWork(fmt.parse(resumeEntity.getApplicantTimeToWork()))
+                .applicantCurrentSalary(resumeEntity.getApplicantCurrentSalary())
+                .applicantExpectSalary(resumeEntity.getApplicantExpectSalary())
+                .applicantDutyTime(fmt.parse(resumeEntity.getApplicantDutyTime()))
+                .recommenderName(resumeEntity.getRecommenderName())
+                .applicantAddress(resumeEntity.getApplicantAddress())
+                .applicantSelfIntro(resumeEntity.getApplicantSelfIntro())
+                .applicantPhoto(resumeEntity.getApplicantPhoto())
+                .applicantDegreePhoto(resumeEntity.getApplicantDegreePhoto())
+                .familyContactRelation(resumeEntity.getFamilyContactRelation())
+                .familyContactName(resumeEntity.getFamilyContactName())
+                .familyContactCompany(resumeEntity.getFamilyContactCompany())
+                .familyContactPhoneNum(resumeEntity.getFamilyContactPhoneNum())
+                .build();
+        serviceFactory.getApplicantService().saveResume(resumeVo);
+        //}else {
+        //    result = new ModelAndView("redirect:/octopus/applicant/index");
+        //}
     }
 
+    /**
+     * applicant add new resume
+     * @param resumeEntity
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/applicant/resume/add", method = RequestMethod.POST)
     public String resumeAdd(ResumeEntity resumeEntity, ModelMap map) {
         /* UI Settings *//*
@@ -264,8 +303,14 @@ public class ApplicantController {
         map.addAttribute("applicationVos", applicantApplicationVos);*/
 
         return "applicant-application-list";
-}
+    }
 
+    /**
+     * update applicant resume info
+     * @param resumeEntity
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/applicant/resume/update", method = RequestMethod.POST)
     public String resumeUpdate(ResumeEntity resumeEntity, ModelMap map){
         //search database and pass it to front end
@@ -308,6 +353,11 @@ public class ApplicantController {
         return "applicant-resume-magm";
     }
 
+    /**
+     * post detail list table
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/applicant/post/list", method = RequestMethod.GET)
     public String resumePostList(ModelMap map) {
         /* UI Settings *//*
@@ -332,6 +382,12 @@ public class ApplicantController {
         return "applicant-interview-magm";
     }
 
+    /**
+     * applicant interview detail
+     * @param applicationId
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/applicant/interview/detail/{applicationId}", method = RequestMethod.GET)
     public String interviewDetail(@PathVariable("applicationId") int applicationId, ModelMap map){
 
@@ -340,16 +396,28 @@ public class ApplicantController {
         return "applicant-interview-detail";
     }
 
+    /**
+     * applicant accept offer
+     * @param applicationId
+     * @return
+     */
     @RequestMapping(value = "/applicant/interview/acceptOffer", method = RequestMethod.POST)
     @ResponseBody
     public String applicantAcceptOffer(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(serviceFactory.getApplicantService().acceptOfferByApplicationId(applicationId));
     }
 
+    /**
+     * applicant reject offer
+     * @param applicationId
+     * @return
+     */
     @RequestMapping(value = "/applicant/interview/rejectOffer", method = RequestMethod.POST)
     @ResponseBody
     public String applicantRejectOffer(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(serviceFactory.getApplicantService().rejectOfferByApplicationId(applicationId));
     }
+
+
 
 }
