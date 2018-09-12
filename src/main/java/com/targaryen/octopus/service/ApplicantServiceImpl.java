@@ -9,6 +9,7 @@ import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.*;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -297,6 +298,15 @@ public class ApplicantServiceImpl implements ApplicantService {
             if(resumeDto == null)
                 return StatusCode.FAILURE;
             workExperienceDto.setResume(resumeDto);
+            workExperienceDto.setAchievement(workExperienceVo.getAchievement());
+            workExperienceDto.setCity(workExperienceVo.getCity());
+            workExperienceDto.setCompany(workExperienceVo.getCompany());
+            workExperienceDto.setStartTime(workExperienceVo.getStartTime());
+            workExperienceDto.setEndTime(workExperienceVo.getEndTime());
+            workExperienceDto.setPost(workExperienceVo.getPost());
+            workExperienceDto.setReferenceName(workExperienceVo.getReferenceName());
+            workExperienceDto.setReferencePhoneNum(workExperienceVo.getReferencePhoneNum());
+            workExperienceDto.setWorkDiscription(workExperienceVo.getWorkDescription());
             workExperienceRepository.save(workExperienceDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -313,6 +323,12 @@ public class ApplicantServiceImpl implements ApplicantService {
             if(resumeDto == null)
                 return StatusCode.FAILURE;
             educationExperienceDto.setResume(resumeDto);
+            educationExperienceDto.setDegree(educationExperienceVo.getDegree());
+            educationExperienceDto.setEndTime(educationExperienceVo.getEndTime());
+            educationExperienceDto.setStartTime(educationExperienceVo.getStartTime());
+            educationExperienceDto.setMajor(educationExperienceVo.getMajor());
+            educationExperienceDto.setSchool(educationExperienceVo.getSchool());
+            educationExperienceDto.setTypeOfStudy(educationExperienceVo.getTypeOfStudy());
             educationExperienceRepository.save(educationExperienceDto);
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -419,7 +435,10 @@ public class ApplicantServiceImpl implements ApplicantService {
             resumeDto = resumeDtoRepository.findResumeDtoByResumeId(resumeId);
             if(resumeDto == null)
                 return new ArrayList<>();
+
+            Hibernate.initialize(resumeDto.getWorkExperiences());
             workExperienceDtos = resumeDto.getWorkExperiences();
+
             for(WorkExperienceDto w: workExperienceDtos) {
                 workExperienceVos.add(DataTransferUtil.WorkExperienceDtoToVo(w));
             }
@@ -439,7 +458,10 @@ public class ApplicantServiceImpl implements ApplicantService {
             resumeDto = resumeDtoRepository.findResumeDtoByResumeId(resumeId);
             if(resumeDto == null)
                 return new ArrayList<>();
+
+            Hibernate.initialize(resumeDto.getEducationExperiences());
             educationExperienceDtos = resumeDto.getEducationExperiences();
+
             for(EducationExperienceDto e: educationExperienceDtos) {
                 educationExperienceVos.add(DataTransferUtil.EducationExperienceDtoToVo(e));
             }
