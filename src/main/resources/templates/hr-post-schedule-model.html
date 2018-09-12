@@ -11,7 +11,6 @@
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/jsCalendar.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/scroller.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap-select.min.css}" />
     <link rel="stylesheet" th:href="@{/octopus/css/jquery.timepicker.css}" />
     <link rel="stylesheet" th:href="@{/octopus/css/bootstrap-tagsinput.css}" />
 
@@ -22,7 +21,6 @@
     <script th:src="@{/octopus/js/jquery-ui-1.10.4.min.js}"></script>
     <script th:src="@{/octopus/js/jsCalendar.js}"></script>
     <script th:src="@{/octopus/js/scroller.js}"></script>
-    <script th:src="@{/octopus/js/bootstrap-select.min.js}"></script>
     <script th:src="@{/octopus/js/jquery.timepicker.js}"></script>
     <script th:src="@{/octopus/js/bootstrap-tagsinput.js}"></script>
 
@@ -113,7 +111,7 @@
 
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <a class="btn btn-block btn-rounded btn-primary" data-toggle="modal" data-target="#batch-add-interview">
+                                    <a onclick="byDates(true);" class="btn btn-block btn-rounded btn-primary" data-toggle="modal" data-target="#batch-add-interview">
                                         <i class="fa fa-plus"></i> Batch Create Interviews
                                     </a>
                                 </div>
@@ -191,7 +189,7 @@
                         <div class="col-sm-6">
 
                             <div class="row" style="margin: 10px 10px;">
-                                <a class="btn btn-s btn-primary" data-toggle="modal" data-target="#batch-add-interview"><i class="fa fa-plus"></i> Batch Create</a>
+                                <a onclick="byDates(false);" class="btn btn-s btn-primary" data-toggle="modal" data-target="#batch-add-interview"><i class="fa fa-plus"></i> Batch Create</a>
                                 <a class="btn btn-s btn-danger" onclick="batchDelete();"><i class="fa fa-remove"></i> Batch Delete</a>
                             </div>
 
@@ -292,8 +290,8 @@
 
 
                                 <tr>
-                                    <td>J2EE Developers <a><i class="fa fa-pencil text-warning"></i></a></td>
-                                    <td>Engineer <a><i class="fa fa-pencil text-warning"></i></a></td>
+                                    <td>ZhouMY <a data-toggle="modal" data-target="#edit-applicant"><i class="fa fa-pencil text-warning"></i></a></td>
+                                    <td>LiuMY <a data-toggle="modal" data-target="#edit-interviewer"><i class="fa fa-pencil text-warning"></i></a></td>
                                     <td>If result not init, hide icons</td>
                                     <td>
                                         <a><i class="fa fa-remove text-danger"></i></a>
@@ -331,22 +329,25 @@
                 </div>
 
                 <form class="form-horizontal m-t" id="new-interview-form" name="new-interview-form" method="POST"
-                      action="interview/new" onsubmit="return false;">
+                      action="" onsubmit="return false;">
 
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Exclude dates:</label>
+                        <div id="addByDates" class="form-group">
+                            <label class="col-sm-3 control-label">Dates:</label>
+
                             <div class="col-sm-8">
-                                <select class="form-control m-b selectpicker" id="shiftDayAdd" name="shiftDay"
-                                        multiple="multiple" title="可多选" required="required">
-                                    <option th:value="1" th:text="一"></option>
-                                    <option th:value="2" th:text="二"></option>
-                                    <option th:value="3" th:text="三"></option>
-                                    <option th:value="4" th:text="四"></option>
-                                    <option th:value="5" th:text="五"></option>
-                                    <option th:value="6" th:text="六"></option>
-                                    <option th:value="7" th:text="日"></option>
-                                </select>
+                                <!-- Date picker element -->
+                                <input style="background-color: #FFF;" id="dates" type="text" value="0 dates selected" class="form-control" required="required" readonly="readonly" />
+                                <!-- Calendar element -->
+                                <div id="dates-calendar" class="material-theme" style="display:none; z-index: 100000000;"></div>
+                            </div>
+                        </div>
+
+                        <div id="addByOne" class="form-group">
+                            <label class="col-sm-3 control-label">Date:</label>
+                            <input type="hidden" id="theDate" name="theDate" value="" />
+                            <div class="col-sm-8" style="padding-top: 7px;">
+                                <span class="badge badge-info">2018-08-30</span>
                             </div>
                         </div>
 
@@ -360,7 +361,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Start Time:</label>
                             <div class="col-sm-8">
-                                <input style="background-color: #FFF;" id="interviewStartTimeSelect" type="text" class="form-control" required="required" readonly="readonly" placeholder="HH:mm" />
+                                <input style="background-color: #FFF;" id="interviewStartTimeSelect" type="text" value="0 start time selected" class="form-control" required="required" readonly="readonly" />
                             </div>
                         </div>
 
@@ -384,7 +385,74 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Arrange</button>
+                        <button type="submit" class="btn btn-primary">Batch Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit applicant -->
+    <div class="modal fade" id="edit-applicant" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                    </button>
+                    <h1 style="text-align:center;">Assign applicant</h1>
+                </div>
+
+                <form class="form-horizontal m-t" id="edit-applicant-form" name="edit-applicant-form" method="POST"
+                      action="" onsubmit="return false;">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Applicant:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b" id="applicantId" name="applicantId" required="required">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit interviewer -->
+    <div class="modal fade" id="edit-interviewer" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                    </button>
+                    <h1 style="text-align:center;">Assign interviewer</h1>
+                </div>
+
+                <form class="form-horizontal m-t" id="edit-interviewer-form" name="edit-interviewer-form" method="POST"
+                      action="" onsubmit="return false;">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Interviewer:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b" id="interviewerId" name="interviewerId" required="required">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Assign</button>
                     </div>
                 </form>
             </div>
@@ -405,8 +473,7 @@
 
         myCalendar.onDateClick(function(event, date){
             myCalendar.set(date);
-            console.log(date);
-            myCalendar.select(date);
+            //.log(myCalendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
         });
 
         /* Scroller initialization */
@@ -478,11 +545,95 @@
         /* Timepicker initialization */
         var setObj = {'interval': 10, 'timeFormat': 'HH:mm', 'zindex':1000000,
             change: function() {
-                console.log("sdad");
                 $("#interviewStartTime").tagsinput('add', $("#interviewStartTimeSelect").val());
+                $("#interviewStartTimeSelect").val($("#interviewStartTime").tagsinput('items').length + " start time selected");
             }};
         $('#interviewStartTimeSelect').timepicker(setObj);
 
+        /* Tag plugin */
+        $('#interviewStartTime').on('itemRemoved', function(event) {
+            $("#interviewStartTimeSelect").val($("#interviewStartTime").tagsinput('items').length + " start time selected");
+        });
+
+        /* Add Form */
+        function byDates(byDates) {
+            if (byDates) {
+                $("#addByDates").css("display", "block");
+                $("#addByOne").css("display", "none");
+            } else {
+                $("#addByDates").css("display", "none");
+                $("#addByOne").css("display", "block");
+            }
+        }
+
+        /******************************************************/
+
+        /* Why is it so long? */
+
+        // Get elements
+        var elements = {
+            // Input element
+            input : document.getElementById("dates"),
+            // Calendar element
+            calendar : document.getElementById("dates-calendar"),
+            // Close btn
+            close : document.createElement('div')
+        };
+
+        // Hide calendar element
+        elements.calendar.style.display = "none";
+        elements.calendar.style.position = "absolute";
+
+        // Create the calendar
+        var calendar = jsCalendar.new(elements.calendar, "now", {
+            "dayFormat": "DDD"
+        });
+
+        // Add close button
+        elements.close.textContent = "×";
+        elements.close.style.position = "absolute";
+        elements.close.style.top = "-2px";
+        elements.close.style.right = "-2px";
+        elements.close.style.height = "24px";
+        elements.close.style.width = "24px";
+        elements.close.style.textAlign = "center";
+        elements.close.style.lineHeight = "24px";
+        elements.close.style.backgroundColor = "#F44336";
+        elements.close.style.borderRadius = "12px";
+        elements.close.style.boxShadow = "0px 0px 2px #000000";
+        elements.close.style.cursor = "pointer";
+        elements.calendar.appendChild(elements.close);
+
+        // Add events
+        calendar.onDateClick(function(event, date){
+            // Update calendar date
+            calendar.set(date);
+
+            // Select this date if unselected, vice versa
+            if (calendar.isSelected(date)) {
+                calendar.unselect(date);
+            } else {
+                calendar.select(date);
+            }
+
+            // Show the count of selected dates
+            elements.input.value = calendar.getSelected().length + " dates selected";
+            console.log(calendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
+        });
+
+        // Open calendar
+        elements.input.addEventListener("focus", function(){
+            elements.calendar.style.top = elements.input.offsetTop + elements.input.offsetHeight + "px";
+            elements.calendar.style.left = elements.input.offsetLeft + "px";
+            elements.calendar.style.display = "block";
+        }, true);
+        // Close calendar
+        elements.input.addEventListener("change", function(){
+            elements.calendar.style.display = "none";
+        }, true);
+        elements.close.addEventListener("click", function(){
+            elements.calendar.style.display = "none";
+        }, true);
 
         /******************************************************/
 
