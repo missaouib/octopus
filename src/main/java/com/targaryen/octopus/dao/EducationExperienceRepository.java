@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EducationExperienceRepository extends JpaRepository<EducationExperienceDto, Integer> {
+    public EducationExperienceDto findEducationExperienceDtoByEducationExperienceId(int educationExperienceId);
+    void deleteEducationExperienceDtoByEducationExperienceId(int educationExperienceId);
 }

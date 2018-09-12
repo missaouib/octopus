@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WorkExperienceRepository extends JpaRepository<WorkExperienceDto, Integer> {
+    public WorkExperienceDto findWorkExperienceDtoByWorkExperienceId(int workExperienceId);
+    void deleteWorkExperienceDtoByWorkExperienceId(int workExperienceId);
 }
