@@ -28,7 +28,7 @@ public class PublicController {
     @RequestMapping(value = "/")
     public ModelAndView index(){
         ModelAndView result = new ModelAndView("default");
-        List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED);
+        List<PostVo> posts = serviceFactory.getPublicService().listPostsByStatus(PostStatus.PUBLISHED);
         /*for(PostVo tmp : posts){
             System.out.println("[msg]: " + tmp.getPostName());
         }*/
@@ -39,7 +39,7 @@ public class PublicController {
     @RequestMapping(value = "/postDetail/{postId}")
     public ModelAndView postDetail(@PathVariable("postId") String postId){
         ModelAndView result = new ModelAndView("pub-post-detail");
-        PostVo getPost = serviceFactory.getPulicService().findPostById(Integer.parseInt(postId));
+        PostVo getPost = serviceFactory.getPublicService().findPostById(Integer.parseInt(postId));
         if(getPost != null){
 
             result.getModel().put("post", getPost);

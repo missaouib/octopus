@@ -112,4 +112,32 @@ public class UserServiceImpl implements UserService {
         return userVo;
     }
 
+    public boolean checkPassword(UserVo userVo) {
+        UserDto userDto;
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        try {
+            userDto = userDtoRepository.findUserDtoByUserId(userVo.getUserId());
+            return encoder.matches(userVo.getUserPassword(), userDto.getUserPassword());
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    public int editPassword(UserVo userVo) {
+        UserDto userDto;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        try {
+            userDto = userDtoRepository.findUserDtoByUserId(userVo.getUserId());
+            userDto.setUserPassword(encoder.encode(userVo.getUserPassword()));
+            userDtoRepository.save(userDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
+
 }

@@ -4,8 +4,9 @@ public interface ServiceFactory {
     UserService getUserService();
     DptManagerService getDptManagerService();
     HRService getHRService();
-    PublicService getPulicService();
+    PublicService getPublicService();
     ApplicantService getApplicantService();
     IDService getIDService();
     InterviewerService getInterviewerService();
+    FileStorageService getFileStorageService();
 }

@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -132,7 +133,7 @@ public class ApplicantController {
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
 
-        List<PostVo> posts = serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED);
+        List<PostVo> posts = serviceFactory.getPublicService().listPostsByStatus(PostStatus.PUBLISHED);
         result.addObject("posts", posts);
         return result;
     }
@@ -150,7 +151,7 @@ public class ApplicantController {
 
         map.addAttribute("application", application);
 
-        PostVo getPost = serviceFactory.getPulicService().findPostById(Integer.parseInt(postId));
+        PostVo getPost = serviceFactory.getPublicService().findPostById(Integer.parseInt(postId));
         if(getPost != null){
             result.getModel().put("post", getPost);
         }
@@ -445,7 +446,7 @@ public class ApplicantController {
         //1. save resume information into database
 
         //2. jump to the post list
-        map.addAttribute("postList", serviceFactory.getPulicService().listPostsByStatus(PostStatus.PUBLISHED));
+        map.addAttribute("postList", serviceFactory.getPublicService().listPostsByStatus(PostStatus.PUBLISHED));
 
         return "applicant-post-list";
     }
