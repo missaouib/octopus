@@ -275,7 +275,7 @@ public class HRServiceImpl implements HRService {
             newInterview.setCreateTime(Calendar.getInstance().getTime());
 
             if(RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
-                newInterview.setInterviewRound(post.getInterviewRound());
+                newInterview.setInterviewRound(interviewVo.getInterviewRound());
             } else {
                 if(application != null) {
                     int interviewRound = 0;
