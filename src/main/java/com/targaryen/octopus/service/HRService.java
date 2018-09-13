@@ -138,6 +138,12 @@ public interface HRService {
     int updateInterviewerOfInterview(int interviewId, int interviewerId);
 
     /**
+     * update application of interview
+     *
+     */
+    int updateApplicationOfInterview(int interviewId, int applicationId);
+
+    /**
      * delete interview by interviewId
      *
      */

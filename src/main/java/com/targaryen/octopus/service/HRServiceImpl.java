@@ -326,7 +326,26 @@ public class HRServiceImpl implements HRService {
             InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
             interviewDto.setInterviewer(interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewerId));
             interviewDto.setInterviewerStatus(InterviewerStatus.ACCEPTED);
-            interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+            if(ApplicantStatus.ACCEPTED.equals(interviewDto.getApplicantStatus())) {
+                interviewDto.setReservationStatus(ReservationStatus.SUCCESS);
+                interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+            }
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+    }
+
+    @Override
+    public int updateApplicationOfInterview(int interviewId, int applicationId) {
+        try {
+            InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
+            interviewDto.setApplication(applicationDtoRepository.findApplicationDtoByApplicationId(applicationId));
+            interviewDto.setApplicantStatus(ApplicantStatus.ACCEPTED);
+            if(InterviewerStatus.ACCEPTED.equals(interviewDto.getInterviewerStatus())) {
+                interviewDto.setReservationStatus(ReservationStatus.SUCCESS);
+                interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+            }
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
