@@ -65,7 +65,7 @@ public class DptManagerController {
         map.addAttribute("recruitType", type == RecruitTypeStatus.SOCIETY ? true : false);
         map.addAttribute("roleName", "Department Manager");
         map.addAttribute("action", "add");
-        map.addAttribute("returnUrl", "list");
+        map.addAttribute("returnUrl", "list?type=" + type);
         map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
         map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");
 
@@ -78,14 +78,15 @@ public class DptManagerController {
 
     @RequestMapping(value = "/dpt/post/{postId}", method = RequestMethod.GET)
     public String dptPostDetail(@PathVariable("postId") int postId, ModelMap map) {
-        /* UI Settings */
-        map.addAttribute("title", "Check/Edit post need detail");
-        map.addAttribute("action", "edit");
-        map.addAttribute("returnUrl", "list");
+        PostVo postVo = dptManagerService.findPostById(postId);
+        map.addAttribute("title", "Check/Edit post detail");
+        map.addAttribute("recruitType", postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? true : false);
+        map.addAttribute("roleName", "Department Manager");
+        map.addAttribute("returnUrl", "list?type=" + postVo.getRecruitType());
         map.addAttribute("swalTextSuccess", "You have successfully edited this post need!");
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
-        map.addAttribute("post", dptManagerService.findPostById(postId));
+        map.addAttribute("post", postVo);
         return "dpt-hr-post-detail";
     }
 
