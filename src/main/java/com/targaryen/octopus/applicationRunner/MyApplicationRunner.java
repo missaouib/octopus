@@ -24,7 +24,8 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     private static final String SELECT_SQL = "SELECT department_id from t_department where department_id = 1";
 
-    private static final String INSERT_SQL = "INSERT INTO t_department (department_id, department_name) VALUES (1, 'HUE Development') ON conflict(department_id) DO NOTHING;\n" +
+    private static final String INSERT_SQL =
+            "INSERT INTO t_department (department_id, department_name) VALUES (1, 'HUE Development') ON conflict(department_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_department_seq RESTART WITH 2;" +
             "INSERT INTO t_user VALUES (1, 'dpt_manager', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
             "INSERT INTO t_user VALUES (2, 'hr', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
@@ -65,6 +66,7 @@ public class MyApplicationRunner implements ApplicationRunner {
             "INSERT INTO t_dpt_manager VALUES (1, 1, 1) ON conflict(dpt_manager_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_dpt_manager_seq RESTART WITH 2;" +
             "INSERT INTO t_hr VALUES (1, 2) ON conflict(hr_id) DO NOTHING;\n" +
+            "ALTER SEQUENCE t_hr_seq RESTART WITH 2;" +
             "INSERT INTO t_applicant VALUES (1, 3) ON conflict(applicant_id) DO NOTHING;\n" +
             "INSERT INTO t_applicant VALUES (2, 4) ON conflict(applicant_id) DO NOTHING;\n" +
             "INSERT INTO t_applicant VALUES (3, 5) ON conflict(applicant_id) DO NOTHING;\n" +
