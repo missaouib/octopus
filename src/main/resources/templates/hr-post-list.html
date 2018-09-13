@@ -102,6 +102,15 @@
                                                 Customize Resume Form
                                             </button>
 
+                                            <button th:if="(${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}
+                                                or ${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).FINISHED}) and
+                                                ${post.recruitType} eq ${T(com.targaryen.octopus.util.status.RecruitTypeStatus).CAMPUS}" type="button"
+                                                    th:onclick="${'location.href=''' + post.postId + '/schedule/model'''}"
+                                                    class="btn btn-primary">
+                                                <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>
+                                                Batch Manage
+                                            </button>
+
                                             <button th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}
                                                 or ${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).FINISHED}" type="button"
                                                     th:onclick="${'location.href=''' + post.postId + '/application/list'''}"

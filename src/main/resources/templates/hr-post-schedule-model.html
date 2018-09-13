@@ -67,7 +67,7 @@
                         </div>
                     </div>
 
-                    <div class="ibox-content profile-content" style="height: 250px;">
+                    <div class="ibox-content profile-content">
                         <div class="row">
                             <div id="scroller-pane" class="center-block"></div>
                         </div>
@@ -92,7 +92,7 @@
                         <h4 style="text-align: center;">Status</h4>
                     </div>
                     <div>
-                        <div class="ibox-content profile-content" style="height: 250px;">
+                        <div class="ibox-content profile-content">
 
                             <ul class="list-group">
                                 <li class="list-group-item">
@@ -102,10 +102,10 @@
                                     <span class="badge badge-primary">2018-08-30</span> Last date of interview schedule
                                 </li>
                                 <li class="list-group-item">
-                                    <span class="badge badge-warning">500</span> Interview overall count
+                                    <span class="badge badge-warning" id="interviewOverallCount"></span> Interview overall count
                                 </li>
                                 <li class="list-group-item">
-                                    <span class="badge badge-success">600</span> Applicant overall count
+                                    <span class="badge badge-success" th:text="${applicationCount}"></span> Applicant overall count
                                 </li>
                             </ul>
 
@@ -130,20 +130,22 @@
             <div class="col-sm-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title" style="height: 55px;">
-                        <h4>Post Detail</h4>
+                        <h4 style="text-align: center;">Post Detail</h4>
                     </div>
                     <div>
-                        <div class="ibox-content profile-content" style="height: 250px;">
+                        <div class="ibox-content profile-content">
 
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="m-b-md">
-                                        <h2 th:text="ddd"></h2>
+                                        <h2 th:text="${post.postName}" style="text-align: center;"></h2>
                                     </div>
                                     <dl class="dl-horizontal">
                                         <dt>Status：</dt>
                                         <dd>
-                                            ddd
+                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" class="label label-success">To be checked</span>
+                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}" class="label label-danger">Revoked by manager</span>
+                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" class="label label-primary">Published</span>
                                         </dd>
                                     </dl>
                                 </div>
@@ -153,16 +155,30 @@
                                 <div class="col-sm-5">
                                     <dl class="dl-horizontal">
                                         <dt>Post Type:</dt>
-                                        <dd th:text="ddd"></dd>
+                                        <dd th:text="${post.postType}"></dd>
 
                                         <dt>Post Locale:</dt>
-                                        <dd th:text="ddd"></dd>
+                                        <dd th:text="${post.postLocale}"></dd>
                                     </dl>
                                 </div>
                                 <div class="col-sm-12">
                                     <dl class="dl-horizontal">
                                         <dt>Department:</dt>
-                                        <dd th:text="ddd"></dd>
+                                        <dd th:text="${post.departmentName}"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <dl class="dl-horizontal">
+                                        <dt>Current Progress</dt>
+                                        <dd>
+                                            <div class="progress progress-striped active m-b-sm">
+                                                <div style="width: 60%;" class="progress-bar"></div>
+                                            </div>
+                                            <small>3/5 for Head Count <strong>(60%)</strong></small>
+                                        </dd>
                                     </dl>
                                 </div>
                             </div>
@@ -276,7 +292,7 @@
                     </div>
 
                     <div class="ibox-content">
-                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                        <table id="testLoadTable" class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
                             <thead>
                                 <tr class="footable even">
                                     <th>Applicant</th>
@@ -326,7 +342,7 @@
         </div>
     </div>
 
-    <!-- New interviews -->
+    <!-- Batch add interviews -->
     <div class="modal fade" id="batch-add-interview" aria-hidden="true" style="display:none;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -334,7 +350,7 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span><span class="sr-only"></span>
                     </button>
-                    <h1 style="text-align:center;">Batch add interviews</h1>
+                    <h1 style="text-align:center;">Batch Create Interviews</h1>
                 </div>
 
                 <form class="form-horizontal m-t" id="new-interview-form" name="new-interview-form" method="POST"
@@ -363,7 +379,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Place:</label>
                             <div class="col-sm-8">
-                                <input name="interviewPlace" type="text" class="form-control" required="required" />
+                                <input id="interviewPlace" name="interviewPlace" type="text" class="form-control" required="required" />
                             </div>
                         </div>
 
@@ -384,17 +400,13 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Count:</label>
                             <div class="col-sm-8">
-                                <input name="count" type="text" class="form-control" required="required" />
+                                <input id="count" name="count" type="text" class="form-control" required="required" />
                             </div>
                         </div>
-
-                        <!-- Round count -->
-                        <input type="hidden" id="interviewRound" name="interviewRound" value="" />
-
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Batch Add</button>
+                        <button onclick="batchCreateInterviews();" class="btn btn-primary">Batch Add</button>
                     </div>
                 </form>
             </div>
@@ -410,7 +422,7 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span><span class="sr-only"></span>
                     </button>
-                    <h1 style="text-align:center;">Assign applicant</h1>
+                    <h1 style="text-align:center;">Assign Applicant</h1>
                 </div>
 
                 <form class="form-horizontal m-t" id="edit-applicant-form" name="edit-applicant-form" method="POST"
@@ -428,7 +440,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Assign</button>
+                        <button class="btn btn-primary">Assign</button>
                     </div>
                 </form>
             </div>
@@ -443,7 +455,7 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span><span class="sr-only"></span>
                     </button>
-                    <h1 style="text-align:center;">Assign interviewer</h1>
+                    <h1 style="text-align:center;">Assign Interviewer</h1>
                 </div>
 
                 <form class="form-horizontal m-t" id="edit-interviewer-form" name="edit-interviewer-form" method="POST"
@@ -468,88 +480,105 @@
         </div>
     </div>
 
+
     <script th:inline="javascript">
+
+        /* Initial Global Data */
+        var min = 1, max = interviewRound = [[${post.interviewRound}]]; // min >= 1 and max <= 99
+
+        var uniqueDates = [];
+        var interviewMapThisRound = {};
+        var interviewOverallCount = 0;
+
+        loadDataByInterviewRound(interviewRound);
+
+
+        /*****************************************************************/
+
         /* Interviewer list initialization */
-        $(document).ready(function(){$(".sortable-list").sortable({
+        $(".sortable-list").sortable({
             connectWith:".connectList"
-        }).disableSelection()});
+        }).disableSelection();
 
         /* Calendar initialization */
         var element = document.getElementById("my-calendar");
-        var myCalendar = jsCalendar.new(element, "now", {
+        var roundCalendar = jsCalendar.new(element, "now", {
             "dayFormat": "DDD"
         });
 
-        myCalendar.onDateClick(function(event, date){
-            myCalendar.set(date);
+        roundCalendar.onDateClick(function(event, date){
+            roundCalendar.set(date);
             //.log(myCalendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
         });
 
         /* Scroller initialization */
         var scroller = Scroller.getNewInstance({
             direction: Scroller.DIRECTION.DOWN,
-            interval: 300,
+            interval: 500,
             width: 150,
             amount: 150,
             separatorType: Scroller.SEPARATOR.NONE
         });
 
         scroller.appendTo(document.getElementById("scroller-pane"));
-        scroller.start("01");
-        var min = 1, max = 3; // min >= 1 and max <= 99
-        var d = 1;
+        scroller.start("00");
 
-        if (d == min) {
-            $("#round-prev").css("display", "none");
+        function scrollToWithZero(d) {
+            if (d >= min && d < 10) {
+                scroller.scrollTo("0" + d);
+            } else {
+                scroller.scrollTo(d);
+            }
         }
-        if (d == max) {
+
+        if (interviewRound == 0) {
+            $("#round-prev").css("display", "none");
             $("#round-next").css("display", "none");
+        } else {
+            if (interviewRound == min) {
+                $("#round-prev").css("display", "none");
+            }
+            if (interviewRound == max) {
+                $("#round-next").css("display", "none");
+            }
+            scrollToWithZero(interviewRound);
         }
 
         function incre() {
-            if (d < max) {
-                ++d;
+            if (interviewRound < max) {
+                ++interviewRound;
 
-                if (d == max) {
+                if (interviewRound == max) {
                     $("#round-next").css("display", "none");
                 }
-                if (d != min) {
+                if (interviewRound != min) {
                     $("#round-prev").css("display", "block");
                 }
 
                 // Do something using d
+                loadDataByInterviewRound(interviewRound);
 
-                if (d >= min && d < 10) {
-                    scroller.scrollTo("0" + d);
-                } else {
-                    scroller.scrollTo(d);
-                }
+                scrollToWithZero(interviewRound);
             }
         }
 
         function decre() {
-            if (d > min) {
-                --d;
+            if (interviewRound > min) {
+                --interviewRound;
 
-                if (d == min) {
+                if (interviewRound == min) {
                     $("#round-prev").css("display", "none");
                 }
-                if (d != max) {
+                if (interviewRound != max) {
                     $("#round-next").css("display", "block");
                 }
 
                 // Do something using d
+                loadDataByInterviewRound(interviewRound);
 
-                if (d >= min && d < 10) {
-                    scroller.scrollTo("0" + d);
-                } else {
-                    scroller.scrollTo(d);
-                }
+                scrollToWithZero(interviewRound);
             }
         }
-
-        /* Footable initialization */
-        $(".footable").footable();
 
         /* Timepicker initialization */
         var setObj = {'interval': 10, 'timeFormat': 'HH:mm', 'zindex':1000000,
@@ -577,7 +606,7 @@
 
         /******************************************************/
 
-        /* Why is it so long? */
+        /* Calendar on modal form */
 
         // Get elements
         var elements = {
@@ -627,7 +656,6 @@
 
             // Show the count of selected dates
             elements.input.value = calendar.getSelected().length + " dates selected";
-            console.log(calendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
         });
 
         // Open calendar
@@ -668,8 +696,8 @@
             }, function(isConfirm) {
                 if (isConfirm) {
                     $.ajax({
-                        type: "get",
-                        url: "",
+                        type: "post",
+                        url: "round/new",
                         data: csrfData,
                         async: false,
                         success: function (data) {
@@ -735,6 +763,59 @@
                     swal("Cancelled", "You have cancelled.", "error");
                 }
             });
+        }
+
+        /* Load Data By Interview Round */
+        function loadDataByInterviewRound(interviewRound) {
+            $.ajax({
+                type: "get",
+                url: "round/" + interviewRound,
+                success: function(data) {
+                    uniqueDates = data['uniqueDates'];
+                    interviewMapThisRound = data['interviewMapThisRound'];
+                    interviewOverallCount = data['interviewOverallCount'];
+
+                    /* Load on Page! */
+                    $("#interviewOverallCount").text(interviewOverallCount);
+
+                    roundCalendar.clearselect();
+
+                    uniqueDates.forEach(function(currentValue, index, arr) {
+                        roundCalendar.select(new Date(currentValue));
+                    });
+                }
+            });
+        }
+
+        /* Batch Create Interviews */
+        function batchCreateInterviews() {
+            csrfData["dates"] = calendar.getSelected({sort : "desc", type : "YYYY-MM-DD"});
+            csrfData['times'] = $("#interviewStartTime").tagsinput('items');
+            csrfData['interviewPlace'] = $("#interviewPlace").val();
+            csrfData['count'] = $("#count").val();
+            csrfData['interviewRound'] = interviewRound;
+
+            $.ajax({
+                type: "post",
+                url: "interview/new",
+                data: csrfData,
+                success: function (data) {
+                    swal({
+                        title: "Success",
+                        text: "You have successfully created " + csrfData["dates"].length * csrfData['times'].length * csrfData['count'] + " interviews.",
+                        type: "success"
+                    }, function (isConfirm) {
+                        document.location.reload();
+                    });
+                },
+                error: function (data) {
+                    swal({
+                        title: "Failure",
+                        text: "You have not successfully created multiple resumes.",
+                        type: "error"
+                    });
+                }
+            })
         }
     </script>
 </body>
