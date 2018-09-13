@@ -16,253 +16,300 @@
     <!-- Custom Fonts -->
     <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
 
-    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+
+
+    <link th:href="@{/octopus/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/plugins/codemirror/codemirror.css}" rel="stylesheet" />
 
     <!--new vendor -->
     <link th:href="@{/octopus/new-vendor/css/plugins/steps/jquery.steps.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/octopus/new-vendor/css/animate.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/style.css}" rel="stylesheet" />
 
+
+    <!-- jQuery -->
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{/octopus/new-vendor/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/octopus/new-vendor/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/octopus/new-vendor/js/inspinia.js}"></script>
+    <script th:src="@{/octopus/new-vendor/js/plugins/pace/pace.min.js}"></script>
+
+    <!-- Jasny -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
+
+    <!-- Steps -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
+    <!-- Jquery Validate -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
 
 </head>
 
 <body>
 
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight" style="height:100%;">
 
     <div class="col-lg-12">
         <div class="ibox">
             <div class="ibox-content">
-                <h2>
-                    Please Input Your Information Carefully.
-                </h2>
-                <p>
-                    Your Information is very important for job hunting.
-                </p>
+                <h3>
+                    Basic Information
+                </h3>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div id="wizard">
+                            <div class="step-content">
+                                <form id="basicInfo" method="post" th:action="@{/octopus/applicant/resume/new/add/fill}" th:object="${resumeEntity}">
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantName}? 'display:block' : 'display:none'">Name</label>
+                                                    <input id="applicantName" name="name" th:type="${listResumeModel.applicantName}?'text':'hidden'" th:required="${listResumeModel.applicantName}?'required':'none'" th:field="*{applicantName}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantAge}? 'display:block' : 'display:none'">Age</label>
+                                                    <input id="applicantAge" name="age" th:type="${listResumeModel.applicantAge}?'text':'hidden'" th:required="${listResumeModel.applicantAge}?'required':'none'" th:field="*{applicantAge}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantCity}? 'display:block' : 'display:none'">City</label>
+                                                    <input id="applicantCity"  name="city" th:type="${listResumeModel.applicantCity}?'text':'hidden'" th:required="${listResumeModel.applicantCity}?'required':'none'" th:field="*{applicantCity}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantPoliticalStatus}? 'display:block' : 'display:none'">Political</label>
+                                                    <input id="applicantPoliticalStatus" name="political" th:type="${listResumeModel.applicantPoliticalStatus}?'text':'hidden'" th:required="${listResumeModel.applicantPoliticalStatus}?'required':'none'" th:field="*{applicantPoliticalStatus}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.familyContactName}? 'display:block' : 'display:none'">familyContactName</label>
+                                                    <input id="familyContactName" name="familyContactName" th:type="${listResumeModel.familyContactName}?'text':'hidden'" th:required="${listResumeModel.familyContactName}?'required':'none'" th:field="*{familyContactName}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantCurrentSalary}? 'display:block' : 'display:none'">CurrentSalary($)</label>
+                                                    <input id="applicantCurrentSalary" name="salary" th:type="${listResumeModel.applicantCurrentSalary}?'text':'hidden'" th:required="${listResumeModel.applicantCurrentSalary}?'required':'none'" th:field="*{applicantCurrentSalary}" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantPhone}? 'display:block' : 'display:none'">Phone</label>
+                                                    <input id="applicantPhone" name="phone" th:type="${listResumeModel.applicantPhone}?'text':'hidden'" th:required="${listResumeModel.applicantPhone}?'required':'none'" th:field="*{applicantPhone}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantSchool}? 'display:block' : 'display:none'">School</label>
+                                                    <input id="applicantSchool" name="school" th:type="${listResumeModel.applicantSchool}?'text':'hidden'" th:required="${listResumeModel.applicantSchool}?'required':'none'" th:field="*{applicantSchool}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">Degree</label>
+                                                    <select th:field="*{applicantDegree}" class="form-control" th:style="${listResumeModel.applicantDegree}? 'visibility:visible' : 'visibility:hidden'" id="applicantDegree" name="applicantDegree" >
+                                                        <option value="0">High School</option>
+                                                        <option value="1">Bachlor</option>
+                                                        <option value="2">Master</option>
+                                                        <option value="3">Doctor</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantMaritalStatus}? 'display:block' : 'display:none'">Marital</label>
+                                                    <input id="applicantMaritalStatus" name="applicantMaritalStatus"  th:type="${listResumeModel.applicantMaritalStatus}?'text':'hidden'" th:required="${listResumeModel.applicantMaritalStatus}?'required':'none'" th:field="*{applicantMaritalStatus}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.familyContactRelation}? 'display:block' : 'display:none'">familyContactRelation</label>
+                                                    <input id="familyContactRelation" name="familyContactRelation" th:type="${listResumeModel.familyContactRelation}?'text':'hidden'" th:required="${listResumeModel.familyContactRelation}?'required':'none'" th:field="*{familyContactRelation}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantExpectSalary}? 'display:block' : 'display:none'">ExpectSalary($)</label>
+                                                    <input id="applicantExpectSalary" name="salary"  th:type="${listResumeModel.applicantExpectSalary}?'text':'hidden'" th:required="${listResumeModel.applicantExpectSalary}?'required':'none'" th:field="*{applicantExpectSalary}" class="form-control">
+                                                </div>
+                                            </div>
 
-                <form id="form" method="post" th:action="@{/octopus/applicant/resume/add}" class="wizard-big" th:object="${resume}">
-                    <h1>Personal</h1>
-                    <fieldset>
-                        <h2>Personal Information</h2>
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group">
-                                    <input id="postId" name="postId" type="hidden" th:field="*{hasPostId}" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Name *</label>
-                                    <input id="name" name="name" th:field="*{applicantName}" type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Age *</label>
-                                    <input id="age" name="age" th:field="*{applicantAge}"  type="text" class="form-control required number">
-                                </div>
-                                <div class="form-group">
-                                    <label>Sex *</label><br>
-                                    <select id="sex" name="sex" th:field="*{applicantSex}" style="width: 200px; height:34px;">
-                                        <option value="0">Male</option>
-                                        <option value="1">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="text-center">
-                                    <div style="margin-top: 20px">
-                                        <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <h1>Education</h1>
-                    <fieldset>
-                        <h2>Education Information</h2>
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group">
-                                    <label>School *</label>
-                                    <input id="school" name="school" th:field="*{applicantSchool}" type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Major *</label>
-                                    <input id="major" name="major" th:field="*{applicantMajor}" type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Degree *</label>
-                                    <select id="degree" name="degree" th:field="*{applicantDegree}" style="width: 500px; height:34px;">
-                                        <option value="0">Bachelor</option>
-                                        <option value="1">Master</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="text-center">
-                                    <div style="margin-top: 20px">
-                                        <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <h1>Contact</h1>
-                    <fieldset>
-                        <h2>Contact Information</h2>
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group">
-                                    <label>City *</label>
-                                    <input id="city" name="city" th:field="*{applicantCity}"  type="text" class="form-control required">
-                                </div>
-                                <div class="form-group">
-                                    <label>Email *</label>
-                                    <input id="email" name="email" th:field="*{applicantEmail}"  type="text" class="form-control required email">
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone *</label>
-                                    <input id="phone" name="phone" th:field="*{applicantPhone}"  type="text" class="form-control required number">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="text-center">
-                                    <div style="margin-top: 20px">
-                                        <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <h1>Resume Paperwork</h1>
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Your Resume</h5>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                            <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
-                                            <span class="input-group-addon btn btn-default btn-file">
-                                                    <span class="fileinput-new">Select file</span>
-                                                    <span class="fileinput-exists">Change</span>
-                                                    <input type="file" accept="application/pdf" name="..." th:field="*{applicantCV}" />
-                                                </span>
-                                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantEmail}? 'display:block' : 'display:none'">Email</label>
+                                                    <input id="applicantEmail" name="email" th:type="${listResumeModel.applicantEmail}?'text':'hidden'" th:required="${listResumeModel.applicantEmail}?'required':'none'" th:field="*{applicantEmail}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantMajor}? 'display:block' : 'display:none'">Major</label>
+                                                    <input id="applicantMajor" name="applicantMajor" th:type="${listResumeModel.applicantMajor}?'text':'hidden'" th:required="${listResumeModel.applicantMajor}?'required':'none'" th:field="*{applicantMajor}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantHometown}? 'display:block' : 'display:none'">Hometown</label>
+                                                    <input id="applicantHometown" name="applicantHometown" th:type="${listResumeModel.applicantHometown}?'text':'hidden'" th:required="${listResumeModel.applicantHometown}?'required':'none'" th:field="*{applicantHometown}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantDateOfBirth}? 'display:block' : 'display:none'">BirthDate</label>
+                                                    <input id="applicantDateOfBirth" name="applicantDateOfBirth" th:type="${listResumeModel.applicantDateOfBirth}?'date':'hidden'" th:required="${listResumeModel.applicantDateOfBirth}?'required':'none'" th:field="*{applicantDateOfBirth}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.familyContactCompany}? 'display:block' : 'display:none'">familyContactCompany</label>
+                                                    <input id="familyContactCompany" name="familyContactCompany" th:type="${listResumeModel.familyContactCompany}?'text':'hidden'" th:required="${listResumeModel.familyContactCompany}?'required':'none'" th:field="*{familyContactCompany}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantDutyTime}? 'display:block' : 'display:none'">DutyTime</label>
+                                                    <input id="applicantDutyTime" name="applicantDutyTime" th:type="${listResumeModel.applicantDutyTime}?'date':'hidden'" th:required="${listResumeModel.applicantDutyTime}?'required':'none'" th:field="*{applicantDutyTime}" class="form-control" >
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantSex}? 'display:block' : 'display:none'">Sex</label>
+                                                    <select th:field="*{applicantSex}" class="form-control" th:style="${listResumeModel.applicantNation}? 'visibility:visible' : 'visibility:hidden'" id="applicantSex" name="sex">
+                                                        <option value="0">Male</option>
+                                                        <option value="1">Female</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantNation}? 'display:block' : 'display:none'">Nation</label>
+                                                    <input id="applicantNation" name="applicantNation" th:type="${listResumeModel.applicantNation}?'text':'hidden'" th:required="${listResumeModel.applicantNation}?'required':'none'" th:field="*{applicantNation}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantTimeToWork}? 'display:block' : 'display:none'">TimeToWork</label>
+                                                    <input id="applicantTimeToWork" name="applicantTimeToWork" th:type="${listResumeModel.applicantTimeToWork}?'date':'hidden'" th:required="${listResumeModel.applicantTimeToWork}?'required':'none'" th:field="*{applicantTimeToWork}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.recommenderName}? 'display:block' : 'display:none'">recommenderName</label>
+                                                    <input id="recommenderName" name="recommenderName" th:type="${listResumeModel.recommenderName}?'text':'hidden'" th:required="${listResumeModel.recommenderName}?'required':'none'" th:field="*{recommenderName}" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.familyContactPhoneNum}? 'display:block' : 'display:none'">familyContactPhoneNum</label>
+                                                    <input id="familyContactPhoneNum" name="phoneNum" type="text" th:type="${listResumeModel.familyContactPhoneNum}?'text':'hidden'" th:required="${listResumeModel.familyContactPhoneNum}?'required':'none'" th:field="*{familyContactPhoneNum}" class="form-control">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantAddress}? 'display:block' : 'display:none'">Address</label>
+                                                    <input id="applicantAddress" name="applicantAddress" type="text" th:type="${listResumeModel.applicantAddress}?'text':'hidden'" th:required="${listResumeModel.applicantAddress}?'required':'none'" th:field="*{applicantAddress}" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label th:style="${listResumeModel.applicantSelfIntro}? 'display:block' : 'display:none'">Self Introduction</label>
+                                                    <textarea id="applicantSelfIntro" name="applicantSelfIntro"  th:style="${listResumeModel.applicantSelfIntro}?'display:block':'display:none'" th:required="${listResumeModel.applicantSelfIntro}?'none' : 'required'" th:field="*{applicantSelfIntro}" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <h3><label th:style="${listResumeModel.applicantPhoto}? 'display:block' : 'display:none'">applicantPhoto</label></h3>
+                                                    <div class="ibox float-e-margins">
+                                                        <div class="ibox-content">
+                                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                                <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                                                <span class="input-group-addon btn btn-default btn-file">
+                                                        <span class="fileinput-new">Select file</span>
+                                                        <span class="fileinput-exists">Change</span>
+                                                        <input type="file" accept="image/*" name="..." class="form-control" />
+                                                    </span>
+                                                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <h3><label th:style="${listResumeModel.applicantDegreePhoto}? 'display:block' : 'display:none'">applicantDegreePhoto</label></h3>
+                                                    <div class="ibox float-e-margins">
+                                                        <div class="ibox-content">
+                                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                                <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                                                <span class="input-group-addon btn btn-default btn-file">
+                                                                    <span class="fileinput-new">Select file</span>
+                                                                    <span class="fileinput-exists">Change</span>
+                                                                    <input type="file" accept="image/*" name="..." class="form-control" />
+                                                                </span>
+                                                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-lg btn-primary" type="submit" style="float:right;">Save</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <input id="resumeId" name="resumeId" type="hidden" th:field="*{resumeId}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="applicantId" name="applicantId" type="hidden" th:field="*{applicantId}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="postId" name="postId" type="hidden" th:field="*{postId}" class="form-control">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
                             </div>
                         </div>
-                    </fieldset>
-                </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- jQuery -->
-<script th:src="@{/octopus/js/jquery.min.js}"></script>
+<script th:inline="javascript">
+jQuery.validator.addMethod("isAge", function(value,element) {
+        var length = value.length;
+        var age = /^(?:[1-9][0-9]?|1[01][0-9]|120)$/;
+        return this.optional(element) || age.test(value);
+    }, "please input right age");
 
-<!-- Bootstrap Core JavaScript -->
-<script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+jQuery.validator.addMethod("isPhone", function(value,element) {
+        var length = value.length;
+        var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        var tel = /^\d{3,4}-?\d{7,9}$/;
+        return this.optional(element) || (mobile.test(value) || tel.test(value));
+    }, "please input right phone number");
 
-<!-- Metis Menu Plugin JavaScript -->
-<script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
+jQuery.validator.addMethod("isPhoneNum", function(value,element) {
+        var length = value.length;
+        var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        var tel = /^\d{3,4}-?\d{7,9}$/;
+        return this.optional(element) || (mobile.test(value) || tel.test(value));
+    }, "please input right phone number");
 
-<!-- Custom Theme JavaScript -->
-<script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
+jQuery.validator.addMethod("isEmail", function(value,element) {
+        var length = value.length;
+        var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+        return this.optional(element) || mail.test(value);
+    }, "please input right email address");
 
-<script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
-<script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+jQuery.validator.addMethod("isSalary", function(value,element) {
+        var length = value.length;
+        var salary = /^[0-9]*$/;
+        return this.optional(element) || salary.test(value);
+    }, "please input right salary number");
 
-<!-- Steps -->
-<script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
-
-
-<!-- Jasny -->
-<script th:src="@{/octopus/new-vendor/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
-
-<!-- Jquery Validate -->
-<script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
-
-<script>
-$(document).ready(function(){
-    $("#wizard").steps();
-    $("#form").steps({
-        bodyTag: "fieldset",
-        onStepChanging: function (event, currentIndex, newIndex)
-        {
-            // Always allow going backward even if the current step contains invalid fields!
-            if (currentIndex > newIndex)
-            {
-                return true;
-            }
-
-            // Forbid suppressing "Warning" step if the user is to young
-            //if (newIndex === 3 && Number($("#age").val()) < 18)
-            //{
-            //    return false;
-            //}
-
-            var form = $(this);
-
-            // Clean up if user went backward before
-            if (currentIndex < newIndex)
-            {
-                // To remove error styles
-                $(".body:eq(" + newIndex + ") label.error", form).remove();
-                $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
-            }
-
-            // Disable validation on fields that are disabled or hidden.
-            form.validate().settings.ignore = ":disabled,:hidden";
-
-            // Start validation; Prevent going forward if false
-            return form.valid();
-        },
-        onStepChanged: function (event, currentIndex, priorIndex)
-        {
-            // Suppress (skip) "Warning" step if the user is old enough.
-            //if (currentIndex === 2 && Number($("#age").val()) >= 18)
-            //{
-            //    $(this).steps("next");
-            //}
-
-            // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
-            //if (currentIndex === 2 && priorIndex === 3)
-            //{
-            //    $(this).steps("previous");
-            //}
-        },
-        onFinishing: function (event, currentIndex)
-        {
-            var form = $(this);
-
-            // Disable validation on fields that are disabled.
-            // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
-            form.validate().settings.ignore = ":disabled";
-
-            // Start validation; Prevent form submission if false
-            return form.valid();
-        },
-        onFinished: function (event, currentIndex)
-        {
-            var form = $(this);
-
-            // Submit form input
-            form.submit();
-        }
-    }).validate({
-                errorPlacement: function (error, element)
-                {
-                    element.before(error);
+    // Form validation
+    $().ready(function() {
+        var valConfig = {
+            rules: {
+                age:{
+                    isAge: true
+                },
+                phone:{
+                    isPhone: true
+                },
+                phoneNum:{
+                    isPhoneNum: true
+                },
+                email:{
+                    isEmail: true
+                },
+                salary:{
+                    isSalary: true
                 }
-            });
-});
+            }
+        };
+        $("#basicInfo").validate(valConfig);
+    });
 </script>
 
 </body>

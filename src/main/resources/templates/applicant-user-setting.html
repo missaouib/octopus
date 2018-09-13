@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Applicant - Index</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/octopus/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/octopus/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+
+
+    <!-- jQuery -->
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation"
+         style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
+        </div>
+
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+            <!-- /.dropdown -->
+            <li class="dropdown"><a class="dropdown-toggle"
+                                    data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
+                <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i> </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a th:href="@{/octopus/applicant/index}"> <i
+                            class="fa fa-user fa-fw"></i> HomePage
+                    </a></li>
+                    <li class="divider"></li>
+                    <li>
+                        <a onclick="document.getElementById('logOut').submit();"><i class="fa fa-sign-out fa-fw"></i>Log out</a>
+                        <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
+                    </li>
+                </ul> <!-- /.dropdown-user --></li>
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li><a th:href="@{/octopus/applicant/post/apply}"><i
+                            class="fa fa-dashboard fa-fw"></i> Apply For Post </a></li>
+                    <li><a th:href="@{/octopus/applicant/application/list}"><i
+                            class="fa fa-table fa-fw"></i> Application Information </a></li>
+                    <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
+                        Resume Management <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a th:href="@{/octopus/applicant/resume/basic/magm}">Basic Information</a></li>
+                            <li><a th:href="@{/octopus/applicant/resume/work/magm}">Work Experience</a></li>
+                            <li><a th:href="@{/octopus/applicant/resume/education/magm}">Education Experience</a></li>
+                        </ul> <!-- /.nav-second-level --></li>
+                    <li><a th:href="@{/octopus/applicant/setting}"><i
+                            class="fa fa-gear fa-fw"></i> User Setting </a></li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">User Setting</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="panel-body col-md-6">
+                <form role="form" method="post" th:action="@{/octopus/login}">
+
+                    <fieldset>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Username"
+                                   id="username" name="username" type="text" maxlength="20" required="required" autocomplete="off" autofocus />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Old Password"
+                                   type="password" maxlength="20" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="New Password"
+                                   id="pas1" type="password" maxlength="20" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="New Password"
+                                   id="pas2" type="password" maxlength="20" required="required" />
+                        </div>
+
+                        <button type="submit" class="btn btn-lg btn-success btn-block">Update Password</button>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /#page-wrapper -->
+<script>
+jQuery.validator.addMethod("isSalary", function(value,element) {
+var length = value.length;
+var salary = /^[0-9]*$/;
+return this.optional(element) || salary.test(value);
+}, "please input right salary number");
+
+$().ready(function() {
+        var valConfig = {
+            rules: {
+                age:{
+                    isAge: true
+                },
+                phone:{
+                    isPhone: true
+                },
+                email:{
+                    isEmail: true
+                },
+                salary:{
+                    isSalary: true
+                }
+            }
+        };
+        $("#basicInfo").validate(valConfig);
+    });
+</script>
+</body>
+
+</html>

@@ -68,6 +68,25 @@ public class ApplicantController {
         return result;
     }
 
+    @RequestMapping(value="/applicant/user/setting")
+    ModelAndView applicantSetting(ModelMap map){
+
+        UserEntity userEntity = new UserEntity();
+        int userId = AuthInfo.getUserId();
+        userEntity.setUserId(userId);
+        ModelAndView result = new ModelAndView("applicant-user-setting", "userEntity",userEntity);
+
+        return result;
+    }
+
+    @RequestMapping(value="/applicant/user/setting/update")
+    ModelAndView applicantSettingUpdate(UserEntity userEntity, ModelMap map){
+
+        ModelAndView result = new ModelAndView("applicant-user-setting");
+
+        return result;
+    }
+
     @RequestMapping(value = "/applicant/agree/{interviewId}")
     ModelAndView applicantAgree(@PathVariable("interviewId") String interviewId, ModelMap map){
 
@@ -149,17 +168,28 @@ public class ApplicantController {
         System.out.println("[msg]: " + applicationEntity.getPostId() + ", " + applicationEntity.getApplicantId());
 
         ResumeVo resumeVo =  serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId());
-        if(resumeVo == null){
+        int userId = AuthInfo.getUserId();
+        int postId = applicationEntity.getPostId();
+        map.addAttribute("postId", postId);
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        ResumeModelVo resumeModelVo = serviceFactory.getApplicantService().findResumeModelByPostId(postId);
+
+        int resumeId = resumeVo.getResumeId();
+        int resumeModelId = -1;
+        boolean isComplete = false;
+        if(resumeModelVo != null){
+            resumeModelId= resumeModelVo.getResumeModelId();
+            isComplete = serviceFactory.getApplicantService().isResumeComplete(resumeId, resumeModelId);
+        }
+
+        if(resumeModelId != -1 && (resumeVo == null || isComplete==false)){
 
             System.out.println("[msg]: " + "applicant register");
-            ResumeEntity resumeEntity = new ResumeEntity();
-            resumeEntity.setApplicantId(applicationEntity.getApplicantId());
-            resumeEntity.setPostId(applicationEntity.getPostId());
 
-            map.addAttribute("resume", resumeEntity);
-            //result = new ModelAndView("applicant-resume-add");
-
-            result = new ModelAndView("applicant-resume-basic-magm");
+            if(resumeVo == null){
+                serviceFactory.getApplicantService().createResume(applicantId);
+            }
+            result = new ModelAndView("applicant-resume-add-magm");
             return result;
         }
         // get the relative application record
@@ -176,6 +206,61 @@ public class ApplicantController {
 
     }
 
+    /**
+     * applicant add new resume
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/applicant/resume/add/{postId}", method = RequestMethod.GET)
+    public String resumeAdd(@PathVariable("postId") String postId, ModelMap map) {
+        /* UI Settings *//*
+        map.addAttribute("title", "Add new post need");
+        map.addAttribute("action", "add");
+        map.addAttribute("returnUrl", "list");
+        map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
+        map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
+
+        int userId = AuthInfo.getUserId();
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        int resumeId = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId).getResumeId();
+
+        ResumeEntity resumeEntity = new ResumeEntity();
+        resumeEntity.setResumeId(resumeId);
+        resumeEntity.setApplicantId(applicantId);
+        resumeEntity.setPostId(Integer.parseInt(postId));
+
+        map.addAttribute("resumeEntity", resumeEntity);
+        //result = new ModelAndView("applicant-resume-add");
+        ResumeModelVo resumeModelVo = serviceFactory.getApplicantService().findResumeModelByPostId(Integer.parseInt(postId));
+        map.addAttribute("listResumeModel", resumeModelVo);
+
+  /*      ResumeVo res = new ResumeVo.Builder().applicantId(applicantId)
+                .applicantName(resumeEntity.getApplicantName())
+                .applicantSex(resumeEntity.getApplicantSex())
+                .applicantAge(resumeEntity.getApplicantAge())
+                .applicantSchool(resumeEntity.getApplicantSchool())
+                .applicantDegree(resumeEntity.getApplicantDegree())
+                .applicantMajor(resumeEntity.getApplicantMajor())
+                .applicantCity(resumeEntity.getApplicantCity())
+                .applicantEmail(resumeEntity.getApplicantEmail())
+                .applicantPhone(resumeEntity.getApplicantPhone()).build();
+        serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), res);
+
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());*/
+
+        /*System.out.println("[msg：msg]: " + resumeEntity.getHasPostId());
+        if(resumeEntity.getHasPostId() != 0){
+            System.out.println("[msg：msg2]: " + resumeEntity.getHasPostId());
+            ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getHasPostId()).build();
+            serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
+        }
+        List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
+        map.addAttribute("applicationVos", applicantApplicationVos);*/
+
+        return "applicant-resume-add";
+    }
+
     //@RequestMapping(value = "/new/add", method = RequestMethod.GET)
     @RequestMapping(value = "/applicant/resume/new/add", method = RequestMethod.GET)
     public ModelAndView newResumeAddGet(ModelMap map){
@@ -184,6 +269,8 @@ public class ApplicantController {
         /*resumeRequiredEntity.setApplicantPoliticalStatus(false);
         resumeRequiredEntity.setApplicantMajor(false);*/
         int userId = AuthInfo.getUserId();
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
         int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
 
@@ -214,8 +301,7 @@ public class ApplicantController {
     }
 
     @RequestMapping(value = "/applicant/resume/new/add/fill", method = RequestMethod.POST)
-    @ResponseBody
-    public String newResumeAddPost(ResumeEntity resumeEntity, ModelMap map) throws ParseException {
+    public String newResumeAddPost(ResumeEntity resumeEntity, ModelMap map){
 
         System.out.println("[msg]: " + "newResumeAddPost");
 
@@ -227,8 +313,30 @@ public class ApplicantController {
 
         //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
         int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
-        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
         System.out.println("[msg]: " + "newResumeAddPost, " + resumeEntity.getResumeId() + " ," + resumeEntity.getApplicantId());
+
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        Date dateOfBirth = null;
+        Date timeToWork = null;
+        Date dutyTime = null;
+        try {
+            if(resumeEntity.getApplicantDateOfBirth() != ""){
+
+                dateOfBirth= fmt.parse(resumeEntity.getApplicantDateOfBirth());
+                System.out.println("[msg]: " + "getApplicantDateOfBirth, " + dateOfBirth);
+            }
+            if(resumeEntity.getApplicantTimeToWork() != "") {
+                timeToWork = fmt.parse(resumeEntity.getApplicantTimeToWork());
+                System.out.println("[msg]: " + "getApplicantTimeToWork, " + timeToWork);
+            }
+            if(resumeEntity.getApplicantDutyTime() != "") {
+                dutyTime = fmt.parse(resumeEntity.getApplicantDutyTime());
+                System.out.println("[msg]: " + "getApplicantDutyTime, " + dutyTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println("[msg]: " + "ApplicantName, " + resumeEntity.getApplicantName());
         ResumeVo resumeVo = new ResumeVo.Builder()
                 .resumeId(resumeEntity.getResumeId())
                 .applicantId(resumeEntity.getApplicantId())
@@ -246,11 +354,11 @@ public class ApplicantController {
                 .applicantNation(resumeEntity.getApplicantNation())
                 .applicantPoliticalStatus(resumeEntity.getApplicantPoliticalStatus())
                 .applicantMaritalStatus(resumeEntity.getApplicantMaritalStatus())
-                .applicantDateOfBirth(fmt.parse(resumeEntity.getApplicantDateOfBirth()))
-                .applicantTimeToWork(fmt.parse(resumeEntity.getApplicantTimeToWork()))
+                .applicantDateOfBirth(dateOfBirth)
+                .applicantTimeToWork(timeToWork)
                 .applicantCurrentSalary(resumeEntity.getApplicantCurrentSalary())
                 .applicantExpectSalary(resumeEntity.getApplicantExpectSalary())
-                .applicantDutyTime(fmt.parse(resumeEntity.getApplicantDutyTime()))
+                .applicantDutyTime(dutyTime)
                 .recommenderName(resumeEntity.getRecommenderName())
                 .applicantAddress(resumeEntity.getApplicantAddress())
                 .applicantSelfIntro(resumeEntity.getApplicantSelfIntro())
@@ -265,52 +373,11 @@ public class ApplicantController {
         //}else {
         //    result = new ModelAndView("redirect:/octopus/applicant/index");
         //}
-        return "OK";
-    }
+        ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getPostId()).build();
+        serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
 
-    /**
-     * applicant add new resume
-     * @param resumeEntity
-     * @param map
-     * @return
-     */
-    @RequestMapping(value = "/applicant/resume/add", method = RequestMethod.POST)
-    public String resumeAdd(ResumeEntity resumeEntity, ModelMap map) {
-        /* UI Settings *//*
-        map.addAttribute("title", "Add new post need");
-        map.addAttribute("action", "add");
-        map.addAttribute("returnUrl", "list");
-        map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
-        map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
 
-        System.out.println("[msg]: " + resumeEntity.getApplicantName() + ", " + resumeEntity.getApplicantPhone());
-
-        int applicantId = serviceFactory.getIDService().userIdToApplicantId(AuthInfo.getUserId());
-        ResumeVo res = new ResumeVo.Builder().applicantId(applicantId)
-                .applicantName(resumeEntity.getApplicantName())
-                .applicantSex(resumeEntity.getApplicantSex())
-                .applicantAge(resumeEntity.getApplicantAge())
-                .applicantSchool(resumeEntity.getApplicantSchool())
-                .applicantDegree(resumeEntity.getApplicantDegree())
-                .applicantMajor(resumeEntity.getApplicantMajor())
-                .applicantCity(resumeEntity.getApplicantCity())
-                .applicantEmail(resumeEntity.getApplicantEmail())
-                .applicantPhone(resumeEntity.getApplicantPhone()).build();
-        //serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), res);
-
-        map.addAttribute("roleName", Role.getRoleNameByAuthority());
-        map.addAttribute("userName", AuthInfo.getUserName());
-
-        /*System.out.println("[msg：msg]: " + resumeEntity.getHasPostId());
-        if(resumeEntity.getHasPostId() != 0){
-            System.out.println("[msg：msg2]: " + resumeEntity.getHasPostId());
-            ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getHasPostId()).build();
-            serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
-        }
-        List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
-        map.addAttribute("applicationVos", applicantApplicationVos);*/
-
-        return "applicant-application-list";
+        return "redirect:/octopus/applicant/resume/basic";
     }
 
     /**

@@ -9,6 +9,7 @@ public class UserEntity {
     private int userId;
     private String userName;
     private String userPassword;
+    private String newUserPassword;
     private int dpt;
     private String userRole;
 }
