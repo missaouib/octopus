@@ -332,6 +332,7 @@ public class HRServiceImpl implements HRService {
                 interviewDto.setReservationStatus(ReservationStatus.SUCCESS);
                 interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
             }
+            interviewDtoRepository.save(interviewDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -349,6 +350,7 @@ public class HRServiceImpl implements HRService {
                 interviewDto.setReservationStatus(ReservationStatus.SUCCESS);
                 interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
             }
+            interviewDtoRepository.save(interviewDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
