@@ -19,6 +19,8 @@ public class ServiceFactoryImpl implements ServiceFactory{
     private IDService idService;
     @Autowired
     private InterviewerService interviewerService;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Override
     public UserService getUserService() {
@@ -53,5 +55,10 @@ public class ServiceFactoryImpl implements ServiceFactory{
     @Override
     public InterviewerService getInterviewerService() {
         return interviewerService;
+    }
+
+    @Override
+    public FileStorageService getFileStorageService() {
+        return fileStorageService;
     }
 }
