@@ -9,14 +9,15 @@ import com.targaryen.octopus.util.status.ApplicantStatus;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-
+import org.springframework.web.servlet.View;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,6 +73,8 @@ public class ApplicantController {
     @RequestMapping(value="/applicant/user/setting")
     ModelAndView applicantSetting(ModelMap map){
 
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
         UserEntity userEntity = new UserEntity();
         int userId = AuthInfo.getUserId();
         userEntity.setUserId(userId);
@@ -81,10 +84,28 @@ public class ApplicantController {
     }
 
     @RequestMapping(value="/applicant/user/setting/update")
-    ModelAndView applicantSettingUpdate(UserEntity userEntity, ModelMap map){
+    ModelAndView applicantSettingUpdate(UserEntity userEntity, ModelMap map, HttpServletRequest request){
 
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
         ModelAndView result = new ModelAndView("applicant-user-setting");
 
+        System.out.println("[msg]: " + userEntity.getNewUserPassword1() + ", " + userEntity.getUserId());
+        boolean ret = true; //status of return
+        String userName = AuthInfo.getUserName();
+        UserVo userVo1 = new UserVo.Builder().userId(userEntity.getUserId()).userName(userName).userPassword(userEntity.getUserPassword()).build();
+        ret =  serviceFactory.getUserService().checkPassword(userVo1);
+
+        if(ret && userEntity.getNewUserPassword1().equals(userEntity.getNewUserPassword2())){
+
+            UserVo userVo2 = new UserVo.Builder().userId(userEntity.getUserId()).userName(userName).userPassword(userEntity.getNewUserPassword1()).build();
+            serviceFactory.getUserService().editPassword(userVo2);
+            request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+            result = new ModelAndView("redirect:/octopus/logout");
+        }
+        else {
+            map.addAttribute("ret", !ret);
+        }
         return result;
     }
 
@@ -214,12 +235,6 @@ public class ApplicantController {
      */
     @RequestMapping(value = "/applicant/resume/add/{postId}", method = RequestMethod.GET)
     public String resumeAdd(@PathVariable("postId") String postId, ModelMap map) {
-        /* UI Settings *//*
-        map.addAttribute("title", "Add new post need");
-        map.addAttribute("action", "add");
-        map.addAttribute("returnUrl", "list");
-        map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
-        map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
 
         int userId = AuthInfo.getUserId();
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
@@ -235,6 +250,7 @@ public class ApplicantController {
         ResumeModelVo resumeModelVo = serviceFactory.getApplicantService().findResumeModelByPostId(Integer.parseInt(postId));
         map.addAttribute("listResumeModel", resumeModelVo);
 
+        return "applicant-resume-add";
   /*      ResumeVo res = new ResumeVo.Builder().applicantId(applicantId)
                 .applicantName(resumeEntity.getApplicantName())
                 .applicantSex(resumeEntity.getApplicantSex())
@@ -259,7 +275,6 @@ public class ApplicantController {
         List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
         map.addAttribute("applicationVos", applicantApplicationVos);*/
 
-        return "applicant-resume-add";
     }
 
     //@RequestMapping(value = "/new/add", method = RequestMethod.GET)
@@ -308,11 +323,8 @@ public class ApplicantController {
 
         int userId = AuthInfo.getUserId();
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
-        //int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
 
-        //if(resumeStatus == StatusCode.SUCCESS) {
 
-        //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
         int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
         System.out.println("[msg]: " + "newResumeAddPost, " + resumeEntity.getResumeId() + " ," + resumeEntity.getApplicantId());
 
@@ -321,16 +333,16 @@ public class ApplicantController {
         Date timeToWork = null;
         Date dutyTime = null;
         try {
-            if(resumeEntity.getApplicantDateOfBirth() != ""){
+            if(!resumeEntity.getApplicantDateOfBirth().equals("")){
 
                 dateOfBirth= fmt.parse(resumeEntity.getApplicantDateOfBirth());
                 System.out.println("[msg]: " + "getApplicantDateOfBirth, " + dateOfBirth);
             }
-            if(resumeEntity.getApplicantTimeToWork() != "") {
+            if(!resumeEntity.getApplicantTimeToWork().equals("")) {
                 timeToWork = fmt.parse(resumeEntity.getApplicantTimeToWork());
                 System.out.println("[msg]: " + "getApplicantTimeToWork, " + timeToWork);
             }
-            if(resumeEntity.getApplicantDutyTime() != "") {
+            if(!resumeEntity.getApplicantDutyTime().equals("")) {
                 dutyTime = fmt.parse(resumeEntity.getApplicantDutyTime());
                 System.out.println("[msg]: " + "getApplicantDutyTime, " + dutyTime);
             }
@@ -371,9 +383,6 @@ public class ApplicantController {
                 .familyContactPhoneNum(resumeEntity.getFamilyContactPhoneNum())
                 .build();
         serviceFactory.getApplicantService().saveResume(resumeVo);
-        //}else {
-        //    result = new ModelAndView("redirect:/octopus/applicant/index");
-        //}
         ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getPostId()).build();
         serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
 
@@ -413,14 +422,9 @@ public class ApplicantController {
         return "applicant-resume-add";
 
     }
+
     @RequestMapping(value = "/applicant/resume/magm", method = RequestMethod.GET)
     public String resumeMagm(ModelMap map) {
-        /* UI Settings *//*
-        map.addAttribute("title", "Add new post need");
-        map.addAttribute("action", "add");
-        map.addAttribute("returnUrl", "list");
-        map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
-        map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
 
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
@@ -436,16 +440,7 @@ public class ApplicantController {
      */
     @RequestMapping(value = "/applicant/post/list", method = RequestMethod.GET)
     public String resumePostList(ModelMap map) {
-        /* UI Settings *//*
-        map.addAttribute("title", "Add new post need");
-        map.addAttribute("action", "add");
-        map.addAttribute("returnUrl", "list");
-        map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
-        map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");*/
 
-        //1. save resume information into database
-
-        //2. jump to the post list
         map.addAttribute("postList", serviceFactory.getPublicService().listPostsByStatus(PostStatus.PUBLISHED));
 
         return "applicant-post-list";

@@ -35,6 +35,22 @@
     <!-- Custom Theme JavaScript -->
     <script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
 
+    <!-- Jquery Validate -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script>
+        window.onload = function(){
+            var pas1 = document.getElementById("pas1");
+            var pas2 = document.getElementById("pas2");
+
+            pas2.onkeyup = function(){
+                if(pas1.value != pas2.value){
+                    pas2.style.borderColor="#FF0000";
+                }else{
+                    pas2.style.borderColor="#ccc";
+                }
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -89,37 +105,56 @@
         <!-- /.navbar-static-side -->
     </nav>
 
+
     <!-- Page Content -->
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">User Setting</h1>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb" style="margin-top: 20px;">
+                            <li>
+                                <a th:href="@{/octopus/applicant/index}">Home</a>
+                            </li>
+                            <li class="active">
+                                <strong>Message</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <!-- /.row -->
         <div class="row">
             <div class="panel-body col-md-6">
-                <form role="form" method="post" th:action="@{/octopus/login}">
-
+                <form role="form" method="post" th:action="@{/octopus/applicant/user/setting/update}" th:object="${userEntity}">
+                    <div>
+                        <div class="alert alert-danger alert-dismissable"
+                             th:style="'display:' + @{(${ret} ? 'block' : 'none')} + ''">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            Change Password Failure.
+                        </div>
+                    </div>
                     <fieldset>
+                        <input class="form-control"
+                               id="userId" name="userId" th:field="*{userId}" type="hidden" />
                         <div class="form-group">
                             <input class="form-control" placeholder="Username"
-                                   id="username" name="username" type="text" maxlength="20" required="required" autocomplete="off" autofocus />
+                                   id="username" name="username" th:value="${userName}" type="text" maxlength="20" required="required" autocomplete="off" readonly="readonly" autofocus />
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Old Password"
-                                   type="password" maxlength="20" required="required" />
+                                   type="password" th:field="*{userPassword}" maxlength="20" required="required" autofocus />
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="New Password"
-                                   id="pas1" type="password" maxlength="20" required="required" />
+                                   id="pas1" type="password" th:field="*{newUserPassword1}" maxlength="20" required="required" autofocus />
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="New Password"
-                                   id="pas2" type="password" maxlength="20" required="required" />
+                                   id="pas2" name="pas2" th:field="*{newUserPassword2}" type="password" maxlength="20" required="required" autofocus  />
                         </div>
-
                         <button type="submit" class="btn btn-lg btn-success btn-block">Update Password</button>
                     </fieldset>
                 </form>
@@ -129,33 +164,6 @@
     </div>
 </div>
 <!-- /#page-wrapper -->
-<script>
-jQuery.validator.addMethod("isSalary", function(value,element) {
-var length = value.length;
-var salary = /^[0-9]*$/;
-return this.optional(element) || salary.test(value);
-}, "please input right salary number");
-
-$().ready(function() {
-        var valConfig = {
-            rules: {
-                age:{
-                    isAge: true
-                },
-                phone:{
-                    isPhone: true
-                },
-                email:{
-                    isEmail: true
-                },
-                salary:{
-                    isSalary: true
-                }
-            }
-        };
-        $("#basicInfo").validate(valConfig);
-    });
-</script>
 </body>
 
 </html>
