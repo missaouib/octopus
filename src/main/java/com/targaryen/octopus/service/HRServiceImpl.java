@@ -237,38 +237,59 @@ public class HRServiceImpl implements HRService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public int createInterview(InterviewVo interviewVo) {
         try {
             InterviewDto newInterview = new InterviewDto();
+
             ApplicationDto application;
             if(interviewVo.getApplicationId() <= 0) {
                 application = null;
             } else {
                 application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
             }
+            newInterview.setApplication(application);
+
             InterviewerDto interviewer;
             if(interviewVo.getInterviewerId() <= 0) {
                 interviewer = null;
             } else {
                 interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
             }
-            PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
-            newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
+
+            PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
             newInterview.setPost(post);
-            newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
-            newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
-            newInterview.setApplicantStatus(ApplicantStatus.INIT);
             if(interviewer != null && RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
                 newInterview.setInterviewerStatus(InterviewerStatus.ACCEPTED);
             } else {
                 newInterview.setInterviewerStatus(InterviewerStatus.INIT);
             }
+
+            newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
+            newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
+            newInterview.setApplicantStatus(ApplicantStatus.INIT);
             newInterview.setReservationStatus(ReservationStatus.INIT);
             newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
             newInterview.setCreateTime(Calendar.getInstance().getTime());
-            newInterview.setInterviewRound(post.getInterviewRound());
+
+            if(RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
+                newInterview.setInterviewRound(post.getInterviewRound());
+            } else {
+                if(application != null) {
+                    int interviewRound = 0;
+                    List<InterviewDto> interviewDtos = application.getInterviews();
+                    for (InterviewDto interview: interviewDtos) {
+                        if(ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
+                            int r = interview.getInterviewRound();
+                            interviewRound = r > interviewRound? r : interviewRound;
+                        }
+                    }
+                    newInterview.setInterviewRound(++interviewRound);
+                }
+            }
+
             interviewDtoRepository.save(newInterview);
             return StatusCode.SUCCESS;
         } catch (Exception e) {
@@ -276,6 +297,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int createListOfInterviews(List<InterviewVo> interviewVos) {
         for(InterviewVo interviewVo : interviewVos) {
@@ -294,6 +316,20 @@ public class HRServiceImpl implements HRService {
             return DataTransferUtil.InterviewDtoToVo(interviewDto);
         } catch (DataAccessException e) {
             return null;
+        }
+    }
+
+    @Transactional
+    @Override
+    public int updateInterviewerOfInterview(int interviewId, int interviewerId) {
+        try {
+            InterviewDto interviewDto = interviewDtoRepository.findInterviewDtoByInterviewId(interviewId);
+            interviewDto.setInterviewer(interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewerId));
+            interviewDto.setInterviewerStatus(InterviewerStatus.ACCEPTED);
+            interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+            return StatusCode.SUCCESS;
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
         }
     }
 

@@ -132,6 +132,12 @@ public interface HRService {
     InterviewVo findInterviewById(int interviewId);
 
     /**
+     * update interviewer of interview
+     *
+     */
+    int updateInterviewerOfInterview(int interviewId, int interviewerId);
+
+    /**
      * delete interview by interviewId
      *
      */
