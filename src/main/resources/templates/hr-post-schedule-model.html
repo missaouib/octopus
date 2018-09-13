@@ -37,6 +37,65 @@
             background-color: #FFF;
             color: rgb(103,106,108);
         }
+
+        .arrow-box {
+            position: relative;
+            background: #fff;
+            border: 4px solid #fff;
+        }
+        .arrow-box:after, .arrow-box:before {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .arrow-box:after {
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #fff;
+            border-width: 20px;
+            margin-top: -20px;
+        }
+        .arrow-box:before {
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #fff;
+            border-width: 26px;
+            margin-top: -26px;
+        }
+
+
+        .arrow-box-down {
+            position: relative;
+            background: #fff;
+            border: 4px solid #fff;
+        }
+        .arrow-box-down:after, .arrow-box-down:before {
+            top: 100%;
+            left: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .arrow-box-down:after {
+            border-color: rgba(255, 255, 255, 0);
+            border-top-color: #fff;
+            border-width: 20px;
+            margin-left: -20px;
+        }
+        .arrow-box-down:before {
+            border-color: rgba(255, 255, 255, 0);
+            border-top-color: #fff;
+            border-width: 26px;
+            margin-left: -26px;
+        }
     </style>
 </head>
 
@@ -67,7 +126,7 @@
                         </div>
                     </div>
 
-                    <div class="ibox-content profile-content">
+                    <div class="ibox-content profile-content arrow-box-down">
                         <div class="row">
                             <div id="scroller-pane" class="center-block"></div>
                         </div>
@@ -191,62 +250,52 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="ibox-title">
                     <h4>Calendar of Interview Schedule on <span class="badge badge-info">2018-08-30</span></h4>
                 </div>
 
-                <div class="ibox-content">
+                <div class="ibox-content arrow-box">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div id="my-calendar" class="material-theme" data-month-format="month YYYY" data-day-format="DDD"></div>
-                        </div>
+                        <div id="my-calendar" class="material-theme" data-month-format="month YYYY" data-day-format="DDD"></div>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="col-sm-6">
 
-                            <div class="row" style="margin: 10px 10px;">
-                                <a onclick="byDates(false);" class="btn btn-s btn-primary" data-toggle="modal" data-target="#batch-add-interview"><i class="fa fa-plus"></i> Batch Create</a>
-                                <a class="btn btn-s btn-danger" onclick="batchDelete();"><i class="fa fa-remove"></i> Batch Delete</a>
-                            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h4>Interviews list on <span class="badge badge-info">2018-08-30</span> </h4>
+                    </div>
 
-                            <div class="table-responsive">
-                                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
-                                    <thead>
-                                        <tr class="footable even">
-                                            <th></th>
-                                            <th>Start Time</th>
-                                            <th>Place</th>
-                                            <th>Count</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" checked class="i-checks" name="input[]">
-                                            </td>
-                                            <td>13:00</td>
-                                            <td>Tiananmen</td>
-                                            <td>5</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil text-warning"></i></a>
-                                            </td>
-                                            <td>
-                                                <a><i class="fa fa-remove text-danger"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <td colspan="6">
-                                            <ul class="pagination pull-right"></ul>
-                                        </td>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="ibox-content arrow-box">
+                        <table id="scheduleOnOneDate" class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                            <thead>
+                                <tr class="footable even">
+                                    <th>-</th>
+                                    <th>Start</th>
+                                    <th>Place</th>
+                                    <th>Count</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
                     </div>
                 </div>
             </div>
@@ -285,14 +334,14 @@
             </div>
             -->
 
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h4>Interviews list on <span class="badge badge-info">2018-08-30</span> </h4>
                     </div>
 
-                    <div class="ibox-content">
-                        <table id="testLoadTable" class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                    <div class="ibox-content arrow-box">
+                        <table id="interviewOnOneDate" class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
                             <thead>
                                 <tr class="footable even">
                                     <th>Applicant</th>
@@ -341,6 +390,10 @@
             </div>
         </div>
     </div>
+
+
+
+
 
     <!-- Batch add interviews -->
     <div class="modal fade" id="batch-add-interview" aria-hidden="true" style="display:none;">
@@ -482,6 +535,10 @@
 
 
     <script th:inline="javascript">
+        /* Footable initialization */
+        var scheduleOnOneDate = $('#scheduleOnOneDate').footable().data('footable');
+        var interviewOnOneDate = $('#interviewOnOneDate').footable().data('footable');
+
 
         /* Initial Global Data */
         var min = 1, max = interviewRound = [[${post.interviewRound}]]; // min >= 1 and max <= 99
@@ -508,6 +565,7 @@
 
         roundCalendar.onDateClick(function(event, date){
             roundCalendar.set(date);
+            loadDataByClickRoundCalendar(jsCalendar.tools.dateToString(date, "yyyy-MM-DD"));
             //.log(myCalendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
         });
 
@@ -775,7 +833,7 @@
                     interviewMapThisRound = data['interviewMapThisRound'];
                     interviewOverallCount = data['interviewOverallCount'];
 
-                    /* Load on Page! */
+                    /* Load on Calendar! */
                     $("#interviewOverallCount").text(interviewOverallCount);
 
                     roundCalendar.clearselect();
@@ -783,8 +841,42 @@
                     uniqueDates.forEach(function(currentValue, index, arr) {
                         roundCalendar.select(new Date(currentValue));
                     });
+
+                    if (uniqueDates.length == 0) {
+                        roundCalendar.set(new Date());
+                    } else {
+                        loadDataByClickRoundCalendar(uniqueDates[0]);
+                        roundCalendar.set(new Date(uniqueDates[0]));
+                    }
                 }
             });
+        }
+
+        /* Load Data By Clicking Date on Round Calendar */
+        function loadDataByClickRoundCalendar(dateStr) {
+            if (interviewMapThisRound[dateStr] != null) {
+                // Footable v2 sucks
+                $("#scheduleOnOneDate").find('tbody').empty();
+
+                $.each(interviewMapThisRound[dateStr], function (timeStr, interviewArray) {
+                    var paras = "\"" + dateStr + "\", \"" + timeStr + "\"";
+                    var row = '<tr>';
+                    row += '<td></td>';
+                    row += '<td>' + timeStr + '</td>';
+                    row += '<td>' + interviewArray[0]['interviewPlace'] + '</td>';
+                    row += '<td>' + interviewArray.length + '</td>';
+                    row += "<td><a onclick=\'loadDataByClickingMidTable(" + paras + ");'><i class='fa fa-pencil text-warning'></i></a></td>";
+                    row += "<td><a><i class='fa fa-remove text-danger'></i></a></td>";
+                    row += '</tr>';
+                    scheduleOnOneDate.appendRow(row);
+                    scheduleOnOneDate.redraw();
+                });
+            }
+        }
+
+        /* Load Data by Clicking Mid Table (Schedule Table) */
+        function loadDataByClickingMidTable(dateStr, timeStr) {
+            csrfData['startTime'] = dateStr + " " + timeStr;
         }
 
         /* Batch Create Interviews */

@@ -13,7 +13,7 @@ public class PostScheduleEntity {
 
     private List<String> uniqueDates;
 
-    private Map<String, List<InterviewVo>> interviewMapThisRound;
+    private Map<String, Map<String, List<InterviewVo>>> interviewMapThisRound;
 
     private int interviewOverallCount;
 }

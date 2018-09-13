@@ -1,12 +1,12 @@
 package com.targaryen.octopus.controller;
 
-import com.targaryen.octopus.dto.InterviewDto;
 import com.targaryen.octopus.entity.InterviewEntity;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.entity.PostScheduleEntity;
 import com.targaryen.octopus.entity.ResumeModelEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.HRService;
+import com.targaryen.octopus.service.InterviewerService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
@@ -125,7 +125,6 @@ public class HRController {
         return "hr-post-schedule-model";
     }
 
-    /*???????*/
     @RequestMapping(value = "/hr/post/{postId}/schedule/round/{interviewRound}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public PostScheduleEntity hrPostCalendarInterviewRound(@PathVariable("postId") int postId, @PathVariable("interviewRound") int interviewRound, ModelMap map) {
@@ -134,29 +133,31 @@ public class HRController {
 
         /* Collect unique dates */
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.CHINA);
+
         Set<String> uniqueDates = new HashSet<>();
-        Map<String, List<InterviewVo>> interviewVoHashMap = new HashMap<>();
+        Map<String, Map<String, List<InterviewVo>>> interviewVoHashMap = new HashMap<>();
 
         for (InterviewVo interviewVo: interviewVoList) {
             String yyyyMMdd = dateFormat.format(interviewVo.getInterviewStartTime());
+            String hhMM = timeFormat.format(interviewVo.getInterviewStartTime());
             uniqueDates.add(yyyyMMdd);
 
-            List<InterviewVo> interviewVoListGroupByDate = interviewVoHashMap.getOrDefault(yyyyMMdd, new ArrayList<>());
-            interviewVoListGroupByDate.add(interviewVo);
+            Map<String, List<InterviewVo>> interviewVoListGroupByDate = interviewVoHashMap.getOrDefault(yyyyMMdd, new HashMap<>());
+            List<InterviewVo> interviewVoListGroupByTime = interviewVoListGroupByDate.getOrDefault(hhMM, new ArrayList<>());
+
+            interviewVoListGroupByTime.add(interviewVo);
+            interviewVoListGroupByDate.put(hhMM, interviewVoListGroupByTime);
             interviewVoHashMap.put(yyyyMMdd, interviewVoListGroupByDate);
         }
 
-        // Perpare Json
-        postScheduleEntity.setUniqueDates(new ArrayList<>(uniqueDates));
+        // Prepare Json
+        List uniqueDatesList = new ArrayList<>(uniqueDates);
+        Collections.sort(uniqueDatesList);
+        postScheduleEntity.setUniqueDates(uniqueDatesList);
         postScheduleEntity.setInterviewMapThisRound(interviewVoHashMap);
         postScheduleEntity.setInterviewOverallCount(interviewVoList.size());
         return postScheduleEntity;
-    }
-
-    @RequestMapping(value = "/hr/post/{postId}/schedule/schedule/round/{interviewRound}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<InterviewVo> hrPostScheduleInterviewRound(@PathVariable("postId") int postId, @PathVariable("interviewRound") int interviewRound, ModelMap map) {
-        return hrService.findInterviewByPostIdAndRound(postId, interviewRound);
     }
 
     /* ***************************************************************************** */
