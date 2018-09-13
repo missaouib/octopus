@@ -1,6 +1,8 @@
 package com.targaryen.octopus.dto;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -25,10 +27,10 @@ public class ResumeDto {
 
     @NotBlank
     private String applicantName;
-    private int applicantSex;
-    private int applicantAge;
+    private int applicantSex = -1;
+    private int applicantAge = -1;
     private String applicantSchool;
-    private int applicantDegree;
+    private int applicantDegree = -1;
     private String applicantMajor;
     private String applicantCity;
     private String applicantEmail;
@@ -42,8 +44,8 @@ public class ResumeDto {
     private Date applicantDateOfBirth;
     @Temporal(TemporalType.TIMESTAMP)
     private Date applicantTimeToWork;
-    private int applicantCurrentSalary;
-    private int applicantExpectSalary;
+    private int applicantCurrentSalary = -1;
+    private int applicantExpectSalary = -1;
     @Temporal(TemporalType.TIMESTAMP)
     private Date applicantDutyTime;
     private String recommenderName;
@@ -57,12 +59,14 @@ public class ResumeDto {
     private String familyContactPhoneNum;
 
     @JoinColumn(name = "applicant_id")
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private ApplicantDto applicant;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
     private List<WorkExperienceDto> workExperiences;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
     private List<EducationExperienceDto> educationExperiences;
 

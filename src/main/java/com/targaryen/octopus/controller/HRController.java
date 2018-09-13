@@ -8,6 +8,7 @@ import com.targaryen.octopus.service.HRService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeModelVo;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
@@ -45,7 +47,9 @@ public class HRController {
 
     @RequestMapping(value = "/hr/post/list", method = RequestMethod.GET)
     public String hrPostList(ModelMap map) {
-        map.addAttribute("postList", hrService.listPosts());
+        map.addAttribute("title", "Society Recruitment");
+        List<PostVo> postVoList =  hrService.listPosts().stream().filter(s -> s.getRecruitType() == RecruitTypeStatus.SOCIETY).collect(Collectors.toList());
+        map.addAttribute("postList", postVoList);
         return "hr-post-list";
     }
 
@@ -97,6 +101,15 @@ public class HRController {
         return "hr-application-timeline";
     }
 
+    /* Campus recruitment */
+    @RequestMapping(value = "/hr/post/campuslist", method = RequestMethod.GET)
+    public String hrCampusPostList(ModelMap map) {
+        map.addAttribute("title", "Campus Recruitment");
+        List<PostVo> postVoList =  hrService.listPosts().stream().filter(s -> s.getRecruitType() == RecruitTypeStatus.CAMPUS).collect(Collectors.toList());
+        map.addAttribute("postList", postVoList);
+        return "hr-post-list";
+    }
+
     @RequestMapping(value = "/hr/post/schedule/model", method = RequestMethod.GET)
     public String hrPostScheduleModel(ModelMap map) {
         return "hr-post-schedule-model";
@@ -140,7 +153,7 @@ public class HRController {
         return String.valueOf(hrService.updatePost(postVo));
     }
 
-    @RequestMapping(value = "/hr/post/application/resume/pass", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/post/{postId}/application/resume/pass", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationResumePass(@RequestParam(value="chkArray[]") int[] chkArray) {
         int overAllStatus = StatusCode.SUCCESS;
@@ -153,7 +166,7 @@ public class HRController {
         return String.valueOf(overAllStatus);
     }
 
-    @RequestMapping(value = "/hr/post/application/resume/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/post/{postId}/application/resume/reject", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationResumeReject(@RequestParam(value="chkArray[]") int[] chkArray) {
         int overAllStatus = StatusCode.SUCCESS;
@@ -178,8 +191,8 @@ public class HRController {
                     .applicationId(interviewEntity.getApplicationId())
                     .interviewerId(interviewEntity.getInterviewerId())
                     .interviewStartTime(startTime)
-                    .interviewPlace(interviewEntity.getInterviewPlace())
                     .postId(postId)
+                    .interviewPlace(interviewEntity.getInterviewPlace())
                     .build();
             return String.valueOf(hrService.createInterview(interviewVo));
         } catch (ParseException e) {
@@ -194,19 +207,19 @@ public class HRController {
         return String.valueOf(hrService.deleteInterviewById(interviewId));
     }
 
-    @RequestMapping(value = "/hr/post/1/application/1/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/reject", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelineReject(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(hrService.interviewFailApplicationById(applicationId));
     }
 
-    @RequestMapping(value = "/hr/post/1/application/1/pass", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/pass", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelinePass(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(hrService.interviewPassApplicationById(applicationId));
     }
 
-    @RequestMapping(value = "/hr/post/1/application/1/offer", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/offer", method = RequestMethod.POST)
     @ResponseBody
     public String hrApplicationTimelineOffer(@RequestParam("applicationId") int applicationId) {
         return String.valueOf(hrService.sendOfferByApplicationId(applicationId));

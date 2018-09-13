@@ -173,6 +173,7 @@ public class DataTransferUtil {
     public static ApplicantApplicationVo ApplicationDtoToApplicantApplicationVo(ApplicationDto applicationDto) {
         PostDto postDto = applicationDto.getPost();
         ApplicantDto applicantDto = applicationDto.getApplicant();
+
         ResumeDto resumeDto = applicantDto.getResume();
         DepartmentDto departmentDto = postDto.getDepartment();
         return new ApplicantApplicationVo.Builder()
@@ -319,6 +320,35 @@ public class DataTransferUtil {
         return new DepartmentVo.Builder()
                 .departmentId(departmentDto.getDepartmentId())
                 .departmentName(departmentDto.getDepartmentName())
+                .build();
+    }
+
+    public static WorkExperienceVo WorkExperienceDtoToVo(WorkExperienceDto workExperienceDto) {
+        return new WorkExperienceVo.Builder()
+                .achievement(workExperienceDto.getAchievement())
+                .city(workExperienceDto.getCity())
+                .company(workExperienceDto.getCompany())
+                .endTime(workExperienceDto.getEndTime())
+                .post(workExperienceDto.getPost())
+                .referenceName(workExperienceDto.getReferenceName())
+                .referencePhoneNum(workExperienceDto.getReferencePhoneNum())
+                .resumeId(workExperienceDto.getResume().getResumeId())
+                .startTime(workExperienceDto.getStartTime())
+                .workDescription(workExperienceDto.getWorkDiscription())
+                .workExperienceId(workExperienceDto.getWorkExperienceId())
+                .build();
+    }
+
+    public static EducationExperienceVo EducationExperienceDtoToVo(EducationExperienceDto educationExperienceDto) {
+        return new EducationExperienceVo.Builder()
+                .degree(educationExperienceDto.getDegree())
+                .educationExperienceId(educationExperienceDto.getEducationExperienceId())
+                .endTime(educationExperienceDto.getEndTime())
+                .major(educationExperienceDto.getMajor())
+                .resumeId(educationExperienceDto.getResume().getResumeId())
+                .school(educationExperienceDto.getSchool())
+                .startTime(educationExperienceDto.getStartTime())
+                .typeOfStudy(educationExperienceDto.getTypeOfStudy())
                 .build();
     }
 }

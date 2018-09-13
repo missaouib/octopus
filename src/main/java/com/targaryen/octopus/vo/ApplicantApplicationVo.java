@@ -4,6 +4,10 @@ package com.targaryen.octopus.vo;
 import lombok.Getter;
 
 import java.util.Date;
+
+/**
+ * @author Liu Mengyang
+ */
 @Getter
 public class ApplicantApplicationVo {
     private final int applicationId;

@@ -13,16 +13,13 @@ public interface ApplicantService {
      *
      * save applicant user resume, if no resume saved before it will create one first
      *
-     * @param userId
-     * userId of current applicant
-     *
      * @param resumeVo
      * resumeVo of saved resume, field 'applicantName' must not be blank
      *
      * @return
      * Execution status
      */
-    int SaveResume(int userId, ResumeVo resumeVo);
+    int saveResume(ResumeVo resumeVo);
 
     /**
      *
@@ -131,4 +128,115 @@ public interface ApplicantService {
     ApplicationVo findApplicationByApplicationId(int applicationId);
     int acceptOfferByApplicationId(int applicationId);
     int rejectOfferByApplicationId(int applicationId);
+    ResumeModelVo findResumeModelByPostId(int postId);
+
+    /**
+     *
+     * @param workExperienceVo
+     * must set the field "resumeId",
+     * field "workExperienceId" should be left unset
+     *
+     * @return
+     */
+    int createWorkExperience(WorkExperienceVo workExperienceVo);
+
+    /**
+     *
+     * @param educationExperienceVo
+     *  must set the field "resumeId"
+     *  field "educationExperienceId" should be left unset
+     *
+     * @return
+     */
+    int createEducationExperience(EducationExperienceVo educationExperienceVo);
+
+    /**
+     *
+     * @param educationExperienceVo
+     * must set the field "educationExperienceId"
+     *
+     * @return
+     */
+    int updateEducationExperience(EducationExperienceVo educationExperienceVo);
+
+    /**
+     *
+     * @param workExperienceVo
+     * must set the field "workExperienceId"
+     *
+     * @return
+     */
+    int updateWorkExperience(WorkExperienceVo workExperienceVo);
+
+    /**
+     *
+     * @param workExperienceId
+     * @return
+     */
+    WorkExperienceVo findWorkExperienceByWorkExperienceId(int workExperienceId);
+
+    /**
+     *
+     * @param educationExperienceId
+     * @return
+     */
+    EducationExperienceVo findEducationExperienceByEducationExperienceId(int educationExperienceId);
+
+    /**
+     *
+     * @param workExperienceId
+     * @return
+     */
+    int deleteWorkExperienceByWorkExperienceId(int workExperienceId);
+
+    /**
+     *
+     * @param educationExperienceId
+     * @return
+     */
+    int deleteEducationExperienceByEducationExperienceId(int educationExperienceId);
+
+    /**
+     *
+     * @param resumeId
+     * @return
+     */
+    List<WorkExperienceVo> listWorkExperiencesByResumeId(int resumeId);
+
+    /**
+     *
+     * @param resumeId
+     * @return
+     */
+    List<EducationExperienceVo> listEducationExperiencesByResumeId(int resumeId);
+
+    /**
+     *
+     * @param applicantId
+     * @return
+     */
+    ResumeVo findResumeByApplicantId(int applicantId);
+
+    /**
+     *
+     * @param applicantId
+     * @return
+     */
+    int createResume(int applicantId);
+
+    /**
+     *
+     * @param resumeVo
+     * @param modelId
+     * @return
+     */
+    int saveResumeWithModel(ResumeVo resumeVo, int modelId);
+
+    /**
+     *
+     * @param resumeId
+     * @param modelId
+     * @return
+     */
+    boolean isResumeComplete(int resumeId, int modelId);
 }

@@ -64,9 +64,12 @@
                     <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
                         Resume Management <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a th:href="@{/octopus/applicant/resume/basic/magm}">Basic Information</a></li>
-                            <li><a th:href="@{/octopus/applicant/resume/work/magm}">Work Experience</a></li>
-                            <li><a th:href="@{/octopus/applicant/resume/education/magm}">Education Experience</a></li>
+                            <li><a th:href="@{/octopus/applicant/resume/magm}"> Personal Info</a></li>
+                            <li><a href="#"> For Future <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li><a th:href="@{/octopus/applicant/interview/magm}"> NumberOne </a></li>
+                                    <li><a href="#"> Number Two </a></li>
+                                </ul></li>
                         </ul> <!-- /.nav-second-level --></li>
                 </ul>
             </div>
@@ -78,7 +81,7 @@
     <!-- Page Content -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="J_mainContent" id="content-main" style="height:1200px;">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{'/octopus/applicant/interview/detail/' + ${applicationId}}" frameborder="0"></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/octopus/applicant/resume/new/add}" frameborder="0"></iframe>
         </div>
         <!-- /.col-lg-12 -->
 
