@@ -125,13 +125,13 @@
                         </div>-->
                         <ul th:each="ps:${unreplyMsg}" style="list-style-type:none">
                             <li style="margin-left:-40px;">
-                                <div class="alert alert-danger alert-dismissable" >
+                                <div class="alert alert-danger alert-dismissable" style="font-size: 12px;">
                                     <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>&emsp;
                                     <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
                                     <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
                                     <label style="font-style: italic; float:right">
                                         <a th:href="@{'/octopus/applicant/agree/' + ${ps.interviewId}}">Yes</a>&emsp;
-                                        <a href="#" data-toggle="modal" data-target="#myModal">No</a>
+                                        <a href="#" data-toggle="modal" data-target="#myModal">Time</a>
                                     </label>
                                 </div>
                             </li>
@@ -152,26 +152,21 @@
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">Reason</h4>
+                                        <h4 class="modal-title" id="myModalLabel">Choose Time Slot</h4>
                                     </div>
                                     <div>
-                                        <form role="form" method="post" action="#">
+                                        <form role="form" method="post" action="#" style="margin: 20px;">
                                             <fieldset>
-                                                <div class="container" style="margin-left: 15px;">
-                                                    <div class="row" style="padding: 5px;">
-                                                        <input style="margin-right: 10px;"
-                                                               class="form-control" id="id" type="hidden" />
-                                                    </div>
-                                                    <div class="row" style="padding: 5px;">
-                                                        <input style="margin-right: 10px; width: 550px;"
-                                                               class="form-control" id="comment" type="text" required/>
-                                                    </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-outline btn-primary" type="button">2018-09-31 14:30</button>
+                                                    <button class="btn btn-outline btn-primary" type="button">2018-09-31 15:00</button>
+                                                    <button class="btn btn-outline btn-primary" type="button">2018-09-31 15:30</button>
+                                                    <button class="btn btn-outline btn-primary" type="button">2018-09-31 16:00</button>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default"
                                                             data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Save
-                                                        changes</button>
+                                                    <button type="submit" class="btn btn-primary">Save </button>
                                                 </div>
                                             </fieldset>
                                         </form>
@@ -196,8 +191,8 @@
 
                         <ul th:each="ps:${acceptedMsg}" style="list-style-type:none">
                             <li style="margin-left:-40px;">
-                                <div class="alert alert-success alert-dismissable" >
-                                    <label>Reservation:</label>
+                                <div class="alert alert-success alert-dismissable" style="font-size: 12px;">
+                                    <label>Reservation:</label>&emsp;
                                     <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>&emsp;
                                     <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
                                     <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
