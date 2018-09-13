@@ -105,7 +105,7 @@ public class MyApplicationRunner implements ApplicationRunner {
             "INSERT INTO t_resume (resume_id, applicant_name, applicant_age, applicant_current_salary, applicant_degree, applicant_expect_salary, applicant_sex, applicant_id) VALUES (8, 'applicant_8', 22, 0, 1, 10000, 1, 8) ON conflict(resume_id) DO NOTHING;\n" +
             "INSERT INTO t_resume (resume_id, applicant_name, applicant_age, applicant_current_salary, applicant_degree, applicant_expect_salary, applicant_sex, applicant_id) VALUES (9, 'applicant_9', 22, 0, 1, 10000, 1, 9) ON conflict(resume_id) DO NOTHING;\n" +
             "INSERT INTO t_resume (resume_id, applicant_name, applicant_age, applicant_current_salary, applicant_degree, applicant_expect_salary, applicant_sex, applicant_id) VALUES (10, 'applicant_10', 22, 0, 1, 10000, 1, 10) ON conflict(resume_id) DO NOTHING;" +
-            "ALTER SEQUENCE t_resume_seq RESTART WITH 2;";
+            "ALTER SEQUENCE t_resume_seq RESTART WITH 11;";
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
