@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
@@ -49,9 +50,13 @@ public class ApplicantController {
         List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
         List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
 
-        /*InterviewVo interviewVo = new InterviewVo.Builder().interviewPlace("Shanghai").interviewStartTime(Calendar.getInstance().getTime()).build();
+        //mock data
+        ApplicantInterviewVo interviewVo = new ApplicantInterviewVo.Builder()
+                .interviewPlace("Shanghai")
+                .interviewStartTime(Calendar.getInstance().getTime())
+                .postName("Java").build();
         interviewVos.add(interviewVo);
-        interviewVosAccpted.add(interviewVo);*/
+        interviewVosAccpted.add(interviewVo);
 
         //System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
         result.addObject ("unreplyMsg", interviewVos);
