@@ -6,7 +6,6 @@ import com.targaryen.octopus.entity.PostScheduleEntity;
 import com.targaryen.octopus.entity.ResumeModelEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.HRService;
-import com.targaryen.octopus.service.InterviewerService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
