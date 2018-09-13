@@ -61,9 +61,6 @@
                                 <dl class="dl-horizontal">
                                     <dt>Department:</dt>
                                     <dd th:text="${post.departmentName}"></dd>
-
-                                    <dt>Department Manager:</dt>
-                                    <dd th:text="${post.dptManagerId}"></dd>
                                 </dl>
                             </div>
                         </div>
@@ -219,7 +216,7 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: '../../application/resume/' + operationString,
+                    url: 'resume/' + operationString,
                     data: csrfData,
                     async: false,
                     success: function (data) {
