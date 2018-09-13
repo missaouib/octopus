@@ -1,7 +1,6 @@
 package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.entity.UserEntity;
-import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
@@ -16,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -88,7 +86,7 @@ public class UserController {
     public ModelAndView register() {
         ModelAndView result = new ModelAndView("register");
         result.getModel().put("user", new UserEntity());
-        List<DepartmentVo> departmentVos  = serviceFactory.getPulicService().findAllDepartments();
+        List<DepartmentVo> departmentVos  = serviceFactory.getPublicService().findAllDepartments();
         System.out.println("[msg]: " + departmentVos.get(0).getDepartmentName());
         result.getModel().put("dptList", departmentVos);
         return result;

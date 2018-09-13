@@ -38,7 +38,7 @@ public class ServiceFactoryImpl implements ServiceFactory{
     }
 
     @Override
-    public PublicService getPulicService() {
+    public PublicService getPublicService() {
         return publicService;
     }
 
