@@ -6,6 +6,7 @@ import com.targaryen.octopus.service.DptManagerService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
@@ -33,8 +37,18 @@ public class DptManagerController {
     }
 
     @RequestMapping("/dpt/post/list")
-    public String postList(ModelMap map) {
-        map.addAttribute("postList", dptManagerService.findPostsByUserId(AuthInfo.getUserId()));
+    public String postList(ModelMap map, @RequestParam("type") int type) {
+        if (type == RecruitTypeStatus.CAMPUS) {
+            map.addAttribute("title", "Campus Posts");
+        } else if (type == RecruitTypeStatus.SOCIETY) {
+            map.addAttribute("title", "Society Posts");
+        }
+
+        map.addAttribute("recruitType", type);
+
+        List<PostVo> postVoList = dptManagerService.findPostsByUserId(AuthInfo.getUserId());
+        postVoList = postVoList.stream().filter(s -> s.getRecruitType() == type).collect(Collectors.toList());
+        map.addAttribute("postList",postVoList);
         return "dpt-post-list";
     }
 
@@ -46,15 +60,19 @@ public class DptManagerController {
     }
 
     @RequestMapping(value = "/dpt/post/add", method = RequestMethod.GET)
-    public String dptPostAddGet(ModelMap map) {
-        /* UI Settings */
-        map.addAttribute("title", "Add new post need");
+    public String dptPostAddGet(ModelMap map, @RequestParam("type") int type) {
+        map.addAttribute("title", "New Post");
+        map.addAttribute("recruitType", type == RecruitTypeStatus.SOCIETY ? true : false);
+        map.addAttribute("roleName", "Department Manager");
         map.addAttribute("action", "add");
         map.addAttribute("returnUrl", "list");
         map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
         map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");
 
-        map.addAttribute("post", new PostVo.Builder().departmentName(dptManagerService.findDptNameByUserId(AuthInfo.getUserId())).build());
+        map.addAttribute("post", new PostVo.Builder()
+                .departmentName(dptManagerService.findDptNameByUserId(AuthInfo.getUserId()))
+                .recruitNum(1)
+                .build());
         return "dpt-hr-post-detail";
     }
 
@@ -77,15 +95,13 @@ public class DptManagerController {
     @ResponseBody
     public String dptPostAddPost(PostEntity postEntity) {
         PostVo postVo = new PostVo.Builder()
-                .postId(postEntity.getPostId())
+                .recruitType(postEntity.isRecruitType() ? RecruitTypeStatus.SOCIETY : RecruitTypeStatus.CAMPUS)
                 .postName(postEntity.getPostName())
                 .postType(postEntity.getPostType())
                 .postLocale(postEntity.getPostLocale())
+                .recruitNum(postEntity.getRecruitNum())
                 .postDescription(postEntity.getPostDescription())
                 .postRequirement(postEntity.getPostRequirement())
-                .recruitNum(postEntity.getRecruitNum())
-                .publishTime(postEntity.getPublishTime())
-                .status(postEntity.getStatus())
                 .build();
 
         return String.valueOf(dptManagerService.createNewPost(postVo, AuthInfo.getUserId()));

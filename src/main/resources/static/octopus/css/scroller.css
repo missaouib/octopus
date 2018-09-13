@@ -1,0 +1,10 @@
+.scroller-table {
+	background-color: #FFF;
+}
+
+.scroller-span {
+	color: rgb(26, 179, 148);
+	font-size: 120px;
+	font-family: "Helvetica Neue", sans-serif;
+	line-height: 1.1em;
+}

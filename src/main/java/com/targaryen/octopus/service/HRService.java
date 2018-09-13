@@ -132,16 +132,10 @@ public interface HRService {
     List<InterviewVo> findInterviewByApplicationId(int applicationId);
 
     /**
-     * find list of interviews by and postId and date
+     * find list of interviews by and postId and interviewRound and time
      *
      */
-    List<InterviewVo> findListOfInterviewsByPostIdAndTime(int postId, Date beginTime, Date endTime);
-
-    /**
-     * find list of interviews by postId and interviewRound
-     *
-     */
-    List<InterviewVo> findListOfInterviewsByPostIdAndInterviewRound(int postId, int interviewRound);
+    List<InterviewVo> findInterviewByPostIdAndRoundAndTime(int postId, int interviewRound, Date beginTime, Date endTime);
 
     /**
      * add a new interview round by postId

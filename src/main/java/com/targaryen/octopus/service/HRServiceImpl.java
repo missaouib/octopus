@@ -51,6 +51,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int publishPostById(int postId) {
         try {
@@ -65,6 +66,7 @@ public class HRServiceImpl implements HRService {
 
     }
 
+    @Transactional
     @Override
     public int closePostById(int postId) {
         try {
@@ -77,6 +79,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int finishPostById(int postId) {
         try {
@@ -89,6 +92,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int updatePost(PostVo updatePost) {
         try {
@@ -109,6 +113,7 @@ public class HRServiceImpl implements HRService {
         return DataTransferUtil.ResumeModeDtoToVo(postDto.getResumeModel());
     }
 
+    @Transactional
     @Override
     public int updateResumeModelById(ResumeModelVo resumeModelVo) {
         try {
@@ -145,6 +150,7 @@ public class HRServiceImpl implements HRService {
         return applicationResumeVo;
     }
 
+    @Transactional
     @Override
     public int filterPassApplicationById(int applicationId) {
         try {
@@ -158,6 +164,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int filterFailApplicationById(int applicationId) {
         try {
@@ -171,6 +178,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int revokeFilterApplicationById(int applicationId) {
         try {
@@ -207,8 +215,18 @@ public class HRServiceImpl implements HRService {
     public int createInterview(InterviewVo interviewVo) {
         try {
             InterviewDto newInterview = new InterviewDto();
-            ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
-            InterviewerDto interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+            ApplicationDto application;
+            if(interviewVo.getApplicationId() <= 0) {
+                application = null;
+            } else {
+                application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
+            }
+            InterviewerDto interviewer;
+            if(interviewVo.getInterviewerId() <= 0) {
+                interviewer = null;
+            } else {
+                interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+            }
             PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
@@ -220,6 +238,7 @@ public class HRServiceImpl implements HRService {
             newInterview.setReservationStatus(ReservationStatus.INIT);
             newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
             newInterview.setCreateTime(Calendar.getInstance().getTime());
+            newInterview.setInterviewRound(post.getInterviewRound());
             interviewDtoRepository.save(newInterview);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -273,21 +292,14 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
-    public List<InterviewVo> findListOfInterviewsByPostIdAndTime(int postId, Date beginTime, Date endTime) {
-        return interviewDtoRepository.findAllByPostAndTime(postDtoRepository.findPostDtoByPostId(postId),
-                beginTime, endTime).stream()
+    public List<InterviewVo> findInterviewByPostIdAndRoundAndTime(int postId, int interviewRound, Date beginTime, Date endTime) {
+        return interviewDtoRepository.findAllByPostAndRoundAndTime(postDtoRepository.findPostDtoByPostId(postId),
+                interviewRound, beginTime, endTime).stream()
                 .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<InterviewVo> findListOfInterviewsByPostIdAndInterviewRound(int postId, int interviewRound) {
-        return interviewDtoRepository.findAllByPostAndInterviewRound(postDtoRepository.findPostDtoByPostId(postId),
-                interviewRound).stream()
-                .map(n -> DataTransferUtil.InterviewDtoToVo(n))
-                .collect(Collectors.toList());
-    }
-
+    @Transactional
     @Override
     public int addNewInterviewRoundByPostId(int postId) {
         try {
@@ -301,6 +313,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int interviewPassApplicationById(int applicationId) {
         try {
@@ -314,6 +327,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int interviewFailApplicationById(int applicationId) {
         try {
@@ -327,6 +341,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int sendOfferByApplicationId(int applicationId) {
         try {

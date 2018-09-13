@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HR - Post Applications List</title>
+
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/jsCalendar.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/scroller.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/jquery.timepicker.css}" />
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap-tagsinput.css}" />
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/octopus/js/jquery-ui-1.10.4.min.js}"></script>
+    <script th:src="@{/octopus/js/jsCalendar.js}"></script>
+    <script th:src="@{/octopus/js/scroller.js}"></script>
+    <script th:src="@{/octopus/js/jquery.timepicker.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap-tagsinput.js}"></script>
+
+    <style>
+        .jsCalendar.material-theme thead {
+            background-color: rgb(26, 179, 148);
+        }
+
+        .jsCalendar tbody td.jsCalendar-current {
+            background-color: rgb(26, 179, 148);
+        }
+
+        .btn-default {
+            background-color: #FFF;
+            color: rgb(103,106,108);
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="height: 55px;">
+                        <div class="col-sm-3">
+                            <a id="round-prev" class="pull-left btn-xs btn-outline btn-default"
+                                    onclick="decre();"
+                                    style="margin-top: 2px;">
+                                <i class="glyphicon glyphicon-chevron-left" aria-hidden="true"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <h4 style="text-align: center;">Round</h4>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <a id="round-next" class="pull-right btn-xs btn-outline btn-default"
+                                    onclick="incre();"
+                                    style="margin-top: 2px;">
+                                <i class="glyphicon glyphicon-chevron-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content profile-content" style="height: 250px;">
+                        <div class="row">
+                            <div id="scroller-pane" class="center-block"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-8">
+                                <a onclick="newRound()" class="btn btn-outline btn-rounded btn-primary center-block">
+                                    <i class="fa fa-plus"></i> New Round
+                                </a>
+                            </div>
+                            <div class="col-sm-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="height: 55px;">
+                        <h4 style="text-align: center;">Status</h4>
+                    </div>
+                    <div>
+                        <div class="ibox-content profile-content" style="height: 250px;">
+
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <span class="badge badge-primary">2018-08-01</span> First date of interview schedule
+                                </li>
+                                <li class="list-group-item ">
+                                    <span class="badge badge-primary">2018-08-30</span> Last date of interview schedule
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="badge badge-warning">500</span> Interview overall count
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="badge badge-success">600</span> Applicant overall count
+                                </li>
+                            </ul>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a onclick="byDates(true);" class="btn btn-block btn-rounded btn-primary" data-toggle="modal" data-target="#batch-add-interview">
+                                        <i class="fa fa-plus"></i> Batch Create Interviews
+                                    </a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a class="btn btn-block btn-rounded btn-success">
+                                        <i class="fa fa-calendar-check-o"></i> Auto Scheduling
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="height: 55px;">
+                        <h4>Post Detail</h4>
+                    </div>
+                    <div>
+                        <div class="ibox-content profile-content" style="height: 250px;">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="m-b-md">
+                                        <h2 th:text="ddd"></h2>
+                                    </div>
+                                    <dl class="dl-horizontal">
+                                        <dt>Status：</dt>
+                                        <dd>
+                                            ddd
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <dl class="dl-horizontal">
+                                        <dt>Post Type:</dt>
+                                        <dd th:text="ddd"></dd>
+
+                                        <dt>Post Locale:</dt>
+                                        <dd th:text="ddd"></dd>
+                                    </dl>
+                                </div>
+                                <div class="col-sm-12">
+                                    <dl class="dl-horizontal">
+                                        <dt>Department:</dt>
+                                        <dd th:text="ddd"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox-title">
+                    <h4>Calendar of Interview Schedule on <span class="badge badge-info">2018-08-30</span></h4>
+                </div>
+
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div id="my-calendar" class="material-theme" data-month-format="month YYYY" data-day-format="DDD"></div>
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <div class="row" style="margin: 10px 10px;">
+                                <a onclick="byDates(false);" class="btn btn-s btn-primary" data-toggle="modal" data-target="#batch-add-interview"><i class="fa fa-plus"></i> Batch Create</a>
+                                <a class="btn btn-s btn-danger" onclick="batchDelete();"><i class="fa fa-remove"></i> Batch Delete</a>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                                    <thead>
+                                        <tr class="footable even">
+                                            <th></th>
+                                            <th>Start Time</th>
+                                            <th>Place</th>
+                                            <th>Count</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" checked class="i-checks" name="input[]">
+                                            </td>
+                                            <td>13:00</td>
+                                            <td>Tiananmen</td>
+                                            <td>5</td>
+                                            <td>
+                                                <a><i class="fa fa-pencil text-warning"></i></a>
+                                            </td>
+                                            <td>
+                                                <a><i class="fa fa-remove text-danger"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="6">
+                                            <ul class="pagination pull-right"></ul>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+            <div class="col-sm-5">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h4>Interviewers Pool</h4>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <h3>Participate</h3>
+                                <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
+
+                                <ul class="sortable-list connectList agile-list" id="participate">
+
+                                </ul>
+                            </div>
+
+                            <div class="col-sm-6" style="background-color: #f5f5f6;">
+                                <h3>NOT participate</h3>
+                                <p class="small"><i class="fa fa-hand-o-up"></i> Drag items between panels</p>
+
+                                <ul class="sortable-list connectList agile-list" id="non-participate">
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h4>Interviews list on <span class="badge badge-info">2018-08-30</span> </h4>
+                    </div>
+
+                    <div class="ibox-content">
+                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                            <thead>
+                                <tr class="footable even">
+                                    <th>Applicant</th>
+                                    <th>Interviewer</th>
+                                    <th>Result</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                                <tr>
+                                    <td>ZhouMY <a data-toggle="modal" data-target="#edit-applicant"><i class="fa fa-pencil text-warning"></i></a></td>
+                                    <td>LiuMY <a data-toggle="modal" data-target="#edit-interviewer"><i class="fa fa-pencil text-warning"></i></a></td>
+                                    <td>If result not init, hide icons</td>
+                                    <td>
+                                        <a><i class="fa fa-remove text-danger"></i></a>
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="spiner-example">
+                            <div class="sk-spinner sk-spinner-wave">
+                                <div class="sk-rect1"></div>
+                                <div class="sk-rect2"></div>
+                                <div class="sk-rect3"></div>
+                                <div class="sk-rect4"></div>
+                                <div class="sk-rect5"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New interviews -->
+    <div class="modal fade" id="batch-add-interview" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                    </button>
+                    <h1 style="text-align:center;">Batch add interviews</h1>
+                </div>
+
+                <form class="form-horizontal m-t" id="new-interview-form" name="new-interview-form" method="POST"
+                      action="" onsubmit="return false;">
+
+                    <div class="modal-body">
+                        <div id="addByDates" class="form-group">
+                            <label class="col-sm-3 control-label">Dates:</label>
+
+                            <div class="col-sm-8">
+                                <!-- Date picker element -->
+                                <input style="background-color: #FFF;" id="dates" type="text" value="0 dates selected" class="form-control" required="required" readonly="readonly" />
+                                <!-- Calendar element -->
+                                <div id="dates-calendar" class="material-theme" style="display:none; z-index: 100000000;"></div>
+                            </div>
+                        </div>
+
+                        <div id="addByOne" class="form-group">
+                            <label class="col-sm-3 control-label">Date:</label>
+                            <input type="hidden" id="theDate" name="theDate" value="" />
+                            <div class="col-sm-8" style="padding-top: 7px;">
+                                <span class="badge badge-info">2018-08-30</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Place:</label>
+                            <div class="col-sm-8">
+                                <input name="interviewPlace" type="text" class="form-control" required="required" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Start Time:</label>
+                            <div class="col-sm-8">
+                                <input style="background-color: #FFF;" id="interviewStartTimeSelect" type="text" value="0 start time selected" class="form-control" required="required" readonly="readonly" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Start Time Selected:</label>
+                            <div class="col-sm-8">
+                                <input id="interviewStartTime" type="text" value="" data-role="tagsinput" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Count:</label>
+                            <div class="col-sm-8">
+                                <input name="count" type="text" class="form-control" required="required" />
+                            </div>
+                        </div>
+
+                        <!-- Round count -->
+                        <input type="hidden" id="interviewRound" name="interviewRound" value="" />
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Batch Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit applicant -->
+    <div class="modal fade" id="edit-applicant" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                    </button>
+                    <h1 style="text-align:center;">Assign applicant</h1>
+                </div>
+
+                <form class="form-horizontal m-t" id="edit-applicant-form" name="edit-applicant-form" method="POST"
+                      action="" onsubmit="return false;">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Applicant:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b" id="applicantId" name="applicantId" required="required">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit interviewer -->
+    <div class="modal fade" id="edit-interviewer" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+                    </button>
+                    <h1 style="text-align:center;">Assign interviewer</h1>
+                </div>
+
+                <form class="form-horizontal m-t" id="edit-interviewer-form" name="edit-interviewer-form" method="POST"
+                      action="" onsubmit="return false;">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Interviewer:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b" id="interviewerId" name="interviewerId" required="required">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /* Interviewer list initialization */
+        $(document).ready(function(){$(".sortable-list").sortable({
+            connectWith:".connectList"
+        }).disableSelection()});
+
+        /* Calendar initialization */
+        var element = document.getElementById("my-calendar");
+        var myCalendar = jsCalendar.new(element, "now", {
+            "dayFormat": "DDD"
+        });
+
+        myCalendar.onDateClick(function(event, date){
+            myCalendar.set(date);
+            //.log(myCalendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
+        });
+
+        /* Scroller initialization */
+        var scroller = Scroller.getNewInstance({
+            direction: Scroller.DIRECTION.DOWN,
+            interval: 300,
+            width: 150,
+            amount: 150,
+            separatorType: Scroller.SEPARATOR.NONE
+        });
+
+        scroller.appendTo(document.getElementById("scroller-pane"));
+        scroller.start("01");
+        var min = 1, max = 3; // min >= 1 and max <= 99
+        var d = 1;
+
+        if (d == min) {
+            $("#round-prev").css("display", "none");
+        }
+        if (d == max) {
+            $("#round-next").css("display", "none");
+        }
+
+        function incre() {
+            if (d < max) {
+                ++d;
+
+                if (d == max) {
+                    $("#round-next").css("display", "none");
+                }
+                if (d != min) {
+                    $("#round-prev").css("display", "block");
+                }
+
+                // Do something using d
+
+                if (d >= min && d < 10) {
+                    scroller.scrollTo("0" + d);
+                } else {
+                    scroller.scrollTo(d);
+                }
+            }
+        }
+
+        function decre() {
+            if (d > min) {
+                --d;
+
+                if (d == min) {
+                    $("#round-prev").css("display", "none");
+                }
+                if (d != max) {
+                    $("#round-next").css("display", "block");
+                }
+
+                // Do something using d
+
+                if (d >= min && d < 10) {
+                    scroller.scrollTo("0" + d);
+                } else {
+                    scroller.scrollTo(d);
+                }
+            }
+        }
+
+        /* Footable initialization */
+        $(".footable").footable();
+
+        /* Timepicker initialization */
+        var setObj = {'interval': 10, 'timeFormat': 'HH:mm', 'zindex':1000000,
+            change: function() {
+                $("#interviewStartTime").tagsinput('add', $("#interviewStartTimeSelect").val());
+                $("#interviewStartTimeSelect").val($("#interviewStartTime").tagsinput('items').length + " start time selected");
+            }};
+        $('#interviewStartTimeSelect').timepicker(setObj);
+
+        /* Tag plugin */
+        $('#interviewStartTime').on('itemRemoved', function(event) {
+            $("#interviewStartTimeSelect").val($("#interviewStartTime").tagsinput('items').length + " start time selected");
+        });
+
+        /* Add Form */
+        function byDates(byDates) {
+            if (byDates) {
+                $("#addByDates").css("display", "block");
+                $("#addByOne").css("display", "none");
+            } else {
+                $("#addByDates").css("display", "none");
+                $("#addByOne").css("display", "block");
+            }
+        }
+
+        /******************************************************/
+
+        /* Why is it so long? */
+
+        // Get elements
+        var elements = {
+            // Input element
+            input : document.getElementById("dates"),
+            // Calendar element
+            calendar : document.getElementById("dates-calendar"),
+            // Close btn
+            close : document.createElement('div')
+        };
+
+        // Hide calendar element
+        elements.calendar.style.display = "none";
+        elements.calendar.style.position = "absolute";
+
+        // Create the calendar
+        var calendar = jsCalendar.new(elements.calendar, "now", {
+            "dayFormat": "DDD"
+        });
+
+        // Add close button
+        elements.close.textContent = "×";
+        elements.close.style.position = "absolute";
+        elements.close.style.top = "-2px";
+        elements.close.style.right = "-2px";
+        elements.close.style.height = "24px";
+        elements.close.style.width = "24px";
+        elements.close.style.textAlign = "center";
+        elements.close.style.lineHeight = "24px";
+        elements.close.style.backgroundColor = "#F44336";
+        elements.close.style.borderRadius = "12px";
+        elements.close.style.boxShadow = "0px 0px 2px #000000";
+        elements.close.style.cursor = "pointer";
+        elements.calendar.appendChild(elements.close);
+
+        // Add events
+        calendar.onDateClick(function(event, date){
+            // Update calendar date
+            calendar.set(date);
+
+            // Select this date if unselected, vice versa
+            if (calendar.isSelected(date)) {
+                calendar.unselect(date);
+            } else {
+                calendar.select(date);
+            }
+
+            // Show the count of selected dates
+            elements.input.value = calendar.getSelected().length + " dates selected";
+            console.log(calendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
+        });
+
+        // Open calendar
+        elements.input.addEventListener("focus", function(){
+            elements.calendar.style.top = elements.input.offsetTop + elements.input.offsetHeight + "px";
+            elements.calendar.style.left = elements.input.offsetLeft + "px";
+            elements.calendar.style.display = "block";
+        }, true);
+        // Close calendar
+        elements.input.addEventListener("change", function(){
+            elements.calendar.style.display = "none";
+        }, true);
+        elements.close.addEventListener("click", function(){
+            elements.calendar.style.display = "none";
+        }, true);
+
+        /******************************************************/
+
+        /*<![CDATA[*/
+        var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+        /*]]>*/
+        var csrfData = {};
+        csrfData[_csrf_param_name] = _csrf_token;
+
+        /* Add new round */
+        function newRound() {
+            swal({
+                title : "Confirm",
+                text: "Do you really wish to create a new round?",
+                type : "warning",
+                showCancelButton : true,
+                confirmButtonColor : "#DD6B55",
+                confirmButtonText : "Yes",
+                cancelButtonText : "No",
+                closeOnConfirm : false,
+                closeOnCancel : false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "get",
+                        url: "",
+                        data: csrfData,
+                        async: false,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: "You have successfully created a new round.",
+                                type: "success"
+                            }, function (isConfirm) {
+                                document.location.reload();
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Failure",
+                                text: "You have not successfully created a new round.",
+                                type: "error"
+                            });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "You have cancelled.", "error");
+                }
+            });
+        }
+
+        /* /Batch delete */
+        function batchDelete() {
+            swal({
+                title : "Confirm",
+                text: "Do you really wish to delete 15 interviews in total?",
+                type : "warning",
+                showCancelButton : true,
+                confirmButtonColor : "#DD6B55",
+                confirmButtonText : "Yes",
+                cancelButtonText : "No",
+                closeOnConfirm : false,
+                closeOnCancel : false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "get",
+                        url: "",
+                        data: csrfData,
+                        async: false,
+                        success: function (data) {
+                            swal({
+                                title: "Success",
+                                text: "You have successfully deleted 15 interviews in total.",
+                                type: "success"
+                            }, function (isConfirm) {
+                                document.location.reload();
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                title: "Failure",
+                                text: "You have not successfully deleted 15 interviews in total.",
+                                type: "error"
+                            });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "You have cancelled.", "error");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

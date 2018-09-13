@@ -83,7 +83,6 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDtoRepository.save(postDto);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);
-            postDto.setResumeModel(resumeModelDto);
             resumeModelDtoRepository.save(resumeModelDto);
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
@@ -91,6 +90,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         }
     }
 
+    @Transactional
     @Override
     public int updatePost(PostVo updatePost) {
         try {
@@ -116,6 +116,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         }
     }
 
+    @Transactional
     @Override
     public int revokePost(int postId) {
         try {
@@ -155,6 +156,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         return applicationResumeVo;
     }
 
+    @Transactional
     @Override
     public int dptApprovePassApplicationById(int applicationId) {
         try {
@@ -168,6 +170,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         }
     }
 
+    @Transactional
     @Override
     public int dptApproveFailApplicationById(int applicationId) {
         try {

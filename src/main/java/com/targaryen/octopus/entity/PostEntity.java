@@ -10,6 +10,8 @@ import java.util.Date;
 public class PostEntity {
     private int postId;
 
+    private boolean recruitType;
+
     private String postName;
 
     private String postType;
@@ -21,8 +23,6 @@ public class PostEntity {
     private String postRequirement;
 
     private int recruitNum;
-
-    private String recruitDpt;
 
     private Date publishTime;
 
