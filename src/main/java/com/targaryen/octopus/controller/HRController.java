@@ -8,6 +8,7 @@ import com.targaryen.octopus.service.HRService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeModelVo;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
@@ -45,7 +47,9 @@ public class HRController {
 
     @RequestMapping(value = "/hr/post/list", method = RequestMethod.GET)
     public String hrPostList(ModelMap map) {
-        map.addAttribute("postList", hrService.listPosts());
+        map.addAttribute("title", "Society Recruitment");
+        List<PostVo> postVoList =  hrService.listPosts().stream().filter(s -> s.getRecruitType() == RecruitTypeStatus.SOCIETY).collect(Collectors.toList());
+        map.addAttribute("postList", postVoList);
         return "hr-post-list";
     }
 
@@ -95,6 +99,15 @@ public class HRController {
         if (interviewVoList.size() != 0)
             map.addAttribute("lastInterviewIdOfList", interviewVoList.get(interviewVoList.size() - 1).getInterviewId());
         return "hr-application-timeline";
+    }
+
+    /* Campus recruitment */
+    @RequestMapping(value = "/hr/post/campuslist", method = RequestMethod.GET)
+    public String hrCampusPostList(ModelMap map) {
+        map.addAttribute("title", "Campus Recruitment");
+        List<PostVo> postVoList =  hrService.listPosts().stream().filter(s -> s.getRecruitType() == RecruitTypeStatus.CAMPUS).collect(Collectors.toList());
+        map.addAttribute("postList", postVoList);
+        return "hr-post-list";
     }
 
     @RequestMapping(value = "/hr/post/schedule/model", method = RequestMethod.GET)
