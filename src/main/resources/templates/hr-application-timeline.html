@@ -77,6 +77,8 @@
                                         <p>New interview created. Waiting for confirmation from interviewer and applicant.</p>
                                         <p th:text="${'Interview Start Time: ' + #dates.format(interview.interviewStartTime,'yyyy-MM-dd HH:mm')}"></p>
                                         <p th:text="${'Interview Place: ' + interview.interviewPlace}"></p>
+                                        <p th:text="${'Applicant Name: ' + interview.applicantName}"></p>
+                                        <p th:text="${'Interviewer Name: ' + interview.interviewerName}"></p>
 
                                         <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
                                             and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}">
@@ -99,6 +101,9 @@
 
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Arrangement Rejected</h2>
+
+                                        <p th:text="${'Applicant Name: ' + interview.applicantName}"></p>
+                                        <p th:text="${'Interviewer Name: ' + interview.interviewerName}"></p>
 
                                         <p th:if="${interview.applicantStatus} eq ${T(com.targaryen.octopus.util.status.ApplicantStatus).REJECTED}">
                                             Interview arrangement rejected by applicant.
@@ -139,6 +144,8 @@
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Arrangement Accepted (Waiting for Interview Result)</h2>
                                         <p>Interview arrangement accepted by both interviewer and applicant. Waiting for interview result.</p>
+                                        <p th:text="${'Applicant Name: ' + interview.applicantName}"></p>
+                                        <p th:text="${'Interviewer Name: ' + interview.interviewerName}"></p>
                                         <p th:text="${'Interview Start Time: ' + #dates.format(interview.interviewStartTime,'yyyy-MM-dd HH:mm')}"></p>
                                         <p th:text="${'Interview Place: ' + interview.interviewPlace}"></p>
 
@@ -160,6 +167,8 @@
                                     <div class="vertical-timeline-content">
                                         <h2>Interview Failed</h2>
                                         <p>Interview failed by interviewer.</p>
+                                        <p th:text="${'Applicant Name: ' + interview.applicantName}"></p>
+                                        <p th:text="${'Interviewer Name: ' + interview.interviewerName}"></p>
                                         <p th:text="${'Interviewer Result Comment: ' + interview.interviewResultComment}"></p>
 
                                         <th:block th:if="${interview.interviewId} eq ${lastInterviewIdOfList}
@@ -189,6 +198,8 @@
                                         <h2>Interview Passed</h2>
                                         <p>Interview passed by interviewer.</p>
                                         <p th:text="${'Interviewer Result Comment: ' + interview.interviewResultComment}"></p>
+                                        <p th:text="${'Applicant Name: ' + interview.applicantName}"></p>
+                                        <p th:text="${'Interviewer Name: ' + interview.interviewerName}"></p>
                                         <p th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).WEAK_HIRE}">Interviewer Result Level: Weak Hire</p>
                                         <p th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).HIRE}">Interviewer Result Level: Normal Hire</p>
                                         <p th:if="${interview.interviewResultStatus} eq ${T(com.targaryen.octopus.util.status.InterviewResultStatus).STRONG_HIRE}">Interviewer Result Level: Strong Hire</p>

@@ -354,16 +354,6 @@
                             <tbody>
 
 
-                                <tr>
-                                    <td>ZhouMY <a data-toggle="modal" data-target="#edit-applicant"><i class="fa fa-pencil text-warning"></i></a></td>
-                                    <td>LiuMY <a data-toggle="modal" data-target="#edit-interviewer"><i class="fa fa-pencil text-warning"></i></a></td>
-                                    <td>If result not init, hide icons</td>
-                                    <td>
-                                        <a><i class="fa fa-remove text-danger"></i></a>
-                                    </td>
-                                </tr>
-
-
                             </tbody>
 
                             <tfoot>
@@ -392,7 +382,7 @@
     </div>
 
 
-
+    <!-- Modal Forms -->
 
 
     <!-- Batch add interviews -->
@@ -466,6 +456,8 @@
         </div>
     </div>
 
+    <!-- Which interview did I selected? -->
+    <input type="hidden" id="interviewIdSelected" value="" />
 
     <!-- Edit applicant -->
     <div class="modal fade" id="edit-applicant" aria-hidden="true" style="display:none;">
@@ -486,14 +478,16 @@
                             <label class="col-sm-3 control-label">Applicant:</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b" id="applicantId" name="applicantId" required="required">
-
+                                    <th:block th:each="applicant : ${applicantList}">
+                                        <option th:value="${applicant.applicationId}" th:text="${applicant.applicantName}"></option>
+                                    </th:block>
                                 </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-primary">Assign</button>
+                        <button onclick="editWho('applicant');" class="btn btn-primary">Assign</button>
                     </div>
                 </form>
             </div>
@@ -519,14 +513,16 @@
                             <label class="col-sm-3 control-label">Interviewer:</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b" id="interviewerId" name="interviewerId" required="required">
-
+                                    <th:block th:each="interviewer : ${interviewerList}">
+                                        <option th:value="${interviewer.interviewerId}" th:text="${interviewer.interviewerName}"></option>
+                                    </th:block>
                                 </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Assign</button>
+                        <button onclick="editWho('interviewer');" class="btn btn-primary">Assign</button>
                     </div>
                 </form>
             </div>
@@ -876,7 +872,86 @@
 
         /* Load Data by Clicking Mid Table (Schedule Table) */
         function loadDataByClickingMidTable(dateStr, timeStr) {
-            csrfData['startTime'] = dateStr + " " + timeStr;
+            if (interviewMapThisRound[dateStr][timeStr] != null) {
+                // Footable v2 sucks
+                $("#interviewOnOneDate").find('tbody').empty();
+
+                $.each(interviewMapThisRound[dateStr][timeStr], function (idx, interview) {
+                    var row = '<tr>';
+
+                    if (interview.interviewResultStatus == 0) {
+                        row += '<td>' + interview.applicantName + ' <a onclick=\'selectInterviewId(' + interview.interviewId + ');\' data-toggle=\'modal\' data-target=\'#edit-applicant\'><i class=\'fa fa-pencil text-warning\'></i></a></td>';
+                        row += '<td>' + interview.interviewerName + ' <a onclick=\'selectInterviewId(' + interview.interviewId + ');\' data-toggle=\'modal\' data-target=\'#edit-interviewer\'><i class=\'fa fa-pencil text-warning\'></i></a></td>';
+                        row += "<td>Not started</td>";
+                        row += "<td><a><i class='fa fa-remove text-danger'></i></a></td>";
+                    } else {
+                        row += '<td>' + interview.applicantName + '</td>';
+                        row += '<td>' + interview.interviewerName + '</td>';
+                        if (interview.interviewResultStatus < 0) {
+                            row += "<td>Failed</td>";
+                        } else {
+                            row += "<td>Passed</td>";
+                        }
+                        row += "<td></td>";
+                    }
+
+                    row += '</tr>';
+                    interviewOnOneDate.appendRow(row);
+                    interviewOnOneDate.redraw();
+                });
+            }
+
+        }
+
+        /* Select Interview Id */
+        function selectInterviewId(id) {
+            $("#interviewIdSelected").val(id);
+        }
+
+        /* Edit who attends interview */
+        function editWho(operationStr) {
+            if (operationStr == 'applicant') {
+                csrfData['whoId'] = $("#applicantId").val();
+            } else if (operationStr == 'interviewer') {
+                csrfData['whoId'] = $("#interviewerId").val();
+            }
+            csrfData['interviewId'] = $("#interviewIdSelected").val();
+
+            $.ajax({
+                "type": "post",
+                "url": "edit/" + operationStr,
+                "data": csrfData,
+                success: function (data) {
+                    swal({
+                        title: "Success",
+                        text: "You have successfully assigned " + operationStr + ".",
+                        type: "success"
+                    }, function (isConfirm) {
+                        // Refresh data: We have no choice
+                        $.ajax({
+                            type: "get",
+                            url: "round/" + interviewRound,
+                            async: false,
+                            success: function (allData) {
+                                uniqueDates = allData['uniqueDates'];
+                                interviewMapThisRound = allData['interviewMapThisRound'];
+                                interviewOverallCount = allData['interviewOverallCount'];
+
+                                var dateTime = data.split(" ");
+                                loadDataByClickingMidTable(dateTime[0], dateTime[1]);
+                            }
+                        });
+
+                    });
+                },
+                error: function (data) {
+                    swal({
+                        title: "Failure",
+                        text: "You have not successfully assigned " + operationStr + ".",
+                        type: "error"
+                    });
+                }
+            });
         }
 
         /* Batch Create Interviews */

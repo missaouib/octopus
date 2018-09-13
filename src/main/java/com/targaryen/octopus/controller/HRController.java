@@ -121,6 +121,8 @@ public class HRController {
     public String hrPostScheduleModel(@PathVariable("postId") int postId, ModelMap map) {
         map.addAttribute("post", hrService.findPostById(postId));
         map.addAttribute("applicationCount", hrService.findApplicationsByPostId(postId).size());
+        map.addAttribute("applicantList", hrService.findApplicationsByPostId(postId));
+        map.addAttribute("interviewerList", hrService.listInterviewersByPostId(postId));
         return "hr-post-schedule-model";
     }
 
@@ -228,7 +230,7 @@ public class HRController {
     @ResponseBody
     public String hrApplicationTimelineInterviewNew(@PathVariable("postId") int postId, InterviewEntity interviewEntity) {
         // Locale is a MUST?
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         Date startTime = null;
         try {
             startTime = dateFormat.parse(interviewEntity.getInterviewStartTime());
@@ -322,7 +324,7 @@ public class HRController {
                                       @RequestParam("interviewPlace") String interviewPlace,
                                       @RequestParam("count") String count,
                                       @RequestParam("interviewRound") String interviewRound) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.CHINA);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 
         for (int i = 0; i < Integer.valueOf(count); i++) {
             for (String dateString : dates) {
@@ -349,5 +351,27 @@ public class HRController {
         return "";
     }
 
+    @RequestMapping(value = "/hr/post/{postId}/schedule/edit/applicant", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostScheduleModelEditApplicant(@PathVariable("postId") int postId,
+                                                   @RequestParam("interviewId") int interviewId,
+                                                   @RequestParam("whoId") int whoId) {
+        hrService.updateApplicationOfInterview(interviewId, whoId);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+        String v = dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
+        logger.info(v);
+        return v;
+    }
 
+    @RequestMapping(value = "/hr/post/{postId}/schedule/edit/interviewer", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostScheduleModelEditInterviewer(@PathVariable("postId") int postId,
+                                                     @RequestParam("interviewId") int interviewId,
+                                                     @RequestParam("whoId") int whoId) {
+        hrService.updateInterviewerOfInterview(interviewId, whoId);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+        String v = dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
+        logger.info(v);
+        return v;
+    }
 }

@@ -20,12 +20,13 @@ public class DataTransferUtil {
 
     public static InterviewVo InterviewDtoToVo(InterviewDto interviewDto) {
         ApplicationDto application = interviewDto.getApplication();
+        InterviewerDto interviewerDto = interviewDto.getInterviewer();
         return new InterviewVo.Builder()
                 .interviewId(interviewDto.getInterviewId())
                 .interviewStartTime(interviewDto.getInterviewStartTime())
                 .interviewPlace(interviewDto.getInterviewPlace())
                 .applicationId(application == null? -1 : application.getApplicationId())
-                .interviewerId(interviewDto.getInterviewer() == null? -1 : interviewDto.getInterviewer().getInterviewerId())
+                .interviewerId(interviewerDto == null? -1 : interviewerDto.getInterviewerId())
                 .reservationStatus(interviewDto.getReservationStatus())
                 .applicantStatus(interviewDto.getApplicantStatus())
                 .applicantComment(interviewDto.getApplicantComment())
@@ -38,6 +39,8 @@ public class DataTransferUtil {
                 .reservationResultTime(interviewDto.getReservationResultTime())
                 .postId(interviewDto.getPost().getPostId())
                 .interviewRound(interviewDto.getInterviewRound())
+                .applicantName(application == null? "TBD": application.getApplicant().getResume().getApplicantName())
+                .interviewerName(interviewerDto == null? "TBD": interviewerDto.getInterviewerName())
                 .build();
     }
 

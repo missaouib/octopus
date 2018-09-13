@@ -377,7 +377,7 @@ public class HRServiceImpl implements HRService {
                     .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<InterviewVo>();
+            return new ArrayList<>();
         }
     }
 
