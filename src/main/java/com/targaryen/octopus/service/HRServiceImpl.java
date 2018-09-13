@@ -280,13 +280,15 @@ public class HRServiceImpl implements HRService {
                 if(application != null) {
                     int interviewRound = 0;
                     List<InterviewDto> interviewDtos = application.getInterviews();
-                    for (InterviewDto interview: interviewDtos) {
-                        if(ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
-                            int r = interview.getInterviewRound();
-                            interviewRound = r > interviewRound? r : interviewRound;
+                    if(interviewDtos != null) {
+                        for (InterviewDto interview: interviewDtos) {
+                            if(ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
+                                int r = interview.getInterviewRound();
+                                interviewRound = r > interviewRound? r : interviewRound;
+                            }
                         }
+                        newInterview.setInterviewRound(++interviewRound);
                     }
-                    newInterview.setInterviewRound(++interviewRound);
                 }
             }
 
@@ -336,6 +338,7 @@ public class HRServiceImpl implements HRService {
         }
     }
 
+    @Transactional
     @Override
     public int updateApplicationOfInterview(int interviewId, int applicationId) {
         try {
