@@ -239,4 +239,27 @@ public interface ApplicantService {
      * @return
      */
     boolean isResumeComplete(int resumeId, int modelId);
+
+    /**
+     * Find available interviews for applicants to choose, currently only used in campus recruitment,
+     * please do not use the function in social recruitment.
+     *
+     * @param applicationId
+     *
+     * @return
+     * Available interviews, most of the fields in InterviewVo are uninitiated, but "interviewStartTime",
+     * "interviewerStatus", "InterviewerId", "InterviewId" are guaranteed.
+     */
+    List<InterviewVo> findAvailableInterviewsByApplicationId(int applicationId);
+
+    /**
+     * Update interview by create association between interview and applicant.
+     *
+     * @param interviewVo
+     * Must contain interviewId and applicant Id.
+     *
+     * @return
+     * Execution status.
+     */
+    int updateInterviewApplicantId(InterviewVo interviewVo);
 }
