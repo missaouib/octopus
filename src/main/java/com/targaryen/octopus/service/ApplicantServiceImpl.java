@@ -56,7 +56,7 @@ public class ApplicantServiceImpl implements ApplicantService {
         this.educationExperienceRepository = daoFactory.getEducationExperienceRepository();
     }
 
-
+    @Transactional
     public int saveResume(ResumeVo resumeVo) {
         ResumeDto resumeDto;
         ApplicantDto applicantDto;
@@ -64,6 +64,7 @@ public class ApplicantServiceImpl implements ApplicantService {
 
         try {
             applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            entityManager.refresh(applicantDto);
             resumeDto = applicantDto.getResume();
             if(resumeDto == null) {
                 resumeDto = new ResumeDto();

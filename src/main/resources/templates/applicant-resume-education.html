@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Department Manager - Post List</title>
+
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper wrapper-content animated fadeInRight" style="height:100%;">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox-title">
+                <h1>Education Experience</h1>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group" style="width:100%;">
+
+                        <button type="button" class="btn btn-outline btn-default"
+                                data-toggle="modal" data-target="#myModal">
+                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                            Add new
+                        </button>
+
+                        <div class="modal fade" id="myModal" tabindex="-1"
+                             role="dialog" aria-labelledby="myModalLabel"
+                             aria-hidden="true" style="height:100%;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">Add New Education Experience</h4>
+                                    </div>
+                                    <div class="row" style="margin: 20px;">
+                                        <form role="form" method="post" th:action="@{/octopus/applicant/resume/education/add}" th:object="${educationExperience}">
+                                            <input type="hidden" id="resumeId" th:field="*{resumeId}">
+                                            <div class="form-group"><label>Start Time</label> <input type="date" th:field="*{startTime}" placeholder="Start Time" class="form-control" required></div>
+                                            <div class="form-group"><label>End Time</label> <input type="date" th:field="*{endTime}" placeholder="End Time" class="form-control" required></div>
+                                            <div class="form-group"><label>School</label> <input type="text" th:field="*{school}" placeholder="School" class="form-control" required></div>
+                                            <div class="form-group"><label>Major</label> <input type="text" th:field="*{major}" placeholder="Major" class="form-control" required></div>
+                                            <div class="form-group"><label>TypeOfStudy</label> <input type="text" th:field="*{typeOfStudy}" placeholder="typeOfStudy" class="form-control" required></div>
+                                            <div class="form-group"><label>Degree</label> <input type="text" th:field="*{degree}" placeholder="Degree" class="form-control" required></div>
+                                            <div>
+                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Add</strong></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div> <!-- /.modal -->
+
+                        <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
+                               style="width:25%;float:right;"/>
+                    </div>
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="9"
+                           data-filter="#filter">
+                        <thead>
+                        <tr class="footable even">
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>School</th>
+                            <th>Major</th>
+                            <th>TypeOfStudy</th>
+                            <th>Degree</th>
+                            <th>Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <th:block th:each="edu : ${educationExperienceList}">
+                            <tr>
+                                <td th:text="${edu.startTime}"></td>
+                                <td th:text="${edu.endTime}"></td>
+                                <td th:text="${edu.school}"></td>
+                                <td th:text="${edu.major}"></td>
+                                <td th:text="${edu.typeOfStudy}"></td>
+                                <td th:text="${edu.degree}"></td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-circle"
+                                            data-toggle="modal" data-target="#myModal2">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal2" tabindex="-1"
+                                         role="dialog" aria-labelledby="myModalLabel2"
+                                         aria-hidden="true" style="height:100%;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel2">Update New Work Experience</h4>
+                                                </div>
+                                                <div class="row" style="margin: 20px;">
+                                                    <form role="form" method="post" th:action="@{/octopus/applicant/resume/education/update}" th:object="${edu}">
+                                                        <fieldset>
+                                                            <input type="hidden" name="educationExperienceId" th:value="*{educationExperienceId}">
+                                                            <input type="hidden" name="resumeId" th:value="*{resumeId}">
+                                                            <div class="form-group"><label>Start Time</label> <input type="text" name="startTime" th:value="*{startTime}" placeholder="Start Time" class="form-control" required></div>
+                                                            <div class="form-group"><label>End Time</label> <input type="text" name="endTime" th:value="*{endTime}" placeholder="End Time" class="form-control" required></div>
+                                                            <div class="form-group"><label>School</label> <input type="text" name="school" th:value="*{school}" placeholder="School" class="form-control" required></div>
+                                                            <div class="form-group"><label>Major</label> <input type="text" name="major" th:value="*{major}" placeholder="Major" class="form-control" required></div>
+                                                            <div class="form-group"><label>TypeOfStudy</label> <input type="text" name="typeOfStudy" th:value="*{typeOfStudy}" placeholder="TypeofStudy" class="form-control" required></div>
+                                                            <div class="form-group"><label>Degree</label> <input type="text" name="degree" th:value="*{degree}" placeholder="Degree" class="form-control" required></div>
+                                                            <div>
+                                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Update</strong></button>
+                                                            </div>
+                                                        </fieldset>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div> <!-- /.modal -->
+
+                                    <button type="button"
+                                            th:onclick="${'location.href=''education/delete/' + edu.educationExperienceId + ''''}"
+                                            class="btn btn-danger btn-circle">
+                                        <i class="fa fa-times"></i></a>
+                                    </button>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="10">
+                                <ul class="pagination pull-right"></ul>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

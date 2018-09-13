@@ -3,7 +3,6 @@ package com.targaryen.octopus.controller;
 import com.targaryen.octopus.entity.*;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
-import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicantStatus;
@@ -12,14 +11,16 @@ import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 /**
  * Created by zhouy on 2018/9/4.
@@ -58,7 +59,6 @@ public class ApplicantController {
         map.addAttribute("acceptedMsg", interviewVosAccpted);
 
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
-        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
 
         return result;
     }
@@ -144,15 +144,17 @@ public class ApplicantController {
         System.out.println("[msg]: " + applicationEntity.getPostId() + ", " + applicationEntity.getApplicantId());
 
         ResumeVo resumeVo =  serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId());
-        if(resumeVo != null){
+        if(resumeVo == null){
 
             System.out.println("[msg]: " + "applicant register");
-            /*ResumeEntity resumeEntity = new ResumeEntity();
-            resumeEntity.setHasPostId(applicationEntity.getPostId());
-            map.addAttribute("resume", resumeEntity);
-            result = new ModelAndView("applicant-resume-add");*/
+            ResumeEntity resumeEntity = new ResumeEntity();
+            resumeEntity.setApplicantId(applicationEntity.getApplicantId());
+            resumeEntity.setPostId(applicationEntity.getPostId());
 
-            result = new ModelAndView("applicant-resume-new-magm");
+            map.addAttribute("resume", resumeEntity);
+            //result = new ModelAndView("applicant-resume-add");
+
+            result = new ModelAndView("applicant-resume-basic-magm");
             return result;
         }
         // get the relative application record
@@ -174,25 +176,19 @@ public class ApplicantController {
     public ModelAndView newResumeAddGet(ModelMap map){
 
         ModelAndView result = null;
-        ResumeRequiredEntity resumeRequiredEntity = new ResumeRequiredEntity();
         /*resumeRequiredEntity.setApplicantPoliticalStatus(false);
         resumeRequiredEntity.setApplicantMajor(false);*/
-        map.addAttribute("listResumeModel", resumeRequiredEntity);
         int userId = AuthInfo.getUserId();
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
-        //int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
+        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
 
-        //if(resumeStatus == StatusCode.SUCCESS) {
+        if(resumeStatus == StatusCode.SUCCESS) {
 
-            //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
-            //int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
-            //List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(reumseId);
             ResumeRequiredEntity resumeRequiredEntity1 = new ResumeRequiredEntity();
 
-            resumeRequiredEntity1.setApplicantAddress(false);
+            //resumeRequiredEntity1.setApplicantAddress(false);
 
             map.addAttribute("listResumeModel", resumeRequiredEntity1);
-            map.addAttribute("resumeEntity", new ResumeEntity());
 
             ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId);
             //System.out.println("[msg]: " + resumeVo);
@@ -200,15 +196,21 @@ public class ApplicantController {
             List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(resumeId);
             map.addAttribute("workExperienceList", workExperienceVos);
 
+            ResumeEntity resumeEntity = new ResumeEntity();
+            resumeEntity.setApplicantId(applicantId);
+            resumeEntity.setResumeId(resumeId);
+            map.addAttribute("resumeEntity",resumeEntity );
+
             result = new ModelAndView("applicant-resume-new-add");
-        //}else {
-        //    result = new ModelAndView("redirect:/octopus/applicant/index");
-        //}
+        }else {
+            result = new ModelAndView("redirect:/octopus/applicant/index");
+        }
         return result;
     }
 
     @RequestMapping(value = "/applicant/resume/new/add/fill", method = RequestMethod.POST)
-    public void newResumeAddPost(ResumeEntity resumeEntity, ModelMap map) throws ParseException {
+    @ResponseBody
+    public String newResumeAddPost(ResumeEntity resumeEntity, ModelMap map) throws ParseException {
 
         System.out.println("[msg]: " + "newResumeAddPost");
 
@@ -221,7 +223,7 @@ public class ApplicantController {
         //List<InterviewerInterviewVo> interviewVoList =  serviceFactory.getInterviewerService().listInterviewerInterviewsByInterviewerId(2);
         int reumseId = serviceFactory.getApplicantService().findResumeByUserId(AuthInfo.getUserId()).getResumeId();
         SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
-
+        System.out.println("[msg]: " + "newResumeAddPost, " + resumeEntity.getResumeId() + " ," + resumeEntity.getApplicantId());
         ResumeVo resumeVo = new ResumeVo.Builder()
                 .resumeId(resumeEntity.getResumeId())
                 .applicantId(resumeEntity.getApplicantId())
@@ -258,6 +260,7 @@ public class ApplicantController {
         //}else {
         //    result = new ModelAndView("redirect:/octopus/applicant/index");
         //}
+        return "OK";
     }
 
     /**
@@ -375,8 +378,8 @@ public class ApplicantController {
         return "applicant-post-list";
     }
 
-    @RequestMapping(value = "/applicant/interview/magm", method = RequestMethod.GET)
-    public String interviewMagm(ModelMap map){
+    @RequestMapping(value = "/applicant/interview/magm/{applicationId}", method = RequestMethod.GET)
+    public String interviewMagm(@PathVariable("applicationId") int applicationId, ModelMap map){
         map.addAttribute("roleName", Role.getRoleNameByAuthority());
         map.addAttribute("userName", AuthInfo.getUserName());
         return "applicant-interview-magm";
@@ -419,5 +422,273 @@ public class ApplicantController {
     }
 
 
+    @RequestMapping(value = "/applicant/resume/basic/magm", method = RequestMethod.GET)
+    public String applicantResumeBasicmagm(Model map){
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+        return "applicant-resume-basic-magm";
+    }
 
+    @RequestMapping(value = "/applicant/resume/basic", method = RequestMethod.GET)
+    public ModelAndView applicantResumeBasic(Model map){
+
+        ModelAndView result = null;
+        int userId = AuthInfo.getUserId();
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
+
+        ResumeRequiredEntity resumeRequiredEntity1 = new ResumeRequiredEntity();
+        resumeRequiredEntity1.setApplicantAddress(false);
+        resumeRequiredEntity1.setApplicantMajor(false);
+        map.addAttribute("listResumeModel", resumeRequiredEntity1);
+        ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId);
+        int resumeId = resumeVo.getResumeId();
+
+        ResumeEntity resumeEntity = new ResumeEntity();
+        resumeEntity.setApplicantId(applicantId);
+        resumeEntity.setResumeId(resumeId);
+
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+
+        if(resumeStatus == StatusCode.SUCCESS) {
+
+            //System.out.println("[msg]: " + resumeVo);
+            map.addAttribute("resumeEntity",resumeEntity );
+
+            result = new ModelAndView("applicant-resume-basic");
+        }else{
+            resumeEntity.setApplicantName(resumeVo.getApplicantName());
+            resumeEntity.setApplicantSex(resumeVo.getApplicantSex());
+            resumeEntity.setApplicantAge(resumeVo.getApplicantAge());
+            resumeEntity.setApplicantSchool(resumeVo.getApplicantSchool());
+            resumeEntity.setApplicantDegree(resumeVo.getApplicantDegree());
+            resumeEntity.setApplicantMajor(resumeVo.getApplicantMajor());
+            resumeEntity.setApplicantCity(resumeVo.getApplicantCity());
+            resumeEntity.setApplicantEmail(resumeVo.getApplicantEmail());
+            resumeEntity.setApplicantPhone(resumeVo.getApplicantPhone());
+            resumeEntity.setApplicantCV(resumeVo.getApplicantCV());
+            resumeEntity.setApplicantHometown(resumeVo.getApplicantHometown());
+            resumeEntity.setApplicantNation(resumeVo.getApplicantNation());
+            resumeEntity.setApplicantPoliticalStatus(resumeVo.getApplicantPoliticalStatus());
+            resumeEntity.setApplicantMaritalStatus(resumeVo.getApplicantMaritalStatus());
+            //resumeEntity.setApplicantDateOfBirth(fmt.format(resumeVo.getApplicantDateOfBirth()));
+            //resumeEntity.setApplicantTimeToWork(fmt.format(resumeVo.getApplicantTimeToWork()));
+            resumeEntity.setApplicantCurrentSalary(resumeVo.getApplicantCurrentSalary());
+            resumeEntity.setApplicantExpectSalary(resumeVo.getApplicantCurrentSalary());
+            //resumeEntity.setApplicantDutyTime(fmt.format(resumeVo.getApplicantDutyTime()));
+            resumeEntity.setRecommenderName(resumeVo.getRecommenderName());
+            resumeEntity.setApplicantAddress(resumeVo.getApplicantAddress());
+            resumeEntity.setApplicantSelfIntro(resumeVo.getApplicantSelfIntro());
+            resumeEntity.setApplicantPhone(resumeVo.getApplicantPhoto());
+            resumeEntity.setApplicantDegreePhoto(resumeVo.getApplicantDegreePhoto());
+            resumeEntity.setFamilyContactRelation(resumeVo.getFamilyContactRelation());
+            resumeEntity.setFamilyContactName(resumeVo.getFamilyContactName());
+            resumeEntity.setFamilyContactCompany(resumeVo.getFamilyContactCompany());
+            resumeEntity.setFamilyContactPhoneNum(resumeVo.getFamilyContactPhoneNum());
+
+            map.addAttribute("resumeEntity", resumeEntity);
+            result = new ModelAndView("applicant-resume-basic-info");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/applicant/resume/work/magm", method = RequestMethod.GET)
+    public String applicantResumeWorkmagm(Model map){
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+        return "applicant-resume-work-magm";
+    }
+
+    @RequestMapping(value="/applicant/resume/work", method = RequestMethod.GET)
+    public ModelAndView applicantResumeWork(Model map){
+        int userId = AuthInfo.getUserId();
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId);
+
+        int resumeId = resumeVo.getResumeId();
+        List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(resumeId);
+        List<WorkExperienceEntity> workExperienceEntities = new ArrayList<>();
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        for(WorkExperienceVo tmp : workExperienceVos){
+            WorkExperienceEntity ans = new WorkExperienceEntity();
+            ans.setResumeId(tmp.getResumeId());
+            ans.setWorkExperienceId(tmp.getWorkExperienceId());
+            ans.setStartTime(fmt.format(tmp.getStartTime()));
+            ans.setEndTime(fmt.format(tmp.getEndTime()));
+            ans.setCompany(tmp.getCompany());
+            ans.setPost(tmp.getPost());
+            ans.setCity(tmp.getCity());
+            ans.setReferenceName(tmp.getReferenceName());
+            ans.setReferencePhoneNum(tmp.getReferencePhoneNum());
+            ans.setWorkDescription(tmp.getWorkDescription());
+            ans.setAchievement(tmp.getAchievement());
+
+            workExperienceEntities.add(ans);
+        }
+
+        ModelAndView result = new ModelAndView("applicant-resume-work");
+        result.addObject("workExperienceList", workExperienceEntities);
+
+        WorkExperienceEntity workExperienceEntity =  new WorkExperienceEntity();
+        workExperienceEntity.setResumeId(resumeId);
+        result.getModel().put("workExperience", workExperienceEntity);
+        return result;
+    }
+
+    @RequestMapping(value="/applicant/resume/work/add", method = RequestMethod.POST)
+    public ModelAndView applicantResumeWorkAdd(WorkExperienceEntity workExperienceEntity, Model map){
+
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            startTime= fmt.parse(workExperienceEntity.getStartTime());
+            endTime= fmt.parse(workExperienceEntity.getEndTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        WorkExperienceVo experienceVo = new WorkExperienceVo.Builder()
+                .resumeId(workExperienceEntity.getResumeId())
+                .startTime(startTime)
+                .endTime(endTime)
+                .company(workExperienceEntity.getCompany())
+                .city(workExperienceEntity.getCity())
+                .post(workExperienceEntity.getPost())
+                .workDescription(workExperienceEntity.getWorkDescription())
+                .achievement(workExperienceEntity.getAchievement())
+                .referenceName(workExperienceEntity.getReferenceName())
+                .referencePhoneNum(workExperienceEntity.getReferencePhoneNum()).build();
+
+        serviceFactory.getApplicantService().createWorkExperience(experienceVo);
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/work");
+        return result;
+    }
+
+    @RequestMapping(value="/applicant/resume/work/update", method = RequestMethod.POST)
+    public ModelAndView applicantResumeWorkUpdate(WorkExperienceEntity work) {
+
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        Date startTime = null;
+        Date endTime = null;
+        System.out.println("[msg]: "+ work.getStartTime() + ", " + work.getCity());
+        try {
+            startTime= fmt.parse(work.getStartTime());
+            endTime= fmt.parse(work.getEndTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        WorkExperienceVo experienceVo = new WorkExperienceVo.Builder()
+                .resumeId(work.getResumeId())
+                .workExperienceId(work.getWorkExperienceId())
+                .startTime(startTime)
+                .endTime(endTime)
+                .company(work.getCompany())
+                .city(work.getCity())
+                .post(work.getPost())
+                .workDescription(work.getWorkDescription())
+                .achievement(work.getAchievement())
+                .referenceName(work.getReferenceName())
+                .referencePhoneNum(work.getReferencePhoneNum()).build();
+
+        serviceFactory.getApplicantService().updateWorkExperience(experienceVo);
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/work");
+        return result;
+    }
+
+    @RequestMapping(value="/applicant/resume/work/delete/{workExperienceId}", method = RequestMethod.GET)
+    public ModelAndView applicantResumeWorkDelete(@PathVariable("workExperienceId") int workExperienceId) {
+
+        serviceFactory.getApplicantService().deleteWorkExperienceByWorkExperienceId(workExperienceId);
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/work");
+        return result;
+    }
+
+    @RequestMapping(value = "/applicant/resume/education/magm", method = RequestMethod.GET)
+    public String applicantResumeEducationmagm(Model map){
+        map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+        return "applicant-resume-education-magm";
+    }
+
+    @RequestMapping(value="/applicant/resume/education", method = RequestMethod.GET)
+    public ModelAndView applicantResumeEducation(Model map){
+        int userId = AuthInfo.getUserId();
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId);
+
+        int resumeId = resumeVo.getResumeId();
+        ModelAndView result = new ModelAndView("applicant-resume-education");
+
+        List<EducationExperienceVo> educationExperienceVos = serviceFactory.getApplicantService().listEducationExperiencesByResumeId(resumeId);
+        map.addAttribute("educationExperienceList", educationExperienceVos);
+
+        EducationExperienceEntity educationExperienceEntity =  new EducationExperienceEntity();
+        educationExperienceEntity.setResumeId(resumeId);
+        result.getModel().put("educationExperience", educationExperienceEntity);
+
+        return result;
+    }
+
+
+    @RequestMapping(value="/applicant/resume/education/add", method = RequestMethod.POST)
+    public ModelAndView applicantResumeEducationAdd( EducationExperienceEntity educationExperienceEntity, Model map) {
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            startTime= fmt.parse(educationExperienceEntity.getStartTime());
+            endTime= fmt.parse(educationExperienceEntity.getEndTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        EducationExperienceVo educationExperienceVo = new EducationExperienceVo.Builder()
+                .resumeId(educationExperienceEntity.getResumeId())
+                .startTime(startTime)
+                .endTime(endTime)
+                .school(educationExperienceEntity.getSchool())
+                .major(educationExperienceEntity.getMajor())
+                .typeOfStudy(educationExperienceEntity.getTypeOfStudy())
+                .degree(educationExperienceEntity.getDegree()).build();
+
+        serviceFactory.getApplicantService().createEducationExperience(educationExperienceVo);
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/education");
+        return result;
+
+    }
+
+    @RequestMapping(value="/applicant/resume/education/update", method = RequestMethod.POST)
+    public ModelAndView applicantResumeEducationUpdate(EducationExperienceEntity edu) {
+
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            startTime= fmt.parse(edu.getStartTime());
+            endTime= fmt.parse(edu.getEndTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        EducationExperienceVo educationExperienceVo = new EducationExperienceVo.Builder()
+                .educationExperienceId(edu.getEducationExperienceId())
+                .resumeId(edu.getResumeId())
+                .startTime(startTime)
+                .endTime(endTime)
+                .school(edu.getSchool())
+                .major(edu.getMajor())
+                .typeOfStudy(edu.getTypeOfStudy())
+                .degree(edu.getDegree()).build();
+        serviceFactory.getApplicantService().updateEducationExperience(educationExperienceVo);
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/education");
+        return result;
+    }
+
+    @RequestMapping(value="/applicant/resume/education/delete/{educationExperienceId}", method = RequestMethod.GET)
+    public ModelAndView applicantResumeEducationDelete(@PathVariable("educationExperienceId") int educationExperienceId) {
+        serviceFactory.getApplicantService().deleteEducationExperienceByEducationExperienceId(educationExperienceId);
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/education");
+        return result;
+    }
 }

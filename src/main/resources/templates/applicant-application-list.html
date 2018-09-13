@@ -87,12 +87,9 @@
                     <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
                         Resume Management <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a th:href="@{/octopus/applicant/resume/magm}"> Personal Info</a></li>
-                            <li><a href="#"> For Future <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li><a href="#"> NumberOne </a></li>
-                                    <li><a href="#"> Number Two </a></li>
-                                </ul></li>
+                            <li><a th:href="@{/octopus/applicant/resume/basic/magm}">Basic Information</a></li>
+                            <li><a th:href="@{/octopus/applicant/resume/work/magm}">Work Experience</a></li>
+                            <li><a th:href="@{/octopus/applicant/resume/education/magm}">Education Experience</a></li>
                         </ul> <!-- /.nav-second-level --></li>
                 </ul>
             </div>
@@ -128,7 +125,7 @@
                             <td th:text="${ps.postName}"></td>
                             <td th:text="${ps.postLocale}"></td>
                             <td th:text="${ps.postType}"></td>
-                            <td th:text="${ps.recruitDpt}"></td>
+                            <td th:text="${ps.departmentName}"></td>
                             <td>
                                 <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">Init</span>
                                 <span th:if="${ps.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" class="label label-success">FILTER_PASS</span>

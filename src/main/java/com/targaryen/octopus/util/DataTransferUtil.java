@@ -173,6 +173,7 @@ public class DataTransferUtil {
     public static ApplicantApplicationVo ApplicationDtoToApplicantApplicationVo(ApplicationDto applicationDto) {
         PostDto postDto = applicationDto.getPost();
         ApplicantDto applicantDto = applicationDto.getApplicant();
+
         ResumeDto resumeDto = applicantDto.getResume();
         DepartmentDto departmentDto = postDto.getDepartment();
         return new ApplicantApplicationVo.Builder()
