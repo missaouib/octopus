@@ -224,20 +224,25 @@ public class HRServiceImpl implements HRService {
                 interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
             }
             PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
+
             newInterview.setApplication(application);
             newInterview.setInterviewer(interviewer);
             newInterview.setPost(post);
             newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
             newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
             newInterview.setApplicantStatus(ApplicantStatus.INIT);
-            newInterview.setInterviewerStatus(InterviewerStatus.INIT);
+            if(interviewer != null && RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
+                newInterview.setInterviewerStatus(InterviewerStatus.ACCEPTED);
+            } else {
+                newInterview.setInterviewerStatus(InterviewerStatus.INIT);
+            }
             newInterview.setReservationStatus(ReservationStatus.INIT);
             newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
             newInterview.setCreateTime(Calendar.getInstance().getTime());
             newInterview.setInterviewRound(post.getInterviewRound());
             interviewDtoRepository.save(newInterview);
             return StatusCode.SUCCESS;
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             return StatusCode.FAILURE;
         }
     }
