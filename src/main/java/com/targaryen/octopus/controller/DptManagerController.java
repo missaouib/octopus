@@ -79,9 +79,10 @@ public class DptManagerController {
     @RequestMapping(value = "/dpt/post/{postId}", method = RequestMethod.GET)
     public String dptPostDetail(@PathVariable("postId") int postId, ModelMap map) {
         PostVo postVo = dptManagerService.findPostById(postId);
-        map.addAttribute("title", "Check/Edit post detail");
+        map.addAttribute("title", "Check/Edit Post Detail");
         map.addAttribute("recruitType", postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? true : false);
         map.addAttribute("roleName", "Department Manager");
+        map.addAttribute("action", "edit");
         map.addAttribute("returnUrl", "list?type=" + postVo.getRecruitType());
         map.addAttribute("swalTextSuccess", "You have successfully edited this post need!");
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
@@ -112,6 +113,7 @@ public class DptManagerController {
     @ResponseBody
     public String dptPostEditPost(PostEntity postEntity) {
         PostVo postVo = new PostVo.Builder()
+                .recruitType(postEntity.isRecruitType() ? RecruitTypeStatus.SOCIETY : RecruitTypeStatus.CAMPUS)
                 .postId(postEntity.getPostId())
                 .postName(postEntity.getPostName())
                 .postType(postEntity.getPostType())
