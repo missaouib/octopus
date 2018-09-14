@@ -153,11 +153,18 @@ public class HRController {
         }
 
         // Prepare Json
-        List uniqueDatesList = new ArrayList<>(uniqueDates);
+        List<String> uniqueDatesList = new ArrayList<>(uniqueDates);
         Collections.sort(uniqueDatesList);
         postScheduleEntity.setUniqueDates(uniqueDatesList);
         postScheduleEntity.setInterviewMapThisRound(interviewVoHashMap);
         postScheduleEntity.setInterviewOverallCount(interviewVoList.size());
+        if (uniqueDatesList.size() > 0) {
+            postScheduleEntity.setOverallStartDate(uniqueDatesList.get(0));
+            postScheduleEntity.setOverallFinalDate(uniqueDatesList.get(uniqueDatesList.size() - 1));
+        } else {
+            postScheduleEntity.setOverallStartDate("N/A");
+            postScheduleEntity.setOverallFinalDate("N/A");
+        }
         return postScheduleEntity;
     }
 

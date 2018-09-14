@@ -67,35 +67,6 @@
             margin-top: -26px;
         }
 
-
-        .arrow-box-down {
-            position: relative;
-            background: #fff;
-            border: 4px solid #fff;
-        }
-        .arrow-box-down:after, .arrow-box-down:before {
-            top: 100%;
-            left: 50%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .arrow-box-down:after {
-            border-color: rgba(255, 255, 255, 0);
-            border-top-color: #fff;
-            border-width: 20px;
-            margin-left: -20px;
-        }
-        .arrow-box-down:before {
-            border-color: rgba(255, 255, 255, 0);
-            border-top-color: #fff;
-            border-width: 26px;
-            margin-left: -26px;
-        }
     </style>
 </head>
 
@@ -126,7 +97,7 @@
                         </div>
                     </div>
 
-                    <div class="ibox-content profile-content arrow-box-down">
+                    <div class="ibox-content profile-content" style="height: 260px;">
                         <div class="row">
                             <div id="scroller-pane" class="center-block"></div>
                         </div>
@@ -151,14 +122,14 @@
                         <h4 style="text-align: center;">Status</h4>
                     </div>
                     <div>
-                        <div class="ibox-content profile-content">
+                        <div class="ibox-content profile-content" style="height: 260px;">
 
                             <ul class="list-group">
                                 <li class="list-group-item">
-                                    <span class="badge badge-primary">2018-08-01</span> First date of interview schedule
+                                    <span id="overallStartDate" class="badge badge-primary"></span> First date of interview schedule
                                 </li>
                                 <li class="list-group-item ">
-                                    <span class="badge badge-primary">2018-08-30</span> Last date of interview schedule
+                                    <span id="overallFinalDate" class="badge badge-primary"></span> Last date of interview schedule
                                 </li>
                                 <li class="list-group-item">
                                     <span class="badge badge-warning" id="interviewOverallCount"></span> Interview overall count
@@ -192,7 +163,7 @@
                         <h4 style="text-align: center;">Post Detail</h4>
                     </div>
                     <div>
-                        <div class="ibox-content profile-content">
+                        <div class="ibox-content profile-content" style="height: 260px;">
 
                             <div class="row">
                                 <div class="col-sm-12">
@@ -236,7 +207,7 @@
                                             <div class="progress progress-striped active m-b-sm">
                                                 <div style="width: 60%;" class="progress-bar"></div>
                                             </div>
-                                            <small>3/5 for Head Count <strong>(60%)</strong></small>
+
                                         </dd>
                                     </dl>
                                 </div>
@@ -252,12 +223,12 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="ibox-title">
-                    <h4>Calendar of Interview Schedule on <span class="badge badge-info">2018-08-30</span></h4>
+                    <h4 style="text-align: center;">Calendar on <span id="roundCalendarTitle" class="badge badge-success"></span></h4>
                 </div>
 
-                <div class="ibox-content arrow-box">
+                <div class="ibox-content arrow-box" style="height: 360px;">
                     <div class="row">
-                        <div id="my-calendar" class="material-theme" data-month-format="month YYYY" data-day-format="DDD"></div>
+                        <div id="my-calendar" class="material-theme center-block" style="width: 300px" data-month-format="month YYYY" data-day-format="DDD"></div>
                     </div>
                 </div>
             </div>
@@ -266,11 +237,11 @@
             <div class="col-sm-4">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h4>Interviews list on <span class="badge badge-info">2018-08-30</span> </h4>
+                        <h4 style="text-align: center;">Schedule on <span id="scheduleTitle" class="badge badge-success"></span></h4>
                     </div>
 
-                    <div class="ibox-content arrow-box">
-                        <table id="scheduleOnOneDate" class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                    <div class="ibox-content arrow-box" style="height: 360px;">
+                        <table id="scheduleOnOneDate" class="footable table table-stripped toggle-arrow-tiny" data-page-size="6">
                             <thead>
                                 <tr class="footable even">
                                     <th>-</th>
@@ -337,11 +308,11 @@
             <div class="col-sm-4">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h4>Interviews list on <span class="badge badge-info">2018-08-30</span> </h4>
+                        <h4 style="text-align: center;">Interviews on <span id="interviewTitle" class="badge badge-success"></span></h4>
                     </div>
 
-                    <div class="ibox-content arrow-box">
-                        <table id="interviewOnOneDate" class="footable table table-stripped toggle-arrow-tiny" data-page-size="7">
+                    <div class="ibox-content arrow-box" style="height: 360px;">
+                        <table id="interviewOnOneDate" class="footable table table-stripped toggle-arrow-tiny" data-page-size="6">
                             <thead>
                                 <tr class="footable even">
                                     <th>Applicant</th>
@@ -364,16 +335,6 @@
                                 </tr>
                             </tfoot>
                         </table>
-
-                        <div class="spiner-example">
-                            <div class="sk-spinner sk-spinner-wave">
-                                <div class="sk-rect1"></div>
-                                <div class="sk-rect2"></div>
-                                <div class="sk-rect3"></div>
-                                <div class="sk-rect4"></div>
-                                <div class="sk-rect5"></div>
-                            </div>
-                        </div>
 
                     </div>
                 </div>
@@ -535,23 +496,27 @@
         var scheduleOnOneDate = $('#scheduleOnOneDate').footable().data('footable');
         var interviewOnOneDate = $('#interviewOnOneDate').footable().data('footable');
 
-
-        /* Initial Global Data */
+        /* Initial Global Variables */
         var min = 1, max = interviewRound = [[${post.interviewRound}]]; // min >= 1 and max <= 99
-
         var uniqueDates = [];
         var interviewMapThisRound = {};
         var interviewOverallCount = 0;
+        var overallStartDate = null;
+        var overallFinalDate = null;
 
+        /* Load Data! */
         loadDataByInterviewRound(interviewRound);
-
 
         /*****************************************************************/
 
         /* Interviewer list initialization */
+        /*
         $(".sortable-list").sortable({
             connectWith:".connectList"
         }).disableSelection();
+        */
+
+        /*****************************************************************/
 
         /* Calendar initialization */
         var element = document.getElementById("my-calendar");
@@ -562,8 +527,9 @@
         roundCalendar.onDateClick(function(event, date){
             roundCalendar.set(date);
             loadDataByClickRoundCalendar(jsCalendar.tools.dateToString(date, "yyyy-MM-DD"));
-            //.log(myCalendar.getSelected({sort : "desc", type : "YYYY-MM-DD"}));
         });
+
+        /*****************************************************************/
 
         /* Scroller initialization */
         var scroller = Scroller.getNewInstance({
@@ -633,6 +599,8 @@
                 scrollToWithZero(interviewRound);
             }
         }
+
+        /*****************************************************************/
 
         /* Timepicker initialization */
         var setObj = {'interval': 10, 'timeFormat': 'HH:mm', 'zindex':1000000,
@@ -828,32 +796,56 @@
                     uniqueDates = data['uniqueDates'];
                     interviewMapThisRound = data['interviewMapThisRound'];
                     interviewOverallCount = data['interviewOverallCount'];
+                    overallStartDate = data['overallStartDate'];
+                    overallFinalDate = data['overallFinalDate'];
+
+
+                    // Status Panel
+                    $("#interviewOverallCount").text(interviewOverallCount);
+                    $("#overallStartDate").text(overallStartDate);
+                    $("#overallFinalDate").text(overallFinalDate);
 
                     /* Load on Calendar! */
-                    $("#interviewOverallCount").text(interviewOverallCount);
-
                     roundCalendar.clearselect();
-
                     uniqueDates.forEach(function(currentValue, index, arr) {
                         roundCalendar.select(new Date(currentValue));
                     });
 
+                    /* Load Schedule and Calendar Title! */
                     if (uniqueDates.length == 0) {
                         roundCalendar.set(new Date());
+                        loadDataByClickRoundCalendar(jsCalendar.tools.dateToString(new Date(), "yyyy-MM-DD"));
                     } else {
-                        loadDataByClickRoundCalendar(uniqueDates[0]);
                         roundCalendar.set(new Date(uniqueDates[0]));
+                        loadDataByClickRoundCalendar(uniqueDates[0]);
                     }
+
+                    /* Clean interview panel */
+                    $("#interviewTitle").text("");
+                    $("#interviewOnOneDate").find('tbody').empty();
                 }
             });
         }
 
         /* Load Data By Clicking Date on Round Calendar */
         function loadDataByClickRoundCalendar(dateStr) {
-            if (interviewMapThisRound[dateStr] != null) {
-                // Footable v2 sucks
-                $("#scheduleOnOneDate").find('tbody').empty();
+            /* Change panel title anyway */
+            $("#roundCalendarTitle").text(dateStr);
+            $("#scheduleTitle").text(dateStr);
+            if ($("#interviewTitle").text() != $("#scheduleTitle").text()) {
+                // Outdated
+                $("#interviewTitle").removeClass("badge-success");
+                $("#interviewTitle").addClass("badge-secondary");
+            } else {
+                $("#interviewTitle").removeClass("badge-secondary");
+                $("#interviewTitle").addClass("badge-success");
+            }
 
+            // Footable v2 sucks
+            $("#scheduleOnOneDate").find('tbody').empty();
+
+            // Lower Panels
+            if (interviewMapThisRound[dateStr] != null) {
                 $.each(interviewMapThisRound[dateStr], function (timeStr, interviewArray) {
                     var paras = "\"" + dateStr + "\", \"" + timeStr + "\"";
                     var row = '<tr>';
@@ -872,35 +864,43 @@
 
         /* Load Data by Clicking Mid Table (Schedule Table) */
         function loadDataByClickingMidTable(dateStr, timeStr) {
-            if (interviewMapThisRound[dateStr][timeStr] != null) {
-                // Footable v2 sucks
-                $("#interviewOnOneDate").find('tbody').empty();
-
-                $.each(interviewMapThisRound[dateStr][timeStr], function (idx, interview) {
-                    var row = '<tr>';
-
-                    if (interview.interviewResultStatus == 0) {
-                        row += '<td>' + interview.applicantName + ' <a onclick=\'selectInterviewId(' + interview.interviewId + ');\' data-toggle=\'modal\' data-target=\'#edit-applicant\'><i class=\'fa fa-pencil text-warning\'></i></a></td>';
-                        row += '<td>' + interview.interviewerName + ' <a onclick=\'selectInterviewId(' + interview.interviewId + ');\' data-toggle=\'modal\' data-target=\'#edit-interviewer\'><i class=\'fa fa-pencil text-warning\'></i></a></td>';
-                        row += "<td>Not started</td>";
-                        row += "<td><a><i class='fa fa-remove text-danger'></i></a></td>";
-                    } else {
-                        row += '<td>' + interview.applicantName + '</td>';
-                        row += '<td>' + interview.interviewerName + '</td>';
-                        if (interview.interviewResultStatus < 0) {
-                            row += "<td>Failed</td>";
-                        } else {
-                            row += "<td>Passed</td>";
-                        }
-                        row += "<td></td>";
-                    }
-
-                    row += '</tr>';
-                    interviewOnOneDate.appendRow(row);
-                    interviewOnOneDate.redraw();
-                });
+            /* Change panel title anyway */
+            $("#interviewTitle").text(dateStr);
+            if ($("#interviewTitle").text() != $("#scheduleTitle").text()) {
+                // Outdated
+                $("#interviewTitle").removeClass("badge-success");
+                $("#interviewTitle").addClass("badge-secondary");
+            } else {
+                $("#interviewTitle").removeClass("badge-secondary");
+                $("#interviewTitle").addClass("badge-success");
             }
 
+            // Footable v2 sucks
+            $("#interviewOnOneDate").find('tbody').empty();
+
+            $.each(interviewMapThisRound[dateStr][timeStr], function (idx, interview) {
+                var row = '<tr>';
+
+                if (interview.interviewResultStatus == 0) {
+                    row += '<td>' + interview.applicantName + ' <a onclick=\'selectInterviewId(' + interview.interviewId + ');\' data-toggle=\'modal\' data-target=\'#edit-applicant\'><i class=\'fa fa-pencil text-warning\'></i></a></td>';
+                    row += '<td>' + interview.interviewerName + ' <a onclick=\'selectInterviewId(' + interview.interviewId + ');\' data-toggle=\'modal\' data-target=\'#edit-interviewer\'><i class=\'fa fa-pencil text-warning\'></i></a></td>';
+                    row += "<td>Not started</td>";
+                    row += "<td><a><i class='fa fa-remove text-danger'></i></a></td>";
+                } else {
+                    row += '<td>' + interview.applicantName + '</td>';
+                    row += '<td>' + interview.interviewerName + '</td>';
+                    if (interview.interviewResultStatus < 0) {
+                        row += "<td>Failed</td>";
+                    } else {
+                        row += "<td>Passed</td>";
+                    }
+                    row += "<td></td>";
+                }
+
+                row += '</tr>';
+                interviewOnOneDate.appendRow(row);
+                interviewOnOneDate.redraw();
+            });
         }
 
         /* Select Interview Id */
@@ -939,6 +939,8 @@
 
                                 var dateTime = data.split(" ");
                                 loadDataByClickingMidTable(dateTime[0], dateTime[1]);
+
+                                $("#edit-" + operationStr).css("display", "none");
                             }
                         });
 

@@ -16,4 +16,8 @@ public class PostScheduleEntity {
     private Map<String, Map<String, List<InterviewVo>>> interviewMapThisRound;
 
     private int interviewOverallCount;
+
+    private String overallStartDate;
+
+    private String overallFinalDate;
 }
