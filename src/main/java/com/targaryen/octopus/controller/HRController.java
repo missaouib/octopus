@@ -14,6 +14,7 @@ import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
+import com.targaryen.octopus.vo.InterviewerVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeModelVo;
 import org.modelmapper.ModelMapper;
@@ -407,9 +408,7 @@ public class HRController {
                                                    @RequestParam("whoId") int whoId) {
         hrService.updateApplicationOfInterview(interviewId, whoId);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
-        String v = dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
-        logger.info(v);
-        return v;
+        return dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
     }
 
     @RequestMapping(value = "/hr/post/{postId}/schedule/edit/interviewer", method = RequestMethod.POST)
@@ -419,8 +418,48 @@ public class HRController {
                                                      @RequestParam("whoId") int whoId) {
         hrService.updateInterviewerOfInterview(interviewId, whoId);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
-        String v = dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
-        logger.info(v);
-        return v;
+        return dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/schedule/round/{interviewRound}/auto", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostScheduleAutoGenerator(@PathVariable("postId") int postId,
+                                              @PathVariable("interviewRound") int interviewRound ){
+        List<InterviewVo> lastestInterviewVoList = hrService.findLatestAppInterviewByPostId(postId);
+        List<InterviewVo> interviewVoList = hrService.findInterviewByPostIdAndRound(postId, interviewRound);
+        List<InterviewerVo> interviewerVoList = hrService.listInterviewersByPostId(postId);
+
+        int overallApplicants = hrService.findApplicationsByPostId(postId).size();
+
+        int passedApplicants = 0;
+        for (InterviewVo interviewVo: lastestInterviewVoList) {
+            if (interviewVo.getInterviewResultStatus() != InterviewResultStatus.INIT &&
+                    interviewVo.getInterviewResultStatus() != InterviewResultStatus.NOT_HIRE) {
+                passedApplicants += 1;
+            }
+        }
+
+        // If this is the first round
+        if (interviewRound == 1) passedApplicants = overallApplicants;
+
+        int interviewCreated = 0;
+        if (passedApplicants > 0) {
+                        // If there are not enough interviews for passed applicants
+            if (passedApplicants > interviewerVoList.size()) {
+                return String.valueOf(interviewCreated);
+            }
+
+            // Let's do this
+            Iterator<InterviewerVo> interviewerPointer = interviewerVoList.iterator();
+
+            for (int i = 0; i != passedApplicants; i++) {
+                if (!interviewerPointer.hasNext()) {
+                    interviewerPointer = interviewerVoList.iterator(); // Reset to the start
+                }
+                hrService.updateInterviewerOfInterview(interviewVoList.get(i).getInterviewId(), interviewerPointer.next().getInterviewerId());
+                interviewCreated += 1;
+            }
+        }
+        return String.valueOf(interviewCreated);
     }
 }

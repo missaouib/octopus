@@ -146,7 +146,7 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-6">
-                                    <a class="btn btn-block btn-rounded btn-success">
+                                    <a onclick="autoScheduling()" class="btn btn-block btn-rounded btn-success">
                                         <i class="fa fa-calendar-check-o"></i> Auto Scheduling
                                     </a>
                                 </div>
@@ -307,7 +307,7 @@
             <div class="col-sm-4">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h4 style="text-align: center;">Interviews on <span id="interviewTitle" class="badge badge-success"></span></h4>
+                        <h4 style="text-align: center;">Interviews on <span id="interviewTitle" class="badge badge-success"></span> <span id="interviewTimeTitle" class="badge badge-success"></span></h4>
                     </div>
 
                     <div class="ibox-content arrow-box" style="height: 360px;">
@@ -821,6 +821,7 @@
 
                     /* Clean interview panel */
                     $("#interviewTitle").text("");
+                    $("#interviewTimeTitle").text("");
                     $("#interviewOnOneDate").find('tbody').empty();
                 }
             });
@@ -835,9 +836,13 @@
                 // Outdated
                 $("#interviewTitle").removeClass("badge-success");
                 $("#interviewTitle").addClass("badge-secondary");
+                $("#interviewTimeTitle").removeClass("badge-success");
+                $("#interviewTimeTitle").addClass("badge-secondary");
             } else {
                 $("#interviewTitle").removeClass("badge-secondary");
                 $("#interviewTitle").addClass("badge-success");
+                $("#interviewTimeTitle").removeClass("badge-secondary");
+                $("#interviewTimeTitle").addClass("badge-success");
             }
 
             // Footable v2 sucks
@@ -864,13 +869,19 @@
         function loadDataByClickingMidTable(dateStr, timeStr) {
             /* Change panel title anyway */
             $("#interviewTitle").text(dateStr);
+            $("#interviewTimeTitle").text(timeStr);
+
             if ($("#interviewTitle").text() != $("#scheduleTitle").text()) {
                 // Outdated
                 $("#interviewTitle").removeClass("badge-success");
                 $("#interviewTitle").addClass("badge-secondary");
+                $("#interviewTimeTitle").removeClass("badge-success");
+                $("#interviewTimeTitle").addClass("badge-secondary");
             } else {
                 $("#interviewTitle").removeClass("badge-secondary");
                 $("#interviewTitle").addClass("badge-success");
+                $("#interviewTimeTitle").removeClass("badge-secondary");
+                $("#interviewTimeTitle").addClass("badge-success");
             }
 
             // Footable v2 sucks
@@ -983,6 +994,32 @@
                     });
                 }
             })
+        }
+
+        /* Auto Scheduling */
+        function autoScheduling() {
+            csrfData["interviewRound"] = interviewRound;
+            $.ajax({
+                "type": "post",
+                "url": "round/" + interviewRound + "/auto",
+                "data": csrfData,
+                success: function (data) {
+                    swal({
+                        title: "Success",
+                        text: "You have successfully auto generated " + data + " interviews.",
+                        type: "success"
+                    }, function (isConfirm) {
+                        document.location.reload();
+                    });
+                },
+                error: function (data) {
+                    swal({
+                        title: "Failure",
+                        text: "You have not successfully auto generated " + data + " interviews.",
+                        type: "error"
+                    });
+                }
+            });
         }
     </script>
 </body>
