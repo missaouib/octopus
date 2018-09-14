@@ -46,23 +46,34 @@ public class HRController {
     }
 
     @RequestMapping(value = "/hr/post/list", method = RequestMethod.GET)
-    public String hrPostList(ModelMap map) {
-        map.addAttribute("title", "Society Recruitment");
-        List<PostVo> postVoList =  hrService.listPosts().stream().filter(s -> s.getRecruitType() == RecruitTypeStatus.SOCIETY).collect(Collectors.toList());
-        map.addAttribute("postList", postVoList);
+    public String hrPostList(ModelMap map, @RequestParam("type") int type) {
+        if (type == RecruitTypeStatus.CAMPUS) {
+            map.addAttribute("title", "Campus Recruitment");
+        } else if (type == RecruitTypeStatus.SOCIETY) {
+            map.addAttribute("title", "Society Recruitment");
+        }
+
+        map.addAttribute("recruitType", type);
+
+        List<PostVo> postVoList = hrService.listPosts();
+        postVoList = postVoList.stream().filter(s -> s.getRecruitType() == type).collect(Collectors.toList());
+        map.addAttribute("postList",postVoList);
         return "hr-post-list";
     }
 
     @RequestMapping(value = "/hr/post/{postId}", method = RequestMethod.GET)
     public String hrPostDetail(@PathVariable("postId") int postId, ModelMap map) {
-        /* UI Settings */
-        map.addAttribute("title", "Check/Edit post need detail");
+        PostVo postVo = hrService.findPostById(postId);
+        map.addAttribute("title", "Check/Edit Post Detail");
+        map.addAttribute("recruitType", postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? true : false);
+        map.addAttribute("roleName", "HR");
         map.addAttribute("action", "edit");
-        map.addAttribute("returnUrl", "list");
+        map.addAttribute("returnUrl", "list?type=" + postVo.getRecruitType());
         map.addAttribute("swalTextSuccess", "You have successfully edited this post need!");
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
-        map.addAttribute("post", hrService.findPostById(postId));
+        map.addAttribute("post", postVo);
+
         return "dpt-hr-post-detail";
     }
 
@@ -101,14 +112,6 @@ public class HRController {
         return "hr-application-timeline";
     }
 
-    /* Campus recruitment */
-    @RequestMapping(value = "/hr/post/campuslist", method = RequestMethod.GET)
-    public String hrCampusPostList(ModelMap map) {
-        map.addAttribute("title", "Campus Recruitment");
-        List<PostVo> postVoList =  hrService.listPosts().stream().filter(s -> s.getRecruitType() == RecruitTypeStatus.CAMPUS).collect(Collectors.toList());
-        map.addAttribute("postList", postVoList);
-        return "hr-post-list";
-    }
 
     @RequestMapping(value = "/hr/post/schedule/model", method = RequestMethod.GET)
     public String hrPostScheduleModel(ModelMap map) {
@@ -140,6 +143,7 @@ public class HRController {
     public String hrPostEditPost(PostEntity postEntity) {
         PostVo postVo = new PostVo.Builder()
                 .postId(postEntity.getPostId())
+                .recruitType(postEntity.isRecruitType() ? RecruitTypeStatus.SOCIETY: RecruitTypeStatus.CAMPUS)
                 .postName(postEntity.getPostName())
                 .postType(postEntity.getPostType())
                 .postLocale(postEntity.getPostLocale())

@@ -23,6 +23,34 @@
     <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
 
 
+    <!-- jQuery -->
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
+
+    <!-- Jquery Validate -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script>
+        window.onload = function(){
+            var pas1 = document.getElementById("pas1");
+            var pas2 = document.getElementById("pas2");
+
+            pas2.onkeyup = function(){
+                if(pas1.value != pas2.value){
+                    pas2.style.borderColor="#FF0000";
+                }else{
+                    pas2.style.borderColor="#ccc";
+                }
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -32,7 +60,7 @@
     <nav class="navbar navbar-default navbar-static-top" role="navigation"
          style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-brand"  th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
+            <a class="navbar-brand" th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
         </div>
 
         <!-- /.navbar-header -->
@@ -43,7 +71,7 @@
                 <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i> </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a th:href="@{/octopus/applicant/index}"> <i
-                            class="fa fa-user fa-fw"></i>HomePage
+                            class="fa fa-user fa-fw"></i> HomePage
                     </a></li>
                     <li class="divider"></li>
                     <li>
@@ -59,7 +87,7 @@
                 <ul class="nav" id="side-menu">
                     <li><a th:href="@{/octopus/applicant/post/apply}"><i
                             class="fa fa-dashboard fa-fw"></i> Apply For Post </a></li>
-                    <li><a th:href="@{/octopus/applicant/application/list}" class="active"><i
+                    <li><a th:href="@{/octopus/applicant/application/list}"><i
                             class="fa fa-table fa-fw"></i> Application Information </a></li>
                     <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
                         Resume Management <span class="fa arrow"></span></a>
@@ -68,8 +96,7 @@
                             <li><a th:href="@{/octopus/applicant/resume/work/magm}">Work Experience</a></li>
                             <li><a th:href="@{/octopus/applicant/resume/education/magm}">Education Experience</a></li>
                         </ul> <!-- /.nav-second-level --></li>
-
-                    <li><a th:href="@{/octopus/applicant/user/setting}"><i
+                    <li><a th:href="@{/octopus/applicant/setting}"><i
                             class="fa fa-gear fa-fw"></i> User Setting </a></li>
                 </ul>
             </div>
@@ -78,8 +105,10 @@
         <!-- /.navbar-static-side -->
     </nav>
 
+
     <!-- Page Content -->
-    <div id="page-wrapper" class="gray-bg dashbard-1">
+    <div id="page-wrapper">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <div class="col-lg-12">
@@ -87,38 +116,54 @@
                             <li>
                                 <a th:href="@{/octopus/applicant/index}">Home</a>
                             </li>
-                            <li>
-                                <a th:href="@{/octopus/applicant/application/list}">Application</a>
-                            </li>
                             <li class="active">
-                                <strong>Timeline</strong>
+                                <strong>Message</strong>
                             </li>
                         </ol>
                     </div>
                 </div>
             </div>
             <!-- /.col-lg-12 -->
-        <div class="J_mainContent" id="content-main" style="height:1200px;">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{'/octopus/applicant/interview/detail/' + ${applicationId}}" frameborder="0"></iframe>
         </div>
-        <!-- /.col-lg-12 -->
+        <div class="row">
+            <div class="panel-body col-md-6">
+                <form role="form" method="post" th:action="@{/octopus/applicant/user/setting/update}" th:object="${userEntity}">
+                    <div>
+                        <div class="alert alert-danger alert-dismissable"
+                             th:style="'display:' + @{(${ret} ? 'block' : 'none')} + ''">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                            Change Password Failure.
+                        </div>
+                    </div>
+                    <fieldset>
+                        <input class="form-control"
+                               id="userId" name="userId" th:field="*{userId}" type="hidden" />
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Username"
+                                   id="username" name="username" th:value="${userName}" type="text" maxlength="20" required="required" autocomplete="off" readonly="readonly" autofocus />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Old Password"
+                                   type="password" th:field="*{userPassword}" maxlength="20" required="required" autofocus />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="New Password"
+                                   id="pas1" type="password" th:field="*{newUserPassword1}" maxlength="20" required="required" autofocus />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="New Password"
+                                   id="pas2" name="pas2" th:field="*{newUserPassword2}" type="password" maxlength="20" required="required" autofocus  />
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-success btn-block">Update Password</button>
+                    </fieldset>
+                </form>
+            </div>
 
+        </div>
     </div>
 </div>
 <!-- /#page-wrapper -->
-
-<!-- jQuery -->
-<script th:src="@{/octopus/js/jquery.min.js}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-
-<!-- Metis Menu Plugin JavaScript -->
-<script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
-
-<!-- Custom Theme JavaScript -->
-<script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
-
 </body>
 
 </html>

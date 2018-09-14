@@ -97,10 +97,7 @@ public class HRServiceImpl implements HRService {
     public int updatePost(PostVo updatePost) {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
-            if(post != null) {
-                DataTransferUtil.updatePostDtoByVo(post, updatePost);
-                postDtoRepository.save(post);
-            }
+            postDtoRepository.save(DataTransferUtil.updatePostDtoByVo(post, updatePost));
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
@@ -118,8 +115,7 @@ public class HRServiceImpl implements HRService {
     public int updateResumeModelById(ResumeModelVo resumeModelVo) {
         try {
             ResumeModelDto resumeModelDto = resumeModelDtoRepository.findResumeModelDtoByResumeModelId(resumeModelVo.getResumeModelId());
-            DataTransferUtil.updateResumeModelDtoByVo(resumeModelDto, resumeModelVo);
-            resumeModelDtoRepository.save(resumeModelDto);
+            resumeModelDtoRepository.save(DataTransferUtil.updateResumeModelDtoByVo(resumeModelDto, resumeModelVo));
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;

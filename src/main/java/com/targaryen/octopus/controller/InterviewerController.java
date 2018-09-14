@@ -1,14 +1,11 @@
 package com.targaryen.octopus.controller;
 
-import com.targaryen.octopus.entity.InterviewEntity;
 import com.targaryen.octopus.entity.InterviewerCommentEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
-import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.InterviewerInterviewVo;
 import com.targaryen.octopus.vo.ResumeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,14 +64,6 @@ public class InterviewerController {
 
     @RequestMapping(value = "/interviewer/applicant/detail/{applicantId}", method = RequestMethod.GET)
     public String applicantDetail(@PathVariable("applicantId") int applicantId, ModelMap map) {
-        /* UI Settings */
-/*
-        map.addAttribute("title", "Check/Edit post need detail");
-        map.addAttribute("action", "../edit");
-        map.addAttribute("returnUrl", "../list");
-        map.addAttribute("swalTextSuccess", "You have successfully edited this post need!");
-        map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
-*/
 
         map.addAttribute("returnUrl", "../../interview/list");
         ResumeVo resumeVo = serviceFactory.getInterviewerService().findResumeByApplicationId(applicantId);
@@ -116,49 +101,5 @@ public class InterviewerController {
         map.addAttribute("InterviewFinal",applicationVo );
         return "interviewer-interview-timeline";
     }
-/*
-    @RequestMapping(value = "/interviewer/interview/timeline/interview/new", method = RequestMethod.POST)
-    @ResponseBody
-    public String interviewerInterviewTimelineInterviewNew(InterviewEntity interviewEntity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
-        Date startTime = null;
-        try {
-            startTime = dateFormat.parse(interviewEntity.getInterviewStartTime());
-            InterviewVo interviewVo = new InterviewVo.Builder()
-                    .applicationId(interviewEntity.getApplicationId())
-                    .interviewerId(interviewEntity.getInterviewerId())
-                    .interviewStartTime(startTime)
-                    .interviewPlace(interviewEntity.getInterviewPlace())
-                    .build();
-            return String.valueOf(hrService.createInterview(interviewVo));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return String.valueOf(StatusCode.FAILURE);
-    }
-
-    @RequestMapping(value = "/interviewer/interview/timeline/interview/cancel", method = RequestMethod.POST)
-    @ResponseBody
-    public String interviewerInterviewTimelineInterviewCancel(@RequestParam("interviewId") int interviewId) {
-        return String.valueOf(hrService.deleteInterviewById(interviewId));
-    }
-
-    @RequestMapping(value = "/interviewer/interview/timeline/reject", method = RequestMethod.POST)
-    @ResponseBody
-    public String interviewerInterviewTimelineReject(@RequestParam("applicationId") int applicationId) {
-        return String.valueOf(hrService.interviewFailApplicationById(applicationId));
-    }
-
-    @RequestMapping(value = "/interviewer/interview/timeline/pass", method = RequestMethod.POST)
-    @ResponseBody
-    public String interviewerInterviewTimelinePass(@RequestParam("applicationId") int applicationId) {
-        return String.valueOf(hrService.interviewPassApplicationById(applicationId));
-    }
-
-    @RequestMapping(value = "/interviewer/interview/timeline/offer", method = RequestMethod.POST)
-    @ResponseBody
-    public String interviewerInterviewTimelineOffer(@RequestParam("applicationId") int applicationId) {
-        return String.valueOf(hrService.sendOfferByApplicationId(applicationId));
-    }*/
 
 }
