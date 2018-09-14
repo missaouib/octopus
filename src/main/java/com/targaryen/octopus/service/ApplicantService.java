@@ -45,6 +45,8 @@ public interface ApplicantService {
      */
     List<ApplicantApplicationVo> findApplicationsByUserId(int userId);
 
+    List<ApplicationVo> findAppByApplicantId(int applicantId);
+
     /**
      *
      * create a new post application based on applicationVo
