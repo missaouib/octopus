@@ -289,20 +289,17 @@ public class DataTransferUtil {
 
     public static InterviewerInterviewVo InterviewDtoToInterviewerInterviewVo(InterviewDto interviewDto) {
         ApplicationDto applicationDto = interviewDto.getApplication();
-        PostDto postDto = applicationDto.getPost();
+        PostDto postDto = interviewDto.getPost();
         InterviewerDto interviewerDto = interviewDto.getInterviewer();
-        ApplicantDto applicantDto = applicationDto.getApplicant();
-        ResumeDto resumeDto = applicantDto.getResume();
-        DepartmentDto departmentDto = postDto.getDepartment();
-        int rounds = (int)applicationDto.getInterviews()
-                .stream().filter(x -> x.getReservationStatus() >= 0)
-                .filter(x -> x.getCreateTime().before(interviewDto.getCreateTime()))
-                .count() + 1;
+        ApplicantDto applicantDto = (applicationDto == null) ? null:applicationDto.getApplicant();
+        ResumeDto resumeDto = (applicantDto == null) ? null:applicantDto.getResume();
+        DepartmentDto departmentDto = (postDto == null) ? null:postDto.getDepartment();
+        int rounds = interviewDto.getInterviewRound();
         return new InterviewerInterviewVo.Builder()
                 .interviewId(interviewDto.getInterviewId())
-                .applicationId(applicationDto.getApplicationId())
-                .applicantId(applicantDto.getApplicantId())
-                .applicantName(resumeDto.getApplicantName())
+                .applicationId((applicationDto == null) ? -1:applicationDto.getApplicationId())
+                .applicantId((applicantDto == null) ? -1:applicantDto.getApplicantId())
+                .applicantName((applicantDto == null) ? null:resumeDto.getApplicantName())
                 .rounds(rounds)
                 .interviewerId(interviewerDto.getInterviewerId())
                 .interviewerName(interviewerDto.getInterviewerName())
@@ -313,11 +310,11 @@ public class DataTransferUtil {
                 .interviewResultComment(interviewDto.getInterviewResultComment())
                 .interviewResultStatus(interviewDto.getInterviewResultStatus())
                 .interviewStartTime(interviewDto.getInterviewStartTime())
-                .postLocale(postDto.getPostLocale())
-                .postName(postDto.getPostName())
-                .postType(postDto.getPostType())
-                .departmentId(departmentDto.getDepartmentId())
-                .departmentName(departmentDto.getDepartmentName()).build();
+                .postLocale((postDto == null) ? null:postDto.getPostLocale())
+                .postName((postDto == null) ? null:postDto.getPostName())
+                .postType((postDto == null) ? null:postDto.getPostType())
+                .departmentId((departmentDto == null) ? -1:departmentDto.getDepartmentId())
+                .departmentName((departmentDto == null) ? null:departmentDto.getDepartmentName()).build();
     }
 
     public static DepartmentVo DepartmentDtoToVo(DepartmentDto departmentDto) {
