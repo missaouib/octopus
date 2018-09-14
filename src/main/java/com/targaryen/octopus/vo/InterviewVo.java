@@ -27,6 +27,9 @@ public class InterviewVo {
     private final int postId;
     private final int interviewRound;
 
+    private final String applicantName;
+    private final String interviewerName;
+
     public static class Builder {
         private int interviewId;
         private Date interviewStartTime;
@@ -45,6 +48,9 @@ public class InterviewVo {
         private Date interviewResultTime;
         private int postId;
         private int interviewRound;
+
+        private String applicantName;
+        private String interviewerName;
 
         public Builder interviewId(int interviewId) {
             this.interviewId = interviewId;
@@ -131,6 +137,15 @@ public class InterviewVo {
             return this;
         }
 
+        public Builder applicantName(String applicantName) {
+            this.applicantName = applicantName;
+            return this;
+        }
+        public Builder interviewerName(String interviewerName) {
+            this.interviewerName = interviewerName;
+            return this;
+        }
+
         public InterviewVo build() {
             return new InterviewVo(this);
         }
@@ -155,5 +170,8 @@ public class InterviewVo {
         this.interviewResultTime = builder.interviewResultTime;
         this.postId = builder.postId;
         this.interviewRound = builder.interviewRound;
+
+        this.applicantName = builder.applicantName;
+        this.interviewerName = builder.interviewerName;
     }
 }

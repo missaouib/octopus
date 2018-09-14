@@ -2,6 +2,7 @@ package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.entity.InterviewEntity;
 import com.targaryen.octopus.entity.PostEntity;
+import com.targaryen.octopus.entity.PostScheduleEntity;
 import com.targaryen.octopus.entity.ResumeModelEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.HRService;
@@ -9,10 +10,13 @@ import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
+import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
 import com.targaryen.octopus.vo.PostVo;
 import com.targaryen.octopus.vo.ResumeModelVo;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -22,14 +26,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class HRController {
+    private Logger logger = LoggerFactory.getLogger(HRController.class);
+
     private HRService hrService;
 
     @Autowired
@@ -113,9 +117,55 @@ public class HRController {
     }
 
 
-    @RequestMapping(value = "/hr/post/schedule/model", method = RequestMethod.GET)
-    public String hrPostScheduleModel(ModelMap map) {
+    @RequestMapping(value = "/hr/post/{postId}/schedule/model", method = RequestMethod.GET)
+    public String hrPostScheduleModel(@PathVariable("postId") int postId, ModelMap map) {
+        map.addAttribute("post", hrService.findPostById(postId));
+        map.addAttribute("applicationCount", hrService.findApplicationsByPostId(postId).size());
+        map.addAttribute("applicantList", hrService.findApplicationsByPostId(postId));
+        map.addAttribute("interviewerList", hrService.listInterviewersByPostId(postId));
         return "hr-post-schedule-model";
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/schedule/round/{interviewRound}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public PostScheduleEntity hrPostCalendarInterviewRound(@PathVariable("postId") int postId, @PathVariable("interviewRound") int interviewRound, ModelMap map) {
+        List<InterviewVo> interviewVoList = hrService.findInterviewByPostIdAndRound(postId, interviewRound);
+        PostScheduleEntity postScheduleEntity = new PostScheduleEntity();
+
+        /* Collect unique dates */
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.CHINA);
+
+        Set<String> uniqueDates = new HashSet<>();
+        Map<String, Map<String, List<InterviewVo>>> interviewVoHashMap = new HashMap<>();
+
+        for (InterviewVo interviewVo: interviewVoList) {
+            String yyyyMMdd = dateFormat.format(interviewVo.getInterviewStartTime());
+            String hhMM = timeFormat.format(interviewVo.getInterviewStartTime());
+            uniqueDates.add(yyyyMMdd);
+
+            Map<String, List<InterviewVo>> interviewVoListGroupByDate = interviewVoHashMap.getOrDefault(yyyyMMdd, new HashMap<>());
+            List<InterviewVo> interviewVoListGroupByTime = interviewVoListGroupByDate.getOrDefault(hhMM, new ArrayList<>());
+
+            interviewVoListGroupByTime.add(interviewVo);
+            interviewVoListGroupByDate.put(hhMM, interviewVoListGroupByTime);
+            interviewVoHashMap.put(yyyyMMdd, interviewVoListGroupByDate);
+        }
+
+        // Prepare Json
+        List<String> uniqueDatesList = new ArrayList<>(uniqueDates);
+        Collections.sort(uniqueDatesList);
+        postScheduleEntity.setUniqueDates(uniqueDatesList);
+        postScheduleEntity.setInterviewMapThisRound(interviewVoHashMap);
+        postScheduleEntity.setInterviewOverallCount(interviewVoList.size());
+        if (uniqueDatesList.size() > 0) {
+            postScheduleEntity.setOverallStartDate(uniqueDatesList.get(0));
+            postScheduleEntity.setOverallFinalDate(uniqueDatesList.get(uniqueDatesList.size() - 1));
+        } else {
+            postScheduleEntity.setOverallStartDate("N/A");
+            postScheduleEntity.setOverallFinalDate("N/A");
+        }
+        return postScheduleEntity;
     }
 
     /* ***************************************************************************** */
@@ -187,7 +237,7 @@ public class HRController {
     @ResponseBody
     public String hrApplicationTimelineInterviewNew(@PathVariable("postId") int postId, InterviewEntity interviewEntity) {
         // Locale is a MUST?
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         Date startTime = null;
         try {
             startTime = dateFormat.parse(interviewEntity.getInterviewStartTime());
@@ -265,5 +315,70 @@ public class HRController {
                 .build();
 
         return String.valueOf(hrService.updateResumeModelById(resumeModelVo));
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/schedule/round/new", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostScheduleModelRoundNew(@PathVariable("postId") int postId) {
+        return String.valueOf(hrService.addNewInterviewRoundByPostId(postId));
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/schedule/interview/new", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostScheduleModel(@PathVariable("postId") int postId,
+                                      @RequestParam(value="dates[]") String[] dates,
+                                      @RequestParam(value="times[]") String[] times,
+                                      @RequestParam("interviewPlace") String interviewPlace,
+                                      @RequestParam("count") String count,
+                                      @RequestParam("interviewRound") String interviewRound) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+
+        for (int i = 0; i < Integer.valueOf(count); i++) {
+            for (String dateString : dates) {
+                for (String startTimeString : times) {
+
+                    Date startTime = null;
+                    try {
+                        startTime = dateFormat.parse(dateString + " " + startTimeString);
+                        InterviewVo interviewVo = new InterviewVo.Builder()
+                                .interviewStartTime(startTime)
+                                .postId(postId)
+                                .interviewPlace(interviewPlace)
+                                .interviewRound(Integer.valueOf(interviewRound))
+                                .reservationStatus(ReservationStatus.SUCCESS)
+                                .build();
+                        hrService.createInterview(interviewVo);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        return "";
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/schedule/edit/applicant", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostScheduleModelEditApplicant(@PathVariable("postId") int postId,
+                                                   @RequestParam("interviewId") int interviewId,
+                                                   @RequestParam("whoId") int whoId) {
+        hrService.updateApplicationOfInterview(interviewId, whoId);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+        String v = dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
+        logger.info(v);
+        return v;
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/schedule/edit/interviewer", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostScheduleModelEditInterviewer(@PathVariable("postId") int postId,
+                                                     @RequestParam("interviewId") int interviewId,
+                                                     @RequestParam("whoId") int whoId) {
+        hrService.updateInterviewerOfInterview(interviewId, whoId);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+        String v = dateFormat.format(hrService.findInterviewById(interviewId).getInterviewStartTime());
+        logger.info(v);
+        return v;
     }
 }

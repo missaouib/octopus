@@ -1,9 +1,6 @@
 package com.targaryen.octopus.service;
 
-import com.targaryen.octopus.vo.ApplicationResumeVo;
-import com.targaryen.octopus.vo.ApplicationVo;
-import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeVo;
+import com.targaryen.octopus.vo.*;
 
 import java.util.List;
 
@@ -64,6 +61,18 @@ public interface DptManagerService {
      *
      */
     ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId);
+
+    /**
+     * find EducationExperienceVo by applicationId
+     *
+     */
+    List<EducationExperienceVo> findEducationExperienceVoByApplicationId(int applicationId);
+
+    /**
+     * find WorkExperienceVo by applicationId
+     *
+     */
+    List<WorkExperienceVo> findWorkExperienceVoByApplicationId(int applicationId);
 
     /**
      * dpt approve pass application by applicationId

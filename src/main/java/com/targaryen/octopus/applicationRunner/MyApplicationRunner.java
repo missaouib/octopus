@@ -1,17 +1,8 @@
 package com.targaryen.octopus.applicationRunner;
 
-import com.targaryen.octopus.dto.ApplicantDto;
-import com.targaryen.octopus.dto.DptManagerDto;
-import com.targaryen.octopus.dto.PostDto;
-import com.targaryen.octopus.service.ApplicantService;
-import com.targaryen.octopus.service.DptManagerService;
-import com.targaryen.octopus.service.ServiceFactory;
-import com.targaryen.octopus.util.DataTransferUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -111,7 +102,7 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        List<Integer> department_id =template.query(SELECT_SQL, ps -> {}, (rs, rowNum) -> rs.getInt(1));
+        List<Integer> department_id = template.query(SELECT_SQL, ps -> {}, (rs, rowNum) -> rs.getInt(1));
         if(department_id.size() == 0) {
             template.update(INSERT_SQL, ps -> {});
         }
