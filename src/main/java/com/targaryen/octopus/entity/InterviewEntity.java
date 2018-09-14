@@ -12,6 +12,9 @@ import lombok.Setter;
 public class InterviewEntity {
     private int applicationId;
     private int interviewerId;
+    private int postId;
+    private int interviewId;
+    private String postName;
     private String interviewStartTime;
     private String interviewPlace;
 }

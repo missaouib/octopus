@@ -8,7 +8,9 @@ import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.PostStatus;
 import com.targaryen.octopus.vo.ApplicationResumeVo;
+import com.targaryen.octopus.vo.EducationExperienceVo;
 import com.targaryen.octopus.vo.PostVo;
+import com.targaryen.octopus.vo.WorkExperienceVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -85,7 +87,7 @@ public class DptManagerServiceImpl implements DptManagerService {
             resumeModelDto.setPost(postDto);
             resumeModelDtoRepository.save(resumeModelDto);
             return StatusCode.SUCCESS;
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             return StatusCode.FAILURE;
         }
     }
@@ -151,6 +153,36 @@ public class DptManagerServiceImpl implements DptManagerService {
             applicationResumeVo = null;
         }
         return applicationResumeVo;
+    }
+
+    @Override
+    public List<EducationExperienceVo> findEducationExperienceVoByApplicationId(int applicationId) {
+        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ResumeDto resume = application.getApplicant().getResume();
+        List<EducationExperienceVo> educationExperienceVos;
+        if(resume.getEducationExperiences() == null) {
+            educationExperienceVos = new ArrayList<>();
+        } else {
+            educationExperienceVos = resume.getEducationExperiences().stream()
+                    .map(n -> DataTransferUtil.EducationExperienceDtoToVo(n))
+                    .collect(Collectors.toList());
+        }
+        return educationExperienceVos;
+    }
+
+    @Override
+    public List<WorkExperienceVo> findWorkExperienceVoByApplicationId(int applicationId) {
+        ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+        ResumeDto resume = application.getApplicant().getResume();
+        List<WorkExperienceVo> workExperienceVos;
+        if(resume.getEducationExperiences() == null) {
+            workExperienceVos = new ArrayList<>();
+        } else {
+           workExperienceVos = resume.getWorkExperiences().stream()
+                    .map(n -> DataTransferUtil.WorkExperienceDtoToVo(n))
+                    .collect(Collectors.toList());
+        }
+        return workExperienceVos;
     }
 
     @Transactional

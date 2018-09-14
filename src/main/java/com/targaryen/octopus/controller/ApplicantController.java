@@ -2,6 +2,7 @@ package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.entity.*;
 import com.targaryen.octopus.security.AuthInfo;
+import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
@@ -49,19 +50,32 @@ public class ApplicantController {
 
         int userId = AuthInfo.getUserId();
 
-        List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
+        //List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
         List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
 
+        List<InterviewVo> interviewVos = serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        List<InterviewEntity> interviewEntities = new ArrayList<>();
+        for(InterviewVo temp : interviewVos){
+            InterviewEntity interviewEntity = new InterviewEntity();
+            interviewEntity.setApplicationId(temp.getApplicationId());
+            interviewEntity.setInterviewId(temp.getInterviewId());
+            interviewEntity.setPostId(temp.getPostId());
+            interviewEntity.setInterviewStartTime(fmt.format(temp.getInterviewStartTime()));
+            interviewEntity.setInterviewPlace(temp.getInterviewPlace());
+            interviewEntity.setPostName(serviceFactory.getPublicService().findPostById(temp.getPostId()).getPostName());
+            interviewEntities.add(interviewEntity);
+        }
         //mock data
-        ApplicantInterviewVo interviewVo = new ApplicantInterviewVo.Builder()
+        /*ApplicantInterviewVo interviewVo = new ApplicantInterviewVo.Builder()
                 .interviewPlace("Shanghai")
                 .interviewStartTime(Calendar.getInstance().getTime())
                 .postName("Java").build();
         interviewVos.add(interviewVo);
-        interviewVosAccpted.add(interviewVo);
+        interviewVosAccpted.add(interviewVo);*/
 
         //System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
-        result.addObject ("unreplyMsg", interviewVos);
+        result.addObject ("unreplyMsg", interviewEntities);
 
         map.addAttribute("acceptedMsg", interviewVosAccpted);
 
@@ -129,6 +143,12 @@ public class ApplicantController {
         return result;
     }
 
+    /**
+     * old function, refuse doesn't exist
+     * @param applicantCommentEntity
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/applicant/refuse")
     ModelAndView applicantRefuse(ApplicantCommentEntity applicantCommentEntity, ModelMap map){
 
