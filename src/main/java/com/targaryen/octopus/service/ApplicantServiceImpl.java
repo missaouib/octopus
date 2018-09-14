@@ -173,6 +173,27 @@ public class ApplicantServiceImpl implements ApplicantService {
         return StatusCode.SUCCESS;
     }
 
+    public List<ApplicationVo> findAppByApplicantId(int applicantId) {
+        ApplicantDto applicantDto;
+        List<ApplicationDto> applicationDtos;
+        List<ApplicationVo> applicationVos = new ArrayList<>();
+
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            if(applicantDto == null)
+                return new ArrayList<>();
+            applicationDtos = applicantDto.getApplications();
+            if(applicationDtos == null)
+                return new ArrayList<>();
+            for(ApplicationDto a: applicationDtos) {
+                applicationVos.add(DataTransferUtil.ApplicationDtoToVo(a));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return applicationVos;
+    }
     public List<ApplicantApplicationVo> findApplicationsByUserId(int userId) {
         UserDto userDto;
         ApplicantDto applicantDto;
