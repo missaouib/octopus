@@ -506,8 +506,8 @@ public class ApplicantController {
         int resumeStatus = serviceFactory.getApplicantService().createResume(applicantId);
 
         ResumeRequiredEntity resumeRequiredEntity1 = new ResumeRequiredEntity();
-        resumeRequiredEntity1.setApplicantAddress(false);
-        resumeRequiredEntity1.setApplicantMajor(false);
+        //resumeRequiredEntity1.setApplicantAddress(false);
+        //resumeRequiredEntity1.setApplicantMajor(false);
         map.addAttribute("listResumeModel", resumeRequiredEntity1);
         ResumeVo resumeVo = serviceFactory.getApplicantService().findResumeByApplicantId(applicantId);
         int resumeId = resumeVo.getResumeId();

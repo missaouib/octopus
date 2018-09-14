@@ -58,9 +58,6 @@
     <div class="col-lg-12">
         <div class="ibox">
             <div class="ibox-content">
-                <h3>
-                    Basic Information
-                </h3>
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div id="wizard">
@@ -103,7 +100,7 @@
                                                     <label th:style="${listResumeModel.applicantSchool}? 'display:block' : 'display:none'">School</label>
                                                     <input id="applicantSchool" name="school" th:type="${listResumeModel.applicantSchool}?'text':'hidden'" th:required="${listResumeModel.applicantSchool}?'required':'none'" th:field="*{applicantSchool}" class="form-control">
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group" th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">
                                                     <label th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">Degree</label>
                                                     <select th:field="*{applicantDegree}" class="form-control" th:style="${listResumeModel.applicantDegree}? 'visibility:visible' : 'visibility:hidden'" id="applicantDegree" name="applicantDegree" >
                                                         <option value="0">High School</option>
@@ -153,7 +150,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-3">
-                                                <div class="form-group">
+                                                <div class="form-group" th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">
                                                     <label th:style="${listResumeModel.applicantSex}? 'display:block' : 'display:none'">Sex</label>
                                                     <select th:field="*{applicantSex}" class="form-control" th:style="${listResumeModel.applicantNation}? 'visibility:visible' : 'visibility:hidden'" id="applicantSex" name="sex">
                                                         <option value="0">Male</option>
@@ -200,12 +197,12 @@
                                                     <div class="ibox float-e-margins">
                                                         <div class="ibox-content">
                                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                                <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                                                <div class="form-control" data-trigger="fileinput" style="height:42px;" ><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
                                                                 <span class="input-group-addon btn btn-default btn-file">
-                                                        <span class="fileinput-new">Select file</span>
-                                                        <span class="fileinput-exists">Change</span>
-                                                        <input type="file" accept="image/*" name="..." class="form-control" />
-                                                    </span>
+                                                                    <span class="fileinput-new" style="margin-top:10px;">Select file</span>
+                                                                    <span class="fileinput-exists">Change</span>
+                                                                    <input type="file" accept="image/*" name="..." class="form-control" style="height:0px;margin-top:-13px;" />
+                                                                </span>
                                                                 <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                                                             </div>
                                                         </div>
@@ -218,11 +215,11 @@
                                                     <div class="ibox float-e-margins">
                                                         <div class="ibox-content">
                                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                                <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
+                                                                <div class="form-control" data-trigger="fileinput" style="height:42px;" ><i class="glyphicon glyphicon-file"></i> <span class="fileinput-filename"></span></div>
                                                                 <span class="input-group-addon btn btn-default btn-file">
                                                                     <span class="fileinput-new">Select file</span>
                                                                     <span class="fileinput-exists">Change</span>
-                                                                    <input type="file" accept="image/*" name="..." class="form-control" />
+                                                                    <input type="file" accept="image/*" name="..." class="form-control" style="height:0px;margin-top:-13px;" />
                                                                 </span>
                                                                 <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                                                             </div>

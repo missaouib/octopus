@@ -66,15 +66,6 @@
                                         <div class="row">
                                             <div class="col-lg-3">
                                                 <div class="form-group">
-                                                    <input id="resumeId" name="resumeId" type="hidden" th:field="*{resumeId}" class="form-control">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input id="applicantId" name="applicantId" type="hidden" th:field="*{applicantId}" class="form-control">
-                                                </div>
-                                                <div class="form-group">
-                                                    <input id="postId" name="postId" type="hidden" th:field="*{postId}" class="form-control">
-                                                </div>
-                                                <div class="form-group">
                                                     <label th:style="${listResumeModel.applicantName}? 'display:block' : 'display:none'">Name</label>
                                                     <input id="applicantName" name="name" th:type="${listResumeModel.applicantName}?'text':'hidden'" th:required="${listResumeModel.applicantName}?'required':'none'" th:field="*{applicantName}" class="form-control">
                                                 </div>
@@ -108,7 +99,7 @@
                                                     <label th:style="${listResumeModel.applicantSchool}? 'display:block' : 'display:none'">School</label>
                                                     <input id="applicantSchool" name="school" th:type="${listResumeModel.applicantSchool}?'text':'hidden'" th:required="${listResumeModel.applicantSchool}?'required':'none'" th:field="*{applicantSchool}" class="form-control">
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group" th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">
                                                     <label th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">Degree</label>
                                                     <select th:field="*{applicantDegree}" class="form-control" th:style="${listResumeModel.applicantDegree}? 'visibility:visible' : 'visibility:hidden'" id="applicantDegree" name="applicantDegree" >
                                                         <option value="0">High School</option>
@@ -236,6 +227,15 @@
                                                 </div>
                                                 <button class="btn btn-lg btn-primary" type="submit" style="float:right;">Save</button>
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="resumeId" name="resumeId" type="hidden" th:field="*{resumeId}" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="applicantId" name="applicantId" type="hidden" th:field="*{applicantId}" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="postId" name="postId" type="hidden" th:field="*{postId}" class="form-control">
                                         </div>
                                     </fieldset>
                                 </form>
