@@ -50,7 +50,13 @@ public class ApplicantController {
 
         int userId = AuthInfo.getUserId();
         int applicanId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        //campus
         List<ApplicationVo> applicationVos  = serviceFactory.getApplicantService().findAppByApplicantId(applicanId);
+
+        //social
+        List<InterviewVo> applicationVos2  = serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+
+
         List<InterviewEntity> interviewEntities = new ArrayList<>();
 
         SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd HH:mm");
@@ -69,6 +75,18 @@ public class ApplicantController {
                 interviewEntity.setPostName(serviceFactory.getPublicService().findPostById(ins.getPostId()).getPostName());
                 interviewEntities.add(interviewEntity);
             }
+        }
+
+        for(InterviewVo apps2 : applicationVos2){
+
+                InterviewEntity interviewEntity = new InterviewEntity();
+                System.out.println("[msg]: " + "ins.getApplicationId()" + ", " + apps2.getApplicationId());
+                interviewEntity.setApplicationId(apps2.getApplicationId());
+                interviewEntity.setInterviewId(apps2.getInterviewId());
+                interviewEntity.setInterviewStartTime(fmt.format(apps2.getInterviewStartTime()));
+                interviewEntity.setInterviewPlace(apps2.getInterviewPlace());
+                interviewEntity.setPostName(serviceFactory.getPublicService().findPostById(apps2.getPostId()).getPostName());
+                interviewEntities.add(interviewEntity);
         }
 
         //List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);

@@ -208,7 +208,7 @@
 
                         <!-- Offer Accepted-->
                         <div th:if="${InterviewFinal.status} ge ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_ACCEPT}
-                                    or ${InterviewFinal.status} le ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}"
+                                    or ${InterviewFinal.status} lt ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}"
                              class="vertical-timeline-block">
                             <div class="vertical-timeline-icon" style="background-color:#28a745;">
                                 <i class="fa fa-check" style="color:#FFF;"></i>
@@ -223,6 +223,24 @@
                                 <span class="vertical-date">
                                         <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>
                                             <small><label th:text="${#dates.format(InterviewFinal.interviewEndTime,'HH:mm')}"></label></small>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <!-- Offer Rejected-->
+                        <div th:if="${InterviewFinal.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}"
+                             class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon" style="background-color:#dc3545;">
+                                <i class="fa fa-close" style="color:#FFF;"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Offer Rejected</h2>
+                                <p>Offer rejected.</p>
+
+                                <span class="vertical-date">
+                                        <label th:text="${#dates.format(InterviewFinal.applicantFeedbackTime,'yyyy-MM-dd')}"></label><br/>
+                                            <small><label th:text="${#dates.format(InterviewFinal.applicantFeedbackTime,'HH:mm')}"></label></small>
                                     </span>
                             </div>
                         </div>
