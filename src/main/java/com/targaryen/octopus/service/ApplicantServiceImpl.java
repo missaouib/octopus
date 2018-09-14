@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -759,4 +756,56 @@ public class ApplicantServiceImpl implements ApplicantService {
         return updateApplicationStatus(applicationId, ApplicationStatus.APPLICANT_REJECT);
     }
 
+    public List<InterviewVo> findAvailableInterviewsByApplicationId(int applicationId) {
+        ApplicationDto applicationDto;
+        PostDto postDto;
+        List<InterviewDto> interviewDtos;
+        List<InterviewVo> interviewVos = new ArrayList<>();
+        int interviewRound;
+        Date tmpDate;
+        try {
+            applicationDto = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
+            postDto = applicationDto.getPost();
+            interviewRound = postDto.getInterviewRound();
+            interviewDtos = interviewDtoRepository.findAllByPostAndRound(postDto, interviewRound);
+            interviewDtos = interviewDtos.stream().filter(x -> x.getReservationStatus() == ReservationStatus.INIT)
+                    .filter(x -> x.getInterviewerStatus() == InterviewerStatus.ACCEPTED)
+                    .sorted(Comparator.comparing(x -> x.getInterviewStartTime()))
+                    .collect(Collectors.toList());
+
+            tmpDate = Calendar.getInstance().getTime();
+
+            for(InterviewDto i: interviewDtos) {
+                if(tmpDate.equals(i.getInterviewStartTime()))
+                    continue;
+                tmpDate = i.getInterviewStartTime();
+                interviewVos.add(DataTransferUtil.InterviewDtoToVo(i));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return interviewVos;
+    }
+
+    public int updateInterviewApplicantId(InterviewVo interviewVo) {
+        InterviewDto interviewDto;
+        ApplicationDto applicationDto;
+
+        try {
+            interviewDto = interviewDtoRepository
+                    .findInterviewDtoByInterviewId(interviewVo.getInterviewId());
+            applicationDto = applicationDtoRepository
+                    .findApplicationDtoByApplicationId(interviewVo.getApplicationId());
+            interviewDto.setApplication(applicationDto);
+            interviewDto.setReservationResultTime(Calendar.getInstance().getTime());
+            interviewDto.setReservationStatus(ReservationStatus.SUCCESS);
+            interviewDto.setApplicantStatus(ApplicantStatus.ACCEPTED);
+            interviewDtoRepository.save(interviewDto);
+        } catch (DataAccessException e) {
+            return StatusCode.FAILURE;
+        }
+
+        return StatusCode.SUCCESS;
+    }
 }
