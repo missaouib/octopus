@@ -53,7 +53,7 @@ public class ApplicantController {
         List<ApplicationVo> applicationVos  = serviceFactory.getApplicantService().findAppByApplicantId(applicanId);
         List<InterviewEntity> interviewEntities = new ArrayList<>();
 
-        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd");
+        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd HH:mm");
         for(ApplicationVo apps : applicationVos ){
 
             System.out.println("[msg]: " + "apps.getApplicationId()" + ", " + apps.getApplicationId());

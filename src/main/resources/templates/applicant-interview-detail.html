@@ -195,9 +195,9 @@
                                 <p>
                                     Do you wish to accept this offer?
                                 </p>
-                                <a class="btn btn-sm btn-warning" style="margin-left: 5px; color: #FFF; background-color: #5cb85c;"
+                                <a class="btn btn-sm btn-warning" style="margin-left: 5px; color: #FFF; background-color:#9c27b0;"
                                    th:onclick="${'rejectOffer(' + InterviewFinal.applicationId + ');'}">Reject Offer</a>
-                                <a class="btn btn-sm" style="margin-left: 5px; background-color:#9c27b0;"
+                                <a class="btn btn-sm" style="margin-left: 5px; color: #FFF; background-color: #5cb85c;"
                                    th:onclick="${'acceptOffer(' + InterviewFinal.applicationId + ');'}">Accept Offer</a>
                                 <span class="vertical-date">
                                         <label th:text="${#dates.format(InterviewFinal.interviewEndTime,'yyyy-MM-dd')}"></label><br/>

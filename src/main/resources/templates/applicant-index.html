@@ -136,20 +136,45 @@
                                 <a href="#" data-toggle="modal" data-target="#myModal">No</a>
                             </label>
                         </div>-->
-                        <ul th:each="ps:${unreplyMsg}" style="list-style-type:none">
+                        <!--<ul th:each="ps:${unreplyMsg}" style="list-style-type:none">
                             <li style="margin-left:-40px;">
                                 <div class="alert alert-danger alert-dismissable" style="font-size: 12px;">
                                     <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${ps.interviewStartTime}"></label>&emsp;
                                     <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
                                     <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
                                     <label style="font-style: italic; float:right">
-                                        <!-- <a th:href="@{'/octopus/applicant/agree/' + ${ps.interviewId}}">Yes</a>&emsp;-->
+                                        &lt;!&ndash; <a th:href="@{'/octopus/applicant/agree/' + ${ps.interviewId}}">Yes</a>&emsp;&ndash;&gt;
                                         <a href="#" data-toggle="modal" data-target="#myModal">Yes</a>
                                     </label>
                                 </div>
                             </li>
-                        </ul>
-
+                        </ul>-->
+                        <table class="table table-striped table-hover" style="margin:20px; width: 90%;">
+                            <thead>
+                            <tr>
+                                <th>Interview time:</th>
+                                <th>Interview Location:</th>
+                                <th>Post Name:</th>
+                                <th>Operation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="ps: ${unreplyMsg}">
+                                <td th:text="${ps.interviewStartTime}"></td>
+                                <td th:text="${ps.interviewPlace}"></td>
+                                <td th:text="${ps.postName}"></td>
+                                <td>
+                                    <form method="post" th:action="@{/octopus/applicant/agree}" th:object="${ps}">
+                                        <fieldset>
+                                            <input type="hidden" name="applicationId" th:value="*{applicationId}" />
+                                            <input type="hidden" name="interviewId" th:value="*{interviewId}" />
+                                        </fieldset>
+                                        <button type="submit" class="btn btn-primary">Yes</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                         <!--<div class="alert alert-success alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
@@ -172,16 +197,16 @@
                                             <thead>
                                             <tr>
                                                 <th style="width:100px;">Time Slot</th>
-                                                <th>applicationId</th>
-                                                <th>interivewId</th>
+                                               <!-- <th>applicationId</th>
+                                                <th>interivewId</th>-->
                                                 <th style="width:50px;">Operation</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr th:each="ps: ${unreplyMsg}">
-                                                <td th:text="${ps.interviewStartTime}"></td>
+                                                <td th:text="${ps.interviewStartTime}"></td><!--
                                                 <td th:text="${ps.applicationId}"></td>
-                                                <td th:text="${ps.interviewId}"></td>
+                                                <td th:text="${ps.interviewId}"></td>-->
                                                 <td>
                                                     <form method="post" th:action="@{/octopus/applicant/agree}" th:object="${ps}">
                                                         <fieldset>
