@@ -244,8 +244,7 @@
                         <table id="scheduleOnOneDate" class="footable table table-stripped toggle-arrow-tiny" data-page-size="6">
                             <thead>
                                 <tr class="footable even">
-                                    <th>-</th>
-                                    <th>Start</th>
+                                    <th>Start Time</th>
                                     <th>Place</th>
                                     <th>Count</th>
                                     <th>Edit</th>
@@ -260,7 +259,7 @@
 
                             <tfoot>
                                 <tr>
-                                    <td colspan="6">
+                                    <td colspan="5">
                                         <ul class="pagination pull-right"></ul>
                                     </td>
                                 </tr>
@@ -849,7 +848,6 @@
                 $.each(interviewMapThisRound[dateStr], function (timeStr, interviewArray) {
                     var paras = "\"" + dateStr + "\", \"" + timeStr + "\"";
                     var row = '<tr>';
-                    row += '<td></td>';
                     row += '<td>' + timeStr + '</td>';
                     row += '<td>' + interviewArray[0]['interviewPlace'] + '</td>';
                     row += '<td>' + interviewArray.length + '</td>';

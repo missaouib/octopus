@@ -9,6 +9,8 @@ import com.targaryen.octopus.service.HRService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.InterviewResultStatus;
+import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
@@ -85,6 +87,20 @@ public class HRController {
     public String hrPostApplication(@PathVariable("postId") int postId, ModelMap map) {
         map.addAttribute("post", hrService.findPostById(postId));
         map.addAttribute("applicationList", hrService.findApplicationsByPostId(postId));
+
+        /* Attach lastest interview to applications */
+        List<InterviewVo> interviewVoList = hrService.findLatestAppInterviewByPostId(postId);
+        Map<Integer, String> interviewVoMap = new HashMap<>();
+        for (InterviewVo interviewVo: interviewVoList) {
+            if (interviewVo != null) {
+                interviewVoMap.put(interviewVo.getApplicationId(), "Round " + interviewVo.getInterviewRound() + " "
+                        + InterviewResultStatus.toString(interviewVo.getInterviewResultStatus()));
+            } else {
+                interviewVoMap.put(interviewVo.getApplicationId(), "Resume Passed");
+            }
+        }
+        map.addAttribute("applicationLastestInterview", interviewVoMap);
+
         return "hr-post-application-list";
     }
 
@@ -227,6 +243,32 @@ public class HRController {
         if (chkArray.length != 0) {
             for (Integer applicationId: chkArray) {
                 int status = hrService.filterFailApplicationById(applicationId);
+                if (status != StatusCode.SUCCESS) overAllStatus = status;
+            }
+        }
+        return String.valueOf(overAllStatus);
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/application/hr/pass", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationHrPass(@RequestParam(value="chkArray[]") int[] chkArray) {
+        int overAllStatus = StatusCode.SUCCESS;
+        if (chkArray.length != 0) {
+            for (Integer applicationId: chkArray) {
+                int status = hrService.interviewPassApplicationById(applicationId);
+                if (status != StatusCode.SUCCESS) overAllStatus = status;
+            }
+        }
+        return String.valueOf(overAllStatus);
+    }
+
+    @RequestMapping(value = "/hr/post/{postId}/application/hr/reject", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrApplicationHrReject(@RequestParam(value="chkArray[]") int[] chkArray) {
+        int overAllStatus = StatusCode.SUCCESS;
+        if (chkArray.length != 0) {
+            for (Integer applicationId: chkArray) {
+                int status = hrService.interviewFailApplicationById(applicationId);
                 if (status != StatusCode.SUCCESS) overAllStatus = status;
             }
         }

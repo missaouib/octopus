@@ -390,6 +390,34 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    public List<InterviewVo> findLatestAppInterviewByPostId(int postId) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        List<ApplicationDto> applicationDtos = post.getApplications();
+        List<InterviewVo> interviewVos = new ArrayList<>();
+        if(applicationDtos != null) {
+            for(ApplicationDto application : applicationDtos) {
+                List<InterviewDto> interviews = application.getInterviews();
+                if(interviews != null) {
+                    InterviewDto latest = null;
+                    int maxRound = 0;
+                    for(InterviewDto interview : interviews) {
+                        int thisRound = interview.getInterviewRound();
+                        if(thisRound > maxRound &&
+                                ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
+                            maxRound = thisRound;
+                            latest = interview;
+                        }
+                    }
+                    if(latest != null) {
+                        interviewVos.add(DataTransferUtil.InterviewDtoToVo(latest));
+                    }
+                }
+            }
+        }
+        return interviewVos;
+    }
+
+    @Override
     public List<InterviewVo> findInterviewByPostIdAndRoundAndTime(int postId, int interviewRound, Date beginTime, Date endTime) {
         return interviewDtoRepository.findAllByPostAndRoundAndTime(postDtoRepository.findPostDtoByPostId(postId),
                 interviewRound, beginTime, endTime).stream()
