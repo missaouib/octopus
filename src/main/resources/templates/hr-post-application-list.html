@@ -89,17 +89,31 @@
                     <div class="ibox-content">
                         <div id="exampleTableEventsToolbar" role="group" style="width:100%;">
                             <button type="button"
-                                    onclick="editStatusByResume('pass');"
+                                    onclick="editApplicationStatus('resume', 'pass');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
                                 Resume - Pass
                             </button>
 
                             <button type="button"
-                                    onclick="editStatusByResume('reject');"
+                                    onclick="editApplicationStatus('resume', 'reject');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                                 Resume - Reject
+                            </button>
+
+                            <button type="button"
+                                    onclick="editApplicationStatus('hr', 'pass');"
+                                    class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
+                                Application - Pass
+                            </button>
+
+                            <button type="button"
+                                    onclick="editApplicationStatus('hr', 'reject');"
+                                    class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                Application - Reject
                             </button>
 
                             <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
@@ -132,7 +146,15 @@
                                         <td>
                                             <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">To be checked</span>
                                             <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}" class="label label-danger">Resume Rejected</span>
-                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" class="label label-primary">Resume Passed</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}"
+                                                  th:text="${applicationLastestInterview.getOrDefault(appli.applicationId, 'Resume Passed')}"class="label label-primary"></span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}" class="label label-danger">HR Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}" class="label label-primary">HR Passed</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}" class="label label-danger">Dpt Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_PASS}" class="label label-primary">Dpt Passed</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}" class="label label-default">Offer Sent</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}" class="label label-danger">Offer Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_ACCEPT}" class="label label-primary">Offer Accepted</span>
                                         </td>
                                         <td th:text="${appli.applicantName}"></td>
                                         <td th:text="${appli.applicantAge}"></td>
@@ -183,7 +205,7 @@
     var csrfData = {};
     csrfData[_csrf_param_name] = _csrf_token;
 
-    function editStatusByResume(operationString){
+    function editApplicationStatus(process, operation){
         /* Prepare data */
         var chkArray = [];
         $(".i-checks:checked").each(function() {
@@ -204,7 +226,7 @@
         /* Confirmation and start requesting */
         swal({
             title : "Confirm",
-            text: "Do you really wish to " + operationString + " " + chkArray.length + " resumes?",
+            text: "Do you really wish to " + operation + " " + chkArray.length + " resumes?",
             type : "warning",
             showCancelButton : true,
             confirmButtonColor : "#DD6B55",
@@ -216,13 +238,13 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: 'resume/' + operationString,
+                    url: process + '/' + operation,
                     data: csrfData,
                     async: false,
                     success: function (data) {
                         swal({
                             title: "Success",
-                            text: "You have successfully " + operationString + "ed " + chkArray.length + " resumes.",
+                            text: "You have successfully " + operation + "ed " + chkArray.length + " applications.",
                             type: "success"
                         }, function (isConfirm) {
                             document.location.reload();
@@ -231,7 +253,7 @@
                     error: function (data) {
                         swal({
                             title: "Failure",
-                            text: "You have not successfully " + operationString + "ed " + chkArray.length + " resumes.",
+                            text: "You have not successfully " + operation + "ed " + chkArray.length + " applications.",
                             type: "error"
                         });
                     }

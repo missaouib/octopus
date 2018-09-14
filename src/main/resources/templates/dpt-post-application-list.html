@@ -108,6 +108,7 @@
                             <thead>
                             <tr class="footable even">
                                 <th>Check</th>
+                                <th>Status</th>
                                 <th>Name</th>
                                 <th>School</th>
                                 <th>Major</th>
@@ -119,6 +120,19 @@
                                     <tr>
                                         <td>
                                             <input type="checkbox" th:value="${appli.applicationId}" checked class="i-checks">
+                                        </td>
+                                        <td>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">To be checked</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}" class="label label-danger">Resume Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" class="label label-primary">Resume Passed</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_FAIL}" class="label label-danger">HR Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INTERVIEW_PASS}" class="label label-primary">HR Passed</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_FAIL}" class="label label-danger">Dpt Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).DPT_PASS}" class="label label-primary">Dpt Passed</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).OFFER}" class="label label-default">Offer Sent</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_REJECT}" class="label label-danger">Offer Rejected</span>
+                                            <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).APPLICANT_ACCEPT}" class="label label-primary">Offer Accepted</span>
+
                                         </td>
                                         <td th:text="${appli.applicantName}"></td>
                                         <td th:text="${appli.applicantSchool}"></td>
