@@ -21,6 +21,8 @@ public interface InterviewDtoRepository extends JpaRepository<InterviewDto, Inte
     InterviewDto findInterviewDtoByInterviewId(Integer id);
     void deleteInterviewDtoByInterviewId(int interviewId);
 
-    @Query("select t from InterviewDto t where t.post = :post and t.interviewRound = :interviewRound and t.interviewStartTime >= :startTime and t.interviewStartTime <= :endTime")
+    @Query("select t from InterviewDto t where t.post = :post and t.interviewRound = :interviewRound and t.interviewStartTime >= :startTime and t.interviewStartTime < :endTime")
     List<InterviewDto> findAllByPostAndRoundAndTime(@Param("post")PostDto post, @Param("interviewRound") Integer interviewRound, @Param("startTime") Date startTime, @Param("endTime") Date entTime);
+
+    List<InterviewDto> findAllByPostAndInterviewRound(PostDto post, Integer interviewRound);
 }

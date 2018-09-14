@@ -156,7 +156,7 @@
     </form>
 
     <script th:inline="javascript">
-        $("[name='recruitType']").bootstrapSwitch({'onColor': 'primary', 'offColor': 'info'});
+        $("[name='recruitType']").bootstrapSwitch({'onColor': 'primary', 'offColor': 'success'});
         $("[name='recruitType']").bootstrapSwitch('state', [[${recruitType}]]);
 
         var validationConfig = {

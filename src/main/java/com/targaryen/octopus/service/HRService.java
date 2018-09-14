@@ -71,6 +71,18 @@ public interface HRService {
     ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId);
 
     /**
+     * find EducationExperienceVo by applicationId
+     *
+     */
+    List<EducationExperienceVo> findEducationExperienceVoByApplicationId(int applicationId);
+
+    /**
+     * find WorkExperienceVo by applicationId
+     *
+     */
+    List<WorkExperienceVo> findWorkExperienceVoByApplicationId(int applicationId);
+
+    /**
      * filter pass application by applicantId
      *
      */
@@ -120,6 +132,18 @@ public interface HRService {
     InterviewVo findInterviewById(int interviewId);
 
     /**
+     * update interviewer of interview
+     *
+     */
+    int updateInterviewerOfInterview(int interviewId, int interviewerId);
+
+    /**
+     * update application of interview
+     *
+     */
+    int updateApplicationOfInterview(int interviewId, int applicationId);
+
+    /**
      * delete interview by interviewId
      *
      */
@@ -132,7 +156,13 @@ public interface HRService {
     List<InterviewVo> findInterviewByApplicationId(int applicationId);
 
     /**
-     * find list of interviews by and postId and interviewRound and time
+     * find list of interview by postId and interviewRound
+     *
+     */
+    List<InterviewVo> findInterviewByPostIdAndRound(int postId, int interviewRound);
+
+    /**
+     * find list of interviews by and postId and interviewRound and time(>= beginTime && < endTime)
      *
      */
     List<InterviewVo> findInterviewByPostIdAndRoundAndTime(int postId, int interviewRound, Date beginTime, Date endTime);
