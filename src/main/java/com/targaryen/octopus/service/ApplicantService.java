@@ -262,4 +262,11 @@ public interface ApplicantService {
      * Execution status.
      */
     int updateInterviewApplicantId(InterviewVo interviewVo);
+
+    /**
+     *
+     * @param postId
+     * @return
+     */
+    PostVo findPostByPostId(int postId);
 }

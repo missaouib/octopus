@@ -808,4 +808,18 @@ public class ApplicantServiceImpl implements ApplicantService {
 
         return StatusCode.SUCCESS;
     }
+
+    public PostVo findPostByPostId(int postId) {
+        PostDto postDto;
+
+        try {
+            postDto = postDtoRepository.findPostDtoByPostId(postId);
+            if(postDto == null)
+                return null;
+        } catch (DataAccessException e) {
+            return null;
+        }
+
+        return DataTransferUtil.PostDtoToVo(postDto);
+    }
 }
