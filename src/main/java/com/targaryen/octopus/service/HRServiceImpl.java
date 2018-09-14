@@ -373,7 +373,7 @@ public class HRServiceImpl implements HRService {
         ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
         if(application != null) {
             return application.getInterviews().stream()
-                    .sorted(Comparator.comparing(n -> n.getInterviewId()))
+                    .sorted(Comparator.comparing(n -> n.getInterviewStartTime()))
                     .map(n -> DataTransferUtil.InterviewDtoToVo(n))
                     .collect(Collectors.toList());
         } else {
