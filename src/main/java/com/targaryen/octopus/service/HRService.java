@@ -162,6 +162,12 @@ public interface HRService {
     List<InterviewVo> findInterviewByPostIdAndRound(int postId, int interviewRound);
 
     /**
+     * find list of application latest interview by postId
+     *
+     */
+    List<InterviewVo> findLatestAppInterviewByPostId(int postId);
+
+    /**
      * find list of interviews by and postId and interviewRound and time(>= beginTime && < endTime)
      *
      */
