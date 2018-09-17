@@ -65,6 +65,8 @@ public class ApplicantController {
         List<ApplicantInterviewVo> applicantInterviewVosSocialReply = serviceFactory.getApplicantService().findSocialAcceptedInterviewsByApplicantId(applicantId);
         map.addAttribute("acceptedMsgSocial", applicantInterviewVosSocialReply);
 
+        map.addAttribute("applicantCommentEntity", new ApplicantCommentEntity());
+
         return result;
 /*
         List<InterviewEntity> interviewEntities = new ArrayList<>();
@@ -237,21 +239,12 @@ public class ApplicantController {
      * @return
      */
     @RequestMapping(value = "/applicant/social/refuse")
-    ModelAndView applicantRefuse(ApplicantCommentEntity applicantCommentEntity, ModelMap map){
+    ModelAndView applicantRefuse(ApplicantInterviewVo applicantInterviewVo, ModelMap map){
 
         //Change interview status
-        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantCommentEntity.getInterviewId(), ApplicantStatus.REJECTED, applicantCommentEntity.getApplicantComment());
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantInterviewVo.getInterviewId(), ApplicantStatus.REJECTED, applicantInterviewVo.getInterviewResultComment());
 
-        ModelAndView result = new ModelAndView("applicant-index");
-        map.addAttribute("roleName", Role.getRoleNameByAuthority());
-        map.addAttribute("userName", AuthInfo.getUserName());
-
-        int userId = AuthInfo.getUserId();
-
-        List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);
-        map.addAttribute("unreplyMsg", interviewVos);
-        map.addAttribute("acceptedMsg", interviewVosAccpted);
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
         return result;
     }
 
