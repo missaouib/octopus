@@ -75,8 +75,10 @@ public class MyApplicationRunner implements ApplicationRunner {
             "INSERT INTO t_interviewer  VALUES (4, 25, 'HUE Development', 'Interviewer_4', 'Java Developer', 1, 16) ON conflict(interviewer_id) DO NOTHING;\n" +
             "INSERT INTO t_interviewer  VALUES (5, 25, 'HUE Development', 'Interviewer_5', 'Java Developer', 1, 17) ON conflict(interviewer_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_interviewer_seq RESTART WITH 6;" +
-            "INSERT INTO t_post VALUES (1, 0, 'Java Developer', 'Shanghai', 'Java Developer', 'Java', 'R&D', '2018-09-01', 30, 0, 0, 1) ON conflict(post_id) DO NOTHING;\n" +
+            "INSERT INTO t_post VALUES (1, 1, 'Java Developer', 'Shanghai', 'Java Developer', 'Java', 'R&D', '2018-09-01', 30, 0, 0, 1) ON conflict(post_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_post_seq RESTART WITH 2;" +
+            "INSERT INTO t_resume_model VALUES (1, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, 1);" +
+            "ALTER SEQUENCE t_resume_model_seq RESTART WITH 2;" +
             "INSERT INTO t_application (application_id, create_time, status, applicant_id, post_id) VALUES (1, '2018-09-02', 1, 1, 1) ON conflict(application_id) DO NOTHING;\n" +
             "INSERT INTO t_application (application_id, create_time, status, applicant_id, post_id) VALUES (2, '2018-09-02', 1, 2, 1) ON conflict(application_id) DO NOTHING;\n" +
             "INSERT INTO t_application (application_id, create_time, status, applicant_id, post_id) VALUES (3, '2018-09-02', 1, 3, 1) ON conflict(application_id) DO NOTHING;\n" +
