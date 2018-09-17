@@ -46,16 +46,27 @@ public class ApplicantController {
         map.addAttribute("userName", AuthInfo.getUserName());
 
         int userId = AuthInfo.getUserId();
-        int applicanId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
         //campus
-
-        List<ApplicationVo> applicationVos  = serviceFactory.getApplicantService().findAppByApplicantId(applicanId);
-        Map<Integer, List<InterviewEntity>> socialInterviewEntities = new HashMap<>();
-
+            //unreply
+        Map<Integer, List<ApplicantInterviewVo>> socialInterviewEntities = serviceFactory.getApplicantService().findAllCampusAvailableInterviewsByApplicantId(applicantId);
+        result.addObject ("unreplySocial", socialInterviewEntities);
+        System.out.println("[msg]: socialInterviewEntities.size() : " + socialInterviewEntities.size());
+            //reply
+        List<ApplicantInterviewVo> applicationVosReply = serviceFactory.getApplicantService().findCampusAcceptedInterviewsByApplicantId(applicantId);
+        map.addAttribute("acceptedMsgCampus", applicationVosReply);
+        System.out.println("[msg]: applicationVosReply.size() : " + applicationVosReply.size());
         //social
-        List<InterviewVo> applicationVos2  = serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+            //unreply
+        List<ApplicantInterviewVo> applicationVosSocialUnreply = serviceFactory.getApplicantService().findSocialUnreplyedInterviewsByApplicantId(applicantId);
+        result.addObject ("unreplyMsg", applicationVosSocialUnreply);
 
+            //reply
+        List<ApplicantInterviewVo> applicantInterviewVosSocialReply = serviceFactory.getApplicantService().findSocialAcceptedInterviewsByApplicantId(applicantId);
+        map.addAttribute("acceptedMsgSocial", applicantInterviewVosSocialReply);
 
+        return result;
+/*
         List<InterviewEntity> interviewEntities = new ArrayList<>();
 
         SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd HH:mm");
@@ -90,7 +101,7 @@ public class ApplicantController {
 
         //List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
         List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
-/*
+*//*
         List<InterviewVo> interviewVos = serviceFactory.getApplicantService().findAvailableInterviewsByApplicationId()
 
         List<InterviewEntity> interviewEntities = new ArrayList<>();
@@ -103,14 +114,14 @@ public class ApplicantController {
             interviewEntity.setInterviewPlace(temp.getInterviewPlace());
             interviewEntity.setPostName(serviceFactory.getPublicService().findPostById(temp.getPostId()).getPostName());
             interviewEntities.add(interviewEntity);
-        }*/
+        }*//*
         //mock data
-        /*ApplicantInterviewVo interviewVo = new ApplicantInterviewVo.Builder()
+        *//*ApplicantInterviewVo interviewVo = new ApplicantInterviewVo.Builder()
                 .interviewPlace("Shanghai")
                 .interviewStartTime(Calendar.getInstance().getTime())
                 .postName("Java").build();
         interviewVos.add(interviewVo);
-        interviewVosAccpted.add(interviewVo);*/
+        interviewVosAccpted.add(interviewVo);*//*
 
         //System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
         result.addObject ("unreplyMsg", interviewEntities);
@@ -119,14 +130,14 @@ public class ApplicantController {
         socialInterviewEntities.put(1, interviewEntities);
         socialInterviewEntities.put(2, interviewEntities);
 
-        result.addObject ("social", socialInterviewEntities);
+
 
         //map.addAttribute("ps", new InterviewEntity());
         map.addAttribute("acceptedMsg", interviewVosAccpted);
 
-        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);
+        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);*/
 
-        return result;
+
     }
 
     @RequestMapping(value="/applicant/user/setting")
@@ -828,6 +839,12 @@ public class ApplicantController {
     public ModelAndView applicantResumeEducationDelete(@PathVariable("educationExperienceId") int educationExperienceId) {
         serviceFactory.getApplicantService().deleteEducationExperienceByEducationExperienceId(educationExperienceId);
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/education");
+        return result;
+    }
+
+    @RequestMapping(value="/new/pdf", method = RequestMethod.GET)
+    public  ModelAndView applicantPdf(Model map){
+        ModelAndView result = new ModelAndView("applicant-pdf");
         return result;
     }
 }

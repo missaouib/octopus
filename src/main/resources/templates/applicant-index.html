@@ -138,7 +138,7 @@
                                                     <!-- /.panel-heading -->
                                                     <div class="panel-body">
 
-                                                        <ul th:each="ps:${social}" style="list-style-type:none">
+                                                        <ul th:each="ps:${unreplySocial}" style="list-style-type:none">
                                                             <li style="margin-left:-40px;">
                                                                 <div class="alert alert-danger" style="font-size: 12px;">
                                                                     <!--<label>Reservation:</label>&emsp;
@@ -172,7 +172,7 @@
                                                                                             </thead>
                                                                                             <tbody>
                                                                                             <tr th:each="ts: ${ps.value}">
-                                                                                                <td th:text="${ts.interviewStartTime}"></td>
+                                                                                                <td th:text="${#dates.format(ts.interviewStartTime,'yyyy-MM-dd HH:mm')}"></td>
                                                                                                 <td>
                                                                                                     <form method="post" th:action="@{/octopus/applicant/agree}" th:object="${ts}">
                                                                                                         <fieldset>
@@ -207,7 +207,7 @@
                                                     <!-- /.panel-heading -->
                                                     <div class="panel-body">
 
-                                                        <ul th:each="ps:${acceptedMsg}" style="list-style-type:none">
+                                                        <ul th:each="ps:${unreplyMsg}" style="list-style-type:none">
                                                             <li style="margin-left:-40px;">
                                                                 <div class="alert alert-success alert-dismissable" style="font-size: 12px;">
                                                                     <label>Reservation:</label>&emsp;
@@ -295,7 +295,7 @@
                                             <!-- /.panel-heading -->
                                             <div class="panel-body">
 
-                                                <ul th:each="ps:${acceptedMsg}" style="list-style-type:none">
+                                                <ul th:each="ps:${acceptedMsgSocial}" style="list-style-type:none">
                                                     <li style="margin-left:-40px;">
                                                         <div class="alert alert-success alert-dismissable" style="font-size: 12px;">
                                                             <label>Reservation:</label>&emsp;
