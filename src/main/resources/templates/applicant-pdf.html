@@ -13,17 +13,15 @@
     <title>INSPINIA | PDF viewer</title>
 
 
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
+    <link th:href="@{/octopus/css/bootstrap.min14ed.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
 
-    <!-- MetisMenu CSS -->
-    <link th:href="@{/octopus/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link th:href="@{/octopus/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
-
-    <!-- Custom Fonts -->
-    <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+    <link th:href="@{/octopus/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/animate.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/style.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/login.min.css}" rel="stylesheet" />
 
 
 </head>
@@ -121,13 +119,13 @@
 <script th:src="@{/octopus/new-vendor/js/plugins/pdfjs/pdf.js}"></script>
 
 
-<script id="script" type="text/javascript">
+<script id="script">
         //
         // If absolute URL from the remote server is provided, configure the CORS
         // header on that server.
         //
         var strFullPath=window.document.location.href;
-        var url = window.document.location.href + '/../../pdf/example.pdf';
+        var url = 'http://127.0.0.1:8080/octopus/pdf/example.pdf';
         console.log(strFullPath);
         console.log(url);
 

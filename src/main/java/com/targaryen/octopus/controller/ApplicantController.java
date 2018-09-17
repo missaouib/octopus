@@ -50,7 +50,7 @@ public class ApplicantController {
         //campus
             //unreply
         Map<Integer, List<ApplicantInterviewVo>> socialInterviewEntities = serviceFactory.getApplicantService().findAllCampusAvailableInterviewsByApplicantId(applicantId);
-        result.addObject ("unreplySocial", socialInterviewEntities);
+        result.addObject ("unreplyCampus", socialInterviewEntities);
         System.out.println("[msg]: socialInterviewEntities.size() : " + socialInterviewEntities.size());
             //reply
         List<ApplicantInterviewVo> applicationVosReply = serviceFactory.getApplicantService().findCampusAcceptedInterviewsByApplicantId(applicantId);
@@ -179,7 +179,7 @@ public class ApplicantController {
         return result;
     }
 
-    @RequestMapping(value = "/applicant/agree", method = RequestMethod.POST)
+    @RequestMapping(value = "/applicant/social/agree", method = RequestMethod.POST)
     ModelAndView applicantAgree(InterviewEntity interviewEntity, ModelMap map){
 
         //Change interview status
@@ -205,13 +205,38 @@ public class ApplicantController {
         return result;*/
     }
 
+    @RequestMapping(value = "/applicant/campus/agree", method = RequestMethod.POST)
+    ModelAndView applicantCampusAgree(ApplicantInterviewVo applicantInterviewVo, ModelMap map){
+
+        //Change interview status
+        System.out.println("[msg]: "  + "/applicant/agree" + applicantInterviewVo.getInterviewId() + ", " + applicantInterviewVo.getApplicationId());
+        InterviewVo interviewVo = new InterviewVo.Builder().interviewId(applicantInterviewVo.getInterviewId())
+                .applicationId(applicantInterviewVo.getApplicationId()).build();
+        serviceFactory.getApplicantService().updateInterviewApplicantId(interviewVo);
+
+        //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
+
+        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
+        return result;
+       /* map.addAttribute("roleName", Role.getRoleNameByAuthority());
+        map.addAttribute("userName", AuthInfo.getUserName());
+
+        int userId = AuthInfo.getUserId();
+        *//*List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
+        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);*//*
+        List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
+        List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
+        map.addAttribute("unreplyMsg", interviewVos);
+        map.addAttribute("acceptedMsg", interviewVosAccpted);
+        return result;*/
+    }
     /**
      * old function, refuse doesn't exist
      * @param applicantCommentEntity
      * @param map
      * @return
      */
-    @RequestMapping(value = "/applicant/refuse")
+    @RequestMapping(value = "/applicant/social/refuse")
     ModelAndView applicantRefuse(ApplicantCommentEntity applicantCommentEntity, ModelMap map){
 
         //Change interview status

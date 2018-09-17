@@ -138,7 +138,7 @@
                                                     <!-- /.panel-heading -->
                                                     <div class="panel-body">
 
-                                                        <ul th:each="ps:${unreplySocial}" style="list-style-type:none">
+                                                        <ul th:each="ps:${unreplyCampus}" style="list-style-type:none">
                                                             <li style="margin-left:-40px;">
                                                                 <div class="alert alert-danger" style="font-size: 12px;">
                                                                     <!--<label>Reservation:</label>&emsp;
@@ -174,7 +174,7 @@
                                                                                             <tr th:each="ts: ${ps.value}">
                                                                                                 <td th:text="${#dates.format(ts.interviewStartTime,'yyyy-MM-dd HH:mm')}"></td>
                                                                                                 <td>
-                                                                                                    <form method="post" th:action="@{/octopus/applicant/agree}" th:object="${ts}">
+                                                                                                    <form method="post" th:action="@{/octopus/applicant/campus/agree}" th:object="${ts}">
                                                                                                         <fieldset>
                                                                                                             <input type="hidden" name="applicationId" th:value="*{applicationId}" />
                                                                                                             <input type="hidden" name="interviewId" th:value="*{interviewId}" />
@@ -207,7 +207,7 @@
                                                     <!-- /.panel-heading -->
                                                     <div class="panel-body">
 
-                                                        <ul th:each="ps:${unreplyMsg}" style="list-style-type:none">
+                                                        <ul th:each="ps:${acceptedMsgCampus}" style="list-style-type:none">
                                                             <li style="margin-left:-40px;">
                                                                 <div class="alert alert-success alert-dismissable" style="font-size: 12px;">
                                                                     <label>Reservation:</label>&emsp;
@@ -247,7 +247,7 @@
                                                             <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
                                                             <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
                                                             <label style="font-style: italic; float:right">
-                                                                <a th:href="@{'/octopus/applicant/agree/' + ${ps.interviewId}}">Yes</a>
+                                                                <a th:href="@{'/octopus/applicant/social/agree/' + ${ps.interviewId}}">Yes</a>
                                                                 <a href="#" data-toggle="modal" data-target="#myModal">No</a>
                                                             </label>
                                                         </div>
@@ -265,12 +265,12 @@
                                                                 <h4 class="modal-title" id="myModalLabel">Reason for rejecting reservation.</h4>
                                                             </div>
                                                             <div>
-                                                                <form method="post" th:action="@{/octopus/applicant/reject}" style="margin: 20px;">
+                                                                <form method="post" th:action="@{/octopus/applicant/social/reject}" style="margin: 20px;" th:object="${applicantCommentEntity}">
                                                                     <fieldset>
                                                                         <input type="hidden" name="applicationId" th:value="*{applicationId}" />
                                                                         <input type="hidden" name="interviewId" th:value="*{interviewId}" />
                                                                         <label> Reason:</label>
-                                                                        <textarea class="form-control" id="reason" name="reason">
+                                                                        <textarea class="form-control" id="applicantComment" name="applicantComment" th:value="*{applicantComment}">
 
                                                                         </textarea><br/>
                                                                         <button type="submit" class="btn btn-primary" style="float:right;">Submit</button>
@@ -301,7 +301,7 @@
                                                             <label>Reservation:</label>&emsp;
                                                             <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>&emsp;
                                                             <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
-                                                            <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
+                                                            <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp
                                                         </div>
                                                     </li>
                                                 </ul>
