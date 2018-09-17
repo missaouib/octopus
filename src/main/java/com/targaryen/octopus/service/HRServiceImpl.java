@@ -302,13 +302,66 @@ public class HRServiceImpl implements HRService {
     @Transactional
     @Override
     public int createListOfInterviews(List<InterviewVo> interviewVos) {
-        for(InterviewVo interviewVo : interviewVos) {
-            int result = createInterview(interviewVo);
-            if(StatusCode.FAILURE.equals(result)) {
-                return StatusCode.FAILURE;
+        try {
+            List<InterviewDto> interviewDtos = new ArrayList<>();
+            for (InterviewVo interviewVo: interviewVos) {
+                InterviewDto newInterview = new InterviewDto();
+
+                ApplicationDto application;
+                if(interviewVo.getApplicationId() <= 0) {
+                    application = null;
+                } else {
+                    application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
+                }
+                newInterview.setApplication(application);
+
+                InterviewerDto interviewer;
+                if(interviewVo.getInterviewerId() <= 0) {
+                    interviewer = null;
+                } else {
+                    interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+                }
+                newInterview.setInterviewer(interviewer);
+
+                PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
+                newInterview.setPost(post);
+                if(interviewer != null && RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
+                    newInterview.setInterviewerStatus(InterviewerStatus.ACCEPTED);
+                } else {
+                    newInterview.setInterviewerStatus(InterviewerStatus.INIT);
+                }
+
+                newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
+                newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
+                newInterview.setApplicantStatus(ApplicantStatus.INIT);
+                newInterview.setReservationStatus(ReservationStatus.INIT);
+                newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
+                newInterview.setCreateTime(Calendar.getInstance().getTime());
+
+                if(RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
+                    newInterview.setInterviewRound(interviewVo.getInterviewRound());
+                } else {
+                    if(application != null) {
+                        int interviewRound = 0;
+                        List<InterviewDto> oldInterviewDtos = application.getInterviews();
+                        if(oldInterviewDtos != null) {
+                            for (InterviewDto interview: oldInterviewDtos) {
+                                if(ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
+                                    int r = interview.getInterviewRound();
+                                    interviewRound = r > interviewRound? r : interviewRound;
+                                }
+                            }
+                            newInterview.setInterviewRound(++interviewRound);
+                        }
+                    }
+                }
+                interviewDtos.add(newInterview);
             }
+            interviewDtoRepository.saveAll(interviewDtos);
+            return StatusCode.SUCCESS;
+        } catch (Exception e) {
+            return StatusCode.FAILURE;
         }
-        return StatusCode.SUCCESS;
     }
 
     @Override
