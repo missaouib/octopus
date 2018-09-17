@@ -188,6 +188,7 @@ public class DataTransferUtil {
                 .postLocale(postDto.getPostLocale())
                 .postName(postDto.getPostName())
                 .postType(postDto.getPostType())
+                .recruitType(postDto.getRecruitType())
                 .departmentId(departmentDto.getDepartmentId())
                 .departmentName(departmentDto.getDepartmentName())
                 .createTime(applicationDto.getCreateTime())
@@ -201,19 +202,20 @@ public class DataTransferUtil {
 
     public static ApplicantInterviewVo InterviewDtoToApplicantInterviewVo(InterviewDto interviewDto) {
         ApplicationDto applicationDto = interviewDto.getApplication();
-        PostDto postDto = applicationDto.getPost();
+        PostDto postDto = interviewDto.getPost();
         InterviewerDto interviewerDto = interviewDto.getInterviewer();
         DepartmentDto departmentDto = postDto.getDepartment();
         return new ApplicantInterviewVo.Builder()
                 .interviewId(interviewDto.getInterviewId())
-                .applicationId(applicationDto.getApplicationId())
-                .interviewerId(interviewerDto.getInterviewerId())
-                .interviewerName(interviewerDto.getInterviewerName())
+                .applicationId((applicationDto == null) ? -1:applicationDto.getApplicationId())
+                .interviewerId((interviewerDto == null) ? -1:interviewerDto.getInterviewerId())
+                .interviewerName((interviewerDto == null) ? null:interviewerDto.getInterviewerName())
                 .interviewPlace(interviewDto.getInterviewPlace())
                 .interviewResultComment(interviewDto.getInterviewResultComment())
                 .interviewResultStatus(interviewDto.getInterviewResultStatus())
                 .interviewStartTime(interviewDto.getInterviewStartTime())
                 .postLocale(postDto.getPostLocale())
+                .postId(postDto.getPostId())
                 .postName(postDto.getPostName())
                 .postType(postDto.getPostType())
                 .departmentId(departmentDto.getDepartmentId())

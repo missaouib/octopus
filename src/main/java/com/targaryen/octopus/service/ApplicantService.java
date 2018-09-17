@@ -3,6 +3,7 @@ package com.targaryen.octopus.service;
 import com.targaryen.octopus.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *  Created by Liu Mengyang on 2018/09/05
@@ -271,4 +272,12 @@ public interface ApplicantService {
      * @return
      */
     PostVo findPostByPostId(int postId);
+
+
+
+
+    List<ApplicantInterviewVo> findSocialUnreplyedInterviewsByApplicantId(int applicantId);
+    List<ApplicantInterviewVo> findSocialAcceptedInterviewsByApplicantId(int applicantId);
+    Map<Integer, List<ApplicantInterviewVo>> findAllCampusAvailableInterviewsByApplicantId(int applicantId);
+    List<ApplicantInterviewVo> findCampusAcceptedInterviewsByApplicantId(int applicantId);
 }

@@ -26,6 +26,7 @@ public class ApplicantApplicationVo {
     private final Date dptApproveEndTime;
     private final Date offerTime;
     private final Date applicantFeedbackTime;
+    private final int recruitType;
 
     public static class Builder {
         private int applicationId;
@@ -44,6 +45,7 @@ public class ApplicantApplicationVo {
         private Date dptApproveEndTime;
         private Date offerTime;
         private Date applicantFeedbackTime;
+        private int recruitType;
 
         public Builder applicationId(int applicationId) {
             this.applicationId = applicationId;
@@ -125,6 +127,11 @@ public class ApplicantApplicationVo {
             return this;
         }
 
+        public Builder recruitType(int recruitType) {
+            this.recruitType = recruitType;
+            return this;
+        }
+
         public ApplicantApplicationVo build() {
             return new ApplicantApplicationVo(this);
         }
@@ -133,7 +140,7 @@ public class ApplicantApplicationVo {
     private ApplicantApplicationVo(Builder builder) {
         this.applicationId  = builder.applicationId;
         this.status = builder.status;
-        this.applicantId = builder.applicationId;
+        this.applicantId = builder.applicantId;
         this.postId = builder.postId;
         this.applicantName = builder.applicantName;
         this.postName = builder.postName;
@@ -147,6 +154,7 @@ public class ApplicantApplicationVo {
         this.dptApproveEndTime = builder.dptApproveEndTime;
         this.offerTime = builder.offerTime;
         this.applicantFeedbackTime = builder.applicantFeedbackTime;
+        this.recruitType = builder.recruitType;
     }
 
 }

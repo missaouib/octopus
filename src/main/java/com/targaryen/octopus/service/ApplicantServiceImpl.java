@@ -4,10 +4,7 @@ import com.targaryen.octopus.dao.*;
 import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.DataTransferUtil;
 import com.targaryen.octopus.util.StatusCode;
-import com.targaryen.octopus.util.status.ApplicantStatus;
-import com.targaryen.octopus.util.status.ApplicationStatus;
-import com.targaryen.octopus.util.status.InterviewerStatus;
-import com.targaryen.octopus.util.status.ReservationStatus;
+import com.targaryen.octopus.util.status.*;
 import com.targaryen.octopus.vo.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,6 +191,29 @@ public class ApplicantServiceImpl implements ApplicantService {
 
         return applicationVos;
     }
+
+    public List<ApplicantApplicationVo> findApplicationsByApplicantId(int applicantId) {
+        ApplicantDto applicantDto;
+        List<ApplicationDto> applicationDtos;
+        List<ApplicantApplicationVo> applicationVos = new ArrayList<>();
+
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            if(applicantDto == null)
+                return new ArrayList<>();
+            applicationDtos = applicantDto.getApplications();
+            if(applicationDtos == null)
+                return new ArrayList<>();
+            for(ApplicationDto a: applicationDtos) {
+                applicationVos.add(DataTransferUtil.ApplicationDtoToApplicantApplicationVo(a));
+            }
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return applicationVos;
+    }
+
     public List<ApplicantApplicationVo> findApplicationsByUserId(int userId) {
         UserDto userDto;
         ApplicantDto applicantDto;
@@ -290,6 +310,143 @@ public class ApplicantServiceImpl implements ApplicantService {
         return findInterviewDetailsByUserIdAndApplicantStatus(userId, ApplicantStatus.ACCEPTED);
     }
 
+
+    private List<InterviewDto> findSocialInterviewDtosByApplicantIdAndApplicantStatus(int applicantId, int applicantStatus) {
+        ApplicantDto applicantDto;
+        List<ApplicationDto> applicationDtos;
+        List<InterviewDto> interviewDtos = new ArrayList<>();
+        List<InterviewDto> filtered;
+
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            if(applicantDto == null)
+                return new ArrayList<>();
+            applicationDtos = applicantDto.getApplications();
+
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        applicationDtos = applicationDtos.stream()
+                .filter(x -> x.getPost().getRecruitType() == RecruitTypeStatus.SOCIETY)
+                .collect(Collectors.toList());
+
+        for(ApplicationDto a: applicationDtos) {
+            interviewDtos.addAll(a.getInterviews());
+        }
+
+        filtered = interviewDtos.stream()
+                .filter(x -> (x.getApplicantStatus() == applicantStatus)
+                        && (x.getInterviewerStatus() == InterviewerStatus.ACCEPTED))
+                .collect(Collectors.toList());
+
+        return filtered;
+    }
+
+    public List<ApplicantInterviewVo> findSocialUnreplyedInterviewsByApplicantId(int applicantId) {
+        List<InterviewDto> interviewDtos = findSocialInterviewDtosByApplicantIdAndApplicantStatus(applicantId, ApplicantStatus.INIT);
+        List<ApplicantInterviewVo> applicantInterviewVos = new ArrayList<>();
+
+        for(InterviewDto i: interviewDtos) {
+            applicantInterviewVos.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
+        }
+
+        return applicantInterviewVos;
+    }
+
+    public List<ApplicantInterviewVo> findSocialAcceptedInterviewsByApplicantId(int applicantId) {
+        List<InterviewDto> interviewDtos = findSocialInterviewDtosByApplicantIdAndApplicantStatus(applicantId, ApplicantStatus.ACCEPTED);
+        List<ApplicantInterviewVo> applicantInterviewVos = new ArrayList<>();
+
+        for(InterviewDto i: interviewDtos) {
+            applicantInterviewVos.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
+        }
+
+        return applicantInterviewVos;
+    }
+
+    private List<ApplicationDto> findApplicationDtosByApplicantIdAndRecruitType(int applicantId, int recruitType) {
+        ApplicantDto applicantDto;
+        List<ApplicationDto> applicationDtos;
+
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            if(applicantDto == null)
+                return new ArrayList<>();
+            applicationDtos = applicantDto.getApplications();
+            if(applicationDtos == null)
+                return new ArrayList<>();
+            applicationDtos = applicationDtos.stream()
+                    .filter(x -> x.getPost().getRecruitType() == recruitType)
+                    .collect(Collectors.toList());
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        return applicationDtos;
+    }
+
+    public Map<Integer, List<ApplicantInterviewVo>> findAllCampusAvailableInterviewsByApplicantId(int applicantId) {
+        List<ApplicationDto> applicationDtos = findApplicationDtosByApplicantIdAndRecruitType(applicantId, RecruitTypeStatus.CAMPUS);
+        Map<Integer, List<ApplicantInterviewVo>> application_interviews_map = new HashMap<>();
+        List<ApplicationDto> filtered_applications = new ArrayList<>();
+
+        for(ApplicationDto a: applicationDtos) {
+            PostDto postDto = a.getPost();
+            List<InterviewDto> interviewDtos = a.getInterviews();
+            boolean unassigned = true;
+            if(interviewDtos == null) {
+                filtered_applications.add(a);
+                continue;
+            }
+            for(InterviewDto i: interviewDtos) {
+                if(i.getInterviewRound() == postDto.getInterviewRound()) {
+                    unassigned = false;
+                    break;
+                }
+            }
+
+            if(unassigned) {
+                filtered_applications.add(a);
+            }
+        }
+
+        for(ApplicationDto a: filtered_applications) {
+            PostDto postDto = a.getPost();
+            List<InterviewDto> interviewDtos;
+            List<ApplicantInterviewVo> availableInterviews = new ArrayList<>();
+            try {
+                interviewDtos = interviewDtoRepository.findAllByPostAndRound(postDto, postDto.getInterviewRound());
+                interviewDtos = interviewDtos.stream()
+                        .filter(x -> x.getApplicantStatus() == ApplicantStatus.INIT)
+                        .collect(Collectors.toList());
+                for(InterviewDto i: interviewDtos) {
+                    availableInterviews.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
+                }
+            } catch (DataAccessException e) {
+
+            }
+
+            application_interviews_map.put(a.getApplicationId(), availableInterviews);
+        }
+
+        return application_interviews_map;
+    }
+
+    public List<ApplicantInterviewVo> findCampusAcceptedInterviewsByApplicantId(int applicantId) {
+        List<InterviewDto> interviewDtos = findSocialInterviewDtosByApplicantIdAndApplicantStatus(applicantId, ApplicantStatus.ACCEPTED);
+        List<ApplicantInterviewVo> applicantInterviewVos = new ArrayList<>();
+
+        interviewDtos = interviewDtos.stream()
+                .filter(x -> x.getApplication().getPost().getRecruitType() == RecruitTypeStatus.CAMPUS)
+                .collect(Collectors.toList());
+
+        for(InterviewDto i: interviewDtos) {
+            applicantInterviewVos.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
+        }
+
+        return applicantInterviewVos;
+    }
 
 
     public int updateApplicantStatusOfInterview(int interviewId, int applicantStatus, String comment) {

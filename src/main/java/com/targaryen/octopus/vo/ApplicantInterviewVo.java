@@ -17,6 +17,7 @@ public class ApplicantInterviewVo {
     private final int applicationId;
     private final int interviewerId;
     private final String interviewerName;
+    private final int postId;
     private final String postName;
     private final int departmentId;
     private final String departmentName;
@@ -32,6 +33,7 @@ public class ApplicantInterviewVo {
         private int applicationId;
         private int interviewerId;
         private String interviewerName;
+        private int postId;
         private String postName;
         private int departmentId;
         private String departmentName;
@@ -79,6 +81,11 @@ public class ApplicantInterviewVo {
             return this;
         }
 
+        public Builder postId(int postId) {
+            this.postId = postId;
+            return this;
+        }
+
         public Builder postName(String postName) {
             this.postName = postName;
             return this;
@@ -120,6 +127,7 @@ public class ApplicantInterviewVo {
         this.applicationId = builder.applicationId;
         this.interviewerId = builder.interviewerId;
         this.interviewerName = builder.interviewerName;
+        this.postId = builder.postId;
         this.postName = builder.postName;
         this.departmentId = builder.departmentId;
         this.departmentName = builder.departmentName;
