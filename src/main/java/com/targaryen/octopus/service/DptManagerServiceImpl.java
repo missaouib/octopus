@@ -7,6 +7,7 @@ import com.targaryen.octopus.dto.*;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.PostStatus;
+import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.vo.ApplicationResumeVo;
 import com.targaryen.octopus.vo.EducationExperienceVo;
 import com.targaryen.octopus.vo.PostVo;
@@ -81,7 +82,7 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setRecruitType(newPost.getRecruitType());
             postDto.setStatus(PostStatus.INIT);
             postDto.setDepartment(department);
-            postDto.setInterviewRound(0);
+            postDto.setInterviewRound(newPost.getRecruitType() == RecruitTypeStatus.SOCIETY? 0 : 1);
             postDtoRepository.save(postDto);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);
