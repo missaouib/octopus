@@ -21,10 +21,7 @@ import org.springframework.web.servlet.View;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by zhouy on 2018/9/4.
@@ -51,7 +48,9 @@ public class ApplicantController {
         int userId = AuthInfo.getUserId();
         int applicanId = serviceFactory.getIDService().userIdToApplicantId(userId);
         //campus
+
         List<ApplicationVo> applicationVos  = serviceFactory.getApplicantService().findAppByApplicantId(applicanId);
+        Map<Integer, List<InterviewEntity>> socialInterviewEntities = new HashMap<>();
 
         //social
         List<InterviewVo> applicationVos2  = serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
@@ -116,7 +115,13 @@ public class ApplicantController {
         //System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
         result.addObject ("unreplyMsg", interviewEntities);
 
-        map.addAttribute("ps", new InterviewEntity());
+
+        socialInterviewEntities.put(1, interviewEntities);
+        socialInterviewEntities.put(2, interviewEntities);
+
+        result.addObject ("social", socialInterviewEntities);
+
+        //map.addAttribute("ps", new InterviewEntity());
         map.addAttribute("acceptedMsg", interviewVosAccpted);
 
         int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);

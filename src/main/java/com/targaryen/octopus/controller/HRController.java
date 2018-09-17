@@ -72,6 +72,23 @@ public class HRController {
         return "hr-post-list";
     }
 
+    @RequestMapping(value = "/hr/billboard/list", method = RequestMethod.GET)
+    public String hrAnnouncementList(ModelMap map) {
+        /*
+        if (type == RecruitTypeStatus.CAMPUS) {
+            map.addAttribute("title", "Campus Recruitment");
+        } else if (type == RecruitTypeStatus.SOCIETY) {
+            map.addAttribute("title", "Society Recruitment");
+        }
+
+        map.addAttribute("recruitType", type);*/
+
+        /*List<PostVo> postVoList = hrService.listPosts();
+        postVoList = postVoList.stream().filter(s -> s.getRecruitType() == type).collect(Collectors.toList());
+        map.addAttribute("postList",postVoList);*/
+        return "hr-billboard-list";
+    }
+
     @RequestMapping(value = "/hr/post/{postId}", method = RequestMethod.GET)
     public String hrPostDetail(@PathVariable("postId") int postId, ModelMap map) {
         PostVo postVo = hrService.findPostById(postId);
