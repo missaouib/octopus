@@ -82,7 +82,7 @@
                                                     <label th:style="${listResumeModel.applicantPoliticalStatus}? 'display:block' : 'display:none'">Political</label>
                                                     <input id="applicantPoliticalStatus" name="political" th:type="${listResumeModel.applicantPoliticalStatus}?'text':'hidden'" th:required="${listResumeModel.applicantPoliticalStatus}?'required':'none'" th:field="*{applicantPoliticalStatus}" class="form-control">
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group">0
                                                     <label th:style="${listResumeModel.familyContactName}? 'display:block' : 'display:none'">familyContactName</label>
                                                     <input id="familyContactName" name="familyContactName" th:type="${listResumeModel.familyContactName}?'text':'hidden'" th:required="${listResumeModel.familyContactName}?'required':'none'" th:field="*{familyContactName}" class="form-control">
                                                 </div>
@@ -100,9 +100,12 @@
                                                     <label th:style="${listResumeModel.applicantSchool}? 'display:block' : 'display:none'">School</label>
                                                     <input id="applicantSchool" name="school" th:type="${listResumeModel.applicantSchool}?'text':'hidden'" th:required="${listResumeModel.applicantSchool}?'required':'none'" th:field="*{applicantSchool}" class="form-control">
                                                 </div>
+
+
+
                                                 <div class="form-group" th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">
                                                     <label th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">Degree</label>
-                                                    <select th:field="*{applicantDegree}" class="form-control" th:style="${listResumeModel.applicantDegree}? 'visibility:visible' : 'visibility:hidden'" id="applicantDegree" name="applicantDegree" >
+                                                    <select th:field="*{applicantDegree}" class="form-control" th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'" id="applicantDegree" name="applicantDegree" >
                                                         <option value="0">High School</option>
                                                         <option value="1">Bachlor</option>
                                                         <option value="2">Master</option>
@@ -152,7 +155,7 @@
                                             <div class="col-lg-3">
                                                 <div class="form-group" th:style="${listResumeModel.applicantDegree}? 'display:block' : 'display:none'">
                                                     <label th:style="${listResumeModel.applicantSex}? 'display:block' : 'display:none'">Sex</label>
-                                                    <select th:field="*{applicantSex}" class="form-control" th:style="${listResumeModel.applicantNation}? 'visibility:visible' : 'visibility:hidden'" id="applicantSex" name="sex">
+                                                    <select th:field="*{applicantSex}" class="form-control" th:style="${listResumeModel.applicantSex}? 'display:block' : 'display:none'" id="applicantSex" name="sex">
                                                         <option value="0">Male</option>
                                                         <option value="1">Female</option>
                                                     </select>
