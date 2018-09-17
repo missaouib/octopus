@@ -31,4 +31,6 @@ public class MessageDto {
     private String link;
 
     private String channel;
+
+    private int messageType;
 }
