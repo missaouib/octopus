@@ -5,8 +5,10 @@ import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.entity.PostScheduleEntity;
 import com.targaryen.octopus.entity.ResumeModelEntity;
 import com.targaryen.octopus.security.AuthInfo;
+import com.targaryen.octopus.service.ApplicantService;
 import com.targaryen.octopus.service.HRService;
 import com.targaryen.octopus.service.ServiceFactory;
+import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewResultStatus;
@@ -38,10 +40,12 @@ public class HRController {
     private Logger logger = LoggerFactory.getLogger(HRController.class);
 
     private HRService hrService;
+    private ApplicantService applicantService;
 
     @Autowired
-    public HRController(ServiceFactory serviceFactory) {
+    public HRController(ServiceFactory serviceFactory, ApplicantService applicantService) {
         this.hrService = serviceFactory.getHRService();
+        this.applicantService = applicantService;
     }
 
     @RequestMapping(value="/hr/index")
@@ -461,5 +465,23 @@ public class HRController {
             }
         }
         return String.valueOf(interviewCreated);
+    }
+
+    /******************************/
+    @RequestMapping(value = "/hr/post/{postId}/application/acceptOffer", method = RequestMethod.POST)
+    @ResponseBody
+    public String applicantAcceptOffer(@PathVariable("postId") int postId, @RequestParam("applicationId") int applicationId) {
+        return String.valueOf(applicantService.acceptOfferByApplicationId(applicationId));
+    }
+
+    /**
+     * applicant reject offer
+     * @param applicationId
+     * @return
+     */
+    @RequestMapping(value = "/hr/post/{postId}/rejectOffer", method = RequestMethod.POST)
+    @ResponseBody
+    public String applicantRejectOffer(@PathVariable("postId") int postId, @RequestParam("applicationId") int applicationId) {
+        return String.valueOf(applicantService.rejectOfferByApplicationId(applicationId));
     }
 }
