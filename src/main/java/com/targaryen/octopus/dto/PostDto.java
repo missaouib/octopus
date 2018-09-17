@@ -50,6 +50,10 @@ public class PostDto implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE)
     private DepartmentDto department;
 
+    @JoinColumn(name = "batch_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private BatchDto batch;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<ApplicationDto> applications;
 

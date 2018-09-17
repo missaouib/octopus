@@ -16,7 +16,9 @@ public class MyApplicationRunner implements ApplicationRunner {
     private static final String SELECT_SQL = "SELECT department_id from t_department where department_id = 1";
 
     private static final String INSERT_SQL =
-            "INSERT INTO t_department (department_id, department_name) VALUES (1, 'HUE Development') ON conflict(department_id) DO NOTHING;\n" +
+            "INSERT INTO t_batch (batch_id, batch_name, number, start_time, year) VALUES (1, '2018 Autumn', 2, '2018-07-01', '2018-01-01');\n" +
+                    "ALTER SEQUENCE t_batch_seq RESTART WITH 2;" +
+                    "INSERT INTO t_department (department_id, department_name) VALUES (1, 'HUE Development') ON conflict(department_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_department_seq RESTART WITH 2;" +
             "INSERT INTO t_user VALUES (1, 'dpt_manager', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
             "INSERT INTO t_user VALUES (2, 'hr', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
@@ -69,13 +71,13 @@ public class MyApplicationRunner implements ApplicationRunner {
             "INSERT INTO t_applicant VALUES (9, 11) ON conflict(applicant_id) DO NOTHING;\n" +
             "INSERT INTO t_applicant VALUES (10, 12) ON conflict(applicant_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_applicant_seq RESTART WITH 11;" +
-            "INSERT INTO t_interviewer  VALUES (1, 25, 'HUE Development', 'Interviewer_1', 'Java Developer', 1, 13) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (2, 25, 'HUE Development', 'Interviewer_2', 'Java Developer', 1, 14) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (3, 25, 'HUE Development', 'Interviewer_3', 'Java Developer', 1, 15) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (4, 25, 'HUE Development', 'Interviewer_4', 'Java Developer', 1, 16) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (5, 25, 'HUE Development', 'Interviewer_5', 'Java Developer', 1, 17) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (1, 0, 25, 'HUE Development', 'Interviewer_1', 'Java Developer', 1, 13) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (2, 0, 25, 'HUE Development', 'Interviewer_2', 'Java Developer', 1, 14) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (3, 0, 25, 'HUE Development', 'Interviewer_3', 'Java Developer', 1, 15) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (4, 0, 25, 'HUE Development', 'Interviewer_4', 'Java Developer', 1, 16) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (5, 0, 25, 'HUE Development', 'Interviewer_5', 'Java Developer', 1, 17) ON conflict(interviewer_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_interviewer_seq RESTART WITH 6;" +
-            "INSERT INTO t_post VALUES (1, 1, 'Java Developer', 'Shanghai', 'Java Developer', 'Java', 'R&D', '2018-09-01', 30, 0, 0, 1) ON conflict(post_id) DO NOTHING;\n" +
+            "INSERT INTO t_post VALUES (1, 0, 'Java Developer', 'Shanghai', 'Java Developer', 'Java', 'R&D', '2018-09-01', 30, 0, 0, 1, 1) ON conflict(post_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_post_seq RESTART WITH 2;" +
             "INSERT INTO t_resume_model VALUES (1, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, 1);" +
             "ALTER SEQUENCE t_resume_model_seq RESTART WITH 2;" +
