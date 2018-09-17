@@ -444,8 +444,8 @@ public class HRController {
 
         int interviewCreated = 0;
         if (passedApplicants > 0) {
-                        // If there are not enough interviews for passed applicants
-            if (passedApplicants > interviewerVoList.size()) {
+            // If there are not enough interviews for passed applicants
+            if (passedApplicants > interviewVoList.size()) {
                 return String.valueOf(interviewCreated);
             }
 
