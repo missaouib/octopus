@@ -241,58 +241,7 @@ public class HRServiceImpl implements HRService {
     @Override
     public int createInterview(InterviewVo interviewVo) {
         try {
-            InterviewDto newInterview = new InterviewDto();
-
-            ApplicationDto application;
-            if(interviewVo.getApplicationId() <= 0) {
-                application = null;
-            } else {
-                application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
-            }
-            newInterview.setApplication(application);
-
-            InterviewerDto interviewer;
-            if(interviewVo.getInterviewerId() <= 0) {
-                interviewer = null;
-            } else {
-                interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
-            }
-            newInterview.setInterviewer(interviewer);
-
-            PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
-            newInterview.setPost(post);
-            if(interviewer != null && RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
-                newInterview.setInterviewerStatus(InterviewerStatus.ACCEPTED);
-            } else {
-                newInterview.setInterviewerStatus(InterviewerStatus.INIT);
-            }
-
-            newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
-            newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
-            newInterview.setApplicantStatus(ApplicantStatus.INIT);
-            newInterview.setReservationStatus(ReservationStatus.INIT);
-            newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
-            newInterview.setCreateTime(Calendar.getInstance().getTime());
-
-            if(RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
-                newInterview.setInterviewRound(interviewVo.getInterviewRound());
-            } else {
-                if(application != null) {
-                    int interviewRound = 0;
-                    List<InterviewDto> interviewDtos = application.getInterviews();
-                    if(interviewDtos != null) {
-                        for (InterviewDto interview: interviewDtos) {
-                            if(ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
-                                int r = interview.getInterviewRound();
-                                interviewRound = r > interviewRound? r : interviewRound;
-                            }
-                        }
-                        newInterview.setInterviewRound(++interviewRound);
-                    }
-                }
-            }
-
-            interviewDtoRepository.save(newInterview);
+            interviewDtoRepository.save(createInterviewProcess(interviewVo));
             return StatusCode.SUCCESS;
         } catch (Exception e) {
             return StatusCode.FAILURE;
@@ -305,57 +254,7 @@ public class HRServiceImpl implements HRService {
         try {
             List<InterviewDto> interviewDtos = new ArrayList<>();
             for (InterviewVo interviewVo: interviewVos) {
-                InterviewDto newInterview = new InterviewDto();
-
-                ApplicationDto application;
-                if(interviewVo.getApplicationId() <= 0) {
-                    application = null;
-                } else {
-                    application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
-                }
-                newInterview.setApplication(application);
-
-                InterviewerDto interviewer;
-                if(interviewVo.getInterviewerId() <= 0) {
-                    interviewer = null;
-                } else {
-                    interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
-                }
-                newInterview.setInterviewer(interviewer);
-
-                PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
-                newInterview.setPost(post);
-                if(interviewer != null && RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
-                    newInterview.setInterviewerStatus(InterviewerStatus.ACCEPTED);
-                } else {
-                    newInterview.setInterviewerStatus(InterviewerStatus.INIT);
-                }
-
-                newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
-                newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
-                newInterview.setApplicantStatus(ApplicantStatus.INIT);
-                newInterview.setReservationStatus(ReservationStatus.INIT);
-                newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
-                newInterview.setCreateTime(Calendar.getInstance().getTime());
-
-                if(RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
-                    newInterview.setInterviewRound(interviewVo.getInterviewRound());
-                } else {
-                    if(application != null) {
-                        int interviewRound = 0;
-                        List<InterviewDto> oldInterviewDtos = application.getInterviews();
-                        if(oldInterviewDtos != null) {
-                            for (InterviewDto interview: oldInterviewDtos) {
-                                if(ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
-                                    int r = interview.getInterviewRound();
-                                    interviewRound = r > interviewRound? r : interviewRound;
-                                }
-                            }
-                            newInterview.setInterviewRound(++interviewRound);
-                        }
-                    }
-                }
-                interviewDtos.add(newInterview);
+                interviewDtos.add(createInterviewProcess(interviewVo));
             }
             interviewDtoRepository.saveAll(interviewDtos);
             return StatusCode.SUCCESS;
@@ -532,6 +431,60 @@ public class HRServiceImpl implements HRService {
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
+    }
+
+    private InterviewDto createInterviewProcess(InterviewVo interviewVo) {
+        InterviewDto newInterview = new InterviewDto();
+
+        ApplicationDto application;
+        if(interviewVo.getApplicationId() <= 0) {
+            application = null;
+        } else {
+            application = applicationDtoRepository.findApplicationDtoByApplicationId(interviewVo.getApplicationId());
+        }
+        newInterview.setApplication(application);
+
+        InterviewerDto interviewer;
+        if(interviewVo.getInterviewerId() <= 0) {
+            interviewer = null;
+        } else {
+            interviewer = interviewerDtoRepository.findInterviewerDtoByInterviewerId(interviewVo.getInterviewerId());
+        }
+        newInterview.setInterviewer(interviewer);
+
+        PostDto post = postDtoRepository.findPostDtoByPostId(interviewVo.getPostId());
+        newInterview.setPost(post);
+        if(interviewer != null && RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
+            newInterview.setInterviewerStatus(InterviewerStatus.ACCEPTED);
+        } else {
+            newInterview.setInterviewerStatus(InterviewerStatus.INIT);
+        }
+
+        newInterview.setInterviewStartTime(interviewVo.getInterviewStartTime());
+        newInterview.setInterviewPlace(interviewVo.getInterviewPlace());
+        newInterview.setApplicantStatus(ApplicantStatus.INIT);
+        newInterview.setReservationStatus(ReservationStatus.INIT);
+        newInterview.setInterviewResultStatus(InterviewResultStatus.INIT);
+        newInterview.setCreateTime(Calendar.getInstance().getTime());
+
+        if(RecruitTypeStatus.CAMPUS.equals(post.getRecruitType())) {
+            newInterview.setInterviewRound(interviewVo.getInterviewRound());
+        } else {
+            if(application != null) {
+                int interviewRound = 0;
+                List<InterviewDto> interviewDtos = application.getInterviews();
+                if(interviewDtos != null) {
+                    for (InterviewDto interview: interviewDtos) {
+                        if(ReservationStatus.SUCCESS.equals(interview.getReservationStatus())) {
+                            int r = interview.getInterviewRound();
+                            interviewRound = r > interviewRound? r : interviewRound;
+                        }
+                    }
+                    newInterview.setInterviewRound(++interviewRound);
+                }
+            }
+        }
+        return newInterview;
     }
 
 }
