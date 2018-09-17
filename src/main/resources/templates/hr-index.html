@@ -16,6 +16,9 @@
     <script th:src="@{/octopus/js/hplus.min.js}"></script>
     <script th:src="@{/octopus/js/contabs.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/pace/pace.min.js}"></script>
+
+    <script th:src="@{/octopus/js/notification/sockjs.js}"></script>
+    <script th:src="@{/octopus/js/notification/stomp.js}"></script>
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg">
@@ -79,6 +82,27 @@
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i> </a>
                 </div>
+
+                <!-- Message Box -->
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fa fa-envelope"></i> <span class="label label-warning" id="unread-notifications"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li id="hr-notifications"></li>
+
+                            <li>
+                                <div class="text-center link-block">
+                                    <a class="J_menuItem" href="mailbox.html" data-index="88">
+                                        <i class="fa fa-envelope"></i> <strong> View all notifications</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
             </nav>
         </div>
 
@@ -91,5 +115,54 @@
 
 </div>
 
+<script th:inline="javascript">
+    $("#unread-notifications").text(0);
+
+    function hideWhenEmpty() {
+        if (parseInt($("#unread-notifications").text()) == 0) {
+            $("#unread-notifications").css("display", "none");
+        } else {
+            $("#unread-notifications").css("display", "block");
+        }
+    }
+    hideWhenEmpty();
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_header_name = /*[[${_csrf.headerName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_header_name] = _csrf_token;
+    csrfData['login'] = "login";
+    csrfData['passcode'] = 'passcode';
+
+    var socket = new SockJS('/octopus/ws/endpoint'); //Handshake
+    stompClient = Stomp.over(socket);
+    stompClient.debug = null;
+
+    stompClient.connect(csrfData, function (frame) {
+        stompClient.subscribe('/octopus/ws/hr', function (message) {
+            var data = JSON.parse(message.body);
+
+            $("#unread-notifications").text(parseInt($("#unread-notifications").text()) + 1);
+            hideWhenEmpty();
+
+            $("#hr-notifications").after("<li>\n" +
+                "                                <div class=\"dropdown-messages-box\">\n" +
+                "                                    <a href=\"profile.html\" class=\"pull-left\">\n" +
+                "                                        <img alt=\"image\" class=\"img-circle\" src=\"/octopus/img/ico-mail.png\">\n" +
+                "                                    </a>\n" +
+                "                                    <div class=\"media-body \">\n" +
+                "                                        <small class=\"pull-right text-navy\">Now</small>\n" +
+                "                                        <strong>HR san</strong> trying to update postId: " + data + "\n" +
+                "                                        <br>\n" +
+                "                                        <small class=\"text-muted\">Today</small>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </li>" +
+                "                           <li class=\"divider\"></li>")
+        });
+    });
+</script>
 </body>
 </html>

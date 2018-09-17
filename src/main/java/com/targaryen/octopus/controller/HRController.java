@@ -8,11 +8,9 @@ import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ApplicantService;
 import com.targaryen.octopus.service.HRService;
 import com.targaryen.octopus.service.ServiceFactory;
-import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewResultStatus;
-import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
@@ -24,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +40,13 @@ public class HRController {
 
     private HRService hrService;
     private ApplicantService applicantService;
+    private SimpMessagingTemplate messageTemplate;
 
     @Autowired
-    public HRController(ServiceFactory serviceFactory, ApplicantService applicantService) {
+    public HRController(ServiceFactory serviceFactory, SimpMessagingTemplate messageTemplate) {
         this.hrService = serviceFactory.getHRService();
-        this.applicantService = applicantService;
+        this.applicantService = serviceFactory.getApplicantService();
+        this.messageTemplate = messageTemplate;
     }
 
     @RequestMapping(value="/hr/index")
@@ -84,6 +85,9 @@ public class HRController {
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
         map.addAttribute("post", postVo);
+
+        // WebSocket STOMP test
+        messageTemplate.convertAndSend("/octopus/ws/hr", postVo.getPostId());
 
         return "dpt-hr-post-detail";
     }
@@ -380,6 +384,8 @@ public class HRController {
                                       @RequestParam("interviewRound") String interviewRound) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 
+        List<InterviewVo> interviewVoList = new ArrayList<>();
+
         for (int i = 0; i < Integer.valueOf(count); i++) {
             for (String dateString : dates) {
                 for (String startTimeString : times) {
@@ -394,13 +400,16 @@ public class HRController {
                                 .interviewRound(Integer.valueOf(interviewRound))
                                 .reservationStatus(ReservationStatus.SUCCESS)
                                 .build();
-                        hrService.createInterview(interviewVo);
+                        interviewVoList.add(interviewVo);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+
+        // Batch create by hibernate
+        hrService.createListOfInterviews(interviewVoList);
 
         return "";
     }
@@ -468,6 +477,11 @@ public class HRController {
     }
 
     /******************************/
+    /**
+     * applicant accept offer
+     * @param applicationId
+     * @return
+     */
     @RequestMapping(value = "/hr/post/{postId}/application/acceptOffer", method = RequestMethod.POST)
     @ResponseBody
     public String applicantAcceptOffer(@PathVariable("postId") int postId, @RequestParam("applicationId") int applicationId) {
@@ -484,4 +498,5 @@ public class HRController {
     public String applicantRejectOffer(@PathVariable("postId") int postId, @RequestParam("applicationId") int applicationId) {
         return String.valueOf(applicantService.rejectOfferByApplicationId(applicationId));
     }
+    /******************************/
 }
