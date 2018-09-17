@@ -22,7 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/octopus/css/**", "/octopus/js/**", "/octopus/fonts/**", "/octopus/pdf/**", "/octopus/new-vendor/**", "/octopus/img/**", "/octopus/", "/octopus/new/pdf", "/octopus/postDetail/**", "/octopus/register", "/octopus/userRegister").permitAll()
+                .antMatchers("/octopus/css/**", "/octopus/js/**", "/octopus/fonts/**", "/octopus/pdf/**", "/octopus/new-vendor/**", "/octopus/img/**", "/octopus/", "/octopus/new/pdf", "/octopus/postDetail/**", "/octopus/register", "/octopus/userRegister",
+                        // Unleash WebSocket URIs from Authentication
+                        "/octopus/ws/**").permitAll()
                 .antMatchers("/octopus/applicant/**").hasRole("APPLICANT")
                 .antMatchers("/octopus/hr/**").hasRole("HR")
                 .antMatchers("/octopus/interviewer/**").hasRole("INTERVIEWER")
@@ -33,7 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         /* Zhao: Read this if you need help */
         /* https://docs.spring.io/spring-security/site/docs/current/reference/html/headers.html#headers-frame-options */
+
         http
+                .csrf()
+                // Unleash WebSocket Endpoint from CSRF protection: Ignore our stomp endpoints since they are protected using Stomp headers
+                .ignoringAntMatchers("/octopus/ws/**")
+                .and()
                 .headers()
                 .frameOptions()
                 .sameOrigin();

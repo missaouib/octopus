@@ -116,9 +116,9 @@
     </div>
 
 <script th:inline="javascript">
-    $(document).ready(function(){$(".sortable-list").sortable({
+    $(".sortable-list").sortable({
         connectWith:".connectList"
-    }).disableSelection()});
+    }).disableSelection();
 
     /*<![CDATA[*/
     var _csrf_token = /*[[${_csrf.token}]]*/ '';
