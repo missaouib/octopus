@@ -337,7 +337,41 @@ public class ApplicantServiceImpl implements ApplicantService {
 
         filtered = interviewDtos.stream()
                 .filter(x -> (x.getApplicantStatus() == applicantStatus)
-                        && (x.getInterviewerStatus() == InterviewerStatus.ACCEPTED))
+                        && (x.getInterviewerStatus() == InterviewerStatus.ACCEPTED || x.getInterviewerStatus() == InterviewerStatus.INIT))
+                .collect(Collectors.toList());
+
+        return filtered;
+    }
+
+    private List<InterviewDto> findCampusInterviewDtosByApplicantIdAndApplicantStatus(int applicantId, int applicantStatus) {
+        ApplicantDto applicantDto;
+        List<ApplicationDto> applicationDtos;
+        List<InterviewDto> interviewDtos = new ArrayList<>();
+        List<InterviewDto> filtered;
+
+        try {
+            applicantDto = applicantDtoRepository.findApplicantDtoByApplicantId(applicantId);
+            if(applicantDto == null)
+                return new ArrayList<>();
+            applicationDtos = applicantDto.getApplications();
+
+        } catch (DataAccessException e) {
+            return new ArrayList<>();
+        }
+
+        applicationDtos = applicationDtos.stream()
+                .filter(x -> x.getPost().getRecruitType() == RecruitTypeStatus.CAMPUS)
+                .collect(Collectors.toList());
+
+        for(ApplicationDto a: applicationDtos) {
+            if(a.getInterviews() == null)
+                continue;
+            interviewDtos.addAll(a.getInterviews());
+        }
+
+        filtered = interviewDtos.stream()
+                .filter(x -> (x.getApplicantStatus() == applicantStatus)
+                        && (x.getInterviewerStatus() == InterviewerStatus.ACCEPTED || x.getInterviewerStatus() == InterviewerStatus.INIT))
                 .collect(Collectors.toList());
 
         return filtered;
@@ -434,12 +468,8 @@ public class ApplicantServiceImpl implements ApplicantService {
     }
 
     public List<ApplicantInterviewVo> findCampusAcceptedInterviewsByApplicantId(int applicantId) {
-        List<InterviewDto> interviewDtos = findSocialInterviewDtosByApplicantIdAndApplicantStatus(applicantId, ApplicantStatus.ACCEPTED);
+        List<InterviewDto> interviewDtos = findCampusInterviewDtosByApplicantIdAndApplicantStatus(applicantId, ApplicantStatus.ACCEPTED);
         List<ApplicantInterviewVo> applicantInterviewVos = new ArrayList<>();
-
-        interviewDtos = interviewDtos.stream()
-                .filter(x -> x.getApplication().getPost().getRecruitType() == RecruitTypeStatus.CAMPUS)
-                .collect(Collectors.toList());
 
         for(InterviewDto i: interviewDtos) {
             applicantInterviewVos.add(DataTransferUtil.InterviewDtoToApplicantInterviewVo(i));
