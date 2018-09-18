@@ -13,73 +13,73 @@ public class MyApplicationRunner implements ApplicationRunner {
     @Autowired
     JdbcTemplate template;
 
-    private static final String SELECT_SQL = "SELECT department_id from t_department where department_id = 1";
+    private static final String SELECT_SQL = "SELECT batch_id from t_batch where batch_id = 1";
 
     private static final String INSERT_SQL =
             "INSERT INTO t_batch (batch_id, batch_name, number, start_time, year) VALUES (1, '2018 Autumn', 2, '2018-07-01', '2018-01-01');\n" +
                     "ALTER SEQUENCE t_batch_seq RESTART WITH 2;" +
                     "INSERT INTO t_department (department_id, department_name) VALUES (1, 'HUE Development') ON conflict(department_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_department_seq RESTART WITH 2;" +
-                    "INSERT INTO t_user VALUES (1, 'dpt_manager', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (2, 'hr', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (3, 'applicant_1', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (4, 'applicant_2', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (5, 'applicant_3', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (6, 'applicant_4', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (7, 'applicant_5', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (8, 'applicant_6', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (9, 'applicant_7', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (10, 'applicant_8', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (11, 'applicant_9', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (12, 'applicant_10', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (13, 'interviewer_1', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (14, 'interviewer_2', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (15, 'interviewer_3', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (16, 'interviewer_4', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (17, 'interviewer_5', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "INSERT INTO t_user VALUES (18, 'maintenance', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (1, 'dpt_manager', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (2, 'hr', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (3, 'applicant_1', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (4, 'applicant_2', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (5, 'applicant_3', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (6, 'applicant_4', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (7, 'applicant_5', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (8, 'applicant_6', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (9, 'applicant_7', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (10, 'applicant_8', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (11, 'applicant_9', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (12, 'applicant_10', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (13, 'interviewer_1', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (14, 'interviewer_2', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (15, 'interviewer_3', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (16, 'interviewer_4', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (17, 'interviewer_5', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
+                    "INSERT INTO t_user (user_id, user_name, user_password) VALUES (18, 'maintenance', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_user_seq RESTART WITH 19;" +
-                    "INSERT INTO t_role VALUES (1, 'ROLE_DPT', 1) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (2, 'ROLE_HR', 2) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (3, 'ROLE_APPLICANT', 3) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (4, 'ROLE_APPLICANT', 4) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (5, 'ROLE_APPLICANT', 5) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (6, 'ROLE_APPLICANT', 6) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (7, 'ROLE_APPLICANT', 7) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (8, 'ROLE_APPLICANT', 8) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (9, 'ROLE_APPLICANT', 9) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (10, 'ROLE_APPLICANT', 10) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (11, 'ROLE_APPLICANT', 11) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (12, 'ROLE_APPLICANT', 12) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (13, 'ROLE_INTERVIEWER', 13) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (14, 'ROLE_INTERVIEWER', 14) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (15, 'ROLE_INTERVIEWER', 15) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (16, 'ROLE_INTERVIEWER', 16) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (17, 'ROLE_INTERVIEWER', 17) ON conflict(role_id) DO NOTHING;\n" +
-                    "INSERT INTO t_role VALUES (18, 'ROLE_MAINTENANCE', 18) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (1, 'ROLE_DPT', 1) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (2, 'ROLE_HR', 2) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (3, 'ROLE_APPLICANT', 3) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (4, 'ROLE_APPLICANT', 4) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (5, 'ROLE_APPLICANT', 5) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (6, 'ROLE_APPLICANT', 6) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (7, 'ROLE_APPLICANT', 7) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (8, 'ROLE_APPLICANT', 8) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (9, 'ROLE_APPLICANT', 9) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (10, 'ROLE_APPLICANT', 10) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (11, 'ROLE_APPLICANT', 11) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (12, 'ROLE_APPLICANT', 12) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (13, 'ROLE_INTERVIEWER', 13) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (14, 'ROLE_INTERVIEWER', 14) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (15, 'ROLE_INTERVIEWER', 15) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (16, 'ROLE_INTERVIEWER', 16) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (17, 'ROLE_INTERVIEWER', 17) ON conflict(role_id) DO NOTHING;\n" +
+                    "INSERT INTO t_role (role_id, role, user_id) VALUES (18, 'ROLE_MAINTENANCE', 18) ON conflict(role_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_role_seq RESTART WITH 19;" +
-                    "INSERT INTO t_dpt_manager VALUES (1, 1, 1) ON conflict(dpt_manager_id) DO NOTHING;\n" +
+                    "INSERT INTO t_dpt_manager (dpt_manager_id, department_id, user_id)VALUES (1, 1, 1) ON conflict(dpt_manager_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_dpt_manager_seq RESTART WITH 2;" +
-                    "INSERT INTO t_hr VALUES (1, 2) ON conflict(hr_id) DO NOTHING;\n" +
+                    "INSERT INTO t_hr (hr_id, user_id) VALUES (1, 2) ON conflict(hr_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_hr_seq RESTART WITH 2;" +
-                    "INSERT INTO t_applicant VALUES (1, 3) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (2, 4) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (3, 5) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (4, 6) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (5, 7) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (6, 8) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (7, 9) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (8, 10) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (9, 11) ON conflict(applicant_id) DO NOTHING;\n" +
-                    "INSERT INTO t_applicant VALUES (10, 12) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (1, 3) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (2, 4) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (3, 5) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (4, 6) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (5, 7) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (6, 8) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (7, 9) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (8, 10) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (9, 11) ON conflict(applicant_id) DO NOTHING;\n" +
+                    "INSERT INTO t_applicant (applicant_id, user_id) VALUES (10, 12) ON conflict(applicant_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_applicant_seq RESTART WITH 11;" +
-                    "INSERT INTO t_interviewer  VALUES (1, 0, 25, 'HUE Development', 'Interviewer_1', 'Java Developer', 1, 13) ON conflict(interviewer_id) DO NOTHING;\n" +
-                    "INSERT INTO t_interviewer  VALUES (2, 0, 25, 'HUE Development', 'Interviewer_2', 'Java Developer', 1, 14) ON conflict(interviewer_id) DO NOTHING;\n" +
-                    "INSERT INTO t_interviewer  VALUES (3, 0, 25, 'HUE Development', 'Interviewer_3', 'Java Developer', 1, 15) ON conflict(interviewer_id) DO NOTHING;\n" +
-                    "INSERT INTO t_interviewer  VALUES (4, 0, 25, 'HUE Development', 'Interviewer_4', 'Java Developer', 1, 16) ON conflict(interviewer_id) DO NOTHING;\n" +
-                    "INSERT INTO t_interviewer  VALUES (5, 0, 25, 'HUE Development', 'Interviewer_5', 'Java Developer', 1, 17) ON conflict(interviewer_id) DO NOTHING;\n" +
+                    "INSERT INTO t_interviewer (interviewer_id, interview_num, interviewer_age, interviewer_department, interviewer_name, interviewer_position, department_id, user_id) VALUES (1, 0, 25, 'HUE Development', 'Interviewer_1', 'Java Developer', 1, 13) ON conflict(interviewer_id) DO NOTHING;\n" +
+                    "INSERT INTO t_interviewer (interviewer_id, interview_num, interviewer_age, interviewer_department, interviewer_name, interviewer_position, department_id, user_id) VALUES (2, 0, 25, 'HUE Development', 'Interviewer_2', 'Java Developer', 1, 14) ON conflict(interviewer_id) DO NOTHING;\n" +
+                    "INSERT INTO t_interviewer (interviewer_id, interview_num, interviewer_age, interviewer_department, interviewer_name, interviewer_position, department_id, user_id) VALUES (3, 0, 25, 'HUE Development', 'Interviewer_3', 'Java Developer', 1, 15) ON conflict(interviewer_id) DO NOTHING;\n" +
+                    "INSERT INTO t_interviewer (interviewer_id, interview_num, interviewer_age, interviewer_department, interviewer_name, interviewer_position, department_id, user_id) VALUES (4, 0, 25, 'HUE Development', 'Interviewer_4', 'Java Developer', 1, 16) ON conflict(interviewer_id) DO NOTHING;\n" +
+                    "INSERT INTO t_interviewer (interviewer_id, interview_num, interviewer_age, interviewer_department, interviewer_name, interviewer_position, department_id, user_id) VALUES (5, 0, 25, 'HUE Development', 'Interviewer_5', 'Java Developer', 1, 17) ON conflict(interviewer_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_interviewer_seq RESTART WITH 6;" +
-                    "INSERT INTO t_post VALUES (1, 0, 'Java Developer', 'Shanghai', 'Java Developer', 'Java', 'R&D', '2018-09-01', 30, 0, 0, 1, 1) ON conflict(post_id) DO NOTHING;\n" +
+                    "INSERT INTO t_post (post_id, interview_round, post_description, post_locale, post_name, post_requirement, post_type, publish_time, recruit_num, recruit_type, status, batch_id, department_id) VALUES (1, 0, 'Java Developer', 'Shanghai', 'Java Developer', 'Java', 'R&D', '2018-09-01', 30, 0, 0, 1, 1) ON conflict(post_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_post_seq RESTART WITH 2;" +
                     "INSERT INTO t_resume_model VALUES (1, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, 1);" +
                     "ALTER SEQUENCE t_resume_model_seq RESTART WITH 2;" +
@@ -108,8 +108,8 @@ public class MyApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        List<Integer> department_id = template.query(SELECT_SQL, ps -> {}, (rs, rowNum) -> rs.getInt(1));
-        if(department_id.size() == 0) {
+        List<Integer> batch_id = template.query(SELECT_SQL, ps -> {}, (rs, rowNum) -> rs.getInt(1));
+        if(batch_id.size() == 0) {
             template.update(INSERT_SQL, ps -> {});
         }
     }

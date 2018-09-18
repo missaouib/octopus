@@ -1,24 +1,15 @@
 package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.dto.MessageDto;
-import com.targaryen.octopus.entity.InterviewEntity;
-import com.targaryen.octopus.entity.PostEntity;
-import com.targaryen.octopus.entity.PostScheduleEntity;
-import com.targaryen.octopus.entity.ResumeModelEntity;
+import com.targaryen.octopus.entity.*;
 import com.targaryen.octopus.security.AuthInfo;
-import com.targaryen.octopus.service.ApplicantService;
-import com.targaryen.octopus.service.HRService;
-import com.targaryen.octopus.service.MessageService;
-import com.targaryen.octopus.service.ServiceFactory;
+import com.targaryen.octopus.service.*;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewResultStatus;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
-import com.targaryen.octopus.vo.InterviewVo;
-import com.targaryen.octopus.vo.InterviewerVo;
-import com.targaryen.octopus.vo.PostVo;
-import com.targaryen.octopus.vo.ResumeModelVo;
+import com.targaryen.octopus.vo.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,12 +31,14 @@ public class HRController {
     private HRService hrService;
     private ApplicantService applicantService;
     private MessageService messageService;
+    private AnnouncementService announcementService;
 
     @Autowired
     public HRController(ServiceFactory serviceFactory) {
         this.hrService = serviceFactory.getHRService();
         this.applicantService = serviceFactory.getApplicantService();
         this.messageService = serviceFactory.getMessageService();
+        this.announcementService = serviceFactory.getAnnouncementService();
     }
 
     @RequestMapping(value="/hr/index")
@@ -72,6 +65,7 @@ public class HRController {
         return "hr-post-list";
     }
 
+    /******************************* billboard start zhou_me **************************************/
     @RequestMapping(value = "/hr/billboard/list", method = RequestMethod.GET)
     public String hrAnnouncementList(ModelMap map) {
         /*
@@ -86,8 +80,50 @@ public class HRController {
         /*List<PostVo> postVoList = hrService.listPosts();
         postVoList = postVoList.stream().filter(s -> s.getRecruitType() == type).collect(Collectors.toList());
         map.addAttribute("postList",postVoList);*/
+
+        List<AnnouncementVo> announcementVos = announcementService.ListHRAnnouncement();
+        map.addAttribute("announcementList", announcementVos);
         return "hr-billboard-list";
     }
+
+    @RequestMapping(value = "/hr/billboard/add", method = RequestMethod.GET)
+    public String hrBillboardAddGet(ModelMap map) {
+
+        /*
+        map.addAttribute("title", "New Post");
+        map.addAttribute("roleName", "Department Manager");
+        map.addAttribute("action", "add");
+        map.addAttribute("swalTextSuccess", "You have successfully added a new post need!");
+        map.addAttribute("swalTextFailure", "You have not successfully added a new post need.");
+
+        map.addAttribute("post", new PostVo.Builder()
+                .departmentName(dptManagerService.findDptNameByUserId(AuthInfo.getUserId()))
+                .recruitNum(1)
+                .build());
+        */
+
+        map.addAttribute("returnUrl", "list");
+        map.addAttribute("action", "add");
+        map.addAttribute("swalTextSuccess", "You have successfully added a new announcement!");
+        map.addAttribute("swalTextFailure", "You have not successfully added a new announcement.");
+
+        map.addAttribute("announcement", new AnnouncementVo.Builder().build());
+        return "hr-billboard-detail";
+    }
+
+    @RequestMapping(value = "/hr/billboard/add", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrBillboardAddPost(AnnouncementEntity announcementEntity) {
+
+        AnnouncementVo announcementVo = new AnnouncementVo.Builder()
+                .announcementTitle(announcementEntity.getAnnouncementTitle())
+                .announcementDetail(announcementEntity.getAnnouncementDetail())
+                .announcementType(announcementEntity.getAnnouncementType()).build();
+
+        return String.valueOf(announcementService.createNewAnnouncement(announcementVo));
+    }
+
+    /************************* end of billboard ********************************************/
 
     @RequestMapping(value = "/hr/post/{postId}", method = RequestMethod.GET)
     public String hrPostDetail(@PathVariable("postId") int postId, ModelMap map) {
