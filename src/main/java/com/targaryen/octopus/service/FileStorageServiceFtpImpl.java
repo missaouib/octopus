@@ -1,6 +1,7 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.util.StatusCode;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -81,6 +82,7 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
 
         try {
             ftpClient.enterLocalPassiveMode();
+            ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(dir.toString()));
             filenames = Arrays.asList(ftpClient.listNames());
 
         } catch (IOException e) {
@@ -118,11 +120,11 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
             ftpClient.enterLocalPassiveMode();
 
             if(single)
-                ftpClient.removeDirectory(storePath.toString());
+                ftpClient.removeDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
 
-            if(!ftpClient.changeWorkingDirectory(storePath.toString())) {
-                ftpClient.makeDirectory(storePath.toString());
-                ftpClient.changeWorkingDirectory(storePath.toString());
+            if(!ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(storePath.toString()))) {
+                ftpClient.makeDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
+                ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
             }
 
             is = file.getInputStream();
@@ -158,7 +160,7 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
 
         try {
             ftpClient.enterLocalPassiveMode();
-            if(!ftpClient.deleteFile(filePath.toString()))
+            if(!ftpClient.deleteFile(FilenameUtils.separatorsToUnix(filePath.toString())))
                 return StatusCode.FAILURE;
         } catch (IOException e) {
             System.out.println(e.toString());
@@ -193,7 +195,7 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
 
         try {
             ftpClient.enterLocalPassiveMode();
-            is = ftpClient.retrieveFileStream(filePath.toString());
+            is = ftpClient.retrieveFileStream(FilenameUtils.separatorsToUnix(filePath.toString()));
             resource = new InputStreamResource(is);
             is.close();
         } catch (IOException e) {
