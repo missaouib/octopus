@@ -261,11 +261,11 @@
                                                                             <h4 class="modal-title" id="myModalLabel">Reason for rejecting reservation.</h4>
                                                                         </div>
                                                                         <div>
-                                                                            <form method="post" th:action="@{/octopus/applicant/social/refuse}" style="margin: 20px;" th:object="${ps}">
+                                                                            <form method="post" th:action="@{/octopus/applicant/social/refuse}" style="margin: 20px;" th:object="${applicantCommentEntity}">
                                                                                 <fieldset>
-                                                                                    <input type="hidden" name="interviewId" th:field="*{interviewId}" />
+                                                                                    <input type="hidden" name="interviewId" th:value="${ps.interviewId}" />
                                                                                     <label> Reason:</label>
-                                                                                    <textarea class="form-control" id="interviewResultComment" name="interviewResultComment" th:field="*{interviewResultComment}">
+                                                                                    <textarea class="form-control" id="applicantComment" name="applicantComment" placeholder="Reason for rejecting interview" autofocus>
                                                                                     </textarea><br/>
                                                                                     <button type="submit" class="btn btn-primary" style="float:right;">Submit</button>
                                                                                 </fieldset>
@@ -300,7 +300,7 @@
                                                             <label>Reservation:</label>&emsp;
                                                             <label style="font-style: italic; color:#000;">Interview time: </label>&emsp;<label th:text="${#dates.format(ps.interviewStartTime,'yyyy-MM-dd HH:mm')}"></label>&emsp;
                                                             <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
-                                                            <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp
+                                                            <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
                                                         </div>
                                                     </li>
                                                 </ul>

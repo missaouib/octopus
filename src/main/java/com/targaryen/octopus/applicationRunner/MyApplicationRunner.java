@@ -69,11 +69,11 @@ public class MyApplicationRunner implements ApplicationRunner {
             "INSERT INTO t_applicant VALUES (9, 11) ON conflict(applicant_id) DO NOTHING;\n" +
             "INSERT INTO t_applicant VALUES (10, 12) ON conflict(applicant_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_applicant_seq RESTART WITH 11;" +
-            "INSERT INTO t_interviewer  VALUES (1, 25, 'HUE Development', 'Interviewer_1', 'Java Developer', 1, 13) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (2, 25, 'HUE Development', 'Interviewer_2', 'Java Developer', 1, 14) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (3, 25, 'HUE Development', 'Interviewer_3', 'Java Developer', 1, 15) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (4, 25, 'HUE Development', 'Interviewer_4', 'Java Developer', 1, 16) ON conflict(interviewer_id) DO NOTHING;\n" +
-            "INSERT INTO t_interviewer  VALUES (5, 25, 'HUE Development', 'Interviewer_5', 'Java Developer', 1, 17) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (1, 25, 'HUE Development', 'Interviewer_1', 'Java Developer', 13, 1) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (2, 25, 'HUE Development', 'Interviewer_2', 'Java Developer', 14, 1) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (3, 25, 'HUE Development', 'Interviewer_3', 'Java Developer', 15, 1 ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (4, 25, 'HUE Development', 'Interviewer_4', 'Java Developer', 16, 1) ON conflict(interviewer_id) DO NOTHING;\n" +
+            "INSERT INTO t_interviewer  VALUES (5, 25, 'HUE Development', 'Interviewer_5', 'Java Developer', 17, 1) ON conflict(interviewer_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_interviewer_seq RESTART WITH 6;" +
             "INSERT INTO t_post VALUES (1, 1, 'Java Developer', 'Shanghai', 'Java Developer', 'Java', 'R&D', '2018-09-01', 30, 0, 0, 1) ON conflict(post_id) DO NOTHING;\n" +
             "ALTER SEQUENCE t_post_seq RESTART WITH 2;" +
