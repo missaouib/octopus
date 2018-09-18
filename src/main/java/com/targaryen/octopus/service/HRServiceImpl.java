@@ -37,6 +37,7 @@ public class HRServiceImpl implements HRService {
     @Override
     public List<PostVo> listPosts() {
         return postDtoRepository.findAllByStatusNotOrderByPostIdDesc(PostStatus.REVOKED).stream()
+                .filter(n -> n.getBatch().getBatchId() == 1)
                 .map(n -> DataTransferUtil.PostDtoToVo(n))
                 .collect(Collectors.toList());
     }

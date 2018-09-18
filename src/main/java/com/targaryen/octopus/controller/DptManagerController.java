@@ -1,11 +1,14 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.dto.MessageDto;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.DptManagerService;
+import com.targaryen.octopus.service.MessageService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.HRMessage;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +26,12 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class DptManagerController {
     private DptManagerService dptManagerService;
+    private MessageService messageService;
 
     @Autowired
     public DptManagerController(ServiceFactory serviceFactory) {
         this.dptManagerService = serviceFactory.getDptManagerService();
+        this.messageService = serviceFactory.getMessageService();
     }
 
     @RequestMapping(value="/dpt/index")
@@ -106,7 +112,23 @@ public class DptManagerController {
                 .postRequirement(postEntity.getPostRequirement())
                 .build();
 
-        return String.valueOf(dptManagerService.createNewPost(postVo, AuthInfo.getUserId()));
+        int postId = dptManagerService.createNewPost(postVo, AuthInfo.getUserId());
+
+        if (postId > 0) {
+            // Notification
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("created a new " + (postEntity.isRecruitType() ? "society" : "campus") + " post need: ");
+            messageDto.setObject(postEntity.getPostName());
+            messageDto.setLink("hr/post/" + postId);
+            messageDto.setMessageType(HRMessage.DPT_CREATE_POST);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
+
+            messageService.broadcastAndSave("hr", messageDto, true);
+        }
+
+        return String.valueOf(postId);
     }
 
     @RequestMapping(value = "/dpt/post/edit", method = RequestMethod.POST)
@@ -124,13 +146,30 @@ public class DptManagerController {
                 .publishTime(postEntity.getPublishTime())
                 .status(postEntity.getStatus())
                 .build();
-        
-        return String.valueOf(dptManagerService.updatePost(postVo));
+
+        int postId = dptManagerService.updatePost(postVo);
+
+        if (postId > 0) {
+            // Notification
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("updated the " + (postEntity.isRecruitType() ? "society" : "campus") + " post need: ");
+            messageDto.setObject(postEntity.getPostName());
+            messageDto.setLink("hr/post/" + postId);
+            messageDto.setMessageType(HRMessage.DPT_UPDATE_POST);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
+
+            messageService.broadcastAndSave("hr", messageDto, true);
+        }
+
+        return String.valueOf(postId);
     }
 
     @RequestMapping(value = "/dpt/post/{postId}/application/pass", method = RequestMethod.POST)
     @ResponseBody
-    public String dptPostApplicationPassPost(@RequestParam(value="chkArray[]") int[] chkArray) {
+    public String dptPostApplicationPassPost(@RequestParam(value="chkArray[]") int[] chkArray,
+                                             @PathVariable("postId") int postId) {
         int overAllStatus = StatusCode.SUCCESS;
         if (chkArray.length != 0) {
             for (Integer applicationId: chkArray) {
@@ -138,12 +177,27 @@ public class DptManagerController {
                 if (status != StatusCode.SUCCESS) overAllStatus = status;
             }
         }
+        if (overAllStatus == StatusCode.SUCCESS) {
+            PostVo postVo = dptManagerService.findPostById(postId);
+            // Notification
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("passed applicants of " + (postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? "society" : "campus") + " post : ");
+            messageDto.setObject(postVo.getPostName());
+            messageDto.setLink("hr/post/" + postId + "/application/list");
+            messageDto.setMessageType(HRMessage.DPT_PASS_APPS);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
+
+            messageService.broadcastAndSave("hr", messageDto, true);
+        }
         return String.valueOf(overAllStatus);
     }
 
     @RequestMapping(value = "/dpt/post/{postId}/application/reject", method = RequestMethod.POST)
     @ResponseBody
-    public String dptPostApplicationRejectPost(@RequestParam(value="chkArray[]") int[] chkArray) {
+    public String dptPostApplicationRejectPost(@RequestParam(value="chkArray[]") int[] chkArray,
+                                               @PathVariable("postId") int postId) {
         int overAllStatus = StatusCode.SUCCESS;
         if (chkArray.length != 0) {
             for (Integer applicationId: chkArray) {
@@ -151,12 +205,42 @@ public class DptManagerController {
                 if (status != StatusCode.SUCCESS) overAllStatus = status;
             }
         }
+        if (overAllStatus == StatusCode.SUCCESS) {
+            PostVo postVo = dptManagerService.findPostById(postId);
+            // Notification
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("rejected applicants of " + (postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? "society" : "campus") + " post : ");
+            messageDto.setObject(postVo.getPostName());
+            messageDto.setLink("hr/post/" + postId + "/application/list");
+            messageDto.setMessageType(HRMessage.DPT_REJECT_APPS);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
+
+            messageService.broadcastAndSave("hr", messageDto, true);
+        }
         return String.valueOf(overAllStatus);
     }
 
     @RequestMapping(value = "/dpt/post/revoke", method = RequestMethod.POST)
     @ResponseBody
     public String dptPostRevokePost(PostEntity postEntity) {
-        return String.valueOf(dptManagerService.revokePost(postEntity.getPostId()));
+        int postId = dptManagerService.revokePost(postEntity.getPostId());
+
+        if (postId > 0) {
+            // Notification
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("revoked the " + (postEntity.isRecruitType() ? "society" : "campus") + " post need: ");
+            messageDto.setObject(postEntity.getPostName());
+            messageDto.setLink("hr/post/" + postId);
+            messageDto.setMessageType(HRMessage.DPT_REVOKE_POST);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
+
+            messageService.broadcastAndSave("hr", messageDto, true);
+        }
+
+        return String.valueOf(postId);
     }
 }
