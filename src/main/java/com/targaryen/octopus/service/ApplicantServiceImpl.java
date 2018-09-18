@@ -461,7 +461,8 @@ public class ApplicantServiceImpl implements ApplicantService {
 
             }
 
-            application_interviews_map.put(a.getApplicationId(), availableInterviews);
+            if(!availableInterviews.isEmpty())
+                application_interviews_map.put(a.getApplicationId(), availableInterviews);
         }
 
         return application_interviews_map;
