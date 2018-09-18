@@ -82,7 +82,8 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
 
         try {
             ftpClient.enterLocalPassiveMode();
-            ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(dir.toString()));
+            if(!ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(dir.toString())))
+                return new ArrayList<>();
             filenames = Arrays.asList(ftpClient.listNames());
 
         } catch (IOException e) {
