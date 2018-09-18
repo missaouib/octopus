@@ -12,7 +12,6 @@
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/markdown/bootstrap-markdown.min.css}" />
     <link rel="stylesheet" th:href="@{/octopus/css/bootstrap-switch.css}" />
 
-
     <script th:src="@{/octopus/js/jquery.min.js}"></script>
     <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
@@ -37,23 +36,22 @@
 
                         <ol class="breadcrumb">
                             <li>
-                                <a th:text="${roleName}"></a>
+                                <a href="#">HR</a>
                             </li>
                             <li>
-                                <a>Post Needs</a>
+                                <a>Announcement</a>
                             </li>
                             <li class="active">
-                                <strong th:text="${title}"></strong>
+                                <strong>Detail</strong>
                             </li>
                         </ol>
                     </div>
 
-                    <div class="ibox-content form-horizontal">
+                    <div class="ibox-content  form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Public Type:</label>
-
                             <div class="col-sm-8">
-                                <input type="checkbox" name="recruitType" data-on-text="Society" data-off-text="Campus" checked>
+                                <input type="checkbox" name="announcementType" data-on-text="Public(HR)" data-off-text="Public(Not HR)" checked>
                             </div>
                         </div>
 
@@ -61,7 +59,7 @@
                             <label class="col-sm-3 control-label">Announcement Title:</label>
 
                             <div class="col-sm-8">
-                                <input type="text" th:value="${announcement.postName}" id="postName" name="postName" placeholder="e.g. Java Developer" class="form-control" required="required" >
+                                <input type="text" th:value="${announcement.announcementTitle}" id="announcementTitle" name="announcementTitle" placeholder="Dec. Seminar" class="form-control" required="required" >
                             </div>
                         </div>
                     </div>
@@ -77,7 +75,7 @@
                         </div>
 
                         <div class="ibox-content">
-                            <textarea id="postRequirement" name="postRequirement" data-provide="markdown" rows="10">[[${post.postRequirement}]]</textarea>
+                            <textarea id="announcementDetail" name="announcementDetail" data-provide="markdown" rows="10">[[${announcement.announcementDetail}]]</textarea>
                         </div>
 
                     </div>
@@ -101,12 +99,12 @@
                 </div>
             </div>
         </div>
-
+    </div>
 </form>
 
 <script th:inline="javascript">
-        $("[name='recruitType']").bootstrapSwitch({'onColor': 'primary', 'offColor': 'success'});
-        $("[name='recruitType']").bootstrapSwitch('state', [[${recruitType}]]);
+        $("[name='announcementType']").bootstrapSwitch({'onColor': 'primary', 'offColor': 'success'});
+        $("[name='announcementType']").bootstrapSwitch('state', [[${announcementType}]]);
 
         var validationConfig = {
             // submitHandler executes after the form PASSED the validation
