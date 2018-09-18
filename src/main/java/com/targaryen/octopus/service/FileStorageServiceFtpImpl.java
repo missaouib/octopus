@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -113,6 +114,7 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
     private int store(Path storePath, MultipartFile file, boolean single) {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         InputStream is;
+        List<String> prestored = listFilenames(storePath);
 
         if(!ftpLogin())
             return StatusCode.FAILURE;
@@ -120,17 +122,20 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
         try {
             ftpClient.enterLocalPassiveMode();
 
-            if(single)
-                ftpClient.removeDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
-
             if(!ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(storePath.toString()))) {
                 ftpClient.makeDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
                 ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
             }
 
+            if(single) {
+                for(String s: prestored) {
+                    ftpClient.deleteFile(s);
+                }
+            }
+
             is = file.getInputStream();
             ftpClient.storeFile(filename, is);
-            is.close();
+
         } catch (IOException e) {
             System.out.println(e.toString());
             return StatusCode.FAILURE;
@@ -198,7 +203,6 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
             ftpClient.enterLocalPassiveMode();
             is = ftpClient.retrieveFileStream(FilenameUtils.separatorsToUnix(filePath.toString()));
             resource = new InputStreamResource(is);
-            is.close();
         } catch (IOException e) {
             System.out.println(e.toString());
             return null;
