@@ -141,7 +141,7 @@
                                 <th:block th:each="appli : ${applicationList}">
                                     <tr>
                                         <td>
-                                            <input type="checkbox" th:value="${appli.applicationId}" checked class="i-checks">
+                                            <input type="checkbox" th:value="${appli.applicationId}" class="i-checks">
                                         </td>
                                         <td>
                                             <span th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="label label-success">To be checked</span>

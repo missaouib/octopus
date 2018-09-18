@@ -1,5 +1,6 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.dto.MessageDto;
 import com.targaryen.octopus.entity.*;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ServiceFactory;
@@ -7,7 +8,9 @@ import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.ApplicantStatus;
+import com.targaryen.octopus.util.status.HRMessage;
 import com.targaryen.octopus.util.status.PostStatus;
+import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -182,12 +185,30 @@ public class ApplicantController {
     }
 
     @RequestMapping(value = "/applicant/social/agree/{interviewId}", method = RequestMethod.GET)
-    ModelAndView applicantAgree(@PathVariable("interviewId") String interviewId, ModelMap map){
+    ModelAndView applicantAgree(@PathVariable("interviewId") int interviewId, ModelMap map){
 
         //Change interview status
-        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(interviewId, ApplicantStatus.ACCEPTED, null);
 
         //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
+
+
+        InterviewVo interviewVo = serviceFactory.getHRService().findInterviewById(interviewId);
+        ApplicationVo applicationVo = serviceFactory.getInterviewerService().findApplicationByApplicationId(interviewVo.getApplicationId());
+
+        // Notification
+        MessageDto messageDto = new MessageDto();
+        messageDto.setSubject(AuthInfo.getUserName());
+        messageDto.setText("accepted interview of interviewer: ");
+        messageDto.setObject(interviewVo.getInterviewerName());
+        messageDto.setLink("hr/post/" + applicationVo.getPostId() + "/application/" + applicationVo.getApplicationId() + "/timeline");
+        messageDto.setMessageType(HRMessage.APP_ACCEPT_INTERVIEW);
+        messageDto.setCreateTime(Calendar.getInstance().getTime());
+        messageDto.setChannel("hr");
+
+        serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
+
+
 
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
         return result;
@@ -215,6 +236,23 @@ public class ApplicantController {
 
         //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
 
+
+        ApplicationVo applicationVo = serviceFactory.getInterviewerService().findApplicationByApplicationId(interviewVo.getApplicationId());
+
+        // Notification
+        MessageDto messageDto = new MessageDto();
+        messageDto.setSubject(AuthInfo.getUserName());
+        messageDto.setText("accepted interview of interviewer: ");
+        messageDto.setObject(interviewVo.getInterviewerName());
+        messageDto.setLink("hr/post/" + applicationVo.getPostId() + "/application/" + applicationVo.getApplicationId() + "/timeline");
+        messageDto.setMessageType(HRMessage.APP_ACCEPT_INTERVIEW);
+        messageDto.setCreateTime(Calendar.getInstance().getTime());
+        messageDto.setChannel("hr");
+
+        serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
+
+
+
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
         return result;
        /* map.addAttribute("roleName", Role.getRoleNameByAuthority());
@@ -240,6 +278,25 @@ public class ApplicantController {
 
         //Change interview status
         System.out.println("[msg]: " + "applicantCommentEntity" + ", " + applicantCommentEntity.getInterviewId() + ", " + applicantCommentEntity.getApplicantComment());
+
+
+
+        InterviewVo interviewVo = serviceFactory.getHRService().findInterviewById(applicantCommentEntity.getInterviewId());
+        ApplicationVo applicationVo = serviceFactory.getInterviewerService().findApplicationByApplicationId(interviewVo.getApplicationId());
+
+        // Notification
+        MessageDto messageDto = new MessageDto();
+        messageDto.setSubject(AuthInfo.getUserName());
+        messageDto.setText("accepted interview of interviewer: ");
+        messageDto.setObject(interviewVo.getInterviewerName());
+        messageDto.setLink("hr/post/" + applicationVo.getPostId() + "/application/" + applicationVo.getApplicationId() + "/timeline");
+        messageDto.setMessageType(HRMessage.APP_ACCEPT_INTERVIEW);
+        messageDto.setCreateTime(Calendar.getInstance().getTime());
+        messageDto.setChannel("hr");
+
+        serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
+
+
 
         serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantCommentEntity.getInterviewId(), ApplicantStatus.REJECTED, applicantCommentEntity.getApplicantComment());
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
@@ -316,7 +373,20 @@ public class ApplicantController {
         if(applicationEntity.getPostId() != 0){
 
             ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicationEntity.getApplicantId()).postId(applicationEntity.getPostId()).build();
-            serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
+            int applicationId = serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
+
+            // Notification
+            PostVo postVo = serviceFactory.getHRService().findPostById(applicationVo.getPostId());
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("applied for the " + (postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? "society" : "campus") + " post: ");
+            messageDto.setObject(postVo.getPostName());
+            messageDto.setLink("hr/post/" + postVo.getPostId() + "/application/" + applicationId + "/timeline");
+            messageDto.setMessageType(HRMessage.APP_APPLY_POST);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
+
+            serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
         }
         result = new ModelAndView("applicant-application-list");
 
@@ -482,8 +552,20 @@ public class ApplicantController {
                 .build();
         serviceFactory.getApplicantService().saveResume(resumeVo);
         ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getPostId()).build();
-        serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
+        int applicationId = serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
 
+        // Notification
+        PostVo postVo = serviceFactory.getHRService().findPostById(applicationVo.getPostId());
+        MessageDto messageDto = new MessageDto();
+        messageDto.setSubject(AuthInfo.getUserName());
+        messageDto.setText("applied for the " + (postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? "society" : "campus") + " post: ");
+        messageDto.setObject(postVo.getPostName());
+        messageDto.setLink("hr/post/" + postVo.getPostId() + "/application/" + applicationId + "/timeline");
+        messageDto.setMessageType(HRMessage.APP_APPLY_POST);
+        messageDto.setCreateTime(Calendar.getInstance().getTime());
+        messageDto.setChannel("hr");
+
+        serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
 
         return "redirect:/octopus/applicant/resume/basic";
     }
