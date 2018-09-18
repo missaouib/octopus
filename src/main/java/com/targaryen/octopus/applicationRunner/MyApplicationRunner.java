@@ -38,7 +38,7 @@ public class MyApplicationRunner implements ApplicationRunner {
                     "INSERT INTO t_user VALUES (16, 'interviewer_4', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
                     "INSERT INTO t_user VALUES (17, 'interviewer_5', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
                     "INSERT INTO t_user VALUES (18, 'maintenance', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
-                    "ALTER SEQUENCE t_user_seq RESTART WITH 18;" +
+                    "ALTER SEQUENCE t_user_seq RESTART WITH 19;" +
                     "INSERT INTO t_role VALUES (1, 'ROLE_DPT', 1) ON conflict(role_id) DO NOTHING;\n" +
                     "INSERT INTO t_role VALUES (2, 'ROLE_HR', 2) ON conflict(role_id) DO NOTHING;\n" +
                     "INSERT INTO t_role VALUES (3, 'ROLE_APPLICANT', 3) ON conflict(role_id) DO NOTHING;\n" +
@@ -57,7 +57,7 @@ public class MyApplicationRunner implements ApplicationRunner {
                     "INSERT INTO t_role VALUES (16, 'ROLE_INTERVIEWER', 16) ON conflict(role_id) DO NOTHING;\n" +
                     "INSERT INTO t_role VALUES (17, 'ROLE_INTERVIEWER', 17) ON conflict(role_id) DO NOTHING;\n" +
                     "INSERT INTO t_role VALUES (18, 'ROLE_MAINTENANCE', 18) ON conflict(role_id) DO NOTHING;\n" +
-                    "ALTER SEQUENCE t_role_seq RESTART WITH 18;" +
+                    "ALTER SEQUENCE t_role_seq RESTART WITH 19;" +
                     "INSERT INTO t_dpt_manager VALUES (1, 1, 1) ON conflict(dpt_manager_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_dpt_manager_seq RESTART WITH 2;" +
                     "INSERT INTO t_hr VALUES (1, 2) ON conflict(hr_id) DO NOTHING;\n" +
