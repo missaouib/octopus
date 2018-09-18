@@ -24,7 +24,7 @@ public interface AnnouncementService {
     int createNewAnnouncement(AnnouncementVo announcementVo);
 
     /**
-     * update announcement, announcementVo should include announcementId, announcementTitle, announcementDetail
+     * update announcement, announcementVo should include announcementId, announcementTitle, announcementDetail, annoucementType
      *
      */
     int updateAnnouncement(AnnouncementVo announcementVo);
