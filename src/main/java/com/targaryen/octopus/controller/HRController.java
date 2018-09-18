@@ -1,5 +1,6 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.dto.MessageDto;
 import com.targaryen.octopus.entity.InterviewEntity;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.entity.PostScheduleEntity;
@@ -7,6 +8,7 @@ import com.targaryen.octopus.entity.ResumeModelEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ApplicantService;
 import com.targaryen.octopus.service.HRService;
+import com.targaryen.octopus.service.MessageService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
@@ -22,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +37,15 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class HRController {
-    private Logger logger = LoggerFactory.getLogger(HRController.class);
-
     private HRService hrService;
     private ApplicantService applicantService;
-    private SimpMessagingTemplate messageTemplate;
+    private MessageService messageService;
 
     @Autowired
-    public HRController(ServiceFactory serviceFactory, SimpMessagingTemplate messageTemplate) {
+    public HRController(ServiceFactory serviceFactory) {
         this.hrService = serviceFactory.getHRService();
         this.applicantService = serviceFactory.getApplicantService();
-        this.messageTemplate = messageTemplate;
+        this.messageService = serviceFactory.getMessageService();
     }
 
     @RequestMapping(value="/hr/index")
@@ -103,8 +102,10 @@ public class HRController {
 
         map.addAttribute("post", postVo);
 
-        // WebSocket STOMP test
-        messageTemplate.convertAndSend("/octopus/ws/hr", postVo.getPostId());
+        // Test
+        MessageDto messageDto = new MessageDto();
+        messageDto.setText("Hello World");
+        messageService.broadcastAndSave("/octopus/ws/hr", messageDto, false);
 
         return "dpt-hr-post-detail";
     }

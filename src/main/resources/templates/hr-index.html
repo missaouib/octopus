@@ -155,7 +155,7 @@
 
     stompClient.connect(csrfData, function (frame) {
         stompClient.subscribe('/octopus/ws/hr', function (message) {
-            var data = JSON.parse(message.body);
+            var messageDto = JSON.parse(message.body); // MessageDto
 
             $("#unread-notifications").text(parseInt($("#unread-notifications").text()) + 1);
             hideWhenEmpty();
@@ -167,7 +167,7 @@
                 "                                    </a>\n" +
                 "                                    <div class=\"media-body \">\n" +
                 "                                        <small class=\"pull-right text-navy\">Now</small>\n" +
-                "                                        <strong>HR san</strong> trying to update postId: " + data + "\n" +
+                "                                        <strong>HR san</strong> trying to update postId: " + messageDto.text + "\n" +
                 "                                        <br>\n" +
                 "                                        <small class=\"text-muted\">Today</small>\n" +
                 "                                    </div>\n" +

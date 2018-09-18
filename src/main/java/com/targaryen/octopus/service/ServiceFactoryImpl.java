@@ -21,6 +21,8 @@ public class ServiceFactoryImpl implements ServiceFactory{
     private InterviewerService interviewerService;
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public UserService getUserService() {
@@ -61,4 +63,7 @@ public class ServiceFactoryImpl implements ServiceFactory{
     public FileStorageService getFileStorageService() {
         return fileStorageService;
     }
+
+    @Override
+    public MessageService getMessageService() { return messageService; };
 }

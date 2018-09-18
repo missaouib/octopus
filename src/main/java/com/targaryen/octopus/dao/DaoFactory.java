@@ -15,4 +15,5 @@ public interface DaoFactory {
     DepartmentDtoRepository getDepartmentDtoRepository();
     EducationExperienceRepository getEducationExperienceRepository();
     WorkExperienceRepository getWorkExperienceRepository();
+    MessageRepository getMessageRepostiry();
 }
