@@ -210,12 +210,12 @@
                                 <div class="upload-container">
                                     <div class="upload-content">
                                         <div class="single-upload">
-                                            <h3>Upload Applicant Photo</h3>
+                                            <h3>Upload Photo</h3>
                                             <form method="post" th:action="@{/octopus/applicant/uploadFile}" enctype="multipart/form-data">
                                                 <fieldset>
                                                     <div class="row">
                                                         <div class="col-lg-4">
-                                                            <input class="form-control" id="file" type="file" name="file" required />
+                                                            <input class="form-control" type="file" name="file" required />
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -231,7 +231,7 @@
                                 <div class="upload-container">
                                     <div class="upload-content">
                                         <div class="single-upload">
-                                            <h3>applicantDegreePhoto</h3>
+                                            <h3>Upload DegreePhoto</h3>
                                             <form method="post" th:action="@{/octopus/applicant/uploadFile}" enctype="multipart/form-data">
                                                 <fieldset>
                                                     <div class="row">
@@ -244,15 +244,39 @@
                                                     </div>
                                                 </fieldset>
                                             </form>
-                                            <!--
-                                            <form method="post" th:action="@{/octopus/uploadFile}" enctype="multipart/form-data"id="singleUploadForm" name="singleUploadForm">
-                                                <input id="singleFileUploadInput" type="file" name="file" class="file-input" required />
-                                                <button type="submit" class="primary submit-btn">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="upload-container">
+                                    <div class="upload-content">
+                                        <div class="single-upload">
+                                            <h3>Upload CV</h3>
+                                            <form method="post" th:action="@{/octopus/applicant/uploadFile}" enctype="multipart/form-data">
+                                                <div style="margin: 20px 15px -20px 10px; width:300px;">
+                                                    <div class="alert alert-success alert-dismissable"
+                                                         th:style="'display:' + @{(${istrue} ? 'block' : 'none')} + ''">
+                                                        <button type="button" class="close" data-dismiss="alert"
+                                                                aria-hidden="true">&times;</button>
+                                                        Upload Success.
+                                                    </div>
+                                                </div>
+                                                <fieldset>
+
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+                                                            <input class="form-control" type="file" name="file" required />
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
                                             </form>
-                                            <div class="upload-response">
-                                                <div id="singleFileUploadError"></div>
-                                                <div id="singleFileUploadSuccess"></div>
-                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
@@ -276,8 +300,8 @@
                                 </div>
                                 <button class="btn btn-lg btn-primary" type="submit" style="float:right;">Save</button>
                             </div>-->
+                            </form>
                         </div>
-                        </form>
                     </div>
                 </div>
             </div>
