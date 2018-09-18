@@ -73,14 +73,14 @@
                                             <span th:if="${announcement.announcementType} eq ${T(com.targaryen.octopus.util.status.AnnouncementType).HR_VIEW}" class="label label-primary">Public(HR)</span>
                                         <td>
                                             <button type="button"
-                                                    th:if="${announcement.announcementStatus} ne ${T(com.targaryen.octopus.util.status.AnnouncementStauts).DRAFT}"
+                                                    th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).DRAFT}"
                                                     th:onclick="${'publicAnnouncement(' + announcement.announcementId + ''')'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
-                                                Check/Edit Detail
+                                                Publish
                                             </button>
                                             <button type="button"
-                                                    th:if="${announcement.announcementStatus} ne ${T(com.targaryen.octopus.util.status.AnnouncementStauts).PUBLISHED}"
+                                                    th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).DRAFT}"
                                                     th:onclick="${'location.href=''' + announcement.announcementId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>

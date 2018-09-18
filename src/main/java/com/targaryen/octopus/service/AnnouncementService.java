@@ -46,4 +46,6 @@ public interface AnnouncementService {
      *
      */
     int revokeAnnouncementById(int announcementId);
+
+    AnnouncementVo findAnnouncementById(int announcementId);
 }
