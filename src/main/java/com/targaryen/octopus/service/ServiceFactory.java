@@ -10,4 +10,5 @@ public interface ServiceFactory {
     InterviewerService getInterviewerService();
     FileStorageService getFileStorageService();
     MessageService getMessageService();
+    AnnouncementService getAnnouncementService();
 }

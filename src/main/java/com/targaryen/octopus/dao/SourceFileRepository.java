@@ -1,4 +1,7 @@
 package com.targaryen.octopus.dao;
 
-public class SourceFileRepository {
+import com.targaryen.octopus.dto.SourceFileDto;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SourceFileRepository extends JpaRepository<SourceFileDto, Integer> {
 }

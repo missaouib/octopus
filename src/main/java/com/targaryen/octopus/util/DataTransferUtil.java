@@ -354,4 +354,18 @@ public class DataTransferUtil {
                 .typeOfStudy(educationExperienceDto.getTypeOfStudy())
                 .build();
     }
+
+    public static AnnouncementVo AnnouncementDtoToVo(AnnouncementDto announcementDto) {
+        return new AnnouncementVo.Builder()
+                .announcementId(announcementDto.getAnnouncementId())
+                .annoucementType(announcementDto.getAnnouncementType())
+                .announcementDetail(announcementDto.getAnnouncementDetail())
+                .announcementStatus(announcementDto.getAnnouncementStatus())
+                .announcementTitle(announcementDto.getAnnouncementTitle())
+                .createTime(announcementDto.getCreateTime())
+                .lastModifyTime(announcementDto.getLastModifyTime())
+                .publishedTime(announcementDto.getPublishedTime())
+                .batchId(announcementDto.getBatch().getBatchId())
+                .build();
+    }
 }
