@@ -24,7 +24,6 @@ public class MessageDto {
     @NotBlank
     private String text;
 
-    @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
@@ -33,4 +32,7 @@ public class MessageDto {
     private String channel;
 
     private int messageType;
+
+    @Transient
+    private String createTimeString;
 }
