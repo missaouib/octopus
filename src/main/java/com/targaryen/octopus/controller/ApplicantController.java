@@ -240,6 +240,7 @@ public class ApplicantController {
         //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
 
 
+        interviewVo = serviceFactory.getHRService().findInterviewById(interviewerCommentEntity.getInterviewId());
         ApplicationVo applicationVo = serviceFactory.getInterviewerService().findApplicationByApplicationId(interviewVo.getApplicationId());
 
         // Notification

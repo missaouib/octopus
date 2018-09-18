@@ -6,6 +6,7 @@ import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.*;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.ApplicationStatus;
 import com.targaryen.octopus.util.status.InterviewResultStatus;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
@@ -198,10 +199,20 @@ public class HRController {
 
     @RequestMapping(value = "/hr/post/{postId}/schedule/model", method = RequestMethod.GET)
     public String hrPostScheduleModel(@PathVariable("postId") int postId, ModelMap map) {
+        List<ApplicationResumeVo> applicationVoList = hrService.findApplicationsByPostId(postId);
         map.addAttribute("post", hrService.findPostById(postId));
-        map.addAttribute("applicationCount", hrService.findApplicationsByPostId(postId).size());
+        map.addAttribute("applicationCount", applicationVoList.size());
         map.addAttribute("applicantList", hrService.findApplicationsByPostId(postId));
         map.addAttribute("interviewerList", hrService.listInterviewersByPostId(postId));
+
+        int passedApplicantCount = 0;
+        for (ApplicationResumeVo applicationResumeVo: applicationVoList) {
+            if (applicationResumeVo.getStatus() == ApplicationStatus.FILTER_PASS) {
+                passedApplicantCount += 1;
+            }
+        }
+        map.addAttribute("passedApplicantCount", passedApplicantCount);
+
         return "hr-post-schedule-model";
     }
 
@@ -496,41 +507,20 @@ public class HRController {
     @RequestMapping(value = "/hr/post/{postId}/schedule/round/{interviewRound}/auto", method = RequestMethod.POST)
     @ResponseBody
     public String hrPostScheduleAutoGenerator(@PathVariable("postId") int postId,
-                                              @PathVariable("interviewRound") int interviewRound ){
-        List<InterviewVo> lastestInterviewVoList = hrService.findLatestAppInterviewByPostId(postId);
+                                              @PathVariable("interviewRound") int interviewRound){
         List<InterviewVo> interviewVoList = hrService.findInterviewByPostIdAndRound(postId, interviewRound);
         List<InterviewerVo> interviewerVoList = hrService.listInterviewersByPostId(postId);
 
-        int overallApplicants = hrService.findApplicationsByPostId(postId).size();
-
-        int passedApplicants = 0;
-        for (InterviewVo interviewVo: lastestInterviewVoList) {
-            if (interviewVo.getInterviewResultStatus() != InterviewResultStatus.INIT &&
-                    interviewVo.getInterviewResultStatus() != InterviewResultStatus.NOT_HIRE) {
-                passedApplicants += 1;
-            }
-        }
-
-        // If this is the first round
-        if (interviewRound == 1) passedApplicants = overallApplicants;
-
         int interviewCreated = 0;
-        if (passedApplicants > 0) {
-            // If there are not enough interviews for passed applicants
-            if (passedApplicants > interviewVoList.size()) {
-                return String.valueOf(interviewCreated);
-            }
+        // Let's do this
+        Iterator<InterviewerVo> interviewerPointer = interviewerVoList.iterator();
 
-            // Let's do this
-            Iterator<InterviewerVo> interviewerPointer = interviewerVoList.iterator();
-
-            for (int i = 0; i != passedApplicants; i++) {
-                if (!interviewerPointer.hasNext()) {
-                    interviewerPointer = interviewerVoList.iterator(); // Reset to the start
-                }
-                hrService.updateInterviewerOfInterview(interviewVoList.get(i).getInterviewId(), interviewerPointer.next().getInterviewerId());
-                interviewCreated += 1;
+        for (int i = 0; i != interviewVoList.size(); i++) {
+            if (!interviewerPointer.hasNext()) {
+                interviewerPointer = interviewerVoList.iterator(); // Reset to the start
             }
+            hrService.updateInterviewerOfInterview(interviewVoList.get(i).getInterviewId(), interviewerPointer.next().getInterviewerId());
+            interviewCreated += 1;
         }
         return String.valueOf(interviewCreated);
     }
