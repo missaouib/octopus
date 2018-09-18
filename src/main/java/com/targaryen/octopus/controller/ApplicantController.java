@@ -188,7 +188,7 @@ public class ApplicantController {
         System.out.println("[msg]: "  + "/applicant/agree" + interviewEntity.getInterviewId() + ", " + interviewEntity.getApplicationId());
         InterviewVo interviewVo = new InterviewVo.Builder().interviewId(interviewEntity.getInterviewId())
                                     .applicationId(interviewEntity.getApplicationId()).build();
-        serviceFactory.getApplicantService().updateInterviewApplicantId(interviewVo);
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(interviewEntity.getInterviewId(), ApplicantStatus.ACCEPTED, null);
 
         //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
 
@@ -208,12 +208,12 @@ public class ApplicantController {
     }
 
     @RequestMapping(value = "/applicant/campus/agree", method = RequestMethod.POST)
-    ModelAndView applicantCampusAgree(ApplicantInterviewVo applicantInterviewVo, ModelMap map){
+    ModelAndView applicantCampusAgree(InterviewerCommentEntity interviewerCommentEntity, ModelMap map){
 
         //Change interview status
-        System.out.println("[msg]: "  + "/applicant/agree" + applicantInterviewVo.getInterviewId() + ", " + applicantInterviewVo.getApplicationId());
-        InterviewVo interviewVo = new InterviewVo.Builder().interviewId(applicantInterviewVo.getInterviewId())
-                .applicationId(applicantInterviewVo.getApplicationId()).build();
+        System.out.println("[msg]: "  + "/applicant/agree" + interviewerCommentEntity.getInterviewId() + ", " + interviewerCommentEntity.getApplicationId());
+        InterviewVo interviewVo = new InterviewVo.Builder().interviewId(interviewerCommentEntity.getInterviewId())
+                .applicationId(interviewerCommentEntity.getApplicationId()).build();
         serviceFactory.getApplicantService().updateInterviewApplicantId(interviewVo);
 
         //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
@@ -234,7 +234,7 @@ public class ApplicantController {
     }
     /**
      * old function, refuse doesn't exist
-     * @param applicantCommentEntity
+     * @param
      * @param map
      * @return
      */
@@ -242,8 +242,7 @@ public class ApplicantController {
     ModelAndView applicantRefuse(ApplicantInterviewVo applicantInterviewVo, ModelMap map){
 
         //Change interview status
-        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantInterviewVo.getInterviewId(), ApplicantStatus.REJECTED, applicantInterviewVo.getInterviewResultComment());
-
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantInterviewVo.getInterviewId(), ApplicantStatus.ACCEPTED, applicantInterviewVo.getInterviewResultComment());
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
         return result;
     }
@@ -647,7 +646,7 @@ public class ApplicantController {
             resumeEntity.setRecommenderName(resumeVo.getRecommenderName());
             resumeEntity.setApplicantAddress(resumeVo.getApplicantAddress());
             resumeEntity.setApplicantSelfIntro(resumeVo.getApplicantSelfIntro());
-            resumeEntity.setApplicantPhone(resumeVo.getApplicantPhoto());
+            resumeEntity.setApplicantPhoto(resumeVo.getApplicantPhoto());
             resumeEntity.setApplicantDegreePhoto(resumeVo.getApplicantDegreePhoto());
             resumeEntity.setFamilyContactRelation(resumeVo.getFamilyContactRelation());
             resumeEntity.setFamilyContactName(resumeVo.getFamilyContactName());

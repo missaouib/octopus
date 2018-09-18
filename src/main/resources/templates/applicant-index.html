@@ -171,16 +171,16 @@
                                                                                         </tr>
                                                                                         </thead>
                                                                                         <tbody>
-                                                                                        <tr th:each="ts: ${ps.value}">
+                                                                                        <tr th:each="ts:${ps.value}">
                                                                                             <td th:text="${#dates.format(ts.interviewStartTime,'yyyy-MM-dd HH:mm')}"></td>
                                                                                             <td>
                                                                                                 <form method="post" th:action="@{/octopus/applicant/campus/agree}" th:object="${ts}">
                                                                                                     <fieldset>
-                                                                                                        <input type="hidden" name="applicationId" th:value="*{applicationId}" />
-                                                                                                        <input type="hidden" name="interviewId" th:value="*{interviewId}" />
+                                                                                                        <input type="hidden" id="applicationId" name="applicationId" th:value="${ps.key}" />
+                                                                                                        <input type="hidden" id="interviewId" name="interviewId" th:value="*{interviewId}" />
+                                                                                                        <button type="submit" class="btn btn-primary">Yes</button>
                                                                                                     </fieldset>
                                                                                                 </form>
-                                                                                                <button type="submit" class="btn btn-primary">Yes</button>
                                                                                             </td>
                                                                                         </tr>
                                                                                         </tbody>
