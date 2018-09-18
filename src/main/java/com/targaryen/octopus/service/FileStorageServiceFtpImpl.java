@@ -120,12 +120,16 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
         try {
             ftpClient.enterLocalPassiveMode();
 
-            if(single)
-                ftpClient.removeDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
-
             if(!ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(storePath.toString()))) {
                 ftpClient.makeDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
                 ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(storePath.toString()));
+            }
+
+            if(single) {
+                List<String> prestored = listFilenames(storePath);
+                for(String s: prestored) {
+                    ftpClient.deleteFile(FilenameUtils.separatorsToUnix(storePath.toString()) + "/" + s);
+                }
             }
 
             is = file.getInputStream();
