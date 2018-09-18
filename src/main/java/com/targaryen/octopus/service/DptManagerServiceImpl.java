@@ -31,6 +31,7 @@ public class DptManagerServiceImpl implements DptManagerService {
     private UserDtoRepository userDtoRepository;
     private ApplicationDtoRepository applicationDtoRepository;
     private ResumeModelDtoRepository resumeModelDtoRepository;
+    private BatchRepository batchRepository;
 
     @Autowired
     public DptManagerServiceImpl(DaoFactory daoFactory) {
@@ -38,6 +39,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         this.postDtoRepository = daoFactory.getPostDtoRepository();
         this.userDtoRepository = daoFactory.getUserDtoRepository();
         this.resumeModelDtoRepository = daoFactory.getResumeModelDtoRepository();
+        this.batchRepository = daoFactory.getBatchRepository();
     }
 
     @Override
@@ -47,6 +49,7 @@ public class DptManagerServiceImpl implements DptManagerService {
             return new ArrayList<PostVo>();
         } else {
             return dptManager.getDepartment().getPosts().stream()
+                    .filter(n -> n.getBatch().getBatchId() == 1)
                     .map(n -> DataTransferUtil.PostDtoToVo(n))
                     .collect(Collectors.toList());
         }
@@ -82,6 +85,7 @@ public class DptManagerServiceImpl implements DptManagerService {
             postDto.setRecruitType(newPost.getRecruitType());
             postDto.setStatus(PostStatus.INIT);
             postDto.setDepartment(department);
+            postDto.setBatch(batchRepository.findByBatchId(1));
             postDto.setInterviewRound(newPost.getRecruitType() == RecruitTypeStatus.SOCIETY? 0 : 1);
             postDtoRepository.save(postDto);
             ResumeModelDto resumeModelDto = new ResumeModelDto();
