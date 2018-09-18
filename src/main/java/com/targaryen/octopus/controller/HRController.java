@@ -81,7 +81,8 @@ public class HRController {
         postVoList = postVoList.stream().filter(s -> s.getRecruitType() == type).collect(Collectors.toList());
         map.addAttribute("postList",postVoList);*/
 
-        List<AnnouncementVo> announcementVos = announcementService.ListHRAnnouncement();
+        List<AnnouncementVo> announcementVos = announcementService.notifyAll();
+        System.out.println("[msg]: " + announcementVos.size());
         map.addAttribute("announcementList", announcementVos);
         return "hr-billboard-list";
     }
@@ -123,6 +124,17 @@ public class HRController {
         return String.valueOf(announcementService.createNewAnnouncement(announcementVo));
     }
 
+    @RequestMapping(value = "/hr/billboard/publish", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrPostPublish(AnnouncementEntity announcementEntity) {
+        return String.valueOf(announcementService.publishAnnouncementById(announcementEntity.getAnnouncementId()));
+    }
+
+    @RequestMapping(value = "/hr/billboard/revoke", method = RequestMethod.POST)
+    @ResponseBody
+    public String hrBillboardRevoke(AnnouncementEntity announcementEntity) {
+        return String.valueOf(announcementService.revokeAnnouncementById(announcementEntity.getAnnouncementId()));
+    }
     /************************* end of billboard ********************************************/
 
     @RequestMapping(value = "/hr/post/{postId}", method = RequestMethod.GET)
