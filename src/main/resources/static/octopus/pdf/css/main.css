@@ -21,7 +21,7 @@ body:before {
     position: absolute;
     top: 0;
     left: 0;
-    background: #128ff2;
+    background: #fff;
     content: "";
     z-index: 0;
 }
@@ -43,7 +43,7 @@ h1 {
 }
 
 a {
-    color: #128ff2;
+    color: #fff;
 }
 
 button {
@@ -72,9 +72,8 @@ input {
 }
 
 input[type="file"] {
-    border: 1px solid #128ff2;
+    border: 1px solid #e5e6e7;
     padding: 6px;
-    max-width: 100%;
 }
 
 .file-input {

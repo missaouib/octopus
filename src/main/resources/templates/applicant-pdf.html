@@ -16,7 +16,7 @@
     <div class="upload-content">
         <div class="single-upload">
             <h3>Upload Single File</h3>
-            <form method="post" th:action="@{/octopus/uploadFile}" enctype="multipart/form-data">
+            <form method="post" th:action="@{/octopus/applicant/uploadFile}" enctype="multipart/form-data">
                 <input id="file" type="file" name="file" class="file-input" required />
                 <button type="submit" class="primary submit-btn">Submit</button>
             </form>
