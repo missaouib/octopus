@@ -6,6 +6,12 @@ import java.util.List;
 
 public interface AnnouncementService {
     /**
+     * list all announcement by batchId
+     *
+     */
+    List<AnnouncementVo> listAllAnnouncement();
+
+    /**
      * list public announcement by batchId
      *
      */
