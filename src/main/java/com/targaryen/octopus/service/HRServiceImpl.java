@@ -24,6 +24,7 @@ public class HRServiceImpl implements HRService {
     private InterviewerDtoRepository interviewerDtoRepository;
     private InterviewDtoRepository interviewDtoRepository;
     private ResumeModelDtoRepository resumeModelDtoRepository;
+    private BatchRepository batchRepository;
 
     @Autowired
     public HRServiceImpl(DaoFactory daoFactory) {
@@ -32,12 +33,12 @@ public class HRServiceImpl implements HRService {
         this.interviewerDtoRepository = daoFactory.getInterviewerDtoRepository();
         this.interviewDtoRepository = daoFactory.getInterviewDtoRepository();
         this.resumeModelDtoRepository = daoFactory.getResumeModelDtoRepository();
+        this.batchRepository = daoFactory.getBatchRepository();
     }
 
     @Override
     public List<PostVo> listPosts() {
-        return postDtoRepository.findAllByStatusNotOrderByPostIdDesc(PostStatus.REVOKED).stream()
-                .filter(n -> n.getBatch().getBatchId() == 1)
+        return postDtoRepository.findAllByBatchAndStatusNotOrderByPostIdDesc(batchRepository.findByBatchId(1), PostStatus.REVOKED).stream()
                 .map(n -> DataTransferUtil.PostDtoToVo(n))
                 .collect(Collectors.toList());
     }
@@ -445,6 +446,140 @@ public class HRServiceImpl implements HRService {
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
+    }
+
+    @Override
+    public List<PostRecruitProgressVo> listPostRecruitProgress() {
+        List<PostDto> posts = postDtoRepository.findAllByBatchAndStatusNotOrderByPostIdDesc(
+                batchRepository.findByBatchId(1), PostStatus.REVOKED);
+        List<PostRecruitProgressVo> postRecruitProgressVos = new ArrayList<>();
+        for(PostDto post : posts) {
+            List<ApplicationDto> applications = post.getApplications();
+            if(applications != null) {
+                int applicationNum = applications.size();
+                int filterPassNum = 0;
+                int interviewPassNum = 0;
+                int dptPassNum = 0;
+                int offerNum = 0;
+                for(ApplicationDto application : applications) {
+                    int applicationStatus = application.getStatus();
+                    if(ApplicationStatus.FILTER_PASS.equals(applicationStatus)) {
+                        ++filterPassNum;
+                    } else if(ApplicationStatus.INTERVIEW_PASS.equals(applicationStatus)) {
+                        ++filterPassNum;
+                        ++interviewPassNum;
+                    } else if(ApplicationStatus.DPT_PASS.equals(applicationStatus)) {
+                        ++filterPassNum;
+                        ++interviewPassNum;
+                        ++dptPassNum;
+                    } else if(ApplicationStatus.OFFER.equals(applicationStatus)) {
+                        ++filterPassNum;
+                        ++interviewPassNum;
+                        ++dptPassNum;
+                        ++offerNum;
+                    }
+                }
+                postRecruitProgressVos.add(new PostRecruitProgressVo.Builder()
+                        .postId(post.getPostId())
+                        .postName(post.getPostName())
+                        .publishTime(post.getPublishTime())
+                        .applicationNum(applicationNum)
+                        .dptPassNum(dptPassNum)
+                        .filterPassNum(filterPassNum)
+                        .interviewPassNum(interviewPassNum)
+                        .offerNum(offerNum)
+                        .recruitNum(post.getRecruitNum())
+                        .postStatus(post.getStatus())
+                        .build());
+            }
+        }
+        return postRecruitProgressVos;
+    }
+
+    @Override
+    public List<SourceRecruitProgressVo> listSourceRecruitProgress() {
+        Map<String, SourceRecruitProgressDto> srpDtoMap = new HashMap<>();
+        List<PostDto> posts = postDtoRepository.findAllByBatchAndStatusNotOrderByPostIdDesc(
+                batchRepository.findByBatchId(1), PostStatus.REVOKED);
+        for(PostDto post : posts) {
+            List<ApplicationDto> applications = post.getApplications();
+            if(applications != null) {
+                for(ApplicationDto application : applications) {
+                    ResumeDto resume = application.getApplicant().getResume();
+                    String school = resume.getApplicantSchool();
+                    String city = resume.getApplicantCity();
+                    if(srpDtoMap.containsKey(school)) {
+                        SourceRecruitProgressDto srpDto = srpDtoMap.get(school);
+                        int applicationStatus = application.getStatus();
+                        calculateSourceData(srpDto, applicationStatus);
+                    } else {
+                        SourceRecruitProgressDto srpDto = new SourceRecruitProgressDto();
+                        srpDto.setSourceName(school);
+                        srpDto.setSourceType(SourceType.SCHOOL);
+                        srpDtoMap.put(school, srpDto);
+                    }
+                    if(srpDtoMap.containsKey(city)) {
+                        SourceRecruitProgressDto srpDto = srpDtoMap.get(city);
+                        int applicationStatus = application.getStatus();
+                        calculateSourceData(srpDto, applicationStatus);
+                    } else {
+                        SourceRecruitProgressDto srpDto = new SourceRecruitProgressDto();
+                        srpDto.setSourceName(city);
+                        srpDto.setSourceType(SourceType.CITY);
+                        srpDtoMap.put(city, srpDto);
+                    }
+                }
+            }
+        }
+        List<SourceRecruitProgressVo> srpVos = new ArrayList<>();
+        for(String key : srpDtoMap.keySet()) {
+            SourceRecruitProgressDto srpDto = srpDtoMap.get(key);
+            srpVos.add(new SourceRecruitProgressVo.Builder()
+                    .sourceName(srpDto.getSourceName())
+                    .sourceType(srpDto.getSourceType())
+                    .applicationNum(srpDto.getApplicationNum())
+                    .dptPassNum(srpDto.getDptPassNum())
+                    .filterPassNum(srpDto.getFilterPassNum())
+                    .interviewPassNum(srpDto.getInterviewPassNum())
+                    .offerNum(srpDto.getOfferNum())
+                    .build());
+        }
+        return srpVos;
+    }
+
+    private SourceRecruitProgressDto calculateSourceData(SourceRecruitProgressDto srpDto, int applicationStatus) {
+        if(ApplicationStatus.FILTER_PASS.equals(applicationStatus)) {
+            int applicationNum = srpDto.getApplicationNum();
+            srpDto.setApplicationNum(++applicationNum);
+        } else if(ApplicationStatus.INTERVIEW_PASS.equals(applicationStatus)) {
+            int applicationNum = srpDto.getApplicationNum();
+            int filterPassNum = srpDto.getFilterPassNum();
+            int interviewPassNum = srpDto.getInterviewPassNum();
+            srpDto.setApplicationNum(++applicationNum);
+            srpDto.setFilterPassNum(++filterPassNum);
+            srpDto.setInterviewPassNum(++interviewPassNum);
+        } else if(ApplicationStatus.DPT_PASS.equals(applicationStatus)) {
+            int applicationNum = srpDto.getApplicationNum();
+            int filterPassNum = srpDto.getFilterPassNum();
+            int interviewPassNum = srpDto.getInterviewPassNum();
+            int dptPassNum = srpDto.getDptPassNum();
+            srpDto.setApplicationNum(++applicationNum);
+            srpDto.setFilterPassNum(++filterPassNum);
+            srpDto.setInterviewPassNum(++interviewPassNum);
+            srpDto.setDptPassNum(dptPassNum);
+        } else if(ApplicationStatus.OFFER.equals(applicationStatus)) {
+            int applicationNum = srpDto.getApplicationNum();
+            int filterPassNum = srpDto.getFilterPassNum();
+            int interviewPassNum = srpDto.getInterviewPassNum();
+            int dptPassNum = srpDto.getDptPassNum();
+            int offerNum = srpDto.getOfferNum();
+            srpDto.setApplicationNum(++applicationNum);
+            srpDto.setFilterPassNum(++filterPassNum);
+            srpDto.setInterviewPassNum(++interviewPassNum);
+            srpDto.setDptPassNum(dptPassNum);
+            srpDto.setOfferNum(offerNum);
+        }
+        return srpDto;
     }
 
     private InterviewDto createInterviewProcess(InterviewVo interviewVo) {

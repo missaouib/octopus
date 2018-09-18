@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -23,6 +24,9 @@ public class SourceFileDto {
 
     @NotBlank
     private String sourceName;
+
+    @NotNull
+    private int sourceType;
 
     private int applicationNum;
 

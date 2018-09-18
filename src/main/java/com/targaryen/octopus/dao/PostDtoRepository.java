@@ -1,5 +1,6 @@
 package com.targaryen.octopus.dao;
 
+import com.targaryen.octopus.dto.BatchDto;
 import com.targaryen.octopus.dto.PostDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,5 @@ public interface PostDtoRepository extends JpaRepository<PostDto, Integer> {
 
     List<PostDto> findAllByStatusOrderByPostIdDesc(Integer status);
 
-    List<PostDto> findAllByStatusNotOrderByPostIdDesc(Integer status);
+    List<PostDto> findAllByBatchAndStatusNotOrderByPostIdDesc(BatchDto batch, Integer status);
 }
