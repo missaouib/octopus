@@ -45,7 +45,7 @@ public class PdfFileController {
         }*/
 
 
-        File file1 = new File("C:/test/file1.pdf");
+        File file1 = new File("C:/test/file2.pdf");
 
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
