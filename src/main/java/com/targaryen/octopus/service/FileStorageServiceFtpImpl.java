@@ -1,6 +1,7 @@
 package com.targaryen.octopus.service;
 
 import com.targaryen.octopus.config.FtpProperties;
+import com.targaryen.octopus.dto.InterviewDto;
 import com.targaryen.octopus.util.StatusCode;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.net.ftp.FTPClient;
@@ -68,12 +69,17 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
         return true;
     }
 
-    private void init() {
+    private void initByApplicantId(int applicantId) {
         if(!ftpLogin())
             return;
         try {
             ftpClient.enterLocalPassiveMode();
-            System.out.println(ftpClient.printWorkingDirectory());
+            ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(rootLocation.toString()));
+            if(!ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(rootLocation.toString()) + "/" + applicantId)) {
+                ftpClient.makeDirectory(Integer.toString(applicantId));
+            }
+            ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(rootLocation.toString()));
+//            System.out.println(ftpClient.printWorkingDirectory());
         } catch (IOException e) {
             System.out.println(e.toString());
         }
@@ -153,16 +159,19 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
 
     public int storeCVByApplicantId(int id, MultipartFile file) {
         Path path = rootLocation.resolve(Integer.toString(id)).resolve(this.CV);
+        initByApplicantId(id);
         return store(path, file, true);
     }
 
     public int storePhotoByApplicantId(int id, MultipartFile file) {
         Path path = rootLocation.resolve(Integer.toString(id)).resolve(this.PHOTO);
+        initByApplicantId(id);
         return store(path, file, true);
     }
 
     public int storeDegreeByApplicantId(int id, MultipartFile file) {
         Path path = rootLocation.resolve(Integer.toString(id)).resolve(this.DEGREE);
+        initByApplicantId(id);
         return store(path, file, true);
     }
 
