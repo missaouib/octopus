@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
- interface FileStorageService {
+public interface FileStorageService {
      List<String> listDegreeFilenamesByApplicantId(int id);
      List<String> listPhotoFilenamesByApplicantId(int id);
      List<String> listCVFilenamesByApplicantId(int id);

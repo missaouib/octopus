@@ -40,8 +40,43 @@
 
                     <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
 
-                        <!-- Initial state -->
-                        <div class="vertical-timeline-block">
+                        <!-- Initial state (INIT) -->
+                        <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon lazur-bg">
+                                <i class="fa fa-hourglass-start"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Waiting for Resume Filtering</h2>
+                                <p th:text="${'Applicant: ' + appli.applicantName}"></p>
+
+                                <span class="vertical-date">
+                                    <label th:text="${#dates.format(appli.filterEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                    <small><label th:text="${#dates.format(appli.filterEndTime,'HH:mm')}"></label></small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Initial state (RESUME FAILED) -->
+                        <div th:if="${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL}" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon" style="background-color:#dc3545;">
+                                <i class="fa fa-close" style="color:#FFF;"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Resume Failed</h2>
+                                <p th:text="${'Applicant: ' + appli.applicantName}"></p>
+
+                                <span class="vertical-date">
+                                    <label th:text="${#dates.format(appli.filterEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                    <small><label th:text="${#dates.format(appli.filterEndTime,'HH:mm')}"></label></small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Initial state (RESUME PASSED) -->
+                        <div th:if="${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_FAIL} and
+                                    ${appli.status} ne ${T(com.targaryen.octopus.util.status.ApplicationStatus).INIT}" class="vertical-timeline-block">
                             <div class="vertical-timeline-icon lazur-bg">
                                 <i class="fa fa-hourglass-start"></i>
                             </div>
@@ -50,13 +85,13 @@
                                 <h2>Resume Passed</h2>
                                 <p th:text="${'Applicant: ' + appli.applicantName}"></p>
 
-                                <a th:if="${interviewList.isEmpty()}" data-toggle="modal" data-target="#new-interview"
+                                <a th:if="${interviewList.isEmpty()} and ${appli.status} eq ${T(com.targaryen.octopus.util.status.ApplicationStatus).FILTER_PASS}" data-toggle="modal" data-target="#new-interview"
                                    class="btn btn-sm btn-warning" style="margin-left: 5px;">Arrange new interview</a>
 
                                 <span class="vertical-date">
-                                        <label th:text="${#dates.format(appli.filterEndTime,'yyyy-MM-dd')}"></label> <br/>
-                                        <small><label th:text="${#dates.format(appli.filterEndTime,'HH:mm')}"></label></small>
-                                    </span>
+                                    <label th:text="${#dates.format(appli.filterEndTime,'yyyy-MM-dd')}"></label> <br/>
+                                    <small><label th:text="${#dates.format(appli.filterEndTime,'HH:mm')}"></label></small>
+                                </span>
                             </div>
                         </div>
 

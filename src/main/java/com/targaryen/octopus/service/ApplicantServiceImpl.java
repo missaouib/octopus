@@ -167,7 +167,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             return StatusCode.FAILURE;
         }
 
-        return StatusCode.SUCCESS;
+        return applicationDto.getApplicationId();
     }
 
     public List<ApplicationVo> findAppByApplicantId(int applicantId) {
@@ -461,7 +461,8 @@ public class ApplicantServiceImpl implements ApplicantService {
 
             }
 
-            application_interviews_map.put(a.getApplicationId(), availableInterviews);
+            if(!availableInterviews.isEmpty())
+                application_interviews_map.put(a.getApplicationId(), availableInterviews);
         }
 
         return application_interviews_map;

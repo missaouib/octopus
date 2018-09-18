@@ -33,6 +33,14 @@ public class MessageDto {
 
     private int messageType;
 
+    /* Temp */
+
     @Transient
     private String createTimeString;
+
+    @Transient
+    private String iconName;
+
+    @Transient
+    private String iconColor;
 }

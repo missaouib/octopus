@@ -20,6 +20,13 @@
 
     <script th:src="@{/octopus/js/notification/sockjs.js}"></script>
     <script th:src="@{/octopus/js/notification/stomp.js}"></script>
+
+    <style>
+        .notification-icon {
+            left: 6px;
+            top: auto;
+        }
+    </style>
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg">
@@ -191,10 +198,12 @@
             $("#hr-notifications").after("<li id=\'message-" + messageCount + "\'>\n" +
                 "                                <div class=\"dropdown-messages-box\">\n" +
                 "                                    <a onclick=\"consumeMessage(" + messageCount + ", \'" + messageDto.link + "\');\" class=\"pull-left\">\n" +
-                "                                        <img alt=\"image\" class=\"img-circle\" src=\"/octopus/img/ico-mail.png\">\n" +
+                "                                       <div class=\"vertical-timeline-icon notification-icon " + messageDto.iconColor + "-bg\">\n" +
+                "                                           <i class=\"fa fa-" + messageDto.iconName + "\"></i>\n" +
+                "                                       </div>" +
+
                 "                                    </a>\n" +
                 "                                    <div class=\"media-body \">\n" +
-                "                                        <small class=\"pull-right text-navy\">Now</small>\n" +
                 "                                        <strong>" + messageDto.subject + "</strong> " + messageDto.text + "\n" +
                 "                                        <strong>" + messageDto.object + "</strong> " + "\n" +
                 "                                        <br>\n" +

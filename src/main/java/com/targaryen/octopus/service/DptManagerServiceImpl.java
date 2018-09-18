@@ -105,7 +105,7 @@ public class DptManagerServiceImpl implements DptManagerService {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(updatePost.getPostId());
             postDtoRepository.save(DataTransferUtil.updatePostDtoByVo(post, updatePost));
-            return StatusCode.SUCCESS;
+            return post.getPostId();
         } catch (DataAccessException e) {
             return StatusCode.FAILURE;
         }
@@ -127,9 +127,10 @@ public class DptManagerServiceImpl implements DptManagerService {
     public int revokePost(int postId) {
         try {
             PostDto post = postDtoRepository.findPostDtoByPostId(postId);
-            if(post != null) {
+            if (post != null) {
                 post.setStatus(PostStatus.REVOKED);
                 postDtoRepository.save(post);
+                return post.getPostId();
             }
             return StatusCode.SUCCESS;
         } catch (DataAccessException e) {
