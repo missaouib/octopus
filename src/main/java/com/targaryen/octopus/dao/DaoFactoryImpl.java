@@ -33,7 +33,8 @@ public class DaoFactoryImpl implements DaoFactory{
     private EducationExperienceRepository educationExperienceRepository;
     @Autowired
     private WorkExperienceRepository workExperienceRepository;
-
+    @Autowired
+    private MessageRepository messageRepository;
 
     @Override
     public ApplicationDtoRepository getApplicationDtoRepository() {
@@ -104,4 +105,7 @@ public class DaoFactoryImpl implements DaoFactory{
     public WorkExperienceRepository getWorkExperienceRepository() {
         return workExperienceRepository;
     }
+
+    @Override
+    public MessageRepository getMessageRepostiry() { return messageRepository; }
 }

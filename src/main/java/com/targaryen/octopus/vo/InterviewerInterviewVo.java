@@ -28,6 +28,7 @@ public class InterviewerInterviewVo {
     private final String departmentName;
     private final String postType;
     private final String postLocale;
+    private final int interviewNum;
 
     public static class Builder {
         private int interviewId;
@@ -49,6 +50,7 @@ public class InterviewerInterviewVo {
         private String departmentName;
         private String postType;
         private String postLocale;
+        private int interviewNum;
 
 
         public Builder interviewId(int interviewId) {
@@ -146,6 +148,10 @@ public class InterviewerInterviewVo {
             return this;
         }
 
+        public Builder interviewNum(int interviewNum) {
+            this.interviewNum = interviewNum;
+            return this;
+        }
 
         public InterviewerInterviewVo build() {
             return new InterviewerInterviewVo(this);
@@ -173,5 +179,6 @@ public class InterviewerInterviewVo {
         this.departmentName = builder.departmentName;
         this.postType = builder.postType;
         this.postLocale = builder.postLocale;
+        this.interviewNum = builder.interviewNum;
     }
 }

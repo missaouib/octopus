@@ -9,4 +9,5 @@ public interface ServiceFactory {
     IDService getIDService();
     InterviewerService getInterviewerService();
     FileStorageService getFileStorageService();
+    MessageService getMessageService();
 }
