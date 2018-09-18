@@ -302,14 +302,8 @@
 
 <script type="text/javascript">
     var frm = $('#cvUpload');
-        /*<![CDATA[*/
-    var _csrf_token = /*[[${_csrf.token}]]*/ '';
-    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
-    /*]]>*/
-    var csrfData = {};
-    csrfData["file"] = new FormData(frm);
 
-    console.log(csrfData);
+    console.log(new FormData($('#cvUpload')[0]));
 
     frm.submit(function (ev) {
 
@@ -317,8 +311,8 @@
             type: frm.attr('method'),
             cache: false,
             url: frm.attr('action'),
-            data: csrfData,
-            processData: new FormData($('#cvUpload')[0]),
+            data: new FormData($('#cvUpload')[0]),
+            processData: false,
             contentType: false,
             success: function (data) {
                 alert('ok');
