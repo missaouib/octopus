@@ -51,6 +51,9 @@ public class ApplicantController {
             //unreply
         Map<Integer, List<ApplicantInterviewVo>> socialInterviewEntities = serviceFactory.getApplicantService().findAllCampusAvailableInterviewsByApplicantId(applicantId);
         result.addObject ("unreplyCampus", socialInterviewEntities);
+        /*for(Map.Entry<Integer, List<ApplicantInterviewVo>> tmp : socialInterviewEntities.entrySet()){
+            System.out.println("[msg]: " + tmp.getKey() + ", " + tmp.getValue().get(0).getApplicationId());
+        }*/
         System.out.println("[msg]: socialInterviewEntities.size() : " + socialInterviewEntities.size());
             //reply
         List<ApplicantInterviewVo> applicationVosReply = serviceFactory.getApplicantService().findCampusAcceptedInterviewsByApplicantId(applicantId);
