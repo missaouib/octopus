@@ -202,4 +202,16 @@ public interface HRService {
      *
      */
     int sendOfferByApplicationId(int applicationId);
+
+    /**
+     * list post recruit progress
+     *
+     */
+    List<PostRecruitProgressVo> listPostRecruitProgress();
+
+    /**
+     * list source recruit progress
+     *
+     */
+    List<SourceRecruitProgressVo> listSourceRecruitProgress();
 }
