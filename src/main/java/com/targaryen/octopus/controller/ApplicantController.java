@@ -181,14 +181,11 @@ public class ApplicantController {
         return result;
     }
 
-    @RequestMapping(value = "/applicant/social/agree", method = RequestMethod.POST)
-    ModelAndView applicantAgree(InterviewEntity interviewEntity, ModelMap map){
+    @RequestMapping(value = "/applicant/social/agree/{interviewId}", method = RequestMethod.GET)
+    ModelAndView applicantAgree(@PathVariable("interviewId") String interviewId, ModelMap map){
 
         //Change interview status
-        System.out.println("[msg]: "  + "/applicant/agree" + interviewEntity.getInterviewId() + ", " + interviewEntity.getApplicationId());
-        InterviewVo interviewVo = new InterviewVo.Builder().interviewId(interviewEntity.getInterviewId())
-                                    .applicationId(interviewEntity.getApplicationId()).build();
-        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(interviewEntity.getInterviewId(), ApplicantStatus.ACCEPTED, null);
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
 
         //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
 
@@ -238,11 +235,13 @@ public class ApplicantController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/applicant/social/refuse")
-    ModelAndView applicantRefuse(ApplicantInterviewVo applicantInterviewVo, ModelMap map){
+    @RequestMapping(value = "/applicant/social/refuse", method = RequestMethod.POST)
+    ModelAndView applicantRefuse(ApplicantCommentEntity applicantCommentEntity, ModelMap map){
 
         //Change interview status
-        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantInterviewVo.getInterviewId(), ApplicantStatus.ACCEPTED, applicantInterviewVo.getInterviewResultComment());
+        System.out.println("[msg]: " + "applicantCommentEntity" + ", " + applicantCommentEntity.getInterviewId() + ", " + applicantCommentEntity.getApplicantComment());
+
+        serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantCommentEntity.getInterviewId(), ApplicantStatus.REJECTED, applicantCommentEntity.getApplicantComment());
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
         return result;
     }

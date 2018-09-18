@@ -271,7 +271,7 @@ public interface ApplicantService {
      * @param postId
      * @return
      */
-    PostVo findPostByPostId(int postId);
+//    PostVo findPostByPostId(int postId);
 
 
 
