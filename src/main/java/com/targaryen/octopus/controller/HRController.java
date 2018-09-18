@@ -1,5 +1,6 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.dto.MessageDto;
 import com.targaryen.octopus.entity.InterviewEntity;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.entity.PostScheduleEntity;
@@ -7,12 +8,11 @@ import com.targaryen.octopus.entity.ResumeModelEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.ApplicantService;
 import com.targaryen.octopus.service.HRService;
+import com.targaryen.octopus.service.MessageService;
 import com.targaryen.octopus.service.ServiceFactory;
-import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.InterviewResultStatus;
-import com.targaryen.octopus.util.status.InterviewerStatus;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.InterviewVo;
@@ -37,15 +37,15 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class HRController {
-    private Logger logger = LoggerFactory.getLogger(HRController.class);
-
     private HRService hrService;
     private ApplicantService applicantService;
+    private MessageService messageService;
 
     @Autowired
-    public HRController(ServiceFactory serviceFactory, ApplicantService applicantService) {
+    public HRController(ServiceFactory serviceFactory) {
         this.hrService = serviceFactory.getHRService();
-        this.applicantService = applicantService;
+        this.applicantService = serviceFactory.getApplicantService();
+        this.messageService = serviceFactory.getMessageService();
     }
 
     @RequestMapping(value="/hr/index")
@@ -101,6 +101,11 @@ public class HRController {
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
         map.addAttribute("post", postVo);
+
+        // Test
+        MessageDto messageDto = new MessageDto();
+        messageDto.setText("Hello World");
+        messageService.broadcastAndSave("/octopus/ws/hr", messageDto, false);
 
         return "dpt-hr-post-detail";
     }
@@ -397,6 +402,8 @@ public class HRController {
                                       @RequestParam("interviewRound") String interviewRound) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 
+        List<InterviewVo> interviewVoList = new ArrayList<>();
+
         for (int i = 0; i < Integer.valueOf(count); i++) {
             for (String dateString : dates) {
                 for (String startTimeString : times) {
@@ -411,13 +418,16 @@ public class HRController {
                                 .interviewRound(Integer.valueOf(interviewRound))
                                 .reservationStatus(ReservationStatus.SUCCESS)
                                 .build();
-                        hrService.createInterview(interviewVo);
+                        interviewVoList.add(interviewVo);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+
+        // Batch create by hibernate
+        hrService.createListOfInterviews(interviewVoList);
 
         return "";
     }
@@ -485,6 +495,11 @@ public class HRController {
     }
 
     /******************************/
+    /**
+     * applicant accept offer
+     * @param applicationId
+     * @return
+     */
     @RequestMapping(value = "/hr/post/{postId}/application/acceptOffer", method = RequestMethod.POST)
     @ResponseBody
     public String applicantAcceptOffer(@PathVariable("postId") int postId, @RequestParam("applicationId") int applicationId) {
@@ -501,4 +516,5 @@ public class HRController {
     public String applicantRejectOffer(@PathVariable("postId") int postId, @RequestParam("applicationId") int applicationId) {
         return String.valueOf(applicantService.rejectOfferByApplicationId(applicationId));
     }
+    /******************************/
 }

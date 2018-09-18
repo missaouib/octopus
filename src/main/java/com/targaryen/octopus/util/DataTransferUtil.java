@@ -1,8 +1,6 @@
 package com.targaryen.octopus.util;
 
 import com.targaryen.octopus.dto.*;
-import com.targaryen.octopus.util.status.InterviewResultStatus;
-import com.targaryen.octopus.util.status.ReservationStatus;
 import com.targaryen.octopus.vo.*;
 
 /**
@@ -352,6 +350,20 @@ public class DataTransferUtil {
                 .school(educationExperienceDto.getSchool())
                 .startTime(educationExperienceDto.getStartTime())
                 .typeOfStudy(educationExperienceDto.getTypeOfStudy())
+                .build();
+    }
+
+    public static AnnouncementVo AnnouncementDtoToVo(AnnouncementDto announcementDto) {
+        return new AnnouncementVo.Builder()
+                .announcementId(announcementDto.getAnnouncementId())
+                .announcementType(announcementDto.getAnnouncementType())
+                .announcementDetail(announcementDto.getAnnouncementDetail())
+                .announcementStatus(announcementDto.getAnnouncementStatus())
+                .announcementTitle(announcementDto.getAnnouncementTitle())
+                .createTime(announcementDto.getCreateTime())
+                .lastModifyTime(announcementDto.getLastModifyTime())
+                .publishedTime(announcementDto.getPublishedTime())
+                .batchId(announcementDto.getBatch().getBatchId())
                 .build();
     }
 }

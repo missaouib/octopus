@@ -33,7 +33,14 @@ public class DaoFactoryImpl implements DaoFactory{
     private EducationExperienceRepository educationExperienceRepository;
     @Autowired
     private WorkExperienceRepository workExperienceRepository;
-
+    @Autowired
+    private MessageRepository messageRepository;
+    @Autowired
+    private AnnouncementRepository announcementRepository;
+    @Autowired
+    private BatchRepository batchRepository;
+    @Autowired
+    private SourceFileRepository sourceFileRepository;
 
     @Override
     public ApplicationDtoRepository getApplicationDtoRepository() {
@@ -103,5 +110,23 @@ public class DaoFactoryImpl implements DaoFactory{
     @Override
     public WorkExperienceRepository getWorkExperienceRepository() {
         return workExperienceRepository;
+    }
+
+    @Override
+    public MessageRepository getMessageRepostiry() { return messageRepository; }
+
+    @Override
+    public AnnouncementRepository getAnnouncementRepository() {
+        return announcementRepository;
+    }
+
+    @Override
+    public BatchRepository getBatchRepository() {
+        return batchRepository;
+    }
+
+    @Override
+    public SourceFileRepository getSourceFileRepository() {
+        return sourceFileRepository;
     }
 }

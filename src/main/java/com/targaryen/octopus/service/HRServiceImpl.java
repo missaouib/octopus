@@ -147,6 +147,19 @@ public class HRServiceImpl implements HRService {
     }
 
     @Override
+    public List<ApplicationResumeVo> findFilterPassAppByPostId(int postId) {
+        PostDto post = postDtoRepository.findPostDtoByPostId(postId);
+        if(post != null) {
+            return post.getApplications().stream()
+                    .filter(n -> ApplicationStatus.FILTER_PASS.equals(n.getStatus()))
+                    .map(n -> DataTransferUtil.ApplicationDtoToApplicationResumeVo(n))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<ApplicationResumeVo>();
+        }
+    }
+
+    @Override
     public List<EducationExperienceVo> findEducationExperienceVoByApplicationId(int applicationId) {
         ApplicationDto application = applicationDtoRepository.findApplicationDtoByApplicationId(applicationId);
         ResumeDto resume = application.getApplicant().getResume();

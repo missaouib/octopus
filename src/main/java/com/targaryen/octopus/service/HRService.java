@@ -71,6 +71,12 @@ public interface HRService {
     ApplicationResumeVo findApplicationResumeVoByApplicationId(int applicationId);
 
     /**
+     * find filter pass Applications by applicationId
+     *
+     */
+    List<ApplicationResumeVo> findFilterPassAppByPostId(int postId);
+
+    /**
      * find EducationExperienceVo by applicationId
      *
      */
