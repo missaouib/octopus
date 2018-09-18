@@ -505,27 +505,29 @@ public class HRServiceImpl implements HRService {
             List<ApplicationDto> applications = post.getApplications();
             if(applications != null) {
                 for(ApplicationDto application : applications) {
+                    int applicationStatus = application.getStatus();
                     ResumeDto resume = application.getApplicant().getResume();
                     String school = resume.getApplicantSchool();
                     String city = resume.getApplicantCity();
                     if(srpDtoMap.containsKey(school)) {
                         SourceRecruitProgressDto srpDto = srpDtoMap.get(school);
-                        int applicationStatus = application.getStatus();
+
                         calculateSourceData(srpDto, applicationStatus);
                     } else {
                         SourceRecruitProgressDto srpDto = new SourceRecruitProgressDto();
                         srpDto.setSourceName(school);
                         srpDto.setSourceType(SourceType.SCHOOL);
+                        calculateSourceData(srpDto, applicationStatus);
                         srpDtoMap.put(school, srpDto);
                     }
                     if(srpDtoMap.containsKey(city)) {
                         SourceRecruitProgressDto srpDto = srpDtoMap.get(city);
-                        int applicationStatus = application.getStatus();
                         calculateSourceData(srpDto, applicationStatus);
                     } else {
                         SourceRecruitProgressDto srpDto = new SourceRecruitProgressDto();
                         srpDto.setSourceName(city);
                         srpDto.setSourceType(SourceType.CITY);
+                        calculateSourceData(srpDto, applicationStatus);
                         srpDtoMap.put(city, srpDto);
                     }
                 }
