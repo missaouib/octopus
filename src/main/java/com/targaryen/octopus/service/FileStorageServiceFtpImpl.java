@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -113,6 +114,7 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
     private int store(Path storePath, MultipartFile file, boolean single) {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         InputStream is;
+        List<String> prestored = listFilenames(storePath);
 
         if(!ftpLogin())
             return StatusCode.FAILURE;
@@ -126,15 +128,14 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
             }
 
             if(single) {
-                List<String> prestored = listFilenames(storePath);
                 for(String s: prestored) {
-                    ftpClient.deleteFile(FilenameUtils.separatorsToUnix(storePath.toString()) + "/" + s);
+                    ftpClient.deleteFile(s);
                 }
             }
 
             is = file.getInputStream();
             ftpClient.storeFile(filename, is);
-            is.close();
+
         } catch (IOException e) {
             System.out.println(e.toString());
             return StatusCode.FAILURE;
@@ -202,7 +203,6 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
             ftpClient.enterLocalPassiveMode();
             is = ftpClient.retrieveFileStream(FilenameUtils.separatorsToUnix(filePath.toString()));
             resource = new InputStreamResource(is);
-            is.close();
         } catch (IOException e) {
             System.out.println(e.toString());
             return null;
