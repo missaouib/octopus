@@ -15,13 +15,13 @@ public interface AnnouncementService {
      * list public announcement by batchId
      *
      */
-    List<AnnouncementVo> ListPublicAnnouncement();
+    List<AnnouncementVo> listPublicAnnouncement();
 
     /**
      * list hr announcement
      *
      */
-    List<AnnouncementVo> ListHRAnnouncement();
+    List<AnnouncementVo> listHRAnnouncement();
 
     /**
      * create new announcement, announcementVo should include announcementTitle, announcementDetail

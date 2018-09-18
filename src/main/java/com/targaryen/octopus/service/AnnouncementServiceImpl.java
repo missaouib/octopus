@@ -37,7 +37,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public List<AnnouncementVo> ListPublicAnnouncement() {
+    public List<AnnouncementVo> listPublicAnnouncement() {
         return announcementRepository.findAll().stream()
                 .filter(n -> AnnouncementStauts.PUBLISHED.equals(n.getAnnouncementStatus()))
                 .map(n -> DataTransferUtil.AnnouncementDtoToVo(n))
@@ -45,7 +45,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public List<AnnouncementVo> ListHRAnnouncement() {
+    public List<AnnouncementVo> listHRAnnouncement() {
         return announcementRepository.findAll().stream()
                 .filter(n -> AnnouncementType.HR_VIEW.equals(n.getAnnouncementType()) &&
                         AnnouncementStauts.PUBLISHED.equals(n.getAnnouncementStatus()))

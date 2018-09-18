@@ -81,7 +81,7 @@ public class HRController {
         postVoList = postVoList.stream().filter(s -> s.getRecruitType() == type).collect(Collectors.toList());
         map.addAttribute("postList",postVoList);*/
 
-        List<AnnouncementVo> announcementVos = announcementService.ListHRAnnouncement();
+        List<AnnouncementVo> announcementVos = announcementService.listHRAnnouncement();
         map.addAttribute("announcementList", announcementVos);
         return "hr-billboard-list";
     }
