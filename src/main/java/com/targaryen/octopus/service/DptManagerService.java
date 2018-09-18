@@ -28,7 +28,8 @@ public interface DptManagerService {
 
     /**
      * create new post, newPost Vo should include postName, recruitType
-     *
+     * @Return auto-generated increment id (>0) if success
+     *          StatusCode.Failure (-1) if failure
      */
     int createNewPost(PostVo newPost, int userId);
 

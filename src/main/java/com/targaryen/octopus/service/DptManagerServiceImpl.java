@@ -87,7 +87,9 @@ public class DptManagerServiceImpl implements DptManagerService {
             ResumeModelDto resumeModelDto = new ResumeModelDto();
             resumeModelDto.setPost(postDto);
             resumeModelDtoRepository.save(resumeModelDto);
-            return StatusCode.SUCCESS;
+
+            // Return auto-generated increment id
+            return postDto.getPostId();
         } catch (Exception e) {
             return StatusCode.FAILURE;
         }

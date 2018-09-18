@@ -1,11 +1,14 @@
 package com.targaryen.octopus.controller;
 
+import com.targaryen.octopus.dto.MessageDto;
 import com.targaryen.octopus.entity.PostEntity;
 import com.targaryen.octopus.security.AuthInfo;
 import com.targaryen.octopus.service.DptManagerService;
+import com.targaryen.octopus.service.MessageService;
 import com.targaryen.octopus.service.ServiceFactory;
 import com.targaryen.octopus.util.Role;
 import com.targaryen.octopus.util.StatusCode;
+import com.targaryen.octopus.util.status.HRMessage;
 import com.targaryen.octopus.util.status.RecruitTypeStatus;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +26,12 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class DptManagerController {
     private DptManagerService dptManagerService;
+    private MessageService messageService;
 
     @Autowired
     public DptManagerController(ServiceFactory serviceFactory) {
         this.dptManagerService = serviceFactory.getDptManagerService();
+        this.messageService = serviceFactory.getMessageService();
     }
 
     @RequestMapping(value="/dpt/index")
@@ -106,7 +112,22 @@ public class DptManagerController {
                 .postRequirement(postEntity.getPostRequirement())
                 .build();
 
-        return String.valueOf(dptManagerService.createNewPost(postVo, AuthInfo.getUserId()));
+        int postId = dptManagerService.createNewPost(postVo, AuthInfo.getUserId());
+
+        if (postId > 0) {
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("created a new " + (postEntity.isRecruitType() ? "society" : "campus") + " post need");
+            messageDto.setObject(postEntity.getPostName());
+            messageDto.setLink("hr/post/" + postId);
+            messageDto.setMessageType(HRMessage.DPT_CREATE_POST);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
+
+            messageService.broadcastAndSave("hr", messageDto, true);
+        }
+
+        return String.valueOf(postId);
     }
 
     @RequestMapping(value = "/dpt/post/edit", method = RequestMethod.POST)
