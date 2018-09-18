@@ -43,7 +43,7 @@
                             <button type="button" class="btn btn-outline btn-default"
                                     th:onclick="${'location.href=''add?type=' + recruitType + ''';'}">
                                 <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
-                                [[${title}]]
+                                Add New
                             </button>
 
                             <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
@@ -55,41 +55,33 @@
                             <tr class="footable even">
                                 <th>Status</th>
                                 <th>Title</th>
-                                <th>Post Type</th>
-                                <th>Post Locale</th>
+                                <th>Public Type</th>
                                 <th>Operation</th>
                             </tr>
                             </thead>
 
                             <tbody>
-                                <th:block th:each="post : ${postList}">
+                                <th:block th:each="announcement : ${announcementList}">
                                     <tr>
                                         <td>
-                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" class="label label-success">To be checked</span>
-                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}" class="label label-danger">Revoked by manager</span>
-                                            <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}" class="label label-primary">Published</span>
+                                            <span th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).DRAFT}" class="label label-success">To be checked</span>
+                                            <span th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).PUBLISHED}" class="label label-primary">Published</span>
                                         </td>
-                                        <td th:text="${post.postName}"></td>
-                                        <td th:text="${post.postType}"></td>
-                                        <td th:text="${post.postLocale}"></td>
+                                        <td th:text="${announcement.announcementTitle}"></td>
+                                        <td>
+                                            <span th:if="${announcement.announcementType} eq ${T(com.targaryen.octopus.util.status.AnnouncementType).HR_NOT_VIEW}" class="label label-success">Public(Not HR)</span>
+                                            <span th:if="${announcement.announcementType} eq ${T(com.targaryen.octopus.util.status.AnnouncementType).HR_VIEW}" class="label label-primary">Public(HR)</span>
                                         <td>
                                             <button type="button"
-                                                    th:if="${post.status} ne ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}"
-                                                    th:onclick="${'location.href=''' + post.postId + ''''}"
+                                                    th:if="${announcement.announcementStatus} ne ${T(com.targaryen.octopus.util.status.AnnouncementStauts).PUBLISHED}"
+                                                    th:onclick="${'location.href=''' + announcement.announcementId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
                                                 Check/Edit Detail
                                             </button>
                                             <button type="button"
-                                                    th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}"
-                                                    th:onclick="${'location.href=''' + post.postId + '/application/list'''}"
-                                                    class="btn btn-outline btn-default">
-                                                <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>
-                                                See Passed Applicants
-                                            </button>
-                                            <button type="button"
-                                                    th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}"
-                                                    th:onclick="${'revokePost(' + post.postId + ', ''' + post.postName + ''')'}"
+                                                    th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).PUBLISHED}"
+                                                    th:onclick="${'revokePost(' + announcement.announcementId + ''')'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
                                                 Revoke
