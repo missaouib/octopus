@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/octopus/hr/**").hasRole("HR")
                 .antMatchers("/octopus/interviewer/**").hasRole("INTERVIEWER")
                 .antMatchers("/octopus/dpt/**").hasRole("DPT")
+                .antMatchers("/actuator/**").hasRole("MAINTENANCE")
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/octopus/login").permitAll().defaultSuccessUrl("/octopus/loginCheck").failureUrl("/octopus/loginError")
                 .and().logout().logoutUrl("/octopus/logout").logoutSuccessUrl("/octopus/login");
