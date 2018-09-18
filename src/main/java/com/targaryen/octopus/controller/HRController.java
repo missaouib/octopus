@@ -258,6 +258,11 @@ public class HRController {
         return postScheduleEntity;
     }
 
+    @RequestMapping(value = "/hr/notification/list", method = RequestMethod.GET)
+    public String hrNotificationList() {
+        return "hr-notification-list";
+    }
+
     /* ***************************************************************************** */
 
     @RequestMapping(value = "/hr/post/publish", method = RequestMethod.POST)

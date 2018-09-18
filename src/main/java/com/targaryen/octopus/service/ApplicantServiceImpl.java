@@ -167,7 +167,7 @@ public class ApplicantServiceImpl implements ApplicantService {
             return StatusCode.FAILURE;
         }
 
-        return StatusCode.SUCCESS;
+        return applicationDto.getApplicationId();
     }
 
     public List<ApplicationVo> findAppByApplicantId(int applicantId) {
