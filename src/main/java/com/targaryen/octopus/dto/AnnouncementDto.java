@@ -32,9 +32,11 @@ public class AnnouncementDto {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date publishedTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifyTime;
 
     private int announcementType;
 
