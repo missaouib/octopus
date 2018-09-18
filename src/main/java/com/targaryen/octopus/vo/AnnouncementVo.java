@@ -62,7 +62,7 @@ public class AnnouncementVo {
             return this;
         }
 
-        public Builder annoucementType(int announcementType) {
+        public Builder announcementType(int announcementType) {
             this.announcementType = announcementType;
             return this;
         }
