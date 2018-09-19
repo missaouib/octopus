@@ -74,77 +74,6 @@ public class ApplicantController {
         map.addAttribute("applicantCommentEntity", new ApplicantCommentEntity());
 
         return result;
-/*
-        List<InterviewEntity> interviewEntities = new ArrayList<>();
-
-        SimpleDateFormat fmt =new SimpleDateFormat ("yyyy-MM-dd HH:mm");
-        for(ApplicationVo apps : applicationVos ){
-
-            System.out.println("[msg]: " + "apps.getApplicationId()" + ", " + apps.getApplicationId());
-            List<InterviewVo> interviewVos = serviceFactory.getApplicantService().findAvailableInterviewsByApplicationId(apps.getApplicationId());
-            for(InterviewVo ins : interviewVos){
-                InterviewEntity interviewEntity = new InterviewEntity();
-                System.out.println("[msg]: " + "ins.getApplicationId()" + ", " + apps.getApplicationId());
-                interviewEntity.setApplicationId(apps.getApplicationId());
-                interviewEntity.setInterviewId(ins.getInterviewId());
-                interviewEntity.setPostId(ins.getPostId());
-                interviewEntity.setInterviewStartTime(fmt.format(ins.getInterviewStartTime()));
-                interviewEntity.setInterviewPlace(ins.getInterviewPlace());
-                interviewEntity.setPostName(serviceFactory.getPublicService().findPostById(ins.getPostId()).getPostName());
-                interviewEntities.add(interviewEntity);
-            }
-        }
-
-        for(InterviewVo apps2 : applicationVos2){
-
-                InterviewEntity interviewEntity = new InterviewEntity();
-                System.out.println("[msg]: " + "ins.getApplicationId()" + ", " + apps2.getApplicationId());
-                interviewEntity.setApplicationId(apps2.getApplicationId());
-                interviewEntity.setInterviewId(apps2.getInterviewId());
-                interviewEntity.setInterviewStartTime(fmt.format(apps2.getInterviewStartTime()));
-                interviewEntity.setInterviewPlace(apps2.getInterviewPlace());
-                interviewEntity.setPostName(serviceFactory.getPublicService().findPostById(apps2.getPostId()).getPostName());
-                interviewEntities.add(interviewEntity);
-        }
-
-        //List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
-        List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
-*//*
-        List<InterviewVo> interviewVos = serviceFactory.getApplicantService().findAvailableInterviewsByApplicationId()
-
-        List<InterviewEntity> interviewEntities = new ArrayList<>();
-        for(InterviewVo temp : interviewVos){
-            InterviewEntity interviewEntity = new InterviewEntity();
-            interviewEntity.setApplicationId(temp.getApplicationId());
-            interviewEntity.setInterviewId(temp.getInterviewId());
-            interviewEntity.setPostId(temp.getPostId());
-            interviewEntity.setInterviewStartTime(fmt.format(temp.getInterviewStartTime()));
-            interviewEntity.setInterviewPlace(temp.getInterviewPlace());
-            interviewEntity.setPostName(serviceFactory.getPublicService().findPostById(temp.getPostId()).getPostName());
-            interviewEntities.add(interviewEntity);
-        }*//*
-        //mock data
-        *//*ApplicantInterviewVo interviewVo = new ApplicantInterviewVo.Builder()
-                .interviewPlace("Shanghai")
-                .interviewStartTime(Calendar.getInstance().getTime())
-                .postName("Java").build();
-        interviewVos.add(interviewVo);
-        interviewVosAccpted.add(interviewVo);*//*
-
-        //System.out.println("[msg]: " + interviewVos.get(0).getInterviewPlace());
-        result.addObject ("unreplyMsg", interviewEntities);
-
-
-        socialInterviewEntities.put(1, interviewEntities);
-        socialInterviewEntities.put(2, interviewEntities);
-
-
-
-        //map.addAttribute("ps", new InterviewEntity());
-        map.addAttribute("acceptedMsg", interviewVosAccpted);
-
-        int applicantId = serviceFactory.getIDService().userIdToApplicantId(userId);*/
-
 
     }
 
@@ -193,9 +122,6 @@ public class ApplicantController {
         //Change interview status
         serviceFactory.getApplicantService().updateApplicantStatusOfInterview(interviewId, ApplicantStatus.ACCEPTED, null);
 
-        //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
-
-
         InterviewVo interviewVo = serviceFactory.getHRService().findInterviewById(interviewId);
         ApplicationVo applicationVo = serviceFactory.getInterviewerService().findApplicationByApplicationId(interviewVo.getApplicationId());
 
@@ -211,21 +137,8 @@ public class ApplicantController {
 
         serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
 
-
-
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
         return result;
-       /* map.addAttribute("roleName", Role.getRoleNameByAuthority());
-        map.addAttribute("userName", AuthInfo.getUserName());
-
-        int userId = AuthInfo.getUserId();
-        *//*List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);*//*
-        List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
-        List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
-        map.addAttribute("unreplyMsg", interviewVos);
-        map.addAttribute("acceptedMsg", interviewVosAccpted);
-        return result;*/
     }
 
     @RequestMapping(value = "/applicant/campus/agree", method = RequestMethod.POST)
@@ -236,8 +149,6 @@ public class ApplicantController {
         InterviewVo interviewVo = new InterviewVo.Builder().interviewId(interviewerCommentEntity.getInterviewId())
                 .applicationId(interviewerCommentEntity.getApplicationId()).build();
         serviceFactory.getApplicantService().updateInterviewApplicantId(interviewVo);
-
-        //serviceFactory.getApplicantService().updateApplicantStatusOfInterview(Integer.parseInt(interviewId), ApplicantStatus.ACCEPTED, null);
 
 
         interviewVo = serviceFactory.getHRService().findInterviewById(interviewerCommentEntity.getInterviewId());
@@ -255,21 +166,8 @@ public class ApplicantController {
 
         serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
 
-
-
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
         return result;
-       /* map.addAttribute("roleName", Role.getRoleNameByAuthority());
-        map.addAttribute("userName", AuthInfo.getUserName());
-
-        int userId = AuthInfo.getUserId();
-        *//*List<InterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewsByUserId(userId);
-        List<InterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewsByUserId(userId);*//*
-        List<ApplicantInterviewVo> interviewVos =  serviceFactory.getApplicantService().findUnreplyedInterviewDetailsByUserId(userId);
-        List<ApplicantInterviewVo> interviewVosAccpted = serviceFactory.getApplicantService().findAcceptedInterviewDetailsByUserId(userId);
-        map.addAttribute("unreplyMsg", interviewVos);
-        map.addAttribute("acceptedMsg", interviewVosAccpted);
-        return result;*/
     }
     /**
      * old function, refuse doesn't exist
@@ -282,8 +180,6 @@ public class ApplicantController {
 
         //Change interview status
         System.out.println("[msg]: " + "applicantCommentEntity" + ", " + applicantCommentEntity.getInterviewId() + ", " + applicantCommentEntity.getApplicantComment());
-
-
 
         InterviewVo interviewVo = serviceFactory.getHRService().findInterviewById(applicantCommentEntity.getInterviewId());
         ApplicationVo applicationVo = serviceFactory.getInterviewerService().findApplicationByApplicationId(interviewVo.getApplicationId());
@@ -299,8 +195,6 @@ public class ApplicantController {
         messageDto.setChannel("hr");
 
         serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
-
-
 
         serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantCommentEntity.getInterviewId(), ApplicantStatus.REJECTED, applicantCommentEntity.getApplicantComment());
         ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
@@ -423,29 +317,6 @@ public class ApplicantController {
         map.addAttribute("listResumeModel", resumeModelVo);
 
         return "applicant-resume-add";
-  /*      ResumeVo res = new ResumeVo.Builder().applicantId(applicantId)
-                .applicantName(resumeEntity.getApplicantName())
-                .applicantSex(resumeEntity.getApplicantSex())
-                .applicantAge(resumeEntity.getApplicantAge())
-                .applicantSchool(resumeEntity.getApplicantSchool())
-                .applicantDegree(resumeEntity.getApplicantDegree())
-                .applicantMajor(resumeEntity.getApplicantMajor())
-                .applicantCity(resumeEntity.getApplicantCity())
-                .applicantEmail(resumeEntity.getApplicantEmail())
-                .applicantPhone(resumeEntity.getApplicantPhone()).build();
-        serviceFactory.getApplicantService().SaveResume(AuthInfo.getUserId(), res);
-
-        map.addAttribute("roleName", Role.getRoleNameByAuthority());
-        map.addAttribute("userName", AuthInfo.getUserName());*/
-
-        /*System.out.println("[msg：msg]: " + resumeEntity.getHasPostId());
-        if(resumeEntity.getHasPostId() != 0){
-            System.out.println("[msg：msg2]: " + resumeEntity.getHasPostId());
-            ApplicationVo applicationVo = new ApplicationVo.Builder().applicantId(applicantId).postId(resumeEntity.getHasPostId()).build();
-            serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
-        }
-        List<ApplicantApplicationVo> applicantApplicationVos = serviceFactory.getApplicantService().findApplicationsByUserId(AuthInfo.getUserId());
-        map.addAttribute("applicationVos", applicantApplicationVos);*/
 
     }
 
@@ -465,8 +336,6 @@ public class ApplicantController {
         if(resumeStatus == StatusCode.SUCCESS) {
 
             ResumeRequiredEntity resumeRequiredEntity1 = new ResumeRequiredEntity();
-
-            //resumeRequiredEntity1.setApplicantAddress(false);
 
             map.addAttribute("listResumeModel", resumeRequiredEntity1);
 
