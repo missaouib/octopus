@@ -1,5 +1,6 @@
 package com.targaryen.octopus.applicationRunner;
 
+import com.targaryen.octopus.service.ServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -12,12 +13,44 @@ import java.util.List;
 public class MyApplicationRunner implements ApplicationRunner {
     @Autowired
     JdbcTemplate template;
+    @Autowired
+    ServiceFactory serviceFactory;
 
     private static final String SELECT_SQL = "SELECT batch_id from t_batch where batch_id = 1";
 
     private static final String INSERT_SQL =
-            "INSERT INTO t_batch (batch_id, batch_name, number, start_time, year) VALUES (1, '2018 Autumn', 2, '2018-07-01', '2018-01-01');\n" +
-                    "ALTER SEQUENCE t_batch_seq RESTART WITH 2;" +
+            "INSERT INTO t_batch (batch_id, batch_name, number, start_time, year) VALUES (1, '2018 Autumn', 2, '2018-09-01', '2018-01-01');\n" +
+                    "INSERT INTO t_batch (batch_id, batch_name, number, start_time, end_time, year) VALUES (2, '2018 Spring', 1, '2018-03-01', '2018-05-01', '2018-01-01');\n" +
+                    "INSERT INTO t_batch (batch_id, batch_name, number, start_time, end_time, year) VALUES (3, '2017 Autumn', 2, '2017-09-01', '2017-11-01', '2017-01-01');\n" +
+                    "INSERT INTO t_batch (batch_id, batch_name, number, start_time, end_time, year) VALUES (4, '2017 Spring', 1, '2017-03-01', '2017-05-01', '2017-01-01');\n" +
+                    "INSERT INTO t_batch (batch_id, batch_name, number, start_time, end_time, year) VALUES (5, '2016 Autumn', 2, '2016-09-01', '2016-11-01', '2016-01-01');\n" +
+                    "INSERT INTO t_batch (batch_id, batch_name, number, start_time, end_time, year) VALUES (6, '2016 Spring', 1, '2016-03-01', '2016-05-01', '2016-01-01');\n" +
+                    "ALTER SEQUENCE t_batch_seq RESTART WITH 7;" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (1,  2, 'Tsinghua University', 0, 5, 5, 4, 4, 1);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (2,  2, 'Peking University', 0, 7, 7, 7, 7, 2);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (3,  2, 'Beihang University', 0, 9, 8, 5, 4, 2);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (4,  2, 'University of Chinese Academy of Sciences', 0, 3, 3, 2, 2, 2);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (5,  2, 'Southeast University', 0, 16, 13, 6, 5, 4);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (6,  2, 'Fudan University', 0, 12, 10, 8, 8, 3);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (7,  2, 'Shanghai Jiao Tong University', 0, 11, 10, 5, 5, 3);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (8,  2, 'Nanjing University', 0, 14, 10, 5, 5, 3);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (9,  2, 'East China Normal University', 0, 13, 8, 5, 4, 2);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (10, 2, 'Tongji University', 0, 16, 11, 6, 5, 3);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (11, 2, 'University of Electronic Science and Technology of China', 0, 4, 3, 1, 1, 0);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (12, 2, 'Nanjing University of Science and Technology', 0, 19, 13, 5, 4, 2);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (13, 2, 'Beijing', 1, 21, 16, 10, 9, 5);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (14, 2, 'Shanghai', 1, 37, 30, 15, 13, 7);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (15, 2, 'Shenzhen', 1, 3, 3, 1, 1, 1);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (16, 2, 'Guangzhou', 1, 16, 14, 7, 6, 3);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (17, 2, 'Nanjing', 1, 30, 25, 12, 11, 4);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (18, 2, 'Chengdu', 1, 4, 3, 1, 1, 1);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (19, 2, 'Hangzhou', 1, 18, 15, 7, 7, 2);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (20, 2, 'C++ Developer', 2, 41, 35, 15, 14, 8);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (21, 2, 'Java Developer', 2, 45, 35, 13, 12, 6);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (22, 2, 'IT Support', 2, 16, 14, 12, 12, 4);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (23, 2, 'Marketing', 2, 8, 6, 3, 2, 1);\n" +
+                    "INSERT INTO t_source_file(source_file_id, batch_id, source_name, source_type, application_num, filter_pass_num, interview_pass_num, offer_num, entry_num) VALUES (24, 2, 'Testing Engineer', 2, 20, 17, 9, 8, 5);\n" +
+                    "ALTER SEQUENCE t_source_file_seq RESTART WITH 25;\n" +
                     "INSERT INTO t_department (department_id, department_name) VALUES (1, 'HUE Development') ON conflict(department_id) DO NOTHING;\n" +
                     "ALTER SEQUENCE t_department_seq RESTART WITH 2;" +
                     "INSERT INTO t_user (user_id, user_name, user_password) VALUES (1, 'dpt_manager', '$2a$10$e4e9uIUe4L4i2enYkXbmiupCUsVNtpnkMPMQm10Mj0/pN0sl/zvQO') ON conflict(user_id) DO NOTHING;\n" +
