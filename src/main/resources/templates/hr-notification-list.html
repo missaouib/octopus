@@ -19,6 +19,9 @@
     <script th:src="@{/octopus/js/plugins/iCheck/icheck.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
+    <script th:src="@{/octopus/js/notification/sockjs.js}"></script>
+    <script th:src="@{/octopus/js/notification/stomp.js}"></script>
+
     <style>
         .vertical-timeline-icon {
             position: relative;
@@ -102,7 +105,7 @@
                 <div class="mail-box" style="padding:15px 15px;" >
 
 
-                    <table class="footable toggle-arrow-tiny" data-page-size="16"
+                    <table id="notification-list-table" class="footable toggle-arrow-tiny" data-page-size="16"
                            data-filter="#filter" data-striping="false">
                         <thead>
                             <tr class="footable">
@@ -125,7 +128,7 @@
                                            style="margin-top: 4px; color: #f8ac59;" th:class="${message.starred} ? 'fa fa-star fa-2x' : 'fa fa-star-o fa-2x usui'"></i>
                                     </td>
                                     <td>
-                                        <a th:onclick="${'markOneAsRead(' + message.messageId + ')'}" th:href="${message.link}">
+                                        <a th:onclick="${'markOneAsRead(' + message.messageId + ');'}" th:href="${message.link}">
                                             <div th:class="${'vertical-timeline-icon ' + message.iconColor + '-bg'}">
                                                 <i th:class="${'fa fa-' + message.iconName}"></i>
                                                 <p style="display: none;">[[${message.messageType}]]</p>
@@ -157,10 +160,61 @@
         /* Prepare data */
         /*<![CDATA[*/
         var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_header_name = /*[[${_csrf.headerName}]]*/ '';
         var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
         /*]]>*/
         var csrfData = {};
+        csrfData[_csrf_header_name] = _csrf_token;
         csrfData[_csrf_param_name] = _csrf_token;
+        csrfData['login'] = "login"; // Not used
+        csrfData['passcode'] = 'passcode'; // Not used
+
+        /* Websocket pushing */
+        // Handshake
+        var socket = new SockJS('/octopus/ws/endpoint');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect(csrfData, function (frame) {
+            stompClient.subscribe('/octopus/ws/hr', function (message) {
+                // Receive MessageDto
+                var messageDto = JSON.parse(message.body);
+                // messageDto.link = messageDto.link.replace(/\//g, "-");
+
+                // Besides we need footable object
+                var tableObj = $("#notification-list-table").find('tbody');
+
+                // Append row
+                var row = "<tr id=\"row-" + messageDto.messageId + "\" class='unread' style=\"display: table-row;\">";
+
+                row += "    <td><input type=\"checkbox\" value=\"" + messageDto.messageId + "\" class=\"i-checks\"></td>";
+
+                row += "    <td>\n" +
+                    "        <p style=\"display: none;\">" + (messageDto.starred? 1: 0) + "</p>\n" +
+                    "        <i onclick=\"markOneAsStarred(" + messageDto.messageId + ");\" id=\"star-" + messageDto.messageId + "\"" +
+                    "            style=\"margin-top: 4px; color: #f8ac59;\" class=\"" + (message.starred? 'fa fa-star fa-2x' : 'fa fa-star-o fa-2x usui') + "\"></i>\n" +
+                    "    </td>";
+
+                row += "    <td>\n" +
+                    "        <a onclick=\"markOneAsRead(" + messageDto.messageId + ");\" href=\"" + messageDto.link + "\">\n" +
+                    "        <div class=\"vertical-timeline-icon " + messageDto.iconColor + "-bg\">\n" +
+                    "            <i class=\"fa fa-" + messageDto.iconName + "\"></i>\n" +
+                    "            <p style=\"display: none;\">" + messageDto.messageType + "</p>\n" +
+                    "            </div>\n" +
+                    "        </a>\n" +
+                    "    </td>";
+
+
+                row += "<td>" + messageDto.subject + "</td>";
+                row += "<td>" + messageDto.text + messageDto.object + "</td>";
+                row += "<td>" + messageDto.createTimeString + "</td>";
+
+                row += '</tr>';
+                tableObj.prepend(row);
+
+                // iCheck refresh
+                $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green"});
+            });
+        });
 
         /* Operations */
         function markAs(operationStr) {

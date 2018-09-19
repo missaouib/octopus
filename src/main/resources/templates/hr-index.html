@@ -110,8 +110,7 @@
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="false">
                             <i class="fa fa-envelope"></i>Notifications <span class="label label-warning" id="unread-notifications" style="right: 0px;"></span>
                         </a>
-                        <ul class="dropdown-menu dropdown-messages">
-                            <li id="hr-notifications"></li>
+                        <ul id="hr-notifications" class="dropdown-menu dropdown-messages">
 
                             <li>
                                 <div class="text-center link-block">
@@ -208,7 +207,7 @@
             hideDigitWhenEmpty();
 
             // Append li element to the right place
-            $("#hr-notifications").after("<li id=\'message-" + messageCount + "\'>\n" +
+            $("#hr-notifications").prepend("<li id=\'message-" + messageCount + "\'>\n" +
                 "                                <div class=\"dropdown-messages-box\">\n" +
                 "                                    <a onclick=\"consumeMessage(" + messageCount + ", \'" + messageDto.link + "\'," + messageDto.messageId + ");\" class=\"pull-left\">\n" +
                 "                                       <div class=\"vertical-timeline-icon notification-icon " + messageDto.iconColor + "-bg\">\n" +
