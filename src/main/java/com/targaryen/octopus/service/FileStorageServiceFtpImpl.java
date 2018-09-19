@@ -1,8 +1,11 @@
 package com.targaryen.octopus.service;
 
+import com.targaryen.octopus.config.FtpProperties;
+import com.targaryen.octopus.dto.InterviewDto;
 import com.targaryen.octopus.util.StatusCode;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.net.ftp.FTPClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -11,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,18 +24,23 @@ import java.util.List;
 @Service
 public class FileStorageServiceFtpImpl implements FileStorageService {
     private FTPClient ftpClient;
-    final private String FTP_ADDRESS = "172.26.141.179";
-    final private String LOGIN_NAME = "ftp-lvfai";
-    final private String PASSWORD = "12345678";
-    final private String FTP_ROOT = "/home/" + LOGIN_NAME;
-    final private String CV = "CV";
-    final private String PHOTO = "PHOTO";
-    final private String DEGREE = "DEGREE";
+    private String FTP_ADDRESS;
+    private String LOGIN_NAME;
+    private String PASSWORD;
+    private String FTP_ROOT;
+    private String CV = "CV";
+    private String PHOTO = "PHOTO";
+    private String DEGREE = "DEGREE";
 
     private final Path rootLocation;
 
-    public FileStorageServiceFtpImpl() {
+    @Autowired
+    public FileStorageServiceFtpImpl(FtpProperties ftpProperties) {
         this.ftpClient = new FTPClient();
+        this.FTP_ADDRESS = ftpProperties.getFTP_ADDRESS();
+        this.LOGIN_NAME = ftpProperties.getLOGIN_NAME();
+        this.PASSWORD = ftpProperties.getPASSWORD();
+        this.FTP_ROOT = ftpProperties.getFTP_ROOT();
         this.rootLocation = Paths.get(FTP_ROOT);
     }
 
@@ -62,12 +69,17 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
         return true;
     }
 
-    private void init() {
+    private void initByApplicantId(int applicantId) {
         if(!ftpLogin())
             return;
         try {
             ftpClient.enterLocalPassiveMode();
-            System.out.println(ftpClient.printWorkingDirectory());
+            ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(rootLocation.toString()));
+            if(!ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(rootLocation.toString()) + "/" + applicantId)) {
+                ftpClient.makeDirectory(Integer.toString(applicantId));
+            }
+            ftpClient.changeWorkingDirectory(FilenameUtils.separatorsToUnix(rootLocation.toString()));
+//            System.out.println(ftpClient.printWorkingDirectory());
         } catch (IOException e) {
             System.out.println(e.toString());
         }
@@ -147,16 +159,19 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
 
     public int storeCVByApplicantId(int id, MultipartFile file) {
         Path path = rootLocation.resolve(Integer.toString(id)).resolve(this.CV);
+        initByApplicantId(id);
         return store(path, file, true);
     }
 
     public int storePhotoByApplicantId(int id, MultipartFile file) {
         Path path = rootLocation.resolve(Integer.toString(id)).resolve(this.PHOTO);
+        initByApplicantId(id);
         return store(path, file, true);
     }
 
     public int storeDegreeByApplicantId(int id, MultipartFile file) {
         Path path = rootLocation.resolve(Integer.toString(id)).resolve(this.DEGREE);
+        initByApplicantId(id);
         return store(path, file, true);
     }
 

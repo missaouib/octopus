@@ -12,13 +12,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class AnnouncementEntity {
 
-    private  int announcementId;
-    private  int batchId;
-    private  String announcementTitle;
-    private  String announcementDetail;
-    private  Date createTime;
-    private  Date publishedTime;
-    private  Date lastModifyTime;
-    private  int announcementType;
-    private  int announcementStatus;
+    private int announcementId;
+    private int batchId;
+    private String announcementTitle;
+    private String announcementDetail;
+    private Date createTime;
+    private Date publishedTime;
+    private Date lastModifyTime;
+    private boolean announcementType;
+    private int announcementStatus;
 }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>导航</title>
+
+    <link th:href="@{/octopus/css/bootstrap.min14ed.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
+
+    <link th:href="@{/octopus/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/animate.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/style.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/css/login.min.css}" rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link th:href="@{/octopus/js/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link th:href="@{/octopus/js/datatables-responsive/dataTables.responsive.css}" rel="stylesheet">
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- DataTables JavaScript -->
+    <script th:src="@{/octopus/js/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/octopus/js/datatables-plugins/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/datatables-responsive/dataTables.responsive.js}"></script>
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <style type="text/css">
+        .navbar {
+            position: relative;
+            min-height: 50px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+        .navbar-default {
+            background-color: #f8f8f8;
+            border-color: #e7e7e7;
+        }
+        .navbar-brand {
+          float: left;
+          height: 50px;
+          padding: 15px 15px;
+          font-size: 18px;
+          line-height: 20px;
+        }
+        .navbar-brand:hover,
+        .navbar-brand:focus {
+          text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/octopus/">Octopus Recruiting System</a>
+    </div>
+    <div class="nav navbar-top-links navbar-right">
+        <a class="navbar-brand" th:href="@{/octopus/login}" style="font-size: 17px; margin-right: 15px;">Sign In/Sign Up</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12" style="margin-top: 20px;">
+            <img th:src="@{/octopus/img/bar2.jpg}" alt="" style="width: 100%; height: 120%;" />
+        </div>
+        <div class="col-lg-12" style="margin-top: 20px;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Announcements</h2>
+                </div>
+                <!-- .panel-heading -->
+                <div class="panel-body">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                        <tr>
+                            <th style="width:150px;">Publish Time</th>
+                            <th style="width:250px;">Title</th>
+                            <th>Content</th>
+                            <th style="width:100px;">Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ps: ${billboardList}">
+                            <td th:text="${#dates.format(ps.publishedTime, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#strings.abbreviate(ps.announcementTitle,20)}"></td>
+                            <td th:text="${#strings.abbreviate(ps.announcementDetail, 30)}"></td>
+                            <td>
+                                <a th:href="@{'/octopus/pub/billboard/' + ${ps.announcementId}}" style="color: #eee;">
+                                    <button type="button" class="btn btn-warning">
+                                        <i class="fa fa-file-text"> View Detail</i>
+                                    </button></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- .panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+<script>
+        $(document).ready(function() {
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+        });
+    </script>
+</body>
+</html>

@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
 
-                .antMatchers("/octopus/css/**", "/octopus/js/**", "/octopus/fonts/**", "/octopus/pdf/**", "/octopus/new-vendor/**", "/octopus/img/**", "/octopus/", "/octopus/new/pdf", "/octopus/postDetail/**", "/octopus/register", "/octopus/userRegister",
+                .antMatchers("/octopus/css/**", "/octopus/js/**", "/octopus/fonts/**", "/octopus/pdf/**", "/octopus/new-vendor/**", "/octopus/img/**", "/octopus/", "/octopus/new/pdf", "/octopus/postDetail/**", "/octopus/pub/billboard/**", "/octopus/register", "/octopus/userRegister",
                         // Unleash WebSocket URIs from Authentication
                         "/octopus/ws/**").permitAll()
                 .antMatchers("/octopus/applicant/**").hasRole("APPLICANT")

@@ -2,12 +2,15 @@ package com.targaryen.octopus.controller;
 
 import com.targaryen.octopus.service.ServiceFactoryImpl;
 import com.targaryen.octopus.util.status.PostStatus;
+import com.targaryen.octopus.vo.AnnouncementVo;
 import com.targaryen.octopus.vo.PostVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
@@ -33,6 +36,10 @@ public class PublicController {
             System.out.println("[msg]: " + tmp.getPostName());
         }*/
         result.addObject("posts", posts);
+
+        List<AnnouncementVo> announcementVos = serviceFactory.getAnnouncementService().listPublicAnnouncement();
+        result.addObject("billboardList", announcementVos);
+
         return result;
     }
 
@@ -47,4 +54,23 @@ public class PublicController {
         return result;
     }
 
+
+    /************************ start of biilboard *********************************/
+    @RequestMapping(value="/pub/billboard/list", method = RequestMethod.GET)
+    public ModelAndView pubBillboardList(Model map){
+        List<AnnouncementVo> announcementVos = serviceFactory.getAnnouncementService().listPublicAnnouncement();
+        map.addAttribute("billboardList", announcementVos);
+        ModelAndView result = new ModelAndView("pub-billboard-list");
+        return result;
+    }
+
+    @RequestMapping(value="/pub/billboard/{announcementId}", method = RequestMethod.GET)
+    public ModelAndView pubBillboardfindById(@PathVariable("announcementId") String announcementId, Model map){
+        AnnouncementVo announcementVo = serviceFactory.getAnnouncementService().findAnnouncementById(Integer.parseInt(announcementId));
+        map.addAttribute("announcement", announcementVo);
+        ModelAndView result = new ModelAndView("pub-billboard-detail");
+        return result;
+    }
+
+    /*********************** end of biilboard ********************************/
 }
