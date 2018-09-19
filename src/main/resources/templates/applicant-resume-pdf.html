@@ -66,11 +66,20 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-12">
         <div class="ibox">
-            <div class="ibox-content">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <div id="viewer" class="pdf-viewer" th:data-url="@{/octopus/pdf/files/file2.pdf}"></div>
+            <div class="col-lg-4">
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-danger alert-dismissable"
+                         th:style="'display:' + @{(${isRegister} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Not Upload Resume file yet.
                     </div>
+                </div>
+            </div>
+            <label style="font-size:20px; " th:text="${fileName}"></label>
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div id="viewer" class="pdf-viewer" th:data-url="@{'/octopus/pdf/files/' + ${fileName}}"></div>
                 </div>
             </div>
         </div>

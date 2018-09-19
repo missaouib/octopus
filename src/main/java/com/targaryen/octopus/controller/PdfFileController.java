@@ -5,12 +5,13 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
+import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
 
+import java.io.*;
+import java.util.List;
 
 
 /**
@@ -32,40 +33,73 @@ public class PdfFileController {
         return "applicant-pdf";
     }
 
-    @RequestMapping(value="/applicant/uploadFile", method = RequestMethod.POST)
+    @RequestMapping(value="/applicant/uploadFile/{applicantId}", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-        int ret = serviceFactory.getFileStorageService().storeCVByApplicantId(1, file);
+    public String uploadFile(@PathVariable("applicantId") String applicantId,  @RequestParam("file") MultipartFile file) {
+        int ret = serviceFactory.getFileStorageService().storeCVByApplicantId(Integer.parseInt(applicantId), file);
 
-        Resource resource = serviceFactory.getFileStorageService().loadCVResourceByApplicantId(1, file.getOriginalFilename());
-        /*try {
-            System.out.println("[msg]: " + resource.getFile().getParent());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-
-        File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/octopus/pdf/files/file2.pdf");
-/*
-        try {
-            FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        //File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/octopus/pdf/files/file2.pdf");
+        Resource resource = serviceFactory.getFileStorageService().loadCVResourceByApplicantId(Integer.parseInt(applicantId), file.getOriginalFilename());
+        String path_2 = System.getProperty("user.dir");
+        File localFile = new File(path_2 + "/src/main/resources/static/octopus/pdf/files/" + file.getOriginalFilename());
+        //File localFile = new File(path + "static/octopus/pdf/files/" + fileName);
 
         try {
-            FileUtils.copyInputStreamToFile(resource.getInputStream(),
-                    file1);
-        } catch (IOException e) {
+            FileUtils.copyInputStreamToFile(resource.getInputStream(), localFile);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return "OK";
     }
 
-    @RequestMapping(value = "/applicant/resume/pdf")
-    public String resumePdf(){
+    @RequestMapping(value = "/applicant/resume/pdf/{applicantId}")
+    public String resumePdf(@PathVariable("applicantId") String applicantId, Model map){
+
+        int id = Integer.parseInt(applicantId);
+        List<String> cvs = serviceFactory.getFileStorageService().listCVFilenamesByApplicantId(id);
+        if(cvs.size()>0){
+
+            String path = null;
+            try {
+                path = ResourceUtils.getURL("classpath:").getPath();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            String path_2 = System.getProperty("user.dir");
+            Resource resource = serviceFactory.getFileStorageService().loadCVResourceByApplicantId(id, cvs.get(0));
+            System.out.println("[msg]: " + id + ", " + cvs.size() +", " + path_2 + ", " + cvs.get(0));
+            //String fileName = path + "static/octopus/pdf/files/" + cvs.get(0);
+            String fileName =  cvs.get(0);
+
+            File localFile = new File(path_2 + "/src/main/resources/static/octopus/pdf/files/" + fileName);
+            //File localFile = new File(path + "static/octopus/pdf/files/" + fileName);
+            try {
+                FileUtils.copyInputStreamToFile(resource.getInputStream(), localFile);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            map.addAttribute("fileName", fileName);
+        }else{
+            map.addAttribute("istrue", true);
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "applicant-resume-pdf";
+    }
+
+    @RequestMapping(value = "/applicant/resume/photo")
+    public String resumePhoto(){
+        return "applicant-resume-photo";
     }
 
 }
