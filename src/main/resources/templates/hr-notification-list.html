@@ -119,15 +119,16 @@
                             <th:block th:each="message: ${notificationList}">
                                 <tr th:id="${'row-' + message.messageId}" th:class="${message.read} ? null : 'unread'">
                                     <td><input type="checkbox" th:value="${message.messageId}" class="i-checks"></td>
-                                    <td style="color: #ffffff;">
-                                        [[${message.starred? 1: 0}]]
+                                    <td>
+                                        <p style="display: none;">[[${message.starred? 1: 0}]]</p>
                                         <i th:onclick="${'markOneAsStarred(' + message.messageId + ');'}" th:id="${'star-' + message.messageId}"
                                            style="margin-top: 4px; color: #f8ac59;" th:class="${message.starred} ? 'fa fa-star fa-2x' : 'fa fa-star-o fa-2x usui'"></i>
                                     </td>
-                                    <td style="color: #ffffff;">
+                                    <td>
                                         <a th:onclick="${'markOneAsRead(' + message.messageId + ')'}" th:href="${message.link}">
                                             <div th:class="${'vertical-timeline-icon ' + message.iconColor + '-bg'}">
                                                 <i th:class="${'fa fa-' + message.iconName}"></i>
+                                                <p style="display: none;">[[${message.messageType}]]</p>
                                             </div>
                                         </a>
                                     </td>
