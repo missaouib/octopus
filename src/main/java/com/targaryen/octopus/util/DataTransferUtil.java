@@ -366,4 +366,25 @@ public class DataTransferUtil {
                 .batchId(announcementDto.getBatch().getBatchId())
                 .build();
     }
+
+    public static BatchVo BatchDtoToVo(BatchDto batchDto) {
+        return new BatchVo.Builder()
+                .batchId(batchDto.getBatchId())
+                .batchName(batchDto.getBatchName())
+                .number(batchDto.getNumber())
+                .year(batchDto.getYear())
+                .startTime(batchDto.getStartTime())
+                .endTime(batchDto.getEndTime()).build();
+    }
+
+    public static SourceRecruitProgressVo SourceFileDtoToSourceRecruitProgressVo(SourceFileDto sourceFileDto) {
+        return new SourceRecruitProgressVo.Builder()
+                .sourceName(sourceFileDto.getSourceName())
+                .applicationNum(sourceFileDto.getApplicationNum())
+                .filterPassNum(sourceFileDto.getFilterPassNum())
+                .interviewPassNum(sourceFileDto.getInterviewPassNum())
+                .sourceType(sourceFileDto.getSourceType())
+                .offerNum(sourceFileDto.getOfferNum())
+                .entryNum(sourceFileDto.getEntryNum()).build();
+    }
 }
