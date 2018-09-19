@@ -59,4 +59,8 @@ public class HistoryServiceImpl {
     public List<SourceRecruitProgressVo> findRecordsByBatchIdGroupByCity(int batchId) {
         return findRecordsByBatchIdGrouBySourceType(batchId, SourceType.CITY);
     }
+
+    public List<SourceRecruitProgressVo> findRecordsByBatchIdGroupByPost(int batchId) {
+        return findRecordsByBatchIdGrouBySourceType(batchId, SourceType.POST);
+    }
 }
