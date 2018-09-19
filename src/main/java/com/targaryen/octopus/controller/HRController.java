@@ -116,9 +116,7 @@ public class HRController {
         map.addAttribute("returnUrl", "list");
         map.addAttribute("swalTextSuccess", "You have successfully edited this announcement!");
         map.addAttribute("swalTextFailure", "You have not successfully edited announcement.");
-
         map.addAttribute("announcement", announcementVo);
-
         return "hr-billboard-detail";
     }
 
@@ -161,6 +159,19 @@ public class HRController {
         return String.valueOf(announcementService.revokeAnnouncementById(announcementId));
     }
     /************************* end of billboard ********************************************/
+
+    /******************************** dashboard start he_j ****************************************/
+
+    @RequestMapping(value = "hr/dashboard/list", method = RequestMethod.GET)
+    public String hrDashboardList(ModelMap map) {
+        map.addAttribute("prpTitle", "Post Recruit Progress");
+        map.addAttribute("prpList", hrService.listPostRecruitProgress());
+        map.addAttribute("announcementTitle", "Announcement");
+        map.addAttribute("billboardList", announcementService.listHRAnnouncement());
+        return "hr-dashboard-list";
+    }
+
+    /******************************** dashboard end ***********************************************/
 
     @RequestMapping(value = "/hr/post/{postId}", method = RequestMethod.GET)
     public String hrPostDetail(@PathVariable("postId") int postId, ModelMap map) {
