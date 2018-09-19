@@ -73,14 +73,14 @@
                                             <span th:if="${announcement.announcementType} eq ${T(com.targaryen.octopus.util.status.AnnouncementType).HR_VIEW}" class="label label-primary">Public(HR)</span>
                                         <td>
                                             <button type="button"
-                                                    th:if="${announcement.announcementStatus} ne ${T(com.targaryen.octopus.util.status.AnnouncementStauts).DRAFT}"
-                                                    th:onclick="${'publicAnnouncement(' + announcement.announcementId + ''')'}"
+                                                    th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).DRAFT}"
+                                                    th:onclick="${'publicAnnouncement(' + announcement.announcementId + ');'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
-                                                Check/Edit Detail
+                                                Publish
                                             </button>
                                             <button type="button"
-                                                    th:if="${announcement.announcementStatus} ne ${T(com.targaryen.octopus.util.status.AnnouncementStauts).PUBLISHED}"
+                                                    th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).DRAFT}"
                                                     th:onclick="${'location.href=''' + announcement.announcementId + ''''}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-wrench" aria-hidden="true"></i>
@@ -88,7 +88,7 @@
                                             </button>
                                             <button type="button"
                                                     th:if="${announcement.announcementStatus} eq ${T(com.targaryen.octopus.util.status.AnnouncementStauts).PUBLISHED}"
-                                                    th:onclick="${'revokeAnnouncement(' + announcement.announcementId + ''')'}"
+                                                    th:onclick="${'revokeAnnouncement(' + announcement.announcementId + ');'}"
                                                     class="btn btn-outline btn-default">
                                                 <i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i>
                                                 Revoke
@@ -140,7 +140,7 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: 'revoke',
+                    url: "revoke",
                     data: csrfData,
                     async: false,
                     success: function (data) {
@@ -168,7 +168,7 @@
 
     function publicAnnouncement(announcementId) {
         csrfData['announcementId'] = announcementId;
-
+        console.log(announcementId);
         swal({
             title : "Confirm",
             text: "Do you really wish to public this announcement?",
@@ -183,7 +183,7 @@
             if (isConfirm) {
                 $.ajax({
                     type: "post",
-                    url: 'public',
+                    url: "publish",
                     data: csrfData,
                     async: false,
                     success: function (data) {

@@ -118,4 +118,16 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             return StatusCode.FAILURE;
         }
     }
+
+    public AnnouncementVo findAnnouncementById(int announcementId){
+
+        try {
+            AnnouncementDto announcementDto =
+                    announcementRepository.findByAnnouncementId(announcementId);
+            AnnouncementVo announcementVo = DataTransferUtil.AnnouncementDtoToVo(announcementDto);
+            return announcementVo;
+        } catch (DataAccessException e) {
+            return new AnnouncementVo.Builder().build();
+        }
+    }
 }
