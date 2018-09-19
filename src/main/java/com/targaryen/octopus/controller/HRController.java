@@ -99,10 +99,8 @@ public class HRController {
                 .recruitNum(1)
                 .build());
         */
-
-        map.addAttribute("returnUrl", "list");
         map.addAttribute("action", "add");
-
+        map.addAttribute("returnUrl", "list");
         map.addAttribute("swalTextSuccess", "You have successfully added a new announcement!");
         map.addAttribute("swalTextFailure", "You have not successfully added a new announcement.");
 
@@ -114,8 +112,6 @@ public class HRController {
     public String hrBillboardDetail(@PathVariable("announcementId") int announcementId, ModelMap map) {
         AnnouncementVo announcementVo = announcementService.findAnnouncementById(announcementId);
         map.addAttribute("title", "Check/Edit Post Detail");
-
-        map.addAttribute("announcementType", announcementVo.getAnnouncementType() == AnnouncementType.HR_VIEW ? true : false);
         map.addAttribute("action", "edit");
         map.addAttribute("returnUrl", "list");
         map.addAttribute("swalTextSuccess", "You have successfully edited this announcement!");
@@ -135,7 +131,7 @@ public class HRController {
                 .announcementId(announcementEntity.getAnnouncementId())
                 .announcementTitle(announcementEntity.getAnnouncementTitle())
                 .announcementDetail(announcementEntity.getAnnouncementDetail())
-                .announcementType(announcementEntity.getAnnouncementType() > 0 ?AnnouncementType.HR_VIEW:AnnouncementType.HR_NOT_VIEW).build();
+                .announcementType(announcementEntity.isAnnouncementType() ? AnnouncementType.HR_VIEW:AnnouncementType.HR_NOT_VIEW).build();
 
         return String.valueOf(announcementService.updateAnnouncement(announcementVo));
     }
@@ -148,21 +144,21 @@ public class HRController {
         AnnouncementVo announcementVo = new AnnouncementVo.Builder()
                 .announcementTitle(announcementEntity.getAnnouncementTitle())
                 .announcementDetail(announcementEntity.getAnnouncementDetail())
-                .announcementType(announcementEntity.getAnnouncementType()).build();
+                .announcementType(announcementEntity.isAnnouncementType()?AnnouncementType.HR_VIEW:AnnouncementType.HR_NOT_VIEW).build();
 
         return String.valueOf(announcementService.createNewAnnouncement(announcementVo));
     }
 
     @RequestMapping(value = "/hr/billboard/publish", method = RequestMethod.POST)
     @ResponseBody
-    public String hrPostPublish(AnnouncementEntity announcementEntity) {
-        return String.valueOf(announcementService.publishAnnouncementById(announcementEntity.getAnnouncementId()));
+    public String hrPostPublish(@RequestParam("announcementId") int announcementId) {
+        return String.valueOf(announcementService.publishAnnouncementById(announcementId));
     }
 
     @RequestMapping(value = "/hr/billboard/revoke", method = RequestMethod.POST)
     @ResponseBody
-    public String hrBillboardRevoke(AnnouncementEntity announcementEntity) {
-        return String.valueOf(announcementService.revokeAnnouncementById(announcementEntity.getAnnouncementId()));
+    public String hrBillboardRevoke(@RequestParam("announcementId") int announcementId) {
+        return String.valueOf(announcementService.revokeAnnouncementById(announcementId));
     }
     /************************* end of billboard ********************************************/
 

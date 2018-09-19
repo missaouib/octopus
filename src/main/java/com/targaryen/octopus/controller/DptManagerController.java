@@ -87,7 +87,7 @@ public class DptManagerController {
         map.addAttribute("swalTextSuccess", "You have successfully edited this post need!");
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
-        map.addAttribute("post", postVo);
+        map.addAttribute("announcementType", postVo);
         return "dpt-hr-post-detail";
     }
 

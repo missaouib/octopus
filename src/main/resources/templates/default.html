@@ -64,18 +64,26 @@
         <div class="col-lg-4"  style="margin-top: 20px;">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Information</h3>
+                    <h3 class="panel-title">Billboard <a th:href="@{/octopus/pub/billboard/list}" style="font-style: italic; font-size:15px; float:right; color:#843534;">More</a></h3>
                 </div>
                 <div class="panel-body">
-                    <div class="alert alert alert-danger">
-                        Lorem ipsum dolor sit amet <a href="#" class="alert-link">Alert Link</a>.
+                    <th:block th:each="announcement,stat:${billboardList}">
+                        <div th:if="${stat.index} le 4">
+                            <div class="alert alert alert-danger">
+                                <a th:href="@{'/octopus/pub/billboard/' + ${announcement.announcementId}}" class="alert-link">[[${#strings.abbreviate(announcement.announcementTitle, 20)}]]</a>
+                                <label style="font-style: italic; float: right;" th:text="${#dates.format(announcement.publishedTime, 'yyyy-MM-dd')}"></label>
+                            </div>
+                        </div>
+                    </th:block>
+                    <!--<div class="alert alert alert-danger">
+                        <a href="#" class="alert-link">Alert Link</a>.
                     </div>
                     <div class="alert alert alert-danger">
                         Lorem ipsum dolor sit amet <a href="#" class="alert-link">Alert Link</a>.
                     </div>
                     <div class="alert alert alert-danger">
                         Lorem ipsum dolor sit amet <a href="#" class="alert-link">Alert Link</a>.
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
