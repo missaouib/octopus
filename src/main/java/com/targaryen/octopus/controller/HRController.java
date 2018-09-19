@@ -9,8 +9,6 @@ import com.targaryen.octopus.util.StatusCode;
 import com.targaryen.octopus.util.status.*;
 import com.targaryen.octopus.vo.*;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -303,11 +301,6 @@ public class HRController {
             postScheduleEntity.setOverallFinalDate("N/A");
         }
         return postScheduleEntity;
-    }
-
-    @RequestMapping(value = "/hr/notification/list", method = RequestMethod.GET)
-    public String hrNotificationList() {
-        return "hr-notification-list";
     }
 
     /* ***************************************************************************** */
