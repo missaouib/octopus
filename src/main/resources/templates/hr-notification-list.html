@@ -19,6 +19,17 @@
     <script th:src="@{/octopus/js/plugins/iCheck/icheck.min.js}"></script>
     <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
+    <style>
+        .vertical-timeline-icon {
+            position: relative;
+            top: auto;
+            left: auto;
+        }
+
+        .usui {
+            opacity: 0.2;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
@@ -32,34 +43,17 @@
                             <h5>Inbox</h5>
                             <ul class="folder-list m-b-md" style="padding: 0">
                                 <li>
-                                    <a><i class="fa fa-envelope-o"></i> Unread <span class="label label-warning pull-right">16</span></a>
+                                    <a><i class="fa fa-envelope-o"></i> Unread <span id="unread-count-badge" class="label label-warning pull-right" th:text="${unreadCount}"></span></a>
                                 </li>
                                 <li>
+                                    <a><i class="fa fa-star"></i> Starred <span id="starred-count-badge" class="label label-success pull-right" th:text="${starredCount}"></span></a>
+                                </li>
                                 <li>
-                                    <a><i class="fa fa-inbox"></i> Total <span class="label label-primary pull-right">160</span></a>
+                                    <a><i class="fa fa-inbox"></i> All <span id="all-count-badge" class="label label-primary pull-right" th:text="${allCount}"></span></a>
                                 </li>
                             </ul>
 
                             <h5>Types</h5>
-                            <ul class="category-list" style="padding: 0">
-                                <li>
-                                    <a> <i class="fa fa-circle text-navy"></i> Dpt Post Need</a>
-                                </li>
-                                <li>
-                                    <a> <i class="fa fa-circle text-success" style="color: #1c84c6;"></i> Application</a>
-                                </li>
-                                <li>
-                                    <a> <i class="fa fa-circle text-black"></i> Interview Reservation</a>
-                                </li>
-                                <li>
-                                    <a> <i class="fa fa-circle text-danger"></i> Interview Result</a>
-                                </li>
-                                <li>
-                                    <a> <i class="fa fa-circle text-warning"></i> Dpt Manager Check</a>
-                                </li>
-                            </ul>
-
-                            <h5>Subscription</h5>
                             <ul class="category-list" style="padding: 0">
                                 <li>
                                     <a> <i class="fa fa-circle text-navy"></i> Dpt Post Need</a>
@@ -92,134 +86,57 @@
 
                         </div>
                     </form>
-                    <h2>
-                    Unread (16)
-                </h2>
+
+                    <h2 id="list-title">All</h2>
+
                     <div class="mail-tools tooltip-demo m-t-md">
 
-                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh"><i class="fa fa-refresh"></i> Refresh</button>
-                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> Mark as read
+                        <button onclick="markAs('read');" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> Mark as read
                         </button>
-                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as unread"><i class="fa fa-exclamation"></i> Mark as unread
+                        <button onclick="markAs('unread');" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as unread"><i class="fa fa-exclamation"></i> Mark as unread
                         </button>
                         <ul class="pagination pull-right" style="margin: auto;"></ul>
                     </div>
                 </div>
 
-                <div class="mail-box">
+                <div class="mail-box" style="padding:15px 15px;" >
 
 
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="16"
-                           data-filter="#filter">
+                    <table class="footable toggle-arrow-tiny" data-page-size="16"
+                           data-filter="#filter" data-striping="false">
                         <thead>
-                            <tr class="footable even">
-                                <th>Check</th>
-                                <th>Status</th>
-                                <th>Name</th>
+                            <tr class="footable">
+                                <th style="width: 8%;">☑</th>
+                                <th style="width: 8%;">Tag</th>
+                                <th style="width: 10%;">Link</th>
+                                <th style="width: 15%;">Operator</th>
+                                <th>Operation</th>
+                                <th>Time</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr><tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked class="i-checks"></td>
-                                <td>dasdsa</td>
-                                <td>dasdsa</td>
-                            </tr>
-
+                            <th:block th:each="message: ${notificationList}">
+                                <tr th:id="${'row-' + message.messageId}" th:class="${message.read} ? null : 'unread'">
+                                    <td><input type="checkbox" th:value="${message.messageId}" class="i-checks"></td>
+                                    <td style="color: #ffffff;">
+                                        [[${message.starred? 1: 0}]]
+                                        <i th:onclick="${'markOneAsStarred(' + message.messageId + ');'}" th:id="${'star-' + message.messageId}"
+                                           style="margin-top: 4px; color: #f8ac59;" th:class="${message.starred} ? 'fa fa-star fa-2x' : 'fa fa-star-o fa-2x usui'"></i>
+                                    </td>
+                                    <td style="color: #ffffff;">
+                                        <a th:onclick="${'markOneAsRead(' + message.messageId + ')'}" th:href="${message.link}">
+                                            <div th:class="${'vertical-timeline-icon ' + message.iconColor + '-bg'}">
+                                                <i th:class="${'fa fa-' + message.iconName}"></i>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td th:text="${message.subject}"></td>
+                                    <td th:text="${message.text + message.object}"></td>
+                                    <td th:text="${message.createTimeString}"></td>
+                                </tr>
+                            </th:block>
                         </tbody>
-
-                        <tfoot>
-                            <tr>
-                                <td colspan="10">
-
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
 
 
@@ -229,8 +146,133 @@
     </div>
 
     <script th:inline="javascript">
+        /* Initialization */
         $(".footable").footable();
         $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green"});
+        updateSummaryBadge("unread", 0);
+        updateSummaryBadge("starred", 0);
+        updateSummaryBadge("all", 0);
+
+        /* Prepare data */
+        /*<![CDATA[*/
+        var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+        /*]]>*/
+        var csrfData = {};
+        csrfData[_csrf_param_name] = _csrf_token;
+
+        /* Operations */
+        function markAs(operationStr) {
+            /* Prepare data */
+            var chkArray = [];
+            $(".i-checks:checked").each(function() {
+                chkArray.push($(this).val());
+            });
+
+            if (chkArray.length == 0) {
+                swal({
+                    title : "Error",
+                    text: "You have not selected any messages.",
+                    type : "error"
+                });
+                return;
+            }
+
+            csrfData["chkArray"] = chkArray;
+
+
+            /* Refresh UI */
+            var refreshedCount = 0;
+
+            if (operationStr == 'read') {
+                chkArray.forEach(function(currentValue, index, arr) {
+                    var querySelector = "#row-" + currentValue;
+                    var elementClass = $(querySelector).attr("class");
+                    if (contains(elementClass, "unread")) {
+                        elementClass = elementClass.replace("unread", "");
+                        $(querySelector).attr("class", elementClass);
+                        refreshedCount += 1;
+                    }
+                });
+
+                updateSummaryBadge("unread", - refreshedCount);
+            } else {
+                chkArray.forEach(function(currentValue, index, arr) {
+                    var querySelector = "#row-" + currentValue;
+                    var elementClass = $(querySelector).attr("class");
+                    if (!contains(elementClass, "unread")) {
+                        elementClass = "unread " + elementClass;
+                        $(querySelector).attr("class", elementClass);
+                        refreshedCount += 1;
+                    }
+                });
+
+                updateSummaryBadge("unread", refreshedCount);
+            }
+
+            /* Ajax */
+            $.ajax({
+                type: 'post',
+                url: 'mark/' + operationStr,
+                data: csrfData
+            });
+        }
+
+        function markOneAsStarred(messageId) {
+            var querySelector = "#star-" + messageId;
+            var starred = $(querySelector).attr("class");
+            if (starred == 'fa fa-star fa-2x') { // Starred
+                $(querySelector).attr("class", "fa fa-star-o fa-2x usui");
+                $.ajax({
+                    type: 'post',
+                    url: 'mark/' + messageId + '/unstarred',
+                    data: csrfData
+                });
+
+                updateSummaryBadge("starred", -1);
+            } else { // Not starred
+                $(querySelector).attr("class", "fa fa-star fa-2x");
+                $.ajax({
+                    type: 'post',
+                    url: 'mark/' + messageId + '/starred',
+                    data: csrfData
+                });
+
+                updateSummaryBadge("starred", 1);
+            }
+        }
+
+        function markOneAsRead(messageId) {
+            var querySelector = "#row-" + messageId;
+            var elementClass = $(querySelector).attr("class");
+            if (contains(elementClass, "unread")) {
+                elementClass = elementClass.replace("unread", "");
+                $(querySelector).attr("class", elementClass);
+                $.ajax({
+                    type: 'post',
+                    url: 'mark/' + messageId + '/read',
+                    data: csrfData
+                });
+
+                updateSummaryBadge("unread", -1);
+            }
+        }
+
+        function updateSummaryBadge(badgeId, count) {
+            badgeId = "#" + badgeId + "-count-badge";
+            var newValue = parseInt($(badgeId).text()) + count;
+            if (newValue <= 0) {
+                $(badgeId).css("display", "none");
+            } else {
+                $(badgeId).css("display", "block");
+            }
+            $(badgeId).text(newValue);
+        }
+
+        function contains(sourceStr, subStr) {
+            if (sourceStr == null) return false;
+            return sourceStr.indexOf(subStr) == -1? false: true;
+        }
     </script>
 </body>
 

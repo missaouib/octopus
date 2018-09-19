@@ -115,7 +115,7 @@
 
                             <li>
                                 <div class="text-center link-block">
-                                    <a class="J_menuItem" href="notification/list">
+                                    <a class="J_menuItem" href="notification/list" onclick="hideList();">
                                         <i class="fa fa-envelope"></i> <strong> View all historic notifications</strong>
                                     </a>
                                 </div>
@@ -137,6 +137,10 @@
 </div>
 
 <script th:inline="javascript">
+    function hideList() {
+        $(".dropdown").removeClass("open");
+    }
+
     function hideDigitWhenEmpty() {
         if (parseInt($("#unread-notifications").text()) == 0) {
             $("#unread-notifications").css("display", "none");
@@ -145,7 +149,7 @@
         }
     }
 
-    function consumeMessage(messageId, pageUrl) {
+    function consumeMessage(messageId, pageUrl, realMessageId) {
         // Page redirection
         pageUrl = pageUrl.replace(/-/g, "/");
         $('#content-main iframe').attr("src", pageUrl);
@@ -158,6 +162,13 @@
         messageCount -= 1;
         $("#unread-notifications").text(messageCount);
         hideDigitWhenEmpty();
+
+        // Set already read
+        $.ajax({
+            type: 'post',
+            url: 'notification/mark/' + realMessageId + '/read',
+            data: csrfData
+        });
     }
 
     /***************************/
@@ -172,9 +183,11 @@
     /*<![CDATA[*/
     var _csrf_token = /*[[${_csrf.token}]]*/ '';
     var _csrf_header_name = /*[[${_csrf.headerName}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
     /*]]>*/
     var csrfData = {};
     csrfData[_csrf_header_name] = _csrf_token;
+    csrfData[_csrf_param_name] = _csrf_token;
     csrfData['login'] = "login"; // Not used
     csrfData['passcode'] = 'passcode'; // Not used
 
@@ -197,7 +210,7 @@
             // Append li element to the right place
             $("#hr-notifications").after("<li id=\'message-" + messageCount + "\'>\n" +
                 "                                <div class=\"dropdown-messages-box\">\n" +
-                "                                    <a onclick=\"consumeMessage(" + messageCount + ", \'" + messageDto.link + "\');\" class=\"pull-left\">\n" +
+                "                                    <a onclick=\"consumeMessage(" + messageCount + ", \'" + messageDto.link + "\'," + messageDto.messageId + ");\" class=\"pull-left\">\n" +
                 "                                       <div class=\"vertical-timeline-icon notification-icon " + messageDto.iconColor + "-bg\">\n" +
                 "                                           <i class=\"fa fa-" + messageDto.iconName + "\"></i>\n" +
                 "                                       </div>" +

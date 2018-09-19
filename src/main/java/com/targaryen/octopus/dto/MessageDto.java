@@ -33,6 +33,10 @@ public class MessageDto {
 
     private int messageType;
 
+    private boolean isRead = false;
+
+    private boolean isStarred = false;
+
     /* Temp */
 
     @Transient
