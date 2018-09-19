@@ -11,4 +11,5 @@ public interface ServiceFactory {
     FileStorageService getFileStorageService();
     MessageService getMessageService();
     AnnouncementService getAnnouncementService();
+    HistoryService getHistoryService();
 }

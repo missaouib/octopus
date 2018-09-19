@@ -25,6 +25,8 @@ public class ServiceFactoryImpl implements ServiceFactory{
     private MessageService messageService;
     @Autowired
     private AnnouncementService announcementService;
+    @Autowired
+    private HistoryService historyService;
 
     @Override
     public UserService getUserService() {
@@ -74,5 +76,8 @@ public class ServiceFactoryImpl implements ServiceFactory{
         return announcementService;
     }
 
-    ;
+    @Override
+    public HistoryService getHistoryService() {
+        return historyService;
+    }
 }
