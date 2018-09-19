@@ -582,7 +582,7 @@ public class HRController {
      * @param applicationId
      * @return
      */
-    @RequestMapping(value = "/hr/post/{postId}/rejectOffer", method = RequestMethod.POST)
+    @RequestMapping(value = "/hr/post/{postId}/application/rejectOffer", method = RequestMethod.POST)
     @ResponseBody
     public String applicantRejectOffer(@PathVariable("postId") int postId, @RequestParam("applicationId") int applicationId) {
         return String.valueOf(applicantService.rejectOfferByApplicationId(applicationId));

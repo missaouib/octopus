@@ -52,7 +52,9 @@
                 <div>
                     <img th:src="@{/octopus/img/login-logo.png}" style="text-align:center"/>
                 </div>
-                <h2>Octopus</h2>
+                <div class="row" style="margin-top:10px;">
+                    <a th:href="@{/octopus/}" style="font-family:Menlo;font-size:20px;color:#000;">Octopus</a>
+                </div>
                 <div style="margin: 20px 15px -20px 15px;">
                     <div class="alert alert-danger alert-dismissable"
                          th:style="'display:' + @{(${istrue} ? 'block' : 'none')} + ''">
