@@ -26,7 +26,7 @@
     <link th:href="@{/octopus/new-vendor/css/plugins/steps/jquery.steps.css}" rel="stylesheet" />
     <link th:href="@{/octopus/new-vendor/css/animate.css}" rel="stylesheet" />
     <link th:href="@{/octopus/new-vendor/css/style.css}" rel="stylesheet" />
-
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
 
     <!-- jQuery -->
     <script th:src="@{/octopus/js/jquery.min.js}"></script>
@@ -48,6 +48,10 @@
     <script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
     <!-- Jquery Validate -->
     <script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
+
+
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
 
 </head>
 
@@ -262,8 +266,11 @@
                                                         <div class="col-lg-4">
                                                             <input class="form-control" type="file" name="file" required />
                                                         </div>
-                                                        <div class="col-lg-4">
+                                                        <div class="col-lg-2">
                                                             <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <a id="pdfview" style="display:none; width:80px; margin-left:-150px;" type="button" class="btn btn-primary" th:href="@{/octopus/applicant/resume/pdf}">View</a>
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -291,7 +298,6 @@
                                 </div>
                                 <button class="btn btn-lg btn-primary" type="submit" style="float:right;">Save</button>
                             </div>-->
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -315,7 +321,20 @@
             processData: false,
             contentType: false,
             success: function (data) {
-                alert('ok');
+               document.getElementById("pdfview").style.display="block";
+                swal({
+                    title: "Success",
+                    text: "You have successfully upload a resume.",
+                    type: "success"
+                });
+            },
+            error: function (data) {
+                document.getElementById("pdfview").style.display="block";
+                swal({
+                    title: "Failure",
+                    text: "You have not successfully upload a resume.",
+                    type: "error"
+                });
             }
         });
 

@@ -45,21 +45,27 @@ public class PdfFileController {
         }*/
 
 
-        File file1 = new File("C:/test/file2.pdf");
 
+        File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/octopus/pdf/files/file2.pdf");
+/*
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(), file1);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-/*
+        }*/
+
         try {
-            FileCopyUtils.copy(resource.getFile(),
-                    new File("C://file2.pdf"));
+            FileUtils.copyInputStreamToFile(resource.getInputStream(),
+                    file1);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
         return "OK";
+    }
+
+    @RequestMapping(value = "/applicant/resume/pdf")
+    public String resumePdf(){
+        return "applicant-resume-pdf";
     }
 
 }
