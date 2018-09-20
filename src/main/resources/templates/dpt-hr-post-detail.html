@@ -42,7 +42,7 @@
                                     <a th:text="${roleName}"></a>
                                 </li>
                                 <li>
-                                    <a>Post Needs</a>
+                                    <a th:href="@{'list?type=' + ${post.recruitType}}">Post Needs</a>
                                 </li>
                                 <li class="active">
                                     <strong th:text="${title}"></strong>

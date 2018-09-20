@@ -283,7 +283,7 @@
                                             <h4>Preview image</h4>
                                             <div class="img-preview"></div>
                                             <h4>Upload Your Photo</h4>
-                                            <form id="photo" method="post" th:action="@{/octopus/applicant/uploadPhoto}" enctype="multipart/form-data">
+                                            <form id="photoUpload" method="post" th:action="@{'/octopus/applicant/uploadPhoto/'+ ${resumeEntity.applicantId}}" enctype="multipart/form-data">
                                                 <fieldset>
                                                     <div class="btn-group">
                                                         <label title="Upload image file" for="inputImage" class="btn btn-primary">
@@ -318,7 +318,7 @@
                                 </div>-->
                             </div>
 
-                            <div class="col-lg-6">
+                            <!--<div class="col-lg-6">
                                 <div class="ibox-content">
                                     <h2 class="ibox-head">
                                         Upload Degree Photo
@@ -347,7 +347,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         <hr/>
                         <div class="row">
@@ -695,6 +695,39 @@
 </script>
 
 <script type="text/javascript">
+    var frm_photo = $('#photoUpload');
+
+    frm_photo.submit(function (ev) {
+
+        $.ajax({
+            type: frm_photo.attr('method'),
+            cache: false,
+            url: frm_photo.attr('action'),
+            data: new FormData($('#photoUpload')[0]),
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                swal({
+                    title: "Success",
+                    text: "You have successfully upload a photo.",
+                    type: "success",
+                }, function (isConfirm) {
+                    document.location.reload();
+                });
+            },
+            error: function (data) {
+                swal({
+                    title: "Failure",
+                    text: "You have not successfully upload a photo.",
+                    type: "error"
+                });
+            }
+        });
+
+        ev.preventDefault();
+    });
+</script>
+<script type="text/javascript">
     var frm = $('#cvUpload');
 
     console.log(new FormData($('#cvUpload')[0]));
@@ -712,7 +745,7 @@
                 swal({
                     title: "Success",
                     text: "You have successfully upload a resume.",
-                    type: "success"
+                    type: "success",
                 }, function (isConfirm) {
                     document.location.reload();
                 });
@@ -728,6 +761,7 @@
 
         ev.preventDefault();
     });
+
 </script>
 
 <script th:inline="javascript">

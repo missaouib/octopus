@@ -40,7 +40,7 @@ public class ResumeModelDto {
     private boolean applicantAddress = true;
     private boolean applicantSelfIntro = true;
     private boolean applicantPhoto = true;
-    private boolean applicantDegreePhoto = true;
+    private boolean applicantDegreePhoto = false;
     private boolean familyContactRelation = true;
     private boolean familyContactName = true;
     private boolean familyContactCompany = true;

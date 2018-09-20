@@ -73,4 +73,3 @@ deploy_image:
   # only master branch will execute this process
   only:
     - master
-

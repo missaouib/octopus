@@ -58,6 +58,31 @@ public class PdfFileController {
         return "OK";
     }
 
+    @RequestMapping(value="/applicant/uploadPhoto/{applicantId}", method = RequestMethod.POST)
+    @ResponseBody
+    public String uploadPhoto(@PathVariable("applicantId") String applicantId,  @RequestParam("file") MultipartFile file) {
+        int ret = serviceFactory.getFileStorageService().storePhotoByApplicantId(Integer.parseInt(applicantId), file);
+
+        //File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/octopus/pdf/files/file2.pdf");
+        Resource resource = serviceFactory.getFileStorageService().loadPhotoResourceByApplicantId(Integer.parseInt(applicantId), file.getOriginalFilename());
+        String path_2 = System.getProperty("user.dir");
+        File localFile = new File(path_2 + "/src/main/resources/static/octopus/pdf/files/" + file.getOriginalFilename());
+        //File localFile = new File(path + "static/octopus/pdf/files/" + fileName);
+
+        try {
+            FileUtils.copyInputStreamToFile(resource.getInputStream(), localFile);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "OK";
+    }
+
     @RequestMapping(value = "/applicant/resume/pdf/{applicantId}")
     public String resumePdf(@PathVariable("applicantId") String applicantId, Model map){
 
