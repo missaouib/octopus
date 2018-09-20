@@ -428,17 +428,19 @@ public class ApplicantController {
         int applicationId = serviceFactory.getApplicantService().CreateNewApplication(applicationVo);
 
         // Notification
-        PostVo postVo = serviceFactory.getHRService().findPostById(applicationVo.getPostId());
-        MessageDto messageDto = new MessageDto();
-        messageDto.setSubject(AuthInfo.getUserName());
-        messageDto.setText("applied for the " + (postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? "society" : "campus") + " post: ");
-        messageDto.setObject(postVo.getPostName());
-        messageDto.setLink("hr/post/" + postVo.getPostId() + "/application/" + applicationId + "/timeline");
-        messageDto.setMessageType(HRMessage.APP_APPLY_POST);
-        messageDto.setCreateTime(Calendar.getInstance().getTime());
-        messageDto.setChannel("hr");
+        if (applicationId > 0) {
+            PostVo postVo = serviceFactory.getHRService().findPostById(applicationVo.getPostId());
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSubject(AuthInfo.getUserName());
+            messageDto.setText("applied for the " + (postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? "society" : "campus") + " post: ");
+            messageDto.setObject(postVo.getPostName());
+            messageDto.setLink("hr/post/" + postVo.getPostId() + "/application/" + applicationId + "/timeline");
+            messageDto.setMessageType(HRMessage.APP_APPLY_POST);
+            messageDto.setCreateTime(Calendar.getInstance().getTime());
+            messageDto.setChannel("hr");
 
-        serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
+            serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
+        }
 
         return "redirect:/octopus/applicant/resume/basic";
     }
