@@ -31,14 +31,14 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public List<AnnouncementVo> listAllAnnouncement() {
-        return announcementRepository.findAll().stream()
+        return announcementRepository.findAllByBatchOrderByPublishedTimeDesc(batchRepository.findByBatchId(1)).stream()
                 .map(n -> DataTransferUtil.AnnouncementDtoToVo(n))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<AnnouncementVo> listPublicAnnouncement() {
-        return announcementRepository.findAll().stream()
+        return announcementRepository.findAllByBatchOrderByPublishedTimeDesc(batchRepository.findByBatchId(1)).stream()
                 .filter(n -> AnnouncementStauts.PUBLISHED.equals(n.getAnnouncementStatus()))
                 .map(n -> DataTransferUtil.AnnouncementDtoToVo(n))
                 .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public List<AnnouncementVo> listHRAnnouncement() {
-        return announcementRepository.findAll().stream()
+        return announcementRepository.findAllByBatchOrderByPublishedTimeDesc(batchRepository.findByBatchId(1)).stream()
                 .filter(n -> AnnouncementType.HR_VIEW.equals(n.getAnnouncementType()) &&
                         AnnouncementStauts.PUBLISHED.equals(n.getAnnouncementStatus()))
                 .map(n -> DataTransferUtil.AnnouncementDtoToVo(n))
