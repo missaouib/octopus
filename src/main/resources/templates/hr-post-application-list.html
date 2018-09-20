@@ -26,18 +26,33 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h4>Post Detail</h4>
+                        <h2>Post Detail</h2>
+
+                        <ol class="breadcrumb">
+                            <li>
+                                <a th:href="@{/octopus/hr/dashboard/list}">HR</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/octopus/hr/post/list(type=(${post.recruitType}))}">Recruitment</a>
+                            </li>
+                            <li class="active">
+                                <strong>Post Detail</strong>
+                            </li>
+                        </ol>
                     </div>
 
-                    <div class="ibox-content">
+                    <div class="ibox-content" style="padding-bottom: 0px;">
 
                         <div class="row">
-                            <div class="col-sm-12">
-                                <div class="m-b-md">
-                                    <h2 th:text="${post.postName}"></h2>
-                                </div>
+                            <div class="col-sm-6">
                                 <dl class="dl-horizontal">
-                                    <dt>Status：</dt>
+                                    <dt>Post Name:</dt>
+                                    <dd th:text="${post.postName}"></dd>
+                                </dl>
+                            </div>
+                            <div class="col-sm-6">
+                                <dl class="dl-horizontal">
+                                    <dt>Status:</dt>
                                     <dd>
                                         <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).INIT}" class="label label-success">To be checked</span>
                                         <span th:if="${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).REVOKED}" class="label label-danger">Revoked by manager</span>
@@ -48,7 +63,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <dl class="dl-horizontal">
                                     <dt>Post Type:</dt>
                                     <dd th:text="${post.postType}"></dd>
@@ -57,7 +72,7 @@
                                     <dd th:text="${post.postLocale}"></dd>
                                 </dl>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <dl class="dl-horizontal">
                                     <dt>Department:</dt>
                                     <dd th:text="${post.departmentName}"></dd>
@@ -88,32 +103,42 @@
                     </div>
                     <div class="ibox-content">
                         <div id="exampleTableEventsToolbar" role="group" style="width:100%;">
+
+                            <button th:if="(${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).PUBLISHED}
+                                                or ${post.status} eq ${T(com.targaryen.octopus.util.status.PostStatus).FINISHED}) and
+                                                ${post.recruitType} eq ${T(com.targaryen.octopus.util.status.RecruitTypeStatus).CAMPUS}" type="button"
+                                    th:onclick="${'location.href=''../schedule/model'''}"
+                                    class="btn btn-primary">
+                                <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>
+                                Batch Manage
+                            </button>
+
                             <button type="button"
                                     onclick="editApplicationStatus('resume', 'pass');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
-                                Resume - Pass
+                                Resume
                             </button>
 
                             <button type="button"
                                     onclick="editApplicationStatus('resume', 'reject');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                                Resume - Reject
+                                Resume
                             </button>
 
                             <button type="button"
                                     onclick="editApplicationStatus('hr', 'pass');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
-                                Application - Pass
+                                Application
                             </button>
 
                             <button type="button"
                                     onclick="editApplicationStatus('hr', 'reject');"
                                     class="btn btn-outline btn-default">
                                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                                Application - Reject
+                                Application
                             </button>
 
                             <input type="text" class="form-control input-sm m-b-xs" id="filter" placeholder="Search..."
