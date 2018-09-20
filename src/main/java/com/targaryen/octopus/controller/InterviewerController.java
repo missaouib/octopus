@@ -23,7 +23,6 @@ import java.util.List;
  * Created by zhouy on 2018/9/6.
  */
 @Controller
-@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class InterviewerController {
 
     private final ServiceFactoryImpl serviceFactory;

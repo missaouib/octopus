@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class DptManagerController {
     private DptManagerService dptManagerService;
     private MessageService messageService;

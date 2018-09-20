@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class NotificationController {
     private MessageService messageService;
 

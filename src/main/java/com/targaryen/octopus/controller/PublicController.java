@@ -18,7 +18,6 @@ import java.util.List;
  * Created by zhouy on 2018/9/4.
  */
 @Controller
-@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class PublicController {
 
     private final ServiceFactoryImpl serviceFactory;

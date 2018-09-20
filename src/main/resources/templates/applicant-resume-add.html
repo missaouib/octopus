@@ -5,49 +5,49 @@
 
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
 
     <!-- MetisMenu CSS -->
-    <link th:href="@{/octopus/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+    <link th:href="@{/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link th:href="@{/octopus/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
 
     <!-- Custom Fonts -->
-    <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}"  rel="stylesheet" />
 
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
 
 
-    <link th:href="@{/octopus/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/new-vendor/css/plugins/codemirror/codemirror.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/plugins/codemirror/codemirror.css}" rel="stylesheet" />
 
     <!--new vendor -->
-    <link th:href="@{/octopus/new-vendor/css/plugins/steps/jquery.steps.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/new-vendor/css/animate.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/new-vendor/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/plugins/steps/jquery.steps.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/animate.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/style.css}" rel="stylesheet" />
 
 
     <!-- jQuery -->
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 
-    <script th:src="@{/octopus/new-vendor/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-    <script th:src="@{/octopus/new-vendor/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/new-vendor/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/new-vendor/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
 
     <!-- Custom and plugin javascript -->
-    <script th:src="@{/octopus/new-vendor/js/inspinia.js}"></script>
-    <script th:src="@{/octopus/new-vendor/js/plugins/pace/pace.min.js}"></script>
+    <script th:src="@{/new-vendor/js/inspinia.js}"></script>
+    <script th:src="@{/new-vendor/js/plugins/pace/pace.min.js}"></script>
 
     <!-- Jasny -->
-    <script th:src="@{/octopus/new-vendor/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
+    <script th:src="@{/new-vendor/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
 
     <!-- Steps -->
-    <script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
+    <script th:src="@{/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
     <!-- Jquery Validate -->
-    <script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
 
 </head>
 
@@ -62,7 +62,7 @@
                     <div class="ibox-content">
                         <div id="wizard">
                             <div class="step-content">
-                                <form id="basicInfo" method="post" th:action="@{/octopus/applicant/resume/new/add/fill}" th:object="${resumeEntity}">
+                                <form id="basicInfo" method="post" th:action="@{/applicant/resume/new/add/fill}" th:object="${resumeEntity}">
                                     <fieldset>
                                         <div class="row">
                                             <div class="col-lg-3">

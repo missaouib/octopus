@@ -30,7 +30,6 @@ import java.util.*;
  * Created by zhouy on 2018/9/4.
  */
 @Controller
-@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class ApplicantController {
 
     private final ServiceFactoryImpl serviceFactory;
@@ -108,7 +107,7 @@ public class ApplicantController {
             UserVo userVo2 = new UserVo.Builder().userId(userEntity.getUserId()).userName(userName).userPassword(userEntity.getNewUserPassword1()).build();
             serviceFactory.getUserService().editPassword(userVo2);
             request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-            result = new ModelAndView("redirect:/octopus/logout");
+            result = new ModelAndView("redirect:/logout");
         }
         else {
             map.addAttribute("ret", !ret);
@@ -137,7 +136,7 @@ public class ApplicantController {
 
         serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
 
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
+        ModelAndView result = new ModelAndView("redirect:/applicant/index");
         return result;
     }
 
@@ -166,7 +165,7 @@ public class ApplicantController {
 
         serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
 
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
+        ModelAndView result = new ModelAndView("redirect:/applicant/index");
         return result;
     }
     /**
@@ -197,7 +196,7 @@ public class ApplicantController {
         serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
 
         serviceFactory.getApplicantService().updateApplicantStatusOfInterview(applicantCommentEntity.getInterviewId(), ApplicantStatus.REJECTED, applicantCommentEntity.getApplicantComment());
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/index");
+        ModelAndView result = new ModelAndView("redirect:/applicant/index");
         return result;
     }
 
@@ -352,7 +351,7 @@ public class ApplicantController {
 
             result = new ModelAndView("applicant-resume-new-add");
         }else {
-            result = new ModelAndView("redirect:/octopus/applicant/index");
+            result = new ModelAndView("redirect:/applicant/index");
         }
         return result;
     }
@@ -442,7 +441,7 @@ public class ApplicantController {
             serviceFactory.getMessageService().broadcastAndSave("hr", messageDto, true);
         }
 
-        return "redirect:/octopus/applicant/resume/basic";
+        return "redirect:/applicant/resume/basic";
     }
 
     /**
@@ -684,7 +683,7 @@ public class ApplicantController {
                 .referencePhoneNum(workExperienceEntity.getReferencePhoneNum()).build();
 
         serviceFactory.getApplicantService().createWorkExperience(experienceVo);
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/work");
+        ModelAndView result = new ModelAndView("redirect:/applicant/resume/work");
         return result;
     }
 
@@ -715,7 +714,7 @@ public class ApplicantController {
                 .referencePhoneNum(work.getReferencePhoneNum()).build();
 
         serviceFactory.getApplicantService().updateWorkExperience(experienceVo);
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/work");
+        ModelAndView result = new ModelAndView("redirect:/applicant/resume/work");
         return result;
     }
 
@@ -723,7 +722,7 @@ public class ApplicantController {
     public ModelAndView applicantResumeWorkDelete(@PathVariable("workExperienceId") int workExperienceId) {
 
         serviceFactory.getApplicantService().deleteWorkExperienceByWorkExperienceId(workExperienceId);
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/work");
+        ModelAndView result = new ModelAndView("redirect:/applicant/resume/work");
         return result;
     }
 
@@ -776,7 +775,7 @@ public class ApplicantController {
                 .degree(educationExperienceEntity.getDegree()).build();
 
         serviceFactory.getApplicantService().createEducationExperience(educationExperienceVo);
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/education");
+        ModelAndView result = new ModelAndView("redirect:/applicant/resume/education");
         return result;
 
     }
@@ -804,14 +803,14 @@ public class ApplicantController {
                 .typeOfStudy(edu.getTypeOfStudy())
                 .degree(edu.getDegree()).build();
         serviceFactory.getApplicantService().updateEducationExperience(educationExperienceVo);
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/education");
+        ModelAndView result = new ModelAndView("redirect:/applicant/resume/education");
         return result;
     }
 
     @RequestMapping(value="/applicant/resume/education/delete/{educationExperienceId}", method = RequestMethod.GET)
     public ModelAndView applicantResumeEducationDelete(@PathVariable("educationExperienceId") int educationExperienceId) {
         serviceFactory.getApplicantService().deleteEducationExperienceByEducationExperienceId(educationExperienceId);
-        ModelAndView result = new ModelAndView("redirect:/octopus/applicant/resume/education");
+        ModelAndView result = new ModelAndView("redirect:/applicant/resume/education");
         return result;
     }
 

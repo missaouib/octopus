@@ -7,19 +7,19 @@
 
     <title>Portal</title>
 
-    <link th:href="@{/octopus/css/bootstrap.min14ed.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/css/font-awesome.min93e3.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min14ed.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet"/>
 
-    <link th:href="@{/octopus/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/css/font-awesome.min93e3.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/css/animate.min.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/css/style.min.css}" rel="stylesheet" />
-    <link th:href="@{/octopus/css/login.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}" rel="stylesheet" />
+    <link th:href="@{/css/animate.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/login.min.css}" rel="stylesheet" />
 
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html" />
@@ -27,18 +27,18 @@
     <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
 </head>
 
-<body class="gray-bg" th:background="@{/octopus/img/1.jpg}" style="background-size:cover;overflow:-Scroll;overflow-y:hidden">
+<body class="gray-bg" th:background="@{/img/1.jpg}" style="background-size:cover;overflow:-Scroll;overflow-y:hidden">
 <div class="signinpanel text-center loginscreen">
     <div class="row">
         <div class="col-sm-3">
         </div>
         <div class="panel-body col-md-6">
-            <form role="form" method="post" th:action="@{/octopus/login}">
+            <form role="form" method="post" th:action="@{/login}">
                 <div>
-                    <img th:src="@{/octopus/img/login-logo.png}" style="text-align:center"/>
+                    <img th:src="@{/img/login-logo.png}" style="text-align:center"/>
                 </div>
                 <div class="row" style="margin-top:10px;">
-                    <a th:href="@{/octopus/}" style="font-family:Menlo;font-size:20px;color:#000;">Octopus</a>
+                    <a th:href="@{/}" style="font-family:Menlo;font-size:20px;color:#000;">Octopus</a>
                 </div>
                 <div style="margin: 20px 15px -20px 15px;">
                     <div class="alert alert-danger alert-dismissable"
@@ -68,7 +68,7 @@
 
                     <button type="submit" class="btn btn-lg btn-success btn-block">Sign In</button>
                     <label style="margin-top:10px; font-style: italic; font-weight:bold;">Don't Have An Account?</label>
-                    <a th:href="@{/octopus/register}" class="btn btn-lg btn-warning btn-block" target="_blank">Sign Up</a>
+                    <a th:href="@{/register}" class="btn btn-lg btn-warning btn-block" target="_blank">Sign Up</a>
                 </fieldset>
             </form>
         </div>

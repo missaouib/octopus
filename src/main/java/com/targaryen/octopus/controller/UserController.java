@@ -25,7 +25,6 @@ import java.util.List;
  * Created by zhouy on 2018/9/3.
  */
 @Controller
-@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class UserController {
 
     private final ServiceFactoryImpl serviceFactory;
@@ -63,13 +62,13 @@ public class UserController {
             result.getModel().put("istrue", 1);
         } else {
             if (tmp.get(0).equals(Role.APPLICANT)){
-                result = new ModelAndView("redirect:/octopus/applicant/index");
+                result = new ModelAndView("redirect:/applicant/index");
             } else if(tmp.get(0).equals(Role.DPT)){
-                result = new ModelAndView("redirect:/octopus/dpt/index");
+                result = new ModelAndView("redirect:/dpt/index");
             } else if(tmp.get(0).equals(Role.HR)){
-                result = new ModelAndView("redirect:/octopus/hr/index");
+                result = new ModelAndView("redirect:/hr/index");
             }  if(tmp.get(0).equals(Role.INTERVIEWER)){
-                result = new ModelAndView("redirect:/octopus/interviewer/index");
+                result = new ModelAndView("redirect:/interviewer/index");
             }
         }
         return result;

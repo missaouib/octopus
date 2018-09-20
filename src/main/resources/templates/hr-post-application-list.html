@@ -3,19 +3,19 @@
 <head>
     <title>HR - Post Applications List</title>
 
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/iCheck/custom.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/iCheck/custom.css}"/>
 
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/iCheck/icheck.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 </head>
 
 <body class="gray-bg">
@@ -30,10 +30,10 @@
 
                         <ol class="breadcrumb">
                             <li>
-                                <a th:href="@{/octopus/hr/dashboard/list}">HR</a>
+                                <a th:href="@{/hr/dashboard/list}">HR</a>
                             </li>
                             <li>
-                                <a th:href="@{/octopus/hr/post/list(type=(${post.recruitType}))}">Recruitment</a>
+                                <a th:href="@{/hr/post/list(type=(${post.recruitType}))}">Recruitment</a>
                             </li>
                             <li class="active">
                                 <strong>Post Detail</strong>

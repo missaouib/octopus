@@ -22,7 +22,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping(value = "/octopus", produces= MediaType.TEXT_HTML_VALUE)
 public class HRController {
     private HRService hrService;
     private ApplicantService applicantService;
@@ -183,11 +182,6 @@ public class HRController {
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
         map.addAttribute("post", postVo);
-
-        // Test
-        MessageDto messageDto = new MessageDto();
-        messageDto.setText("Hello World");
-        messageService.broadcastAndSave("/octopus/ws/hr", messageDto, false);
 
         return "dpt-hr-post-detail";
     }

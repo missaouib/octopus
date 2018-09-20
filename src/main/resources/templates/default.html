@@ -7,36 +7,36 @@
     <title>Public page</title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
 
     <!-- MetisMenu CSS -->
-    <link th:href="@{/octopus/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+    <link th:href="@{/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link th:href="@{/octopus/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
 
     <!-- Custom Fonts -->
-    <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}"  rel="stylesheet" />
 
     <!-- DataTables CSS -->
-    <link th:href="@{/octopus/js/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/js/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
-    <link th:href="@{/octopus/js/datatables-responsive/dataTables.responsive.css}" rel="stylesheet">
+    <link th:href="@{/js/datatables-responsive/dataTables.responsive.css}" rel="stylesheet">
 
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
+    <script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
+    <script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
     <!-- DataTables JavaScript -->
-    <script th:src="@{/octopus/js/datatables/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/octopus/js/datatables-plugins/dataTables.bootstrap.min.js}"></script>
-    <script th:src="@{/octopus/js/datatables-responsive/dataTables.responsive.js}"></script>
+    <script th:src="@{/js/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/datatables-plugins/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/js/datatables-responsive/dataTables.responsive.js}"></script>
 
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html" />
@@ -48,29 +48,29 @@
 
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;">
     <div class="navbar-header">
-        <a class="navbar-brand" th:href="@{/octopus/}">Octopus Recruiting System</a>
+        <a class="navbar-brand" th:href="@{/}">Octopus Recruiting System</a>
     </div>
     <div class="nav navbar-top-links navbar-right">
-        <a class="navbar-brand" th:href="@{/octopus/login}" style="font-size: 17px; margin-right: 15px;">Sign In/Sign Up</a>
+        <a class="navbar-brand" th:href="@{/login}" style="font-size: 17px; margin-right: 15px;">Sign In/Sign Up</a>
     </div>
 </nav>
 
 <div class="container">
     <div class="row">
         <div class="col-lg-12" style="margin-top: 20px;">
-            <img th:src="@{/octopus/img/bar2.jpg}" alt="" style="width: 100%; height: 120%;" />
+            <img th:src="@{/img/bar2.jpg}" alt="" style="width: 100%; height: 120%;" />
         </div>
 
         <div class="col-lg-4"  style="margin-top: 20px;">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Billboard <a th:href="@{/octopus/pub/billboard/list}" style="font-style: italic; font-size:15px; float:right; color:#843534;">More</a></h3>
+                    <h3 class="panel-title">Billboard <a th:href="@{/pub/billboard/list}" style="font-style: italic; font-size:15px; float:right; color:#843534;">More</a></h3>
                 </div>
                 <div class="panel-body">
                     <th:block th:each="announcement,stat:${billboardList}">
                         <div th:if="${stat.index} le 4">
                             <div class="alert alert alert-danger">
-                                <a th:href="@{'/octopus/pub/billboard/' + ${announcement.announcementId}}" class="alert-link">[[${#strings.abbreviate(announcement.announcementTitle, 20)}]]</a>
+                                <a th:href="@{'/pub/billboard/' + ${announcement.announcementId}}" class="alert-link">[[${#strings.abbreviate(announcement.announcementTitle, 20)}]]</a>
                                 <label style="font-style: italic; float: right;" th:text="${#dates.format(announcement.publishedTime, 'yyyy-MM-dd')}"></label>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                             <td th:text="${ps.postType}"></td>
                             <td th:text="${ps.postLocale}"></td>
                             <td>
-                                <a th:href="@{'/octopus/postDetail/' + ${ps.postId}}" style="color: #eee;">
+                                <a th:href="@{'/postDetail/' + ${ps.postId}}" style="color: #eee;">
                                 <button type="button" class="btn btn-warning">
                                     <i class="fa fa-file-text"> View Detail</i>
                                 </button></a>

@@ -1,5 +1,6 @@
 package com.targaryen.octopus.service;
 
+import com.targaryen.octopus.config.ContextProperties;
 import com.targaryen.octopus.controller.HRController;
 import com.targaryen.octopus.dao.DaoFactory;
 import com.targaryen.octopus.dao.MessageRepository;
@@ -18,11 +19,13 @@ import java.util.Locale;
 
 @Service
 public class MessageServiceImpl implements MessageService {
+    @Autowired
+    ContextProperties contextProperties;
+
     private Logger logger = LoggerFactory.getLogger(HRController.class);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 
     private final String channelPrefix = "/octopus/ws/";
-    private final String linkPrefix = "/octopus/";
 
     private MessageRepository messageRepository;
     private SimpMessagingTemplate sender;
@@ -39,7 +42,7 @@ public class MessageServiceImpl implements MessageService {
         try {
             if (message != null) {
                 // Pre-process link
-                message.setLink(linkPrefix + message.getLink());
+                message.setLink("/" + message.getLink());
 
                 // Save to DB
                 if (pleaseSave) {

@@ -3,17 +3,17 @@
 <head>
     <title>Department Manager - Post List</title>
 
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
 
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
 </head>
 
@@ -44,7 +44,7 @@
                                         <h4 class="modal-title" id="myModalLabel">Add New Work Experience</h4>
                                     </div>
                                     <div class="row" style="margin: 20px;">
-                                        <form role="form" method="post" th:action="@{/octopus/applicant/resume/work/add}" th:object="${workExperience}">
+                                        <form role="form" method="post" th:action="@{/applicant/resume/work/add}" th:object="${workExperience}">
                                             <input type="hidden" id="resumeId" th:field="*{resumeId}">
                                             <div class="form-group"><label>Start Time</label> <input type="date" id="startTime" th:field="*{startTime}" placeholder="Start Time" class="form-control" required></div>
                                             <div class="form-group"><label>End Time</label> <input type="date" id="endTime" th:field="*{endTime}" placeholder="End Time" class="form-control" required></div>
@@ -115,7 +115,7 @@
                                                     <h4 class="modal-title" id="myModalLabel2">Update New Work Experience</h4>
                                                 </div>
                                                 <div class="row" style="margin: 20px;">
-                                                    <form role="form" method="post" th:action="@{/octopus/applicant/resume/work/update}" th:object="${work}">
+                                                    <form role="form" method="post" th:action="@{/applicant/resume/work/update}" th:object="${work}">
                                                         <fieldset>
                                                             <input type="hidden" name="workExperienceId" th:value="*{workExperienceId}">
                                                             <input type="hidden" name="resumeId" th:value="*{resumeId}">

@@ -11,29 +11,29 @@
     <title>Applicant - Index</title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
 
     <!-- MetisMenu CSS -->
-    <link th:href="@{/octopus/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+    <link th:href="@{/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link th:href="@{/octopus/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+    <link th:href="@{/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
 
     <!-- Custom Fonts -->
-    <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min93e3.css}"  rel="stylesheet" />
 
 
     <!-- jQuery -->
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script th:src="@{/octopus/new-vendor/metisMenu/metisMenu.min.js}"></script>
+    <script th:src="@{/new-vendor/metisMenu/metisMenu.min.js}"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script th:src="@{/octopus/new-vendor/js/sb-admin-2.js}"></script>
+    <script th:src="@{/new-vendor/js/sb-admin-2.js}"></script>
 
 </head>
 
@@ -44,7 +44,7 @@
     <nav class="navbar navbar-default navbar-static-top" role="navigation"
          style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-brand" th:href="@{/octopus/applicant/index}">Octopus Recruiting System</a>
+            <a class="navbar-brand" th:href="@{/applicant/index}">Octopus Recruiting System</a>
         </div>
 
         <!-- /.navbar-header -->
@@ -54,13 +54,13 @@
                                     data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i>
                 <i class="fa fa-caret-down">&nbsp;&nbsp;[[${roleName}]]&nbsp;:&nbsp;[[${userName}]]</i> </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a th:href="@{/octopus/applicant/index}"> <i
+                    <li><a th:href="@{/applicant/index}"> <i
                             class="fa fa-user fa-fw"></i> HomePage
                     </a></li>
                     <li class="divider"></li>
                     <li>
                         <a onclick="document.getElementById('logOut').submit();"><i class="fa fa-sign-out fa-fw"></i>Log out</a>
-                        <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
+                        <form id="logOut" method="post" th:action="@{/logout}"></form>
                     </li>
                 </ul> <!-- /.dropdown-user --></li>
         </ul>
@@ -69,28 +69,28 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li><a th:href="@{/octopus/applicant/post/apply}"><i
+                    <li><a th:href="@{/applicant/post/apply}"><i
                             class="fa fa-dashboard fa-fw"></i> Apply For Post </a></li>
-                    <li><a th:href="@{/octopus/applicant/application/list}"><i
+                    <li><a th:href="@{/applicant/application/list}"><i
                             class="fa fa-table fa-fw"></i> Application Information </a></li>
                     <li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
                         Resume Management <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a th:href="@{/octopus/applicant/resume/basic/magm}">Basic Information</a></li>
-                            <li><a th:href="@{/octopus/applicant/resume/work/magm}">Work Experience</a></li>
-                            <li><a th:href="@{/octopus/applicant/resume/education/magm}">Education Experience</a></li>
-                            <li><a th:href="@{/octopus/applicant/pdf}">PDF</a></li>
+                            <li><a th:href="@{/applicant/resume/basic/magm}">Basic Information</a></li>
+                            <li><a th:href="@{/applicant/resume/work/magm}">Work Experience</a></li>
+                            <li><a th:href="@{/applicant/resume/education/magm}">Education Experience</a></li>
+                            <li><a th:href="@{/applicant/pdf}">PDF</a></li>
                             <!-- <li><a href="#"> For Future <span class="fa arrow"></span></a>
                                  <ul class="nav nav-third-level">
                                      <li><a href="#"> NumberOne </a></li>
                                      <li><a href="#"> Number Two </a></li>
                                      <li><a href="#"> Number Three </a></li>
-                                     &lt;!&ndash;<li><a th:href="@{/octopus/applicant/interview/magm}"> NumberOne </a></li>
-                                     <li><a th:href="@{/octopus/applicant/interview/detail}"> Number Two </a></li>
-                                     <li><a th:href="@{/octopus/applicant/resume/add}"> Number Three </a></li>&ndash;&gt;
+                                     &lt;!&ndash;<li><a th:href="@{/applicant/interview/magm}"> NumberOne </a></li>
+                                     <li><a th:href="@{/applicant/interview/detail}"> Number Two </a></li>
+                                     <li><a th:href="@{/applicant/resume/add}"> Number Three </a></li>&ndash;&gt;
                                  </ul></li>-->
                         </ul> <!-- /.nav-second-level --></li>
-                    <li><a th:href="@{/octopus/applicant/user/setting}"><i
+                    <li><a th:href="@{/applicant/user/setting}"><i
                             class="fa fa-gear fa-fw"></i> User Setting </a></li>
                 </ul>
             </div>
@@ -107,7 +107,7 @@
                     <div class="col-lg-12">
                         <ol class="breadcrumb" style="margin-top: 20px;">
                             <li>
-                                <a th:href="@{/octopus/applicant/index}">Home</a>
+                                <a th:href="@{/applicant/index}">Home</a>
                             </li>
                             <li class="active">
                                 <strong>Message</strong>
@@ -175,7 +175,7 @@
                                                                                         <tr th:each="ts:${ps.value}">
                                                                                             <td th:text="${#dates.format(ts.interviewStartTime,'yyyy-MM-dd HH:mm')}"></td>
                                                                                             <td>
-                                                                                                <form method="post" th:action="@{/octopus/applicant/campus/agree}" th:object="${ts}">
+                                                                                                <form method="post" th:action="@{/applicant/campus/agree}" th:object="${ts}">
                                                                                                     <fieldset>
                                                                                                         <input type="hidden" id="applicationId" name="applicationId" th:value="${ps.key}" />
                                                                                                         <input type="hidden" id="interviewId" name="interviewId" th:value="*{interviewId}" />
@@ -247,7 +247,7 @@
                                                             <label style="font-style: italic; color:#000;">Interview Location: </label>&emsp;<label th:text="${ps.interviewPlace}"></label> &emsp;&emsp;
                                                             <label style="font-style: italic; color:#000;">Post Name: </label>&emsp;<label th:text="${ps.postName}"></label> &emsp;
                                                             <label style="font-style: italic; float:right">
-                                                                <a th:href="@{'/octopus/applicant/social/agree/' + ${ps.interviewId}}">Yes</a>
+                                                                <a th:href="@{'/applicant/social/agree/' + ${ps.interviewId}}">Yes</a>
                                                                 <a href="#" data-toggle="modal" data-target="#myModal">No</a>
                                                             </label>
                                                             <!-- Modal -->
@@ -261,7 +261,7 @@
                                                                             <h4 class="modal-title" id="myModalLabel">Reason for rejecting reservation.</h4>
                                                                         </div>
                                                                         <div>
-                                                                            <form method="post" th:action="@{/octopus/applicant/social/refuse}" style="margin: 20px;" th:object="${applicantCommentEntity}">
+                                                                            <form method="post" th:action="@{/applicant/social/refuse}" style="margin: 20px;" th:object="${applicantCommentEntity}">
                                                                                 <fieldset>
                                                                                     <input type="hidden" name="interviewId" th:value="${ps.interviewId}" />
                                                                                     <label> Reason:</label>

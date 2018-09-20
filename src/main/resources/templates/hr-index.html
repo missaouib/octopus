@@ -3,23 +3,25 @@
 <head>
     <title>HR - Index</title>
 
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
-    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}" />
-    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}" />
-    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}" />
+    <meta name="context-path" th:content="@{/}" />
 
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-    <script th:src="@{/octopus/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/layer/layer.min.js}"></script>
-    <script th:src="@{/octopus/js/hplus.min.js}"></script>
-    <script th:src="@{/octopus/js/contabs.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/pace/pace.min.js}"></script>
-    <script th:src="@{/octopus/js/jsCalendar.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}" />
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}" />
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css}" />
 
-    <script th:src="@{/octopus/js/notification/sockjs.js}"></script>
-    <script th:src="@{/octopus/js/notification/stomp.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+    <script th:src="@{/js/hplus.min.js}"></script>
+    <script th:src="@{/js/contabs.min.js}"></script>
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    <script th:src="@{/js/jsCalendar.js}"></script>
+
+    <script th:src="@{/js/notification/sockjs.js}"></script>
+    <script th:src="@{/js/notification/stomp.js}"></script>
 
     <style>
         .notification-icon {
@@ -51,7 +53,7 @@
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li>
                                 <a onclick="document.getElementById('logOut').submit();">Log out</a>
-                                <form id="logOut" method="post" th:action="@{/octopus/logout}"></form>
+                                <form id="logOut" method="post" th:action="@{/logout}"></form>
                             </li>
                         </ul>
 
@@ -63,14 +65,14 @@
                 </li>
 
                 <li>
-                    <a class="J_menuItem" th:href="@{/octopus/hr/dashboard/list}">
+                    <a class="J_menuItem" th:href="@{/hr/dashboard/list}">
                         <i class="glyphicon glyphicon-dashboard"></i>
                         <span class="nav-label">Dashboard</span>
                     </a>
                 </li>
 
                 <li>
-                    <a class="J_menuItem" th:href="@{/octopus/hr/notification/list}">
+                    <a class="J_menuItem" th:href="@{/hr/notification/list}">
                         <i class="glyphicon glyphicon-envelope"></i>
                         <span class="nav-label">Notifications</span>
                     </a>
@@ -84,18 +86,18 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" th:href="@{/octopus/hr/post/list(type=1)}">Society Recruitment</a>
+                            <a class="J_menuItem" th:href="@{/hr/post/list(type=1)}">Society Recruitment</a>
                         </li>
                     </ul>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" th:href="@{/octopus/hr/post/list(type=0)}">Campus Recruitment</a>
+                            <a class="J_menuItem" th:href="@{/hr/post/list(type=0)}">Campus Recruitment</a>
                         </li>
                     </ul>
                 </li>
 
                 <li>
-                    <a class="J_menuItem" th:href="@{/octopus/hr/billboard/list}">
+                    <a class="J_menuItem" th:href="@{/hr/billboard/list}">
                         <i class="glyphicon glyphicon-paperclip"></i>
                         <span class="nav-label">Announcements</span>
                     </a>
@@ -137,7 +139,7 @@
 
         <!-- Default Page -->
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/octopus/hr/post/list(type=1)}" frameborder="0"></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/hr/post/list(type=1)}" frameborder="0"></iframe>
         </div>
     </div>
     <!-- Top Bar End -->
@@ -180,6 +182,8 @@
     }
 
     /***************************/
+    // Get context path
+    var BASE_CONTEXT_PATH = $('meta[name=context-path]').attr("content");
 
     // Initial message count
     var messageCount = 0;
@@ -202,7 +206,7 @@
     // Handshake
     var socket = new SockJS('/octopus/ws/endpoint');
     stompClient = Stomp.over(socket);
-    stompClient.debug = null;
+    // stompClient.debug = null;
 
     stompClient.connect(csrfData, function (frame) {
         stompClient.subscribe('/octopus/ws/hr', function (message) {

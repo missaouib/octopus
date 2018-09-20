@@ -18,7 +18,6 @@ import java.util.List;
  * Created by zhouy on 2018/9/18.
  */
 @Controller
-@RequestMapping(value = "/octopus")
 public class PdfFileController {
 
     private final ServiceFactoryImpl serviceFactory;
@@ -38,11 +37,11 @@ public class PdfFileController {
     public String uploadFile(@PathVariable("applicantId") String applicantId,  @RequestParam("file") MultipartFile file) {
         int ret = serviceFactory.getFileStorageService().storeCVByApplicantId(Integer.parseInt(applicantId), file);
 
-        //File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/octopus/pdf/files/file2.pdf");
+        //File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/pdf/files/file2.pdf");
         Resource resource = serviceFactory.getFileStorageService().loadCVResourceByApplicantId(Integer.parseInt(applicantId), file.getOriginalFilename());
         String path_2 = System.getProperty("user.dir");
-        File localFile = new File(path_2 + "/src/main/resources/static/octopus/pdf/files/" + file.getOriginalFilename());
-        //File localFile = new File(path + "static/octopus/pdf/files/" + fileName);
+        File localFile = new File(path_2 + "/src/main/resources/static/pdf/files/" + file.getOriginalFilename());
+        //File localFile = new File(path + "static/pdf/files/" + fileName);
 
         try {
             FileUtils.copyInputStreamToFile(resource.getInputStream(), localFile);
@@ -63,11 +62,11 @@ public class PdfFileController {
     public String uploadPhoto(@PathVariable("applicantId") String applicantId,  @RequestParam("file") MultipartFile file) {
         int ret = serviceFactory.getFileStorageService().storePhotoByApplicantId(Integer.parseInt(applicantId), file);
 
-        //File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/octopus/pdf/files/file2.pdf");
+        //File file1 = new File(System.getProperty("user.dir") + "/src/main/resources/static/pdf/files/file2.pdf");
         Resource resource = serviceFactory.getFileStorageService().loadPhotoResourceByApplicantId(Integer.parseInt(applicantId), file.getOriginalFilename());
         String path_2 = System.getProperty("user.dir");
-        File localFile = new File(path_2 + "/src/main/resources/static/octopus/pdf/files/" + file.getOriginalFilename());
-        //File localFile = new File(path + "static/octopus/pdf/files/" + fileName);
+        File localFile = new File(path_2 + "/src/main/resources/static/pdf/files/" + file.getOriginalFilename());
+        //File localFile = new File(path + "static/pdf/files/" + fileName);
 
         try {
             FileUtils.copyInputStreamToFile(resource.getInputStream(), localFile);
@@ -99,11 +98,11 @@ public class PdfFileController {
             String path_2 = System.getProperty("user.dir");
             Resource resource = serviceFactory.getFileStorageService().loadCVResourceByApplicantId(id, cvs.get(0));
             System.out.println("[msg]: " + id + ", " + cvs.size() +", " + path_2 + ", " + cvs.get(0));
-            //String fileName = path + "static/octopus/pdf/files/" + cvs.get(0);
+            //String fileName = path + "static/pdf/files/" + cvs.get(0);
             String fileName =  cvs.get(0);
 
-            File localFile = new File(path_2 + "/src/main/resources/static/octopus/pdf/files/" + fileName);
-            //File localFile = new File(path + "static/octopus/pdf/files/" + fileName);
+            File localFile = new File(path_2 + "/src/main/resources/static/pdf/files/" + fileName);
+            //File localFile = new File(path + "static/pdf/files/" + fileName);
             try {
                 FileUtils.copyInputStreamToFile(resource.getInputStream(), localFile);
             }

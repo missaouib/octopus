@@ -23,17 +23,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
 
-                .antMatchers("/octopus/css/**", "/octopus/js/**", "/octopus/fonts/**", "/octopus/pdf/**", "/octopus/new-vendor/**", "/octopus/img/**", "/octopus/", "/octopus/new/pdf", "/octopus/postDetail/**", "/octopus/pub/billboard/**", "/octopus/register", "/octopus/userRegister",
+                .antMatchers("/css/**",
+                        "/js/**",
+                        "/fonts/**",
+                        "/pdf/**",
+                        "/new-vendor/**",
+                        "/img/**", "/",
+                        "/new/pdf",
+                        "/postDetail/**",
+                        "/pub/billboard/**",
+                        "/register",
+                        "/userRegister",
                         // Unleash WebSocket URIs from Authentication
                         "/octopus/ws/**").permitAll()
-                .antMatchers("/octopus/applicant/**").hasRole("APPLICANT")
-                .antMatchers("/octopus/hr/**").hasRole("HR")
-                .antMatchers("/octopus/interviewer/**").hasRole("INTERVIEWER")
-                .antMatchers("/octopus/dpt/**").hasRole("DPT")
+                .antMatchers("/applicant/**").hasRole("APPLICANT")
+                .antMatchers("/hr/**").hasRole("HR")
+                .antMatchers("/interviewer/**").hasRole("INTERVIEWER")
+                .antMatchers("/dpt/**").hasRole("DPT")
                 .antMatchers("/actuator/**").hasRole("MAINTENANCE")
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/octopus/login").permitAll().defaultSuccessUrl("/octopus/loginCheck").failureUrl("/octopus/loginError")
-                .and().logout().logoutUrl("/octopus/logout").logoutSuccessUrl("/octopus/login");
+                .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/loginCheck").failureUrl("/loginError")
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
 
         /* Zhao: Read this if you need help */
         /* https://docs.spring.io/spring-security/site/docs/current/reference/html/headers.html#headers-frame-options */
@@ -42,9 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 // Unleash WebSocket Endpoint from CSRF protection: Ignore our stomp endpoints since they are protected using Stomp headers
                 .ignoringAntMatchers("/octopus/ws/**")
-                .ignoringAntMatchers("/octopus/applicant/uploadFile/**")
-                .ignoringAntMatchers("/octopus/pdf/**")
-                .ignoringAntMatchers("/octopus/applicant/resume/pdf/**")
+                .ignoringAntMatchers("/applicant/uploadFile/**")
+                .ignoringAntMatchers("/pdf/**")
+                .ignoringAntMatchers("/applicant/resume/pdf/**")
                 .and()
                 .headers()
                 .frameOptions()

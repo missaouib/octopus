@@ -2,25 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <title>HR - Notification list</title>
 
-    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
-    <link rel="stylesheet" th:href="@{/octopus/css/plugins/iCheck/custom.css}"/>
+    <meta name="context-path" th:content="@{/}" />
 
-    <script th:src="@{/octopus/js/jquery.min.js}"></script>
-    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/iCheck/icheck.min.js}"></script>
-    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/sweetalert/sweetalert.css}"/>
+    <link rel="stylesheet" th:href="@{/css/plugins/iCheck/custom.css}"/>
 
-    <script th:src="@{/octopus/js/notification/sockjs.js}"></script>
-    <script th:src="@{/octopus/js/notification/stomp.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <script th:src="@{/js/notification/sockjs.js}"></script>
+    <script th:src="@{/js/notification/stomp.js}"></script>
 
     <style>
         .vertical-timeline-icon {
@@ -101,7 +102,7 @@
 
                     <ol class="breadcrumb">
                         <li>
-                            <a th:href="@{/octopus/hr/dashboard/list}">HR</a>
+                            <a th:href="@{/hr/dashboard/list}">HR</a>
                         </li>
                         <li class="active">
                             <strong>Notifications</strong>
@@ -144,7 +145,7 @@
                                            style="margin-top: 4px; color: #f8ac59;" th:class="${message.starred} ? 'fa fa-star fa-2x' : 'fa fa-star-o fa-2x usui'"></i>
                                     </td>
                                     <td>
-                                        <a th:onclick="${'markOneAsRead(' + message.messageId + ');'}" th:href="${message.link}">
+                                        <a th:onclick="${'markOneAsRead(' + message.messageId + ');'}" th:href="@{${message.link}}">
                                             <div th:class="${'vertical-timeline-icon ' + message.iconColor + '-bg'}">
                                                 <i th:class="${'fa fa-' + message.iconName}"></i>
                                                 <p style="display: none;">[[${message.messageType}]]</p>
@@ -172,6 +173,9 @@
         updateSummaryBadge("unread", 0);
         updateSummaryBadge("starred", 0);
         updateSummaryBadge("all", 0);
+
+        // Get context path
+        var BASE_CONTEXT_PATH = $('meta[name=context-path]').attr("content");
 
         /* Prepare data */
         /*<![CDATA[*/
@@ -212,7 +216,7 @@
                     "    </td>";
 
                 row += "    <td>\n" +
-                    "        <a onclick=\"markOneAsRead(" + messageDto.messageId + ");\" href=\"" + messageDto.link + "\">\n" +
+                    "        <a onclick=\"markOneAsRead(" + messageDto.messageId + ");\" href=\"" + BASE_CONTEXT_PATH + messageDto.link + "\">\n" +
                     "        <div class=\"vertical-timeline-icon " + messageDto.iconColor + "-bg\">\n" +
                     "            <i class=\"fa fa-" + messageDto.iconName + "\"></i>\n" +
                     "            <p style=\"display: none;\">" + messageDto.messageType + "</p>\n" +
