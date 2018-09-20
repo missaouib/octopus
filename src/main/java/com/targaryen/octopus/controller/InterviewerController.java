@@ -52,6 +52,7 @@ public class InterviewerController {
         map.addAttribute("interviewList", interviewVoList);
         return "interviewer-interview-list";
     }
+
     @RequestMapping(value="/interviewer/interview/agree/{interviewId}", method = RequestMethod.POST)
     public String agreeInterview(@PathVariable("interviewId") int interviewId){
         System.out.println("[msg]: " + "fd" + interviewId);
@@ -103,7 +104,17 @@ public class InterviewerController {
         map.addAttribute("returnUrl", "../../interview/list");
         ResumeVo resumeVo = serviceFactory.getInterviewerService().findResumeByApplicationId(applicantId);
         map.addAttribute("resume", resumeVo);
-        return "interviewer-applicant-detail";
+        int resumeId = resumeVo.getResumeId();
+
+        //work experience
+        List<WorkExperienceVo> workExperienceVos = serviceFactory.getApplicantService().listWorkExperiencesByResumeId(resumeId);
+        map.addAttribute("workExperienceList", workExperienceVos);
+
+        //education experience
+        List<EducationExperienceVo> educationExperienceVos = serviceFactory.getApplicantService().listEducationExperiencesByResumeId(resumeId);
+        map.addAttribute("educationExperienceList", educationExperienceVos);
+
+        return "interviewer-applicant-detail-new";
     }
 
     @RequestMapping(value = "/interviewer/interview/timeline/{applicationId}", method = RequestMethod.GET)

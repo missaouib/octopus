@@ -55,7 +55,7 @@ html.pdf-viewer-full-screen > body {
   background: #909090;
   border: 1px solid #ddd;
   margin: 10px;
-  height: 400px;
+  height: 1000px !important;
   position: relative;
   overflow: hidden;
   -webkit-border-radius: 4px;

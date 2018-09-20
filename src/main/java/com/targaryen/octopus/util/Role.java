@@ -19,7 +19,7 @@ public class Role {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         switch (authorities.toArray()[0].toString()) {
             case "ROLE_HR":
-                return "HR";
+                return "Human Resources";
             case "ROLE_DPT":
                 return "Department Manager";
             case "ROLE_APPLICANT":

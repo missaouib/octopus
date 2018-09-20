@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>HR - Post Applications List</title>
+    <title>HR - Application Timeline</title>
 
     <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
     <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
@@ -33,7 +33,22 @@
                 </div>
                 -->
                 <div class="ibox-title">
-                    <h1>Application Timeline</h1>
+                    <h2>Application Timeline</h2>
+
+                    <ol class="breadcrumb">
+                        <li>
+                            <a th:href="@{/octopus/hr/dashboard/list}">HR</a>
+                        </li>
+                        <li>
+                            <a th:href="@{/octopus/hr/post/list(type=(${post.recruitType}))}">Recruitment</a>
+                        </li>
+                        <li>
+                            <a href="../list">Post Detail</a>
+                        </li>
+                        <li class="active">
+                            <strong>Application Timeline</strong>
+                        </li>
+                    </ol>
                 </div>
 
                 <div class="ibox-content" id="ibox-content">

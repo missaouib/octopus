@@ -85,7 +85,7 @@ public class DptManagerController {
     @RequestMapping(value = "/dpt/post/{postId}", method = RequestMethod.GET)
     public String dptPostDetail(@PathVariable("postId") int postId, ModelMap map) {
         PostVo postVo = dptManagerService.findPostById(postId);
-        map.addAttribute("title", "Check/Edit Post Detail");
+        map.addAttribute("title", "Post Detail");
         map.addAttribute("recruitType", postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? true : false);
         map.addAttribute("roleName", "Department Manager");
         map.addAttribute("action", "edit");
@@ -94,6 +94,7 @@ public class DptManagerController {
         map.addAttribute("swalTextFailure", "You have not successfully edited this post need.");
 
         map.addAttribute("announcementType", postVo);
+        map.addAttribute("post", postVo);
         return "dpt-hr-post-detail";
     }
 
