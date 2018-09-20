@@ -32,6 +32,10 @@
         .usui {
             opacity: 0.2;
         }
+
+        .unread td {
+            background-color: rgb(235, 235, 235);
+        }
     </style>
 </head>
 
@@ -43,6 +47,7 @@
                     <div class="ibox-content mailbox-content">
                         <div class="file-manager">
                             <div class="space-25"></div>
+
                             <h5>Inbox</h5>
                             <ul class="folder-list m-b-md" style="padding: 0">
                                 <li>
@@ -90,7 +95,18 @@
                         </div>
                     </form>
 
-                    <h2 id="list-title">All</h2>
+                    <h2 id="list-title">
+                        Message Box
+                    </h2>
+
+                    <ol class="breadcrumb">
+                        <li>
+                            <a th:href="@{/octopus/hr/dashboard/list}">HR</a>
+                        </li>
+                        <li class="active">
+                            <strong>Notifications</strong>
+                        </li>
+                    </ol>
 
                     <div class="mail-tools tooltip-demo m-t-md">
 
@@ -173,6 +189,7 @@
         // Handshake
         var socket = new SockJS('/octopus/ws/endpoint');
         stompClient = Stomp.over(socket);
+        stompClient.debug = null;
 
         stompClient.connect(csrfData, function (frame) {
             stompClient.subscribe('/octopus/ws/hr', function (message) {
