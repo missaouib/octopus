@@ -4,6 +4,7 @@ import com.targaryen.octopus.config.FtpProperties;
 import com.targaryen.octopus.dto.InterviewDto;
 import com.targaryen.octopus.util.StatusCode;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -48,6 +49,7 @@ public class FileStorageServiceFtpImpl implements FileStorageService {
         try {
             ftpClient.connect(FTP_ADDRESS);
             ftpClient.login(LOGIN_NAME, PASSWORD);
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         } catch (IOException e) {
             System.out.println("ftp login failed.");
             return false;

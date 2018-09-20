@@ -13,11 +13,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 @Service
 public class MessageServiceImpl implements MessageService {
     private Logger logger = LoggerFactory.getLogger(HRController.class);
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 
     private final String channelPrefix = "/octopus/ws/";
     private final String linkPrefix = "/octopus/";
@@ -36,19 +38,18 @@ public class MessageServiceImpl implements MessageService {
     public void broadcastAndSave(String toChannel, MessageDto message, boolean pleaseSave) {
         try {
             if (message != null) {
-                // Preprocess
+                // Pre-process link
                 message.setLink(linkPrefix + message.getLink());
 
+                // Save to DB
                 if (pleaseSave) {
-                    // Save to DB
                     messageRepository.save(message);
                 }
 
-                // Preprocess
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+                // Pre-process create time string
                 message.setCreateTimeString(dateFormat.format(message.getCreateTime()));
 
-                // Set icon and color
+                // Pre-process icon and color
                 if (toChannel.equals("hr")) {
                     setHRStyle(message);
                 }
@@ -61,12 +62,63 @@ public class MessageServiceImpl implements MessageService {
         }
     }
 
+    @Override
+    public List<MessageDto> viewHrAll() {
+        List<MessageDto> hrMessages = messageRepository.findAllByChannelOrderByMessageIdDesc("hr");
+        hrMessages.forEach(messageDto -> {
+            // Pre-process
+            setHRStyle(messageDto);
+            messageDto.setCreateTimeString(dateFormat.format(messageDto.getCreateTime()));
+        });
+        return hrMessages;
+    }
+
+    @Override
+    public void batchMarkAsRead(int[] messageIds) {
+        for (int i = 0; i != messageIds.length; i++) {
+            MessageDto messageDto = messageRepository.findOneByMessageId(messageIds[i]);
+            messageDto.setRead(true);
+            messageRepository.save(messageDto);
+        }
+    }
+
+    @Override
+    public void batchMarkAsUnread(int[] messageIds) {
+        for (int i = 0; i != messageIds.length; i++) {
+            MessageDto messageDto = messageRepository.findOneByMessageId(messageIds[i]);
+            messageDto.setRead(false);
+            messageRepository.save(messageDto);
+        }
+    }
+
+    @Override
+    public void markOneAsRead(int messageId) {
+        MessageDto messageDto = messageRepository.findOneByMessageId(messageId);
+        messageDto.setRead(true);
+        messageRepository.save(messageDto);
+    }
+
+    @Override
+    public void markOneAsStarred(int messageId) {
+        MessageDto messageDto = messageRepository.findOneByMessageId(messageId);
+        messageDto.setStarred(true);
+        messageRepository.save(messageDto);
+    }
+
+    @Override
+    public void markOneAsUnstarred(int messageId) {
+        MessageDto messageDto = messageRepository.findOneByMessageId(messageId);
+        messageDto.setStarred(false);
+        messageRepository.save(messageDto);
+    }
+
+
+    /****************************************/
+
+    /* Set icon and color displayed on web page */
     private void setHRStyle(MessageDto message) {
         switch (message.getMessageType()) {
             case HRMessage.DPT_CREATE_POST:
-                message.setIconName("edit");
-                message.setIconColor("navy");
-                break;
             case HRMessage.DPT_UPDATE_POST:
                 message.setIconName("edit");
                 message.setIconColor("navy");
@@ -76,25 +128,13 @@ public class MessageServiceImpl implements MessageService {
                 message.setIconColor("blue");
                 break;
             case HRMessage.DPT_PASS_APPS:
-                message.setIconName("eye");
-                message.setIconColor("yellow");
-                break;
             case HRMessage.DPT_REJECT_APPS:
                 message.setIconName("eye");
                 message.setIconColor("yellow");
                 break;
             case HRMessage.APP_ACCEPT_INTERVIEW:
-                message.setIconName("calendar-plus-o");
-                message.setIconColor("black");
-                break;
             case HRMessage.APP_REJECT_INTERVIEW:
-                message.setIconName("calendar-plus-o");
-                message.setIconColor("black");
-                break;
             case HRMessage.WER_ACCEPT_INTERVIEW:
-                message.setIconName("calendar-plus-o");
-                message.setIconColor("black");
-                break;
             case HRMessage.WER_REJECT_INTERVIEW:
                 message.setIconName("calendar-plus-o");
                 message.setIconColor("black");

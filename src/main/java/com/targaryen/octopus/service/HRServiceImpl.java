@@ -512,22 +512,22 @@ public class HRServiceImpl implements HRService {
                     if(srpDtoMap.containsKey(school)) {
                         SourceRecruitProgressDto srpDto = srpDtoMap.get(school);
 
-                        calculateSourceData(srpDto, applicationStatus);
+                        updateSRP(srpDto, applicationStatus);
                     } else {
                         SourceRecruitProgressDto srpDto = new SourceRecruitProgressDto();
                         srpDto.setSourceName(school);
                         srpDto.setSourceType(SourceType.SCHOOL);
-                        calculateSourceData(srpDto, applicationStatus);
+                        updateSRP(srpDto, applicationStatus);
                         srpDtoMap.put(school, srpDto);
                     }
                     if(srpDtoMap.containsKey(city)) {
                         SourceRecruitProgressDto srpDto = srpDtoMap.get(city);
-                        calculateSourceData(srpDto, applicationStatus);
+                        updateSRP(srpDto, applicationStatus);
                     } else {
                         SourceRecruitProgressDto srpDto = new SourceRecruitProgressDto();
                         srpDto.setSourceName(city);
                         srpDto.setSourceType(SourceType.CITY);
-                        calculateSourceData(srpDto, applicationStatus);
+                        updateSRP(srpDto, applicationStatus);
                         srpDtoMap.put(city, srpDto);
                     }
                 }
@@ -549,7 +549,7 @@ public class HRServiceImpl implements HRService {
         return srpVos;
     }
 
-    private SourceRecruitProgressDto calculateSourceData(SourceRecruitProgressDto srpDto, int applicationStatus) {
+    private SourceRecruitProgressDto updateSRP(SourceRecruitProgressDto srpDto, int applicationStatus) {
         if(ApplicationStatus.FILTER_PASS.equals(applicationStatus)) {
             int applicationNum = srpDto.getApplicationNum();
             srpDto.setApplicationNum(++applicationNum);

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Department Manager - Post List</title>
+
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}" />
+
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/octopus/new-vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/octopus/new-vendor/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/octopus/css/font-awesome.min93e3.css}"  rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+
+
+    <link th:href="@{/octopus/new-vendor/css/plugins/jasny/jasny-bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/plugins/codemirror/codemirror.css}" rel="stylesheet" />
+
+    <!--new vendor -->
+    <link th:href="@{/octopus/new-vendor/css/plugins/steps/jquery.steps.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/animate.css}" rel="stylesheet" />
+    <link th:href="@{/octopus/new-vendor/css/style.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+    <!-- Bootstrap PDF Viewer -->
+    <link rel="stylesheet" th:href="@{/octopus/pdf/css/bootstrap-pdf-viewer.css}">
+
+    <!-- jQuery -->
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+
+    <script th:src="@{/octopus/new-vendor/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/octopus/new-vendor/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/octopus/new-vendor/js/inspinia.js}"></script>
+    <script th:src="@{/octopus/new-vendor/js/plugins/pace/pace.min.js}"></script>
+
+    <!-- Jasny -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
+
+    <!-- Steps -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/steps/jquery.steps.min.js}"></script>
+    <!-- Jquery Validate -->
+    <script th:src="@{/octopus/new-vendor/js/plugins/validate/jquery.validate.min.js}"></script>
+
+
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+
+    <!-- Bootstrap PDF Viewer -->
+    <script th:src="@{/octopus/pdf/lib/pdf.js}"></script>
+    <script th:src="@{/octopus/pdf/js/bootstrap-pdf-viewer.js}"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="col-lg-4">
+                <div style="margin: 20px 15px -20px 15px;">
+                    <div class="alert alert-danger alert-dismissable"
+                         th:style="'display:' + @{(${isRegister} ? 'block' : 'none')} + ''">
+                        <button type="button" class="close" data-dismiss="alert"
+                                aria-hidden="true">&times;</button>
+                        Not Upload Resume file yet.
+                    </div>
+                </div>
+            </div>
+            <label style="font-size:20px; " th:text="${fileName}"></label>
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div id="viewer" class="pdf-viewer" th:data-url="@{'/octopus/pdf/files/' + ${fileName}}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  var viewer;
+
+  $(function() {
+    viewer = new PDFViewer($('#viewer'));
+  });
+</script>
+</body>
+</html>

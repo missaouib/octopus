@@ -65,6 +65,13 @@
                 <li>
                     <a>
                         <i class="glyphicon glyphicon-user"></i>
+                        <span class="J_menuItem" th:href="@{/octopus/hr/dashboard/list}">DashBoard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a>
+                        <i class="glyphicon glyphicon-user"></i>
                         <span class="nav-label">Recruitment</span>
                         <span class="fa arrow"></span>
                     </a>
@@ -83,15 +90,10 @@
                 <li>
                     <a>
                         <i class="glyphicon glyphicon-user"></i>
-                        <span class="nav-label">Billboard</span>
-                        <span class="fa arrow"></span>
+                        <span class="J_menuItem" th:href="@{/octopus/hr/billboard/list}">Announcements</span>
                     </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" th:href="@{/octopus/hr/billboard/list}">Announcements</a>
-                        </li>
-                    </ul>
                 </li>
+
             </ul>
         </div>
     </nav>
@@ -110,12 +112,11 @@
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="false">
                             <i class="fa fa-envelope"></i>Notifications <span class="label label-warning" id="unread-notifications" style="right: 0px;"></span>
                         </a>
-                        <ul class="dropdown-menu dropdown-messages">
-                            <li id="hr-notifications"></li>
+                        <ul id="hr-notifications" class="dropdown-menu dropdown-messages">
 
                             <li>
                                 <div class="text-center link-block">
-                                    <a class="J_menuItem" href="notification/list">
+                                    <a class="J_menuItem" href="notification/list" onclick="hideList();">
                                         <i class="fa fa-envelope"></i> <strong> View all historic notifications</strong>
                                     </a>
                                 </div>
@@ -137,6 +138,10 @@
 </div>
 
 <script th:inline="javascript">
+    function hideList() {
+        $(".dropdown").removeClass("open");
+    }
+
     function hideDigitWhenEmpty() {
         if (parseInt($("#unread-notifications").text()) == 0) {
             $("#unread-notifications").css("display", "none");
@@ -145,7 +150,7 @@
         }
     }
 
-    function consumeMessage(messageId, pageUrl) {
+    function consumeMessage(messageId, pageUrl, realMessageId) {
         // Page redirection
         pageUrl = pageUrl.replace(/-/g, "/");
         $('#content-main iframe').attr("src", pageUrl);
@@ -158,6 +163,13 @@
         messageCount -= 1;
         $("#unread-notifications").text(messageCount);
         hideDigitWhenEmpty();
+
+        // Set already read
+        $.ajax({
+            type: 'post',
+            url: 'notification/mark/' + realMessageId + '/read',
+            data: csrfData
+        });
     }
 
     /***************************/
@@ -172,9 +184,11 @@
     /*<![CDATA[*/
     var _csrf_token = /*[[${_csrf.token}]]*/ '';
     var _csrf_header_name = /*[[${_csrf.headerName}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
     /*]]>*/
     var csrfData = {};
     csrfData[_csrf_header_name] = _csrf_token;
+    csrfData[_csrf_param_name] = _csrf_token;
     csrfData['login'] = "login"; // Not used
     csrfData['passcode'] = 'passcode'; // Not used
 
@@ -195,9 +209,9 @@
             hideDigitWhenEmpty();
 
             // Append li element to the right place
-            $("#hr-notifications").after("<li id=\'message-" + messageCount + "\'>\n" +
+            $("#hr-notifications").prepend("<li id=\'message-" + messageCount + "\'>\n" +
                 "                                <div class=\"dropdown-messages-box\">\n" +
-                "                                    <a onclick=\"consumeMessage(" + messageCount + ", \'" + messageDto.link + "\');\" class=\"pull-left\">\n" +
+                "                                    <a onclick=\"consumeMessage(" + messageCount + ", \'" + messageDto.link + "\'," + messageDto.messageId + ");\" class=\"pull-left\">\n" +
                 "                                       <div class=\"vertical-timeline-icon notification-icon " + messageDto.iconColor + "-bg\">\n" +
                 "                                           <i class=\"fa fa-" + messageDto.iconName + "\"></i>\n" +
                 "                                       </div>" +

@@ -1,10 +1,12 @@
 package com.targaryen.octopus.config;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
+@Data
 @ConfigurationProperties
 public class FtpProperties {
     @Value("${octopus.ftp.address}")
@@ -18,20 +20,4 @@ public class FtpProperties {
 
     @Value("${octopus.ftp.root}")
     private String FTP_ROOT;
-
-    public String getFTP_ADDRESS() {
-        return FTP_ADDRESS;
-    }
-
-    public String getLOGIN_NAME() {
-        return LOGIN_NAME;
-    }
-
-    public String getPASSWORD() {
-        return PASSWORD;
-    }
-
-    public String getFTP_ROOT() {
-        return FTP_ROOT;
-    }
 }
