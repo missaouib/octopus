@@ -48,9 +48,9 @@ public class HRController {
     @RequestMapping(value = "/hr/post/list", method = RequestMethod.GET)
     public String hrPostList(ModelMap map, @RequestParam("type") int type) {
         if (type == RecruitTypeStatus.CAMPUS) {
-            map.addAttribute("title", "Campus Recruitment");
+            map.addAttribute("title", "Campus");
         } else if (type == RecruitTypeStatus.SOCIETY) {
-            map.addAttribute("title", "Society Recruitment");
+            map.addAttribute("title", "Society");
         }
 
         map.addAttribute("recruitType", type);
@@ -109,7 +109,7 @@ public class HRController {
     @RequestMapping(value = "/hr/billboard/{announcementId}", method = RequestMethod.GET)
     public String hrBillboardDetail(@PathVariable("announcementId") int announcementId, ModelMap map) {
         AnnouncementVo announcementVo = announcementService.findAnnouncementById(announcementId);
-        map.addAttribute("title", "Check/Edit Post Detail");
+        map.addAttribute("title", "Post Detail");
         map.addAttribute("action", "edit");
         map.addAttribute("returnUrl", "list");
         map.addAttribute("swalTextSuccess", "You have successfully edited this announcement!");
@@ -174,7 +174,7 @@ public class HRController {
     @RequestMapping(value = "/hr/post/{postId}", method = RequestMethod.GET)
     public String hrPostDetail(@PathVariable("postId") int postId, ModelMap map) {
         PostVo postVo = hrService.findPostById(postId);
-        map.addAttribute("title", "Check/Edit Post Detail");
+        map.addAttribute("title", "Post Detail");
         map.addAttribute("recruitType", postVo.getRecruitType() == RecruitTypeStatus.SOCIETY ? true : false);
         map.addAttribute("roleName", "HR");
         map.addAttribute("action", "edit");
@@ -230,6 +230,8 @@ public class HRController {
     @RequestMapping(value = "/hr/post/{postId}/application/{appliId}/timeline", method = RequestMethod.GET)
     public String hrApplicationTimeline(@PathVariable("postId") int postId, @PathVariable("appliId") int applicationId, ModelMap map) {
         map.addAttribute("appli", hrService.findApplicationResumeVoByApplicationId(applicationId));
+
+        map.addAttribute("post", hrService.findPostById(postId));
 
         map.addAttribute("interviewerList", hrService.listInterviewersByPostId(postId));
 
