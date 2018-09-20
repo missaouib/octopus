@@ -11,12 +11,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/octopus/ws/hr");
-        config.setApplicationDestinationPrefixes("/octopus/ws/in");
+        config.enableSimpleBroker("/hr");
+        config.setApplicationDestinationPrefixes("/in");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/octopus/ws/endpoint").withSockJS();
+        registry.addEndpoint("/ws/endpoint").withSockJS();
     }
 }

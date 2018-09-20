@@ -139,7 +139,7 @@
 
         <!-- Default Page -->
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/hr/post/list(type=1)}" frameborder="0"></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" th:src="@{/hr/dashboard/list}" frameborder="0"></iframe>
         </div>
     </div>
     <!-- Top Bar End -->
@@ -162,6 +162,7 @@
     function consumeMessage(messageId, pageUrl, realMessageId) {
         // Page redirection
         pageUrl = pageUrl.replace(/-/g, "/");
+        pageUrl = BASE_CONTEXT_PATH + pageUrl;
         $('#content-main iframe').attr("src", pageUrl);
 
         // Remove message and divider
@@ -204,12 +205,12 @@
     csrfData['passcode'] = 'passcode'; // Not used
 
     // Handshake
-    var socket = new SockJS('/octopus/ws/endpoint');
+    var socket = new SockJS(BASE_CONTEXT_PATH + 'ws/endpoint');
     stompClient = Stomp.over(socket);
-    // stompClient.debug = null;
+    stompClient.debug = null;
 
     stompClient.connect(csrfData, function (frame) {
-        stompClient.subscribe('/octopus/ws/hr', function (message) {
+        stompClient.subscribe('/hr', function (message) {
             // Receive MessageDto
             var messageDto = JSON.parse(message.body);
             messageDto.link = messageDto.link.replace(/\//g, "-");

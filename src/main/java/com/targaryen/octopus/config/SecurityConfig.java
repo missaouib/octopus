@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf()
                 // Unleash WebSocket Endpoint from CSRF protection: Ignore our stomp endpoints since they are protected using Stomp headers
-                .ignoringAntMatchers("/octopus/ws/**")
+                .ignoringAntMatchers("/ws/**")
                 .ignoringAntMatchers("/applicant/uploadFile/**")
                 .ignoringAntMatchers("/applicant/uploadPhoto/**")
                 .ignoringAntMatchers("/pdf/**")

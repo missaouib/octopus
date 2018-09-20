@@ -145,7 +145,7 @@
                                            style="margin-top: 4px; color: #f8ac59;" th:class="${message.starred} ? 'fa fa-star fa-2x' : 'fa fa-star-o fa-2x usui'"></i>
                                     </td>
                                     <td>
-                                        <a th:onclick="${'markOneAsRead(' + message.messageId + ');'}" th:href="@{${message.link}}">
+                                        <a th:onclick="${'markOneAsRead(' + message.messageId + ');'}" th:href="${'../../' + message.link}">
                                             <div th:class="${'vertical-timeline-icon ' + message.iconColor + '-bg'}">
                                                 <i th:class="${'fa fa-' + message.iconName}"></i>
                                                 <p style="display: none;">[[${message.messageType}]]</p>
@@ -191,15 +191,14 @@
 
         /* Websocket pushing */
         // Handshake
-        var socket = new SockJS('/octopus/ws/endpoint');
+        var socket = new SockJS(BASE_CONTEXT_PATH + 'ws/endpoint');
         stompClient = Stomp.over(socket);
         stompClient.debug = null;
 
         stompClient.connect(csrfData, function (frame) {
-            stompClient.subscribe('/octopus/ws/hr', function (message) {
+            stompClient.subscribe('/hr', function (message) {
                 // Receive MessageDto
                 var messageDto = JSON.parse(message.body);
-                // messageDto.link = messageDto.link.replace(/\//g, "-");
 
                 // Besides we need footable object
                 var tableObj = $("#notification-list-table").find('tbody');
