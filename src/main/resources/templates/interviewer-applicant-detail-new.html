@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Department Manager - Post List</title>
+
+    <link rel="stylesheet" th:href="@{/octopus/css/bootstrap.min14ed.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/footable/footable.core.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/font-awesome.min93e3.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/animate.min.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/style.min862f.css}"/>
+    <link rel="stylesheet" th:href="@{/octopus/css/plugins/sweetalert/sweetalert.css}"/>
+    <!-- Bootstrap PDF Viewer -->
+    <link rel="stylesheet" th:href="@{/octopus/pdf/css/bootstrap-pdf-viewer.css}">
+
+    <script th:src="@{/octopus/js/jquery.min.js}"></script>
+    <script th:src="@{/octopus/js/bootstrap.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/octopus/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- Bootstrap PDF Viewer -->
+    <script th:src="@{/octopus/pdf/lib/pdf.js}"></script>
+    <script th:src="@{/octopus/pdf/js/bootstrap-pdf-viewer.js}"></script>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1>Applicant Detail</h1>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel-body">
+                        <div class="container">
+                            <blockquote style="font-style: italic;background-color: #F0F0F0; font-weight:bold;">Basic Information</blockquote>
+                            <div class="row col-lg-3" style="margin-left: 20px;">
+                                <div class="row">
+                                    <label style="width:120px; font-style: italic;">Name: </label>&emsp;<label th:text="${resume.applicantName}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Sex: </label>&emsp;<label th:text="${resume.applicantSex}>0?'Male':'Female'"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Age: </label>&emsp;<label th:text="${resume.applicantAge}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">City: </label>&emsp;<label th:text="${resume.applicantCity}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Political: </label>&emsp;<label th:text="${resume.applicantPoliticalStatus}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">ContactName: </label>&emsp;<label th:text="${resume.familyContactName}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">TimeToWork: </label>&emsp;<label th:text="${#dates.format(resume.applicantTimeToWork,'YYYY-MM-dd')}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Current Salary($): </label>&emsp;<label th:text="${resume.applicantCurrentSalary}"></label>
+                                </div>
+                            </div>
+                            <div class="row col-lg-3" style="margin-left: 10px;">
+                                <div class="row">
+                                    <label style="width:120px; font-style: italic;">Phone: </label>&emsp;<label th:text="${resume.applicantPhoto}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Nation: </label>&emsp;<label th:text="${resume.applicantNation}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">School: </label>&emsp;<label th:text="${resume.applicantSchool}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Degree: </label>&emsp;<label th:text="${resume.applicantDegree}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Marital: </label>&emsp;<label th:text="${resume.applicantMaritalStatus}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">ContactRelation: </label>&emsp;<label th:text="${resume.familyContactRelation}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">DutyTime: </label>&emsp;<label th:text="${#dates.format(resume.applicantDutyTime, 'YYYY-MM-dd')}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">ExpectSalary($): </label>&emsp;<label th:text="${resume.applicantExpectSalary}"></label>
+                                </div>
+                            </div>
+                            <div class="row col-lg-3" style="margin-left: 10px;">
+                                <div class="row">
+                                    <label style="width:120px; font-style: italic;">Email: </label>&emsp;<label th:text="${resume.applicantEmail}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Major: </label>&emsp;<label th:text="${resume.applicantMajor}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Hometown: </label>&emsp;<label th:text="${resume.applicantHometown}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">Recommender: </label>&emsp;<label th:text="${resume.recommenderName}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">BirthDate: </label>&emsp;<label th:text="${#dates.format(resume.applicantDateOfBirth, 'YYYY-MM-dd')}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">ContactPhone: </label>&emsp;<label th:text="${resume.familyContactPhoneNum}"></label>
+                                </div>
+                                <div class="row" style="margin-top: 10px;">
+                                    <label style="width:120px; font-style: italic;">ContactCompany: </label>&emsp;<label th:text="${resume.familyContactCompany}"></label>
+                                </div>
+                            </div>
+                            <div class="row col-lg-3" style="margin-left: 20px;">
+                                <div class="row">
+                                    <img th:src="@{/octopus/pdf/files/p3.jpg}" style="width:150px;height:200px;" class="img-thumbnail img-sm">
+                                </div>
+                                <div class="row">
+                                    <label style="margin-left:20px;">Applicant Picture</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="col-lg-10" style="margin-top: 10px;margin-left: 20px;">
+                                <div class="row">
+                                    <label style="width:150px; font-style: italic;">Address: </label>&emsp;<label th:text="${resume.applicantName}"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <div class="col-lg-10" style="margin-top: 10px;margin-left: 20px;">
+                                <div class="row">
+                                    <label style="width:150px; font-style: italic;">Self Introduction: </label>&emsp;<label th:text="${resume.applicantName}"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container" style="margin-top: 50px;">
+                            <blockquote style="font-style: italic;background-color: #F0F0F0;font-weight:bold;">Work Experience</blockquote>
+                            <table class="table" data-page-size="9">
+                                <thead>
+                                <tr class="footable even">
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Company</th>
+                                    <th>Position</th>
+                                    <th>City</th>
+                                    <th>ReferenceName</th>
+                                    <th>ReferencePhone</th>
+                                    <th>JobDescription</th>
+                                    <th>Achievement</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="work : ${workExperienceList}">
+                                    <tr>
+                                        <td th:text="${#dates.format(work.startTime,'YYYY-MM-dd')}"></td>
+                                        <td th:text="${#dates.format(work.endTime, 'YYYY-MM-dd')}"></td>
+                                        <td th:text="${work.company}"></td>
+                                        <td th:text="${work.post}"></td>
+                                        <td th:text="${work.city}"></td>
+                                        <td th:text="${work.referenceName}"></td>
+                                        <td th:text="${work.referencePhoneNum}"></td>
+                                        <td th:text="${work.workDescription}"></td>
+                                        <td th:text="${work.achievement}"></td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="9">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="container" style="margin-top: 20px;">
+                            <blockquote style="font-style: italic;background-color: #F0F0F0;font-weight:bold;">Education Experience</blockquote>
+                            <table class="table" data-page-size="9" >
+                                <thead>
+                                <tr class="footable even">
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>School</th>
+                                    <th>Major</th>
+                                    <th>TypeOfStudy</th>
+                                    <th>Degree</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <th:block th:each="edu : ${educationExperienceList}">
+                                    <tr>
+                                        <td th:text="${#dates.format(edu.startTime, 'YYYY-MM-dd')}"></td>
+                                        <td th:text="${#dates.format(edu.endTime,'YYYY-MM-dd')}"></td>
+                                        <td th:text="${edu.school}"></td>
+                                        <td th:text="${edu.major}"></td>
+                                        <td th:text="${edu.typeOfStudy}"></td>
+                                        <td th:text="${edu.degree}"></td>
+                                </th:block>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="container" style="margin-top: 20px;">
+                            <blockquote style="font-style: italic;background-color:#F0F0F0;font-weight:bold;">Resume File</blockquote>
+                            <div class="ibox-content">
+                                <div id="viewer" class="pdf-viewer" style="height:100%;" th:data-url="@{/octopus/pdf/files/resumeExample.pdf}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center" style="margin-top: 50px;">
+                        <button type="button" class="btn btn-w-m btn-info" th:onclick="${'location.href=''' + returnUrl + ''''}">
+                            Return To Interview List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  var viewer;
+
+  $(function() {
+    viewer = new PDFViewer($('#viewer'));
+  });
+</script>
+
+<script th:inline="javascript">
+    $(".footable").footable();
+
+    /*<![CDATA[*/
+    var _csrf_token = /*[[${_csrf.token}]]*/ '';
+    var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+    /*]]>*/
+    var csrfData = {};
+    csrfData[_csrf_param_name] = _csrf_token;
+
+    function agreeInterview(interviewId, applicantName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to start this interview with : " + applicantName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'agree/' + interviewId,
+                    data: csrfData,
+                    async: false,
+                    success: function (data) {
+                        swal({
+                            title: "Success",
+                            text: "You have successfully agreed with this interview.",
+                            type: "success"
+                        }, function (isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function (data) {
+                        swal({
+                            title: "Failure",
+                            text: "You have not successfully agreed with this interview.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+
+    function rejectInterview(interviewId, applicantName) {
+        swal({
+            title : "Confirm",
+            text: "Do you really wish to reject  interview with: " + applicantName + " ?",
+            type : "warning",
+            showCancelButton : true,
+            confirmButtonColor : "#DD6B55",
+            confirmButtonText : "Yes",
+            cancelButtonText : "No",
+            closeOnConfirm : false,
+            closeOnCancel : false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    type: "post",
+                    url: 'reject/' + interviewId,
+                    data: csrfData,
+                    async: false,
+                    success: function(data) {
+                        swal({
+                            title:"Success",
+                            text: "You have successfully rejected this interview.",
+                            type:"success"
+                        }, function(isConfirm) {
+                            document.location.reload();
+                        });
+                    },
+                    error: function(data) {
+                        swal({
+                            title:"Failure",
+                            text: "You have not successfully rejected this interview.",
+                            type: "error"
+                        });
+                    }
+                });
+            } else {
+                swal("Cancelled", "You have cancelled.", "error");
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>
