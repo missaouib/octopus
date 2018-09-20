@@ -8,4 +8,7 @@ public interface HistoryService {
     List<SourceRecruitProgressVo> findRecordsByBatchIdGroupBySchool(int batchId);
     List<SourceRecruitProgressVo> findRecordsByBatchIdGroupByCity(int batchId);
     List<SourceRecruitProgressVo> findRecordsByBatchIdGroupByPost(int batchId);
+    List<SourceRecruitProgressVo> findSummaryRecordsGroupBySchool();
+    List<SourceRecruitProgressVo> findSummaryRecordsGroupByCity();
+    List<SourceRecruitProgressVo> findSummaryRecordsGroupByPost();
 }
